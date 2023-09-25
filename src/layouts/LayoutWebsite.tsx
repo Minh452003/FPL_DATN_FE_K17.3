@@ -71,7 +71,7 @@ const LayoutWebsite = () => {
                <Homeslides/>
         </section>
         <section> 
-             <main className="max-w-7xl mx-auto mt-10">
+             <main className="max-w-7xl mx-auto mt-10 " >
               <Outlet/>
              </main>
         </section>

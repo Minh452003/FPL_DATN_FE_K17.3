@@ -4,7 +4,7 @@ import LayoutWebsite from "./layouts/LayoutWebsite";
 import LayoutAdmin from "./layouts/LayoutAdmin";
 import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
 import AdminProductsPage from "./pages/admin/products/AdminProductsPage";
-import Cart from "./pages/view/Cart";
+import Cart from "./pages/view/Cart/Cart";
 
 export const router = createBrowserRouter([
     {
