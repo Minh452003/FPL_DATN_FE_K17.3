@@ -2,7 +2,7 @@
 const Footer = () => {
   return (
     <footer >
-    <section className="bg-slate-950 mt-5 ">
+    <section className="bg-slate-950 mt-5">
      <div className="md:grid md:grid-cols-4  gap-4 gap-4 max-w-7xl mx-auto py-10">
        <div >
          <ul className=" space-y-2 text-sm pl-0">
