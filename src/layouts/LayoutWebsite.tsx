@@ -67,7 +67,7 @@ const LayoutWebsite = () => {
           </div>  
     </section>
         </header>
-        <section className="max-w-7xl mx-auto ">
+        <section className=" mx-auto ">
                <Homeslides/>
         </section>
         <section> 
