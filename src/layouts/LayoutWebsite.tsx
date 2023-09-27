@@ -5,7 +5,7 @@ import {HiSearch} from "react-icons/hi"
 
 const LayoutWebsite = () => {
     return (
-    <div className="mx-auto lg:container ">
+    <div className="mx-auto">
         <header className="header bg-[#fff] w-full shadow-lg fixed z-50" >
           <section className="py-2">
           <div className=" flex justify-between justify-items-center  max-w-7xl mx-auto p-0 m-0 ">
@@ -71,7 +71,7 @@ const LayoutWebsite = () => {
                <Homeslides/>
         </section>
         <section> 
-             <main className="max-w-7xl mx-auto mt-10 " >
+             <main className="max-w-7xl mx-auto mt-10">
               <Outlet/>
              </main>
         </section>

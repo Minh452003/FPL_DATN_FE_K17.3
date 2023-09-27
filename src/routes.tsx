@@ -5,6 +5,7 @@ import LayoutAdmin from "./layouts/LayoutAdmin";
 import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
 import AdminProductsPage from "./pages/admin/products/AdminProductsPage";
 import Cart from "./pages/view/Cart/Cart";
+import ProfilePage from "./pages/view/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -12,6 +13,7 @@ export const router = createBrowserRouter([
         element: < LayoutWebsite />,
         children: [
             { index: true, element: <HomePage /> },
+            { path: 'profile', element: <ProfilePage/>},
             { path: 'cart', element: <Cart/>},
         ]
     },
