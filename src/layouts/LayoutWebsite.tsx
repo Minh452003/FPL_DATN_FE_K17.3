@@ -5,7 +5,6 @@ import { Outlet } from "react-router-dom";
 import { HiSearch } from "react-icons/hi";
 
 const LayoutWebsite = () => {
- 
   const [isMenuHidden, setIsMenuHidden] = useState(true);
 
   const toggleMenu = () => {
