@@ -6,6 +6,7 @@ import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
 import AdminProductsPage from "./pages/admin/products/AdminProductsPage";
 import Cart from "./pages/view/Cart/Cart";
 import ProfilePage from "./pages/view/Profile";
+import ProductPage from "./pages/view/ProductPage";
 
 export const router = createBrowserRouter([
     {
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
             { index: true, element: <HomePage /> },
             { path: 'profile', element: <ProfilePage/>},
             { path: 'cart', element: <Cart/>},
+            { path: 'products', element: <ProductPage/>},
         ]
     },
     {
