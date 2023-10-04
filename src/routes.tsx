@@ -6,8 +6,7 @@ import LayoutWebsite from "./layouts/LayoutWebsite";
 import LayoutAdmin from "./layouts/LayoutAdmin";
 import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
 import AdminProductsPage from "./pages/admin/products/AdminProductsPage";
-import ProfilePage from "./pages/view/Profile";
-import ProductPage from "./pages/view/ProductPage";
+
 import CartPage from "./pages/view/Cart/CartPage";
 import PayPage from "./pages/view/Pay/PayPage";
 import ProfilePage from "./pages/view/Profile/Profile";
