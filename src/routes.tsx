@@ -9,6 +9,7 @@ import ProfilePage from "./pages/view/Profile/Profile";
 import ProductPage from "./pages/view/ProductPage/ProductPage";
 import Voucher from "./pages/view/Profile/voucher";
 import Purchase from "./pages/view/Profile/purchase";
+import ForgotPassword from "./pages/view/ForgotPassword";
 
 export const router = createBrowserRouter([
     {
@@ -20,6 +21,8 @@ export const router = createBrowserRouter([
                 {path:'purchase',element:<Purchase/>},
                 {path:'voucher',element:<Voucher/>}
             ]},
+            { path: 'profile', element: <ProfilePage/>},
+            { path: 'forgotpassword', element: <ForgotPassword/>},
             { path: 'cart', element: <Cart/>},
             { path: 'products', element: <ProductPage/>},
         ]
