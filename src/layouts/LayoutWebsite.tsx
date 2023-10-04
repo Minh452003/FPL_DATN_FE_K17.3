@@ -56,7 +56,7 @@ const LayoutWebsite = () => {
           <div className={`mx-auto max-w-7xl md:p-0 pl-3  md:flex justify-between justify-items-center ${isMenuHidden ? 'hidden' : ''}`}>
             <ul className="md:flex font-bold sm:mx-3   text-base p-0 m-0 items-center">
               <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="#">Trang chủ</a></li>
-              <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="">Sản phẩm</a></li>
+              <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="products">Sản phẩm</a></li>
               <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="">Tin tức</a></li>
               <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="">Giới thiệu</a></li>
               <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="">Liên hệ</a></li>

@@ -5,8 +5,10 @@ import LayoutAdmin from "./layouts/LayoutAdmin";
 import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
 import AdminProductsPage from "./pages/admin/products/AdminProductsPage";
 import Cart from "./pages/view/Cart/Cart";
-import ProfilePage from "./pages/view/Profile";
-import ProductPage from "./pages/view/ProductPage";
+import ProfilePage from "./pages/view/Profile/Profile";
+import ProductPage from "./pages/view/ProductPage/ProductPage";
+import Voucher from "./pages/view/Profile/voucher";
+import Purchase from "./pages/view/Profile/purchase";
 
 export const router = createBrowserRouter([
     {
@@ -14,7 +16,10 @@ export const router = createBrowserRouter([
         element: < LayoutWebsite />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: 'profile', element: <ProfilePage/>},
+            { path: 'profile', element: <ProfilePage/>,children:[
+                {path:'purchase',element:<Purchase/>},
+                {path:'voucher',element:<Voucher/>}
+            ]},
             { path: 'cart', element: <Cart/>},
             { path: 'products', element: <ProductPage/>},
         ]
