@@ -1,7 +1,8 @@
 import { Image, Table, Button, } from 'antd';
 import { FaArrowRight,FaTrashCan } from "react-icons/fa6";
-import './Cart.css'
-const Cart = () => {
+import { Link, Outlet } from 'react-router-dom';
+import './CartPage.css'
+const CartPage = () => {
     const dataSource = [
         {
             key: '1',
@@ -75,6 +76,7 @@ const Cart = () => {
 
     ];
     return (
+        
         <div className='bg-gray-100'>
             <div className="flex items-center ">
                 <div className="float-left">Trang Chủ</div>
@@ -84,17 +86,19 @@ const Cart = () => {
             <h1 className='pt-10 pb-10'>Giỏ hàng của bạn</h1>
             <Table dataSource={dataSource} columns={columns} className='custom-table' />
             <div className='pt-20 pb-10'>
-                <button className="w-60 h-10  bg-slate-600 text-white font-bold pt-2"><h6>TIẾP TỤC MUA HÀNG</h6></button>
+                <button className="w-60 h-12  bg-slate-600 text-white font-bold ">TIẾP TỤC MUA HÀNG</button>
                 <span className='float-right font-bold'>Tổng tiền : <a href="" className='pl-4  ' style={{ textDecoration: 'none', color: '#FF0606' }}>5.400.000đ</a></span>
             </div>
             <div className='pb-20'>
-                <button className="w-60 h-10  bg-slate-600 text-white font-bold pt-2 float-right" style={{ background: "#FF7600" }}><h6>TIẾN HÀNH THANH TOÁN</h6></button>
+                <button className="w-60 h-12   bg-slate-600 text-white font-bold float-right "><Link  style={{ textDecoration: "none",color: "white" }} to="">TIẾN HÀNH THANH TOÁN</Link></button>
             </div>
-
+       
         </div>
     
-
+        
         )
+        
     }
+    
 
-    export default Cart
+    export default CartPage
