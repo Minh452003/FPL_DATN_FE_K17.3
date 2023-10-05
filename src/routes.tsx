@@ -5,7 +5,6 @@ import HomePage from "./pages/view/HomePage";
 import LayoutWebsite from "./layouts/LayoutWebsite";
 import LayoutAdmin from "./layouts/LayoutAdmin";
 import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
-import AdminProductsPage from "./pages/admin/products/AdminProductsPage";
 import News from "./pages/view/News/News";
 import CartPage from "./pages/view/Cart/CartPage";
 import PayPage from "./pages/view/Pay/PayPage";
@@ -14,6 +13,9 @@ import ProductPage from "./pages/view/ProductPage/ProductPage";
 import Voucher from "./pages/view/Profile/voucher";
 import Purchase from "./pages/view/Profile/purchase";
 import ForgotPassword from "./pages/view/ForgotPassword";
+import Productlist from "./pages/admin/products/Productlist";
+import Productadd from "./pages/admin/products/Productadd";
+import Productupdate from "./pages/admin/products/Productupdate";
 
 
 export const router = createBrowserRouter([
@@ -44,7 +46,10 @@ export const router = createBrowserRouter([
             { path: 'dashboard', element: <DashBoardPage /> },
             {
                 path: 'products', children: [
-                    { index: true, element: <AdminProductsPage /> },
+                    { index: true, element: <Productlist /> },
+                    { path:'add', element: <Productadd /> },
+                    { path:'edit/:id', element: <Productupdate /> },
+                   
                 ],
             },
 
