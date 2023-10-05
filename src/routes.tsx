@@ -16,6 +16,9 @@ import ForgotPassword from "./pages/view/ForgotPassword";
 import Productlist from "./pages/admin/products/Productlist";
 import Productadd from "./pages/admin/products/Productadd";
 import Productupdate from "./pages/admin/products/Productupdate";
+import Categorylist from "./pages/admin/category/Categorylist";
+import Categoryadd from "./pages/admin/category/Categoryadd";
+import Categoryupdate from "./pages/admin/category/Categoryupdate";
 
 
 export const router = createBrowserRouter([
@@ -50,6 +53,13 @@ export const router = createBrowserRouter([
                     { path:'add', element: <Productadd /> },
                     { path:'edit/:id', element: <Productupdate /> },
                    
+                ],
+            },
+            {
+                path: 'categorys', children: [
+                    { index: true, element: <Categorylist /> },
+                    { path:'add', element: <Categoryadd /> },
+                    { path:'edit/:id', element: <Categoryupdate /> },
                 ],
             },
 
