@@ -1,6 +1,6 @@
 const ForgotPassword = () => {
   return (
-    <div className=" container mx-auto bg-[url('https://res.cloudinary.com/dultzbjw2/image/upload/v1696264031/Bg-img/qwvwdbr2yr1i8baskc74.jpg')] bg-cover h-screen">
+    <div className=" mx-auto bg-[url('https://i.pinimg.com/564x/2f/cc/65/2fcc65edb0dfe0d942a3a1e77cce9718.jpg')] bg-cover h-screen">
         
       <div className="flex justify-center items-center h-screen">
         <div className=" p-8 rounded shadow-md max-w-sm w-full">
