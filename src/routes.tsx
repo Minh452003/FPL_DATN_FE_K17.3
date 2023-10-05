@@ -29,12 +29,13 @@ export const router = createBrowserRouter([
                 {path:'purchase',element:<Purchase/>},
                 {path:'voucher',element:<Voucher/>}
             ]},
-            { path: 'forgotpassword', element: <ForgotPassword/>},
+           
             { path: 'products', element: <ProductPage/>},
             { path: 'news', element: <News/>},
 
         ]
     },
+    { path: '/forgotpassword', element: <ForgotPassword/>},
     {
         path: '/admin',
         element: < LayoutAdmin />,
