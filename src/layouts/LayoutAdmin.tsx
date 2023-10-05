@@ -439,14 +439,15 @@ const LayoutAdmin = () => {
             </svg></button>
             </div>
           </div>
+          <main>
+        <Outlet />
+      </main>
           </div>
           
         </div>
         
       </aside>
-      <main>
-        <Outlet />
-      </main>
+     
     </div>
   );
 };
