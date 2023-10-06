@@ -14,6 +14,8 @@ import ProductPage from "./pages/view/ProductPage/ProductPage";
 import Voucher from "./pages/view/Profile/voucher";
 import Purchase from "./pages/view/Profile/purchase";
 import ForgotPassword from "./pages/view/ForgotPassword";
+import Signup from "./pages/view/Auth/Signup";
+
 
 export const router = createBrowserRouter([
     {
@@ -21,17 +23,27 @@ export const router = createBrowserRouter([
         element: < LayoutWebsite />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: 'cart', element: <CartPage/>},
-            { path: 'pay', element: <PayPage/> },
+            { path: 'cart', element: <CartPage /> },
+            { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
-            { path: 'profile', element: <ProfilePage/>,children:[
-                {path:'purchase',element:<Purchase/>},
-                {path:'voucher',element:<Voucher/>}
-            ]},
-            { path: 'forgotpassword', element: <ForgotPassword/>},
-            { path: 'products', element: <ProductPage/>},
-        ]
+            {
+                path: 'profile', element: <ProfilePage />, children: [
+                    { path: 'purchase', element: <Purchase /> },
+                    { path: 'voucher', element: <Voucher /> }
+                ]
+            },
+            { path: 'forgotpassword', element: <ForgotPassword /> },
+
+
+
+        ],
+
+
     },
+    { path: 'signup', element: <Signup /> },
+
+
+
     {
         path: '/admin',
         element: < LayoutAdmin />,
