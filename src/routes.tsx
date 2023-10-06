@@ -13,6 +13,7 @@ import ProductPage from "./pages/view/ProductPage/ProductPage";
 import Voucher from "./pages/view/Profile/voucher";
 import Purchase from "./pages/view/Profile/purchase";
 import ForgotPassword from "./pages/view/ForgotPassword";
+import Signup from "./pages/view/Auth/Signup";
 import Productlist from "./pages/admin/products/Productlist";
 import Productadd from "./pages/admin/products/Productadd";
 import Productupdate from "./pages/admin/products/Productupdate";
@@ -21,26 +22,28 @@ import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
 
 
+
 export const router = createBrowserRouter([
     {
         path: '/',
         element: < LayoutWebsite />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: 'cart', element: <CartPage/>},
-            { path: 'pay', element: <PayPage/> },
+            { path: 'cart', element: <CartPage /> },
+            { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
+        ],
+    },
             { path: 'profile', element: <ProfilePage/>,children:[
                 {path:'purchase',element:<Purchase/>},
                 {path:'voucher',element:<Voucher/>}
-            ]},
-           
+            ]},   
             { path: 'products', element: <ProductPage/>},
             { path: 'news', element: <News/>},
-
         ]
     },
     { path: '/forgotpassword', element: <ForgotPassword/>},
+     { path: 'signup', element: <Signup /> },
     {
         path: '/admin',
         element: < LayoutAdmin />,
