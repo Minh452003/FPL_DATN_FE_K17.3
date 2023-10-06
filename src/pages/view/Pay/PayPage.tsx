@@ -1,5 +1,5 @@
 import { FaArrowRight, FaMoneyBill1,FaChevronLeft } from "react-icons/fa6"
-import { Button, Form, Input, Select, Space } from 'antd';
+import {  Form, Input, Select, Space } from 'antd';
 import { Option } from "antd/es/mentions";
 import { Link } from "react-router-dom";
 const PayPage = () => {

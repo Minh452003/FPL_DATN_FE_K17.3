@@ -11,7 +11,8 @@ import ProfilePage from "./pages/view/Profile/Profile";
 import ProductPage from "./pages/view/ProductPage/ProductPage";
 import Voucher from "./pages/view/Profile/voucher";
 import Purchase from "./pages/view/Profile/purchase";
-import ForgotPassword from "./pages/view/Sign/ForgotPassword";
+
+import Signup from "./pages/view/Auth/Signup";
 import Productlist from "./pages/admin/products/Productlist";
 import Productadd from "./pages/admin/products/Productadd";
 import Productupdate from "./pages/admin/products/Productupdate";
@@ -19,6 +20,8 @@ import Categorylist from "./pages/admin/category/Categorylist";
 import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import HomePage from "./pages/view/HomePage/HomePage";
+import ForgotPassword from "./pages/view/Sign/ForgotPassword";
+
 
 
 export const router = createBrowserRouter([
@@ -36,13 +39,12 @@ export const router = createBrowserRouter([
                     { path: 'voucher', element: <Voucher /> }
                 ]
             },
-
             { path: 'products', element: <ProductPage /> },
             { path: 'news', element: <News /> },
-
+            { path: 'forgotpassword', element: <ForgotPassword /> },
+            { path: 'signup', element: <Signup /> },
         ]
     },
-    { path: '/forgotpassword', element: <ForgotPassword /> },
     {
         path: '/admin',
         element: < LayoutAdmin />,
