@@ -21,7 +21,7 @@ const Voucher = () => {
               <div className="">Giảm 10%</div>
             </div>
             <div>Giảm tối đa 400k</div>
-            <div className="mt-3 text-xs ">HSD 10.10.2023</div>
+            <div className="mt-3 text-xs font-light">HSD 10.10.2023</div>
             <a className="text-red-400 cursor-pointer no-underline hover:font-semibold" >Dùng ngay </a>
           </div>
         </div>
