@@ -19,6 +19,7 @@ import Productupdate from "./pages/admin/products/Productupdate";
 import Categorylist from "./pages/admin/category/Categorylist";
 import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
+import Order from "./pages/view/Cart/Order";
 
 
 export const router = createBrowserRouter([
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
         children: [
             { index: true, element: <HomePage /> },
             { path: 'cart', element: <CartPage/>},
+
             { path: 'pay', element: <PayPage/> },
             { path: 'products', element: <ProductPage /> },
             { path: 'profile', element: <ProfilePage/>,children:[
@@ -52,6 +54,12 @@ export const router = createBrowserRouter([
                     { index: true, element: <Productlist /> },
                     { path:'add', element: <Productadd /> },
                     { path:'edit/:id', element: <Productupdate /> },
+                   
+                ],
+            },
+            {
+                path: 'order', children: [
+                    { index: true, element: <Order /> },
                    
                 ],
             },
