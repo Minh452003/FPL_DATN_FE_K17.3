@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 
-const ProfilePage = () => {
+const UserPage = () => {
   return (
     <div className="flex justify-between w-[100%] gap-1">
       <div className="w-[300px] flex flex-col justify-center border-e bg-white">
@@ -67,7 +67,7 @@ const ProfilePage = () => {
                 <ul className="mt-2 space-y-1 px-4">
                   <li>
                     <a
-                      href=""
+                      href="/user/profile"
                       className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                     >
                       Hồ sơ
@@ -105,7 +105,7 @@ const ProfilePage = () => {
             <li>
               
               <Link
-                to="/profile/purchase"
+                to="/user/purchase"
                 className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               >
                 Đơn mua
@@ -122,7 +122,7 @@ const ProfilePage = () => {
             </li>
             <li>
               <Link
-                to="/profile/voucher"
+                to="/user/voucher"
                 className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               >
                 Kho voucher
@@ -136,4 +136,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default UserPage;
