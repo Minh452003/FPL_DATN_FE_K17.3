@@ -1,5 +1,4 @@
 
-
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import LayoutWebsite from "./layouts/LayoutWebsite";
 import LayoutAdmin from "./layouts/LayoutAdmin";
@@ -7,10 +6,8 @@ import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
 import News from "./pages/view/News/News";
 import CartPage from "./pages/view/Cart/CartPage";
 import PayPage from "./pages/view/Pay/PayPage";
-import ProfilePage from "./pages/view/Profile/Profile";
 import ProductPage from "./pages/view/ProductPage/ProductPage";
-import Voucher from "./pages/view/Profile/voucher";
-import Purchase from "./pages/view/Profile/purchase";
+
 
 import Signup from "./pages/view/Auth/Signup";
 import Productlist from "./pages/admin/products/Productlist";
@@ -22,6 +19,11 @@ import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import HomePage from "./pages/view/HomePage/HomePage";
 import ForgotPassword from "./pages/view/Sign/ForgotPassword";
 import Login from "./pages/view/Auth/Login";
+import UserPage from "./pages/view/User/User";
+import Profile from "./pages/view/User/Account/Profile";
+import AddressPage from "./pages/view/User/Account/address";
+import Purchase from "./pages/view/User/purchase";
+import Voucher from "./pages/view/User/voucher";
 
 
 
@@ -35,12 +37,12 @@ export const router = createBrowserRouter([
             { path: 'cart', element: <CartPage /> },
             { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
-            {
-                path: 'profile', element: <ProfilePage />, children: [
-                    { path: 'purchase', element: <Purchase /> },
-                    { path: 'voucher', element: <Voucher /> }
-                ]
-            },
+            { path: 'user', element: <UserPage/>,children:[
+                {path:'purchase',element:<Purchase/>},
+                {path:'voucher',element:<Voucher/>},
+                {path:'profile',element:<Profile/>},
+                {path:"address",element:<AddressPage/>}
+            ]},
             { path: 'products', element: <ProductPage /> },
             { path: 'news', element: <News /> },
             { path: 'forgotpassword', element: <ForgotPassword /> },
