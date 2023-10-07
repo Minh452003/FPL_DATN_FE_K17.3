@@ -15,6 +15,7 @@ import Purchase from "./pages/view/User/purchase";
 import ForgotPassword from "./pages/view/ForgotPassword";
 import UserPage from "./pages/view/User/User";
 import Profile from "./pages/view/User/Account/Profile";
+import AddressPage from "./pages/view/User/Account/address";
 
 
 export const router = createBrowserRouter([
@@ -29,7 +30,8 @@ export const router = createBrowserRouter([
             { path: 'user', element: <UserPage/>,children:[
                 {path:'purchase',element:<Purchase/>},
                 {path:'voucher',element:<Voucher/>},
-                {path:'profile',element:<Profile/>}
+                {path:'profile',element:<Profile/>},
+                {path:"address",element:<AddressPage/>}
             ]},
             { path: 'forgotpassword', element: <ForgotPassword/>},
             { path: 'products', element: <ProductPage/>},
