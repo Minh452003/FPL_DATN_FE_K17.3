@@ -21,6 +21,8 @@ import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import HomePage from "./pages/view/HomePage/HomePage";
 import ForgotPassword from "./pages/view/Sign/ForgotPassword";
+import Login from "./pages/view/Auth/Login";
+
 
 
 
@@ -42,9 +44,11 @@ export const router = createBrowserRouter([
             { path: 'products', element: <ProductPage /> },
             { path: 'news', element: <News /> },
             { path: 'forgotpassword', element: <ForgotPassword /> },
-            { path: 'signup', element: <Signup /> },
+
         ]
     },
+    { path: 'signup', element: <Signup /> },
+    { path: 'login', element: <Login /> },
     {
         path: '/admin',
         element: < LayoutAdmin />,
