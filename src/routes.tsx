@@ -23,6 +23,7 @@ import Profile from "./pages/view/User/Account/Profile";
 import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
 import Voucher from "./pages/view/User/voucher";
+import Userlist from "./pages/admin/user/Userlist";
 
 export const router = createBrowserRouter([
     {
@@ -71,7 +72,12 @@ export const router = createBrowserRouter([
                     { path: 'edit/:id', element: <Categoryupdate /> },
                 ],
             },
-
+            {
+                path: 'users', children: [
+                    { index: true, element: <Userlist /> },
+                  
+                ],
+            },
         ]
     }
 ])
