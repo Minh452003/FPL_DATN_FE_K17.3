@@ -7,8 +7,6 @@ import News from "./pages/view/News/News";
 import CartPage from "./pages/view/Cart/CartPage";
 import PayPage from "./pages/view/Pay/PayPage";
 import ProductPage from "./pages/view/ProductPage/ProductPage";
-
-
 import Signup from "./pages/view/Auth/Signup";
 import Productlist from "./pages/admin/products/Productlist";
 import Productadd from "./pages/admin/products/Productadd";
@@ -16,6 +14,7 @@ import Productupdate from "./pages/admin/products/Productupdate";
 import Categorylist from "./pages/admin/category/Categorylist";
 import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
+import Order from "./pages/view/Cart/Order";
 import HomePage from "./pages/view/HomePage/HomePage";
 import ForgotPassword from "./pages/view/Sign/ForgotPassword";
 import Login from "./pages/view/Auth/Login";
@@ -24,9 +23,6 @@ import Profile from "./pages/view/User/Account/Profile";
 import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
 import Voucher from "./pages/view/User/voucher";
-
-
-
 
 export const router = createBrowserRouter([
     {
@@ -46,7 +42,11 @@ export const router = createBrowserRouter([
             { path: 'products', element: <ProductPage /> },
             { path: 'news', element: <News /> },
             { path: 'forgotpassword', element: <ForgotPassword /> },
-
+            {
+                path: 'order', children: [
+                    { index: true, element: <Order /> },
+                ],
+            },
         ]
     },
     { path: 'signup', element: <Signup /> },
@@ -62,7 +62,6 @@ export const router = createBrowserRouter([
                     { index: true, element: <Productlist /> },
                     { path: 'add', element: <Productadd /> },
                     { path: 'edit/:id', element: <Productupdate /> },
-
                 ],
             },
             {
