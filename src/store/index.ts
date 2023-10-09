@@ -1,4 +1,6 @@
+
 import categoryApi, { categoryReducer } from "@/api/categoryApi";
+import brandApi, {brandReducer} from "@/api/brandApi";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     persistStore,
@@ -22,11 +24,13 @@ const persistConfig = {
 const rootReducer = combineReducers({
     // Các reducers
     category: categoryReducer,
+    brands: brandReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
     // Các middlewares
     categoryApi.middleware,
+    brandApi.middleware,
 ];
 
 export const store = configureStore({
