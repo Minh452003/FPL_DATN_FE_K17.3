@@ -1,6 +1,6 @@
-import { Button, Form} from 'antd';
+import { Button, Form } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
-import { Upload,  } from 'antd';
+import { Upload } from 'antd';
 
 const Categoryadd = () => {
     return (
@@ -20,10 +20,10 @@ const Categoryadd = () => {
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputPassword1" className="form-label">Ảnh</label>
                                     <Form.Item id="images" name="product_images" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}>
-                                         <Upload action="https://tclq6w-8080.csb.app/api/images/upload" listType="picture" name='images' multiple>
-                                         <Button icon={<UploadOutlined />}>Choose images</Button>
-                                      </Upload>
-                                     </Form.Item>
+                                        <Upload action="https://tclq6w-8080.csb.app/api/images/upload" listType="picture" name='images' multiple>
+                                            <Button icon={<UploadOutlined />}>Choose images</Button>
+                                        </Upload>
+                                    </Form.Item>
                                     <div id="emailHelp" className="form-text text-danger"></div>
                                 </div>
                             </div>

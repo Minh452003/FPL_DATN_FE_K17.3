@@ -1,6 +1,6 @@
-import { Button, Form} from 'antd';
+import { Button, Form } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
-import { Upload,  } from 'antd';
+import { Upload, } from 'antd';
 const Productadd = () => {
     return (
         <div className="container-fluid mb-7">
@@ -17,12 +17,12 @@ const Productadd = () => {
                                     <div id="emailHelp" className="form-text text-danger"></div>
                                 </div>
                                 <div className="mb-3">
-                                    
+
                                     <Form.Item id="images" name="product_images" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}>
-                                         <Upload action="https://tclq6w-8080.csb.app/api/images/upload" listType="picture" name='images' multiple>
-                                         <Button icon={<UploadOutlined />}>Choose images</Button>
-                                      </Upload>
-                                     </Form.Item>
+                                        <Upload action="https://tclq6w-8080.csb.app/api/images/upload" listType="picture" name='images' multiple>
+                                            <Button icon={<UploadOutlined />}>Choose images</Button>
+                                        </Upload>
+                                    </Form.Item>
                                     <div id="emailHelp" className="form-text text-danger"></div>
                                 </div>
 
@@ -45,7 +45,7 @@ const Productadd = () => {
                                     <select id="selectMenu" name="group" className="form-select">
                                         <option disabled selected>[Lựa chọn danh mục]</option>
                                         <option value="Hệ thống">Phòng khách</option>
-                                         <option value="Quản lí">Phòng ngủ</option>
+                                        <option value="Quản lí">Phòng ngủ</option>
                                         <option value="more">Phòng tắm</option>
                                     </select>
                                     <div id="emailHelp" className="form-text text-danger"></div>
@@ -55,12 +55,12 @@ const Productadd = () => {
                                     <select id="selectMenu" name="group" className="form-select">
                                         <option disabled selected>[Lựa chọn thương hiệu]</option>
                                         <option value="Hệ thống">Phòng khách</option>
-                                         <option value="Quản lí">Phòng ngủ</option>
+                                        <option value="Quản lí">Phòng ngủ</option>
                                         <option value="more">Phòng tắm</option>
                                     </select>
                                     <div id="emailHelp" className="form-text text-danger"></div>
                                 </div>
-                                <div className="row  ">
+                                <div className="row ">
                                     <div className="mb-3 col-6">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Số lượng</label>
                                         <input type="number" name="tel" className="form-control"
@@ -68,16 +68,16 @@ const Productadd = () => {
                                         <div id="emailHelp" className="form-text text-danger"></div>
                                     </div>
                                     <div className="mb-3 col-6">
-                                    <label htmlFor="selectMenu" className="form-label">Màu</label>
-                                    <select id="selectMenu" name="group" className="form-select ">
-                                        <option disabled selected>[Lựa chọn màu]</option>
-                                        <option value="Hệ thống">Xanh</option>
-                                         <option value="Quản lí">Đỏ</option>
-                                        <option value="more">Đen</option>
-                                    </select>
-                                    <div id="emailHelp" className="form-text text-danger"></div>
-                                   </div>
-                              </div>
+                                        <label htmlFor="selectMenu" className="form-label">Màu</label>
+                                        <select id="selectMenu" name="group" className="form-select ">
+                                            <option disabled selected>[Lựa chọn màu]</option>
+                                            <option value="Hệ thống">Xanh</option>
+                                            <option value="Quản lí">Đỏ</option>
+                                            <option value="more">Đen</option>
+                                        </select>
+                                        <div id="emailHelp" className="form-text text-danger"></div>
+                                    </div>
+                                </div>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputPassword1" className="form-label">Mô tả</label>
                                     <textarea name="" id="" cols={30} className="w-100 form-control p-2"

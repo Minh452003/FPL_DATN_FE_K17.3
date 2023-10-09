@@ -1,453 +1,138 @@
-import { Outlet } from "react-router-dom";
-import {FaUser} from 'react-icons/fa'
-import {AiFillHome,AiOutlineAreaChart} from 'react-icons/ai'
-import {PiNotePencilFill} from 'react-icons/pi'
-import {BiSolidReport} from 'react-icons/bi'
-import {TiThMenu} from 'react-icons/ti'
+import { useState, useEffect } from 'react';
+import { Link, Outlet } from 'react-router-dom';
+import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
+import { TbBrandProducthunt } from 'react-icons/tb';
+import { MdCategory } from 'react-icons/md';
+import { AiFillMessage, AiOutlineComment, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
+import { RiLogoutCircleLine } from 'react-icons/ri';
+import '@/layouts/LayoutAdmin.css'
 const LayoutAdmin = () => {
+  const [isSidebarHidden, setSidebarHidden] = useState<boolean>(false);
+
+  const toggleSidebar = () => {
+    setSidebarHidden(prevState => !prevState);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 576) {
+        setSidebarHidden(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  useEffect(() => {
+    const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li .a');
+
+    allSideMenu.forEach(item => {
+      const li = item.parentElement;
+
+      item.addEventListener('click', function () {
+        allSideMenu.forEach(i => {
+          i.parentElement?.classList.remove('active');
+        })
+        li?.classList.add('active');
+      })
+    });
+    const searchButton = document.querySelector('#content nav form .form-input button');
+    const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
+    const searchForm = document.querySelector('#content nav form');
+
+    searchButton?.addEventListener('click', function (e) {
+      if (window.innerWidth < 576) {
+        e.preventDefault();
+        searchForm?.classList.toggle('show');
+        if (searchForm?.classList.contains('show')) {
+          searchButtonIcon?.classList.replace('bx-search', 'bx-x');
+        } else {
+          searchButtonIcon?.classList.replace('bx-x', 'bx-search');
+        }
+      }
+    })
+  }, [])
+
   return (
     <div>
-      <aside>
-        <div className="flex justify-between gap-1">
-          <div className="w-[260px] flex flex-col border-e bg-white">
-          <div className="grid grid-row-2 pt-2">
-              <div className="flex justify-center">
-                <img
-                  alt="avatar"
-                  src="https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/1200px-Man_Utd_FC_.svg.png"
-                  className="w-10 h-10 rounded-full"
-                />
-                <div className="flex justify-center">
-                  <span className="ml-2 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                    Nội Thất Faha
-                  </span>
-                </div>
-              </div>
+      <section id="sidebar" className={isSidebarHidden ? 'hide' : ''}>
+        <Link className="brand" to={'/'}>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ79flUI0JpbQ8CRNNHw13F5o6W0nfs6ZXCvw&usqp=CAU" className="img" />
+          <span className="text">Admin</span>
+        </Link>
+        <ul className="side-menu top">
+          <li className="active">
+            <Link to={'dashboard'} className="a">
+              <span className="icon"><BsFillHouseDashFill /></span>
+              <span className="text1">Dashboard</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'products'} className="a">
+              <span className="icon"><TbBrandProducthunt /></span>
+              <span className="text1">Products</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'categories'} className="a">
+              <span className="icon"><MdCategory /></span>
+              <span className="text1">Categories</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'users'} className="a">
+              <span className="icon"><AiOutlineUser /></span>
+              <span className="text1">Users</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'comments'} className="a">
+              <span className="icon"><AiOutlineComment /></span>
+              <span className="text1">Comments</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'orders'} className="a">
+              <span className="icon"><AiOutlineShoppingCart /></span>
+              <span className="text1">Carts</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="#" className="logout">
+              <span className="icon"><RiLogoutCircleLine /></span>
+              <span className="text1" onClick={() => ''}>Logout</span>
+            </Link>
+          </li>
+        </ul>
+        {/* */}
+      </section>
+
+      <section id="content">
+        <nav>
+          <span className="menu" onClick={toggleSidebar}><AiOutlineMenu /></span>
+          <Link to="#" className="nav-link"></Link>
+          <form >
+            <div className="form-input">
+              <input type="search" placeholder="Search..." />
+              <button type="submit" className="search-btn"><BsSearch /></button>
             </div>
-            
-            <div className="grid grid-row-2 pt-3">
-              <div className="flex justify-center">
-                <img
-                  alt="avatar"
-                  src="https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/1200px-Man_Utd_FC_.svg.png"
-                  className="w-14 h-14 rounded-full"
-                />
-                <div className="">
-                  <span className="pl-2 self-center text-1xl font-semibold whitespace-nowrap dark:text-white ">
-                    Well come,
-                  </span>
+          </form>
 
-                  <div className="flex pl-2 self-center text-1xl font-semibold whitespace-nowrap dark:text-white">
-                    <a href="" className="no-underline text-blue">
-                     Thi
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className=" mt-10 flex h-screen flex-col justify-between ">
-              <ul className="">
-              
-              <li>
-                  <details className="group [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center rounded-lg px-2 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                    <div className="flex flex-row">
-                        <a href="" className="text-black pr-1"><AiFillHome/></a>
-                      </div>
-                      <span className="text-sm font-medium w-50">
-                        {" "}
-                        Home{" "}
-                      </span>
-
-                      <span className="pl-6 shrink-0 transition duration-300 group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </summary>
-
-                    <ul className="mt-2 space-y-1 px-4">
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Hồ sơ
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Ngân hàng
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Địa chỉ
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Đổi mật khẩu
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
-                </li>
-
-                <li>
-                  <details className="group [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center  rounded-lg px-2 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                    <div className="flex flex-row">
-                        <a href="" className="text-black pr-1"><PiNotePencilFill/></a>
-                      </div>
-                      <span className="text-sm font-medium w-50">
-                        {" "}
-                        Quản lý{" "}
-                      </span>
-
-                      <span className="pl-6 shrink-0 transition duration-300 group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </summary>
-
-                    <ul className="mt-2 space-y-1 px-4">
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Hồ sơ
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Ngân hàng
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Địa chỉ
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Đổi mật khẩu
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
-                </li>
-
-                <li>
-                  <details className="group [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center rounded-lg px-2 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                    <div className="flex flex-row">
-                        <a href="" className="text-black pr-1"><BiSolidReport/></a>
-                      </div>
-                      <span className="text-sm font-medium w-50">
-                        {" "}
-                            Báo cáo{" "}
-                      </span>
-
-                      <span className="pl-6 shrink-0 transition duration-300 group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </summary>
-
-                    <ul className="mt-2 space-y-1 px-4">
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Hồ sơ
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Ngân hàng
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Địa chỉ
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Đổi mật khẩu
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
-                </li>
-
-                <li>
-                  <details className="group [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center rounded-lg px-2 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                    <div className="flex flex-row">
-                        <a href="" className="text-black pr-1"><AiOutlineAreaChart/></a>
-                      </div>
-                      <span className="text-sm font-medium w-50">
-                        {" "}
-                        Thống kê{" "}
-                      </span>
-
-                      <span className="pl-6 shrink-0 transition duration-300 group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </summary>
-
-                    <ul className="mt-2 space-y-1 px-4">
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Hồ sơ
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Ngân hàng
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Địa chỉ
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Đổi mật khẩu
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
-                </li>
-
-                <li>
-                  <details className="group [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center rounded-lg px-2 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      <div className="flex flex-row">
-                        <a href="" className="text-black pr-1"><FaUser/></a>
-                      </div>
-                      <span className="text-sm font-medium w-50">
-                        {" "}
-                        Tài khoản{" "}
-                      </span>
-
-                      <span className="pl-6 shrink-0 transition duration-300 group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                      
-                    </summary>
-
-                    <ul className="mt-2 space-y-1 px-4">
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Hồ sơ
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Ngân hàng
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Địa chỉ
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href=""
-                          className="block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Đổi mật khẩu
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
-                </li>
-
-              </ul>
-            </div>
-          </div>
-          <div className="flex-1">
-            <div className=" w-full bg-gray-300 flex justify-between md:h-auto  md:w-auto"id="">
-                <div className="py-2.5 px-2">
-                <TiThMenu size={25}/>
-                </div>
-                 <div className="flex flex-row justify-end py-1">
-              <div className="">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsjWXF1H-_DeLCzI8hauXW2rH6ACG2XDPQkA&usqp=CAU"
-                  alt=""
-                  className="w-10 h-10"
-                />
-               </div>
-                  <details className="group [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-center rounded-lg px-2 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      <span className="text-sm font-medium ">
-                        {" "}
-                        Thi nguyen{" "}
-                      </span>
-
-                      <span className="pl-1 shrink-0 transition duration-300 group-open:-rotate-180">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    </summary>
-
-                    <ul className="mt-2 space-y-1 px-4">
-                      <li>
-                        <a
-                          href=""
-                          className=" block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          Đăng xuất
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
-            </div>
-            </div>
-            <div className=" flex justify-between w-auto h-9 px-2 my-2 border-e bg-white">
-                <div className="py-1">
-            <span  className="pl-4"  />Danh mục sản phẩm
-            </div>
-            <div className="flex flex-row">
-                <input type="text" placeholder="Tên sản phẩm" className="my-2" />
-            <button type="submit" className="pr-4"> <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg></button>
-            </div>
-          </div>
-          <main>
-        <Outlet />
-      </main>
-          </div>
-          
-        </div>
-        
-      </aside>
-     
+          <input type="checkbox" id="switch-mode" hidden />
+          <label htmlFor="switch-mode" className="switch-mode"></label>
+          <Link to="#" className="notification">
+            <AiFillMessage />
+            <span className="num">8</span>
+          </Link>
+          <Link to="#" className="profile">
+            <img src="https://i.pinimg.com/170x/6b/62/20/6b6220e809e48ee2226f725edfcbc957.jpg" alt="" />
+          </Link>
+        </nav>
+        <main>
+          <Outlet />
+        </main>
+      </section>
     </div>
   );
 };

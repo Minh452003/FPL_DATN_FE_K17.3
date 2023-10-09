@@ -1,25 +1,29 @@
 
-
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import HomePage from "./pages/view/HomePage";
 import LayoutWebsite from "./layouts/LayoutWebsite";
 import LayoutAdmin from "./layouts/LayoutAdmin";
 import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
 import News from "./pages/view/News/News";
 import CartPage from "./pages/view/Cart/CartPage";
 import PayPage from "./pages/view/Pay/PayPage";
-import ProfilePage from "./pages/view/Profile/Profile";
 import ProductPage from "./pages/view/ProductPage/ProductPage";
-import Voucher from "./pages/view/Profile/voucher";
-import Purchase from "./pages/view/Profile/purchase";
-import ForgotPassword from "./pages/view/ForgotPassword";
+import Signup from "./pages/view/Auth/Signup";
 import Productlist from "./pages/admin/products/Productlist";
 import Productadd from "./pages/admin/products/Productadd";
 import Productupdate from "./pages/admin/products/Productupdate";
 import Categorylist from "./pages/admin/category/Categorylist";
 import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
-
+import Order from "./pages/view/Cart/Order";
+import HomePage from "./pages/view/HomePage/HomePage";
+import ForgotPassword from "./pages/view/Sign/ForgotPassword";
+import Login from "./pages/view/Auth/Login";
+import UserPage from "./pages/view/User/User";
+import Profile from "./pages/view/User/Account/Profile";
+import AddressPage from "./pages/view/User/Account/address";
+import Purchase from "./pages/view/User/purchase";
+import Voucher from "./pages/view/User/voucher";
+import Userlist from "./pages/admin/user/Userlist";
 
 export const router = createBrowserRouter([
     {
@@ -27,21 +31,27 @@ export const router = createBrowserRouter([
         element: < LayoutWebsite />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: 'cart', element: <CartPage/>},
-            { path: 'pay', element: <PayPage/> },
-            
+            { path: 'cart', element: <CartPage /> },
+            { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
-            { path: 'profile', element: <ProfilePage/>,children:[
+            { path: 'user', element: <UserPage/>,children:[
                 {path:'purchase',element:<Purchase/>},
-                {path:'voucher',element:<Voucher/>}
+                {path:'voucher',element:<Voucher/>},
+                {path:'profile',element:<Profile/>},
+                {path:"address",element:<AddressPage/>}
             ]},
-           
-            { path: 'products', element: <ProductPage/>},
-            { path: 'news', element: <News/>},
-
+            { path: 'products', element: <ProductPage /> },
+            { path: 'news', element: <News /> },
+            { path: 'forgotpassword', element: <ForgotPassword /> },
+            {
+                path: 'order', children: [
+                    { index: true, element: <Order /> },
+                ],
+            },
         ]
     },
-    { path: '/forgotpassword', element: <ForgotPassword/>},
+    { path: 'signup', element: <Signup /> },
+    { path: 'login', element: <Login /> },
     {
         path: '/admin',
         element: < LayoutAdmin />,
@@ -51,19 +61,23 @@ export const router = createBrowserRouter([
             {
                 path: 'products', children: [
                     { index: true, element: <Productlist /> },
-                    { path:'add', element: <Productadd /> },
-                    { path:'edit/:id', element: <Productupdate /> },
-                   
+                    { path: 'add', element: <Productadd /> },
+                    { path: 'edit/:id', element: <Productupdate /> },
                 ],
             },
             {
-                path: 'categorys', children: [
+                path: 'categories', children: [
                     { index: true, element: <Categorylist /> },
-                    { path:'add', element: <Categoryadd /> },
-                    { path:'edit/:id', element: <Categoryupdate /> },
+                    { path: 'add', element: <Categoryadd /> },
+                    { path: 'edit/:id', element: <Categoryupdate /> },
                 ],
             },
-
+            {
+                path: 'users', children: [
+                    { index: true, element: <Userlist /> },
+                  
+                ],
+            },
         ]
     }
 ])
