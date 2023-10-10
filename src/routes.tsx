@@ -15,7 +15,6 @@ import Categorylist from "./pages/admin/category/Categorylist";
 import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import Order from "./pages/view/Cart/Order";
-import HomePage from "./pages/view/HomePage/HomePage";
 import ForgotPassword from "./pages/view/Sign/ForgotPassword";
 import Login from "./pages/view/Auth/Login";
 import UserPage from "./pages/view/User/User";
@@ -24,6 +23,8 @@ import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
 import Voucher from "./pages/view/User/voucher";
 import Userlist from "./pages/admin/user/Userlist";
+import HomePage from "./pages/view/Home/HomePage";
+import Product_Detail from "./pages/view/Product_Detail/Product_Detail";
 
 export const router = createBrowserRouter([
     {
@@ -34,6 +35,8 @@ export const router = createBrowserRouter([
             { path: 'cart', element: <CartPage /> },
             { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
+            {path: 'products/:idProduct', element: <Product_Detail />},
+
             { path: 'user', element: <UserPage/>,children:[
                 {path:'purchase',element:<Purchase/>},
                 {path:'voucher',element:<Voucher/>},
