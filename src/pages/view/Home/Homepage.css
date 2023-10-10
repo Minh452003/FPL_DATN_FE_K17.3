@@ -178,6 +178,8 @@ img {
 }
 .sock_slide.slick-slider {
     margin-top: 22px;
+    margin-left: 2px;
+    margin-right: -14px;
 }
 .slick-slider {
   position: relative;
@@ -1071,7 +1073,7 @@ h3 {
 .special-price .price {
     font-size: 15px;
     font-weight: 600;
-    margin-left: -133px;
+    margin-left: -310px;
 }
 .price {
     color: #eb0303;
@@ -1085,7 +1087,7 @@ h3 {
     font-weight: normal;
     text-decoration: line-through;
     margin-right: 67px;
-    margin-left: -193px;
+    margin-left: -372px;
 }
 p {
     margin: 0 0 10px;
@@ -1107,7 +1109,7 @@ p {
 .regular-price .price {
     font-weight: 600;
     font-size: 15px;
-    margin-left: -205px;
+    margin-left: -382px;
 }
 .container2 {
     display: flex;
@@ -1350,4 +1352,12 @@ p {
     text-decoration: none;
     background: #ff7600;
     color: #fff;
+}
+.swiper-button-prev {
+    margin-top: 24px;
+    margin-left: -10px;
+}
+.swiper-button-next {
+    margin-top: 24px;
+    margin-left: -10px;
 }
