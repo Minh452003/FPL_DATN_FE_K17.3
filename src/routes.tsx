@@ -1,7 +1,7 @@
 
 
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import HomePage from "./pages/view/HomePage";
+import HomePage from "./pages/view/Home/HomePage";
 import LayoutWebsite from "./layouts/LayoutWebsite";
 import LayoutAdmin from "./layouts/LayoutAdmin";
 import DashBoardPage from "./pages/admin/dashboard/DashBoardPage";
@@ -14,6 +14,8 @@ import ProductPage from "./pages/view/ProductPage/ProductPage";
 import Voucher from "./pages/view/Profile/voucher";
 import Purchase from "./pages/view/Profile/purchase";
 import ForgotPassword from "./pages/view/ForgotPassword";
+import Product_Detail from "./pages/view/Product_Detail/Product_Detail";
+
 
 export const router = createBrowserRouter([
     {
@@ -24,6 +26,7 @@ export const router = createBrowserRouter([
             { path: 'cart', element: <CartPage/>},
             { path: 'pay', element: <PayPage/> },
             { path: 'products', element: <ProductPage /> },
+            {path: 'products/:idProduct', element: <Product_Detail />},
             { path: 'profile', element: <ProfilePage/>,children:[
                 {path:'purchase',element:<Purchase/>},
                 {path:'voucher',element:<Voucher/>}
