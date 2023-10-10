@@ -13,6 +13,7 @@ import {
     REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import productApi, { productReducer } from "@/api/productApi";
 
 
 const persistConfig = {
@@ -23,12 +24,14 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
     // Các reducers
+    product: productReducer,
     category: categoryReducer,
     brands: brandReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
     // Các middlewares
+    productApi.middleware,
     categoryApi.middleware,
     brandApi.middleware,
 ];
