@@ -24,6 +24,7 @@ import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
 import Voucher from "./pages/view/User/voucher";
 import Userlist from "./pages/admin/user/Userlist";
+import ContactPage from "./pages/view/contact/contactPage";
 
 export const router = createBrowserRouter([
     {
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
                     { index: true, element: <Order /> },
                 ],
             },
+            { path: 'contact', element: <ContactPage/>}
         ]
     },
     { path: 'signup', element: <Signup /> },
