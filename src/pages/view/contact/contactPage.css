@@ -1,0 +1,13 @@
+.centered-form {
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+}
+
+.custom-iframe {
+    border: 2px solid #ccc;
+    /* Đặt viền và màu sắc khung */
+    border-radius: 5px;
+    /* Đặt góc bo tròn cho khung */
+
+}

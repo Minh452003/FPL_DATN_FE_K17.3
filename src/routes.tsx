@@ -23,6 +23,7 @@ import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
 import Voucher from "./pages/view/User/voucher";
 import Userlist from "./pages/admin/user/Userlist";
+import ContactPage from "./pages/view/contact/contactPage";
 import HomePage from "./pages/view/Home/HomePage";
 import Product_Detail from "./pages/view/Product_Detail/Product_Detail";
 
@@ -51,6 +52,7 @@ export const router = createBrowserRouter([
                     { index: true, element: <Order /> },
                 ],
             },
+            { path: 'contact', element: <ContactPage/>}
         ]
     },
     { path: 'signup', element: <Signup /> },
