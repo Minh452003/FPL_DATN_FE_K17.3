@@ -189,12 +189,17 @@
     .regular-price .price {
         font-weight: 600;
         font-size: 15px;
-        margin-left: -80px;
+        margin-left: -118px;
     }
     .special-price .price {
         font-size: 15px;
         font-weight: 600;
-        margin-left: -101px;
+        margin-left: -114px;
+    }
+    .col-item1.special-price .price {
+        font-size: 15px;
+        font-weight: 600;
+        margin-left: -126px;
     }
     .old-price .price {
         color: #777 !important;
@@ -202,7 +207,7 @@
         font-weight: normal;
         text-decoration: line-through;
         margin-right: -17px;
-        margin-left: -67px;
+        margin-left: -104px;
     }
     .slick_margin .slick-slide {
         margin-left: 93px;
@@ -439,12 +444,12 @@
     .regular-price .price {
         font-weight: 600;
         font-size: 15px;
-        margin-left: -200px;
+        margin-left: -382px;
     }
     .special-price .price {
         font-size: 15px;
         font-weight: 600;
-        margin-left: -105px;
+        margin-left: -279px;
     }
     .old-price .price {
         color: #777 !important;
@@ -452,7 +457,7 @@
         font-weight: normal;
         text-decoration: line-through;
         margin-right: 96px;
-        margin-left: -192px;
+        margin-left: -376px;
     }
     .slick_margin .slick-slide {
         margin-left: 93px;
