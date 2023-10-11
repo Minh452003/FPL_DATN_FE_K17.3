@@ -15,6 +15,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import productApi, { productReducer } from "@/api/productApi";
 import cartApi, { cartReducer } from "@/api/cartApi";
+import sizeApi, { sizeReducer } from "@/api/sizeApi";
 
 
 const persistConfig = {
@@ -25,10 +26,11 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
     // Các reducers
-    product: productReducer,
+    products: productReducer,
     category: categoryReducer,
     brands: brandReducer,
-    cart: cartReducer
+    carts: cartReducer,
+    size: sizeReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -36,7 +38,8 @@ const additionalMiddlewares: any = [
     productApi.middleware,
     categoryApi.middleware,
     brandApi.middleware,
-    cartApi.middleware
+    cartApi.middleware,
+    sizeApi.middleware
 ];
 
 export const store = configureStore({
