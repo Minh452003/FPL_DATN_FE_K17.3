@@ -23,10 +23,12 @@ import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
 import Voucher from "./pages/view/User/voucher";
 import Userlist from "./pages/admin/user/Userlist";
-import ContactPage from "./pages/view/contact/contactPage";
 import HomePage from "./pages/view/Home/HomePage";
 import Product_Detail from "./pages/view/Product_Detail/Product_Detail";
 import OrderDetail from "./pages/view/Cart/Order_Detail";
+import BrandAdd from "./pages/admin/brands/BrandAdd";
+import BrandsList from "./pages/admin/brands/BrandsList";
+import BrandUpdate from "./pages/admin/brands/BrandUpdate";
 
 export const router = createBrowserRouter([
     {
@@ -54,7 +56,7 @@ export const router = createBrowserRouter([
                     {path:'orderdetail', element:<OrderDetail/>}
                 ],
             },
-            { path: 'contact', element: <ContactPage/>}
+          
         ]
     },
     { path: 'signup', element: <Signup /> },
@@ -83,6 +85,13 @@ export const router = createBrowserRouter([
                 path: 'users', children: [
                     { index: true, element: <Userlist /> },
                   
+                ],
+            },
+            {
+                path: 'brand', children: [
+                    { index: true, element: <BrandsList /> },
+                    { path :'add', element: <BrandAdd /> },
+                    { path :'edit/:id', element: <BrandUpdate /> },
                 ],
             },
         ]
