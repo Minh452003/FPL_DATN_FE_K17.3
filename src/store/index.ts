@@ -18,6 +18,7 @@ import cartApi, { cartReducer } from "@/api/cartApi";
 import sizeApi, { sizeReducer } from "@/api/sizeApi";
 import orderApi, { orderReducer } from "@/api/orderApi";
 import colorApi, { colorReducer } from "@/api/colorApi";
+import commentApi, { commentReducer } from "@/api/commentApi";
 
 
 const persistConfig = {
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
     carts: cartReducer,
     size: sizeReducer,
     order: orderReducer,
-    colors: colorReducer
+    colors: colorReducer,
+    comment: commentReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -45,7 +47,8 @@ const additionalMiddlewares: any = [
     cartApi.middleware,
     sizeApi.middleware,
     orderApi.middleware,
-    colorApi.middleware
+    colorApi.middleware,
+    commentApi.middleware
 ];
 
 export const store = configureStore({
