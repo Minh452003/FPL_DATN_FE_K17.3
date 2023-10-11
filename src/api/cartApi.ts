@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const cartApi = createApi({
     reducerPath: 'carts',
-    tagTypes: ['Cart'],
+    tagTypes: ['Carts'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         prepareHeaders: (headers) => {
@@ -19,7 +19,7 @@ const cartApi = createApi({
     endpoints: (builder) => ({
         getCarts: builder.query<any, string>({
             query: (userId) => `/carts/${userId}`,
-            providesTags: ['Cart']
+            providesTags: ['Carts']
         }),
         addCart: builder.mutation({
             query: ({ data, userId }: { data: InputCart; userId: string }) => ({
@@ -27,14 +27,14 @@ const cartApi = createApi({
                 method: 'POST',
                 body: data
             }),
-            invalidatesTags: ['Cart']
+            invalidatesTags: ['Carts']
         }),
         removeProductInCart: builder.mutation<any, { userId: string, productId: string }>({
             query: ({ userId, productId }) => ({
                 url: `/carts/${userId}?idProduct=${productId}/remove`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['Cart']
+            invalidatesTags: ['Carts']
         }),
 
         changeQuantity: builder.mutation({
@@ -43,14 +43,14 @@ const cartApi = createApi({
                 method: 'PUT',
                 body: data
             }),
-            invalidatesTags: ['Cart']
+            invalidatesTags: ['Carts']
         }),
         removeAllCart: builder.mutation<any, string | number>({
             query: (userId) => ({
                 url: `/carts/${userId}/clears`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['Cart']
+            invalidatesTags: ['Carts']
         }),
         updateApplyCoupon: builder.mutation({
             query: ({ data, userId, productId }: { data: InputCart; userId: string, productId: string }) => ({
@@ -58,7 +58,7 @@ const cartApi = createApi({
                 method: 'PATCH',
                 body: data
             }),
-            invalidatesTags: ['Cart']
+            invalidatesTags: ['Carts']
         }),
         updateRemoveCoupon: builder.mutation({
             query: ({ data, userId, productId }: { data: InputCart; userId: string, productId: string }) => ({
@@ -66,7 +66,7 @@ const cartApi = createApi({
                 method: 'PATCH',
                 body: data
             }),
-            invalidatesTags: ['Cart']
+            invalidatesTags: ['Carts']
         }),
     })
 });

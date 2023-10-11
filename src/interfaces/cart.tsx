@@ -10,6 +10,7 @@ export interface InputCart {
     originalPrice: number
     sizeId: string
     colorId: string
+    materialId: string
 }
 export interface ICart {
     message: string

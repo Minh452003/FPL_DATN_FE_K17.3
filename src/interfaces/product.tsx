@@ -2,12 +2,12 @@ export interface IProduct{
     id?: string
     product_name?: string;
     product_price?: number;
-    product_image?: {
+    image?: {
         url?: string;
         publicId?: string;
     };
     sold_quantity?: number;
-    stock_quantity?: number;
+    views?: number;
     description?: string;
     categoryId?: string;
     brandId?: string;

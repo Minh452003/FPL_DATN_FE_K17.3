@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const productApi = createApi({
     reducerPath: 'products',
-    tagTypes: ['Product'],
+    tagTypes: ['Products'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         prepareHeaders: (headers) => {
@@ -18,15 +18,19 @@ const productApi = createApi({
     endpoints: (builder) => ({
         getProducts: builder.query<any, void>({
             query: () => '/products',
-            providesTags: ['Product']
+            providesTags: ['Products']
         }),
         getProductsDelete: builder.query<IProduct, number | string>({
-            query: (id) => `/products/delete`,
-            providesTags: ['Product']
+            query: () => `/products/delete`,
+            providesTags: ['Products']
         }),
         getProductById: builder.query<IProduct, number | string>({
             query: (id) => `/products/${id}`,
-            providesTags: ['Product']
+            providesTags: ['Products']
+        }),
+        getViewProductId: builder.query<IProduct, number | string>({
+            query: (id) => `/products/views/${id}`,
+            providesTags: ['Products']
         }),
         addProduct: builder.mutation({
             query: (product: IProduct) => ({
@@ -34,21 +38,21 @@ const productApi = createApi({
                 method: 'POST',
                 body: product
             }),
-            invalidatesTags: ['Product']
+            invalidatesTags: ['Products']
         }),
         removeProduct: builder.mutation<IProduct, number>({
             query: (id) => ({
                 url: `/products/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['Product']
+            invalidatesTags: ['Products']
         }),
         removeForceProduct: builder.mutation<IProduct, number>({
             query: (id) => ({
                 url: `/products/force/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['Product']
+            invalidatesTags: ['Products']
         }),
         updateProduct: builder.mutation({
             query: (product: IProduct) => ({
@@ -56,7 +60,7 @@ const productApi = createApi({
                 method: 'PATCH',
                 body: product
             }),
-            invalidatesTags: ['Product']
+            invalidatesTags: ['Products']
         }),
         updateRestoreProduct: builder.mutation({
             query: (product: IProduct) => ({
@@ -64,7 +68,7 @@ const productApi = createApi({
                 method: 'PATCH',
                 body: product
             }),
-            invalidatesTags: ['Product']
+            invalidatesTags: ['Products']
         })
     })
 });
@@ -73,6 +77,7 @@ export const {
     useGetProductsQuery,
     useGetProductByIdQuery,
     useGetProductsDeleteQuery,
+    useGetViewProductIdQuery,
     useAddProductMutation,
     useRemoveProductMutation,
     useUpdateProductMutation,
