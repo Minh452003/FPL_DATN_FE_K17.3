@@ -7,7 +7,9 @@ export interface InputOrder {
     image: string
     sizeId: string
     colorId: string
-    total: number
+    materialId: string
+    hasReviewed: boolean
+    deposit: number
     status: string
     phone: string
     address: string
