@@ -107,7 +107,7 @@ const Order = () => {
             <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
             <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
             <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
-            <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
+             <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
           </div>
         </div>
 
