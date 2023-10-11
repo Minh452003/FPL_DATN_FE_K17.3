@@ -26,6 +26,7 @@ import Userlist from "./pages/admin/user/Userlist";
 import ContactPage from "./pages/view/contact/contactPage";
 import HomePage from "./pages/view/Home/HomePage";
 import Product_Detail from "./pages/view/Product_Detail/Product_Detail";
+import OrderDetail from "./pages/view/Cart/Order_Detail";
 
 export const router = createBrowserRouter([
     {
@@ -50,6 +51,7 @@ export const router = createBrowserRouter([
             {
                 path: 'order', children: [
                     { index: true, element: <Order /> },
+                    {path:'orderdetail', element:<OrderDetail/>}
                 ],
             },
             { path: 'contact', element: <ContactPage/>}
