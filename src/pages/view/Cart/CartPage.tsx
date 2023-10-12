@@ -1,6 +1,6 @@
 import { Image, Table, Button, } from 'antd';
 import { FaArrowRight,FaTrashCan } from "react-icons/fa6";
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './CartPage.css'
 const CartPage = () => {
     const dataSource = [
