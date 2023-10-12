@@ -29,6 +29,8 @@ import OrderDetail from "./pages/view/Cart/Order_Detail";
 import BrandAdd from "./pages/admin/brands/BrandAdd";
 import BrandsList from "./pages/admin/brands/BrandsList";
 import BrandUpdate from "./pages/admin/brands/BrandUpdate";
+import ColorsAdd from "./pages/admin/colors/Colorsadd";
+import Colorslist from "./pages/admin/colors/ColorsList";
 
 export const router = createBrowserRouter([
     {
@@ -91,6 +93,13 @@ export const router = createBrowserRouter([
                 path: 'brand', children: [
                     { index: true, element: <BrandsList /> },
                     { path :'add', element: <BrandAdd /> },
+                    { path :'edit/:id', element: <BrandUpdate /> },
+                ],
+            },
+            {
+                path: 'color', children: [
+                    { index: true, element: <Colorslist /> },
+                    { path :'add', element: <ColorsAdd /> },
                     { path :'edit/:id', element: <BrandUpdate /> },
                 ],
             },
