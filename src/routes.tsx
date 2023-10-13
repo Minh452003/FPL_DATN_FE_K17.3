@@ -27,6 +27,7 @@ import HomePage from "./pages/view/Home/HomePage";
 import Product_Detail from "./pages/view/Product_Detail/Product_Detail";
 import OrderDetail from "./pages/view/Cart/Order_Detail";
 import ContactPage from "./pages/view/contact/ContactPage";
+import ReviewPage from "./pages/view/Review/ReviewPage";
 
 export const router = createBrowserRouter([
     {
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
             { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
             {path: 'products/:idProduct', element: <Product_Detail />},
+            {path: 'review', element: <ReviewPage />},
 
             { path: 'user', element: <UserPage/>,children:[
                 {path:'purchase',element:<Purchase/>},
