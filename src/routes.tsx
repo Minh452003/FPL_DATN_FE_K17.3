@@ -31,6 +31,8 @@ import BrandsList from "./pages/admin/brands/BrandsList";
 import BrandUpdate from "./pages/admin/brands/BrandUpdate";
 import ColorsAdd from "./pages/admin/colors/Colorsadd";
 import Colorslist from "./pages/admin/colors/ColorsList";
+import SizesList from "./pages/admin/sizes/Sizeslist";
+import Sizesadd from "./pages/admin/sizes/SizesAdd";
 import ContactPage from "./pages/view/contact/ContactPage";
 import ReviewPage from "./pages/view/Review/ReviewPage";
 
@@ -103,6 +105,13 @@ export const router = createBrowserRouter([
                 path: 'color', children: [
                     { index: true, element: <Colorslist /> },
                     { path :'add', element: <ColorsAdd /> },
+                    { path :'edit/:id', element: <BrandUpdate /> },
+                ],
+            },
+            {
+                path: 'size', children: [
+                    { index: true, element: <SizesList /> },
+                    { path :'add', element: <Sizesadd /> },
                     { path :'edit/:id', element: <BrandUpdate /> },
                 ],
             },
