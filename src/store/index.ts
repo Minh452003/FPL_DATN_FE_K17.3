@@ -22,6 +22,7 @@ import commentApi, { commentReducer } from "@/api/commentApi";
 import userApi, { userReducer } from "@/api/authApi";
 import couponApi, { couponReducer } from "@/api/couponsApi";
 import statusApi, { statusReducer } from "@/api/statusApi";
+import materialsApi, { materialsReducer } from "@/api/materialApi";
 
 
 const persistConfig = {
@@ -42,7 +43,8 @@ const rootReducer = combineReducers({
     comment: commentReducer,
     users: userReducer,
     coupons: couponReducer,
-    status: statusReducer
+    status: statusReducer,
+    materials:materialsReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -57,7 +59,8 @@ const additionalMiddlewares: any = [
     commentApi.middleware,
     userApi.middleware,
     couponApi.middleware,
-    statusApi.middleware
+    statusApi.middleware,
+    materialsApi.middleware
     
 ];
 
