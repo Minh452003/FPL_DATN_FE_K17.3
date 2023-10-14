@@ -26,6 +26,9 @@ import Userlist from "./pages/admin/user/Userlist";
 import HomePage from "./pages/view/Home/HomePage";
 import Product_Detail from "./pages/view/Product_Detail/Product_Detail";
 import OrderDetail from "./pages/view/Cart/Order_Detail";
+import BrandAdd from "./pages/admin/brands/BrandAdd";
+import BrandsList from "./pages/admin/brands/BrandsList";
+import BrandUpdate from "./pages/admin/brands/BrandUpdate";
 import ContactPage from "./pages/view/contact/ContactPage";
 import ReviewPage from "./pages/view/Review/ReviewPage";
 
@@ -56,7 +59,7 @@ export const router = createBrowserRouter([
                     {path:'orderdetail', element:<OrderDetail/>}
                 ],
             },
-            { path: 'contact', element: <ContactPage/>}
+          
         ]
     },
     { path: 'signup', element: <Signup /> },
@@ -85,6 +88,13 @@ export const router = createBrowserRouter([
                 path: 'users', children: [
                     { index: true, element: <Userlist /> },
                   
+                ],
+            },
+            {
+                path: 'brand', children: [
+                    { index: true, element: <BrandsList /> },
+                    { path :'add', element: <BrandAdd /> },
+                    { path :'edit/:id', element: <BrandUpdate /> },
                 ],
             },
         ]
