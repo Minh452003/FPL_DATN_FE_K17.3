@@ -20,6 +20,7 @@ import orderApi, { orderReducer } from "@/api/orderApi";
 import colorApi, { colorReducer } from "@/api/colorApi";
 import commentApi, { commentReducer } from "@/api/commentApi";
 import userApi, { userReducer } from "@/api/authApi";
+import couponApi, { couponReducer } from "@/api/couponsApi";
 
 
 const persistConfig = {
@@ -38,7 +39,8 @@ const rootReducer = combineReducers({
     order: orderReducer,
     colors: colorReducer,
     comment: commentReducer,
-    users: userReducer
+    users: userReducer,
+    coupons: couponReducer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -52,6 +54,7 @@ const additionalMiddlewares: any = [
     colorApi.middleware,
     commentApi.middleware,
     userApi.middleware,
+    couponApi.middleware
 ];
 
 export const store = configureStore({
