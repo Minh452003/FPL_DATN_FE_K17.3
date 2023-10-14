@@ -1,24 +1,32 @@
 
-import { Button, Form, Input } from 'antd';
+import { useAddBrandMutation } from '@/api/brandApi';
+import { pause } from '@/utils/pause';
+import { Alert, Button, Form, Input } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-const onFinish = (values: any) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
 
 type FieldType = {
   brand_name?: string;
 
 };
 const BrandAdd = () => {
-  return (
-   
-    <div className='text-center'>
-     <h2 className="text-center text-2xl py-2">Thêm mới  Thương hiệu</h2>
-  <div >
+  const [addBrand, {isLoading, isSuccess: isAddSuccess}] = useAddBrandMutation();
+  const navigate = useNavigate();
+  const onFinish = (values: any) => {
+    addBrand(values)
+    .unwrap()
+    .then(async () => {
+      await pause(1000);
+      navigate("/admin/brand");
+    })
+  };
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
+  return ( 
+    <div className='max-w-4xl mx-auto'>
+      <h2 className='font-bold text-2xl mb-4'>Thêm mới Thương hiệu</h2>
+      {isAddSuccess && <Alert message="Them thanh cong" type="success" />}
     <Form
     name="basic"
     labelCol={{ span: 8 }}
@@ -31,8 +39,10 @@ const BrandAdd = () => {
   >
     <Form.Item<FieldType>
       label="Tên thương hiệu"
-      className="username"
-      rules={[{ required: true, message: 'Please input your username!' }]}
+      name="brand_name"
+      rules={[{ required: true, message: 'Please input your brand!' },
+      {min: 3, message: "It nhat 3 ky tu"}]}
+      
     >
       <Input />
   </Form.Item>
@@ -42,13 +52,12 @@ const BrandAdd = () => {
       Thêm mới
     </Button>
   
-    <Button href="/admin/brand" className='ml-2' htmlType="submit" danger>
+    <Button type='primary' onClick={() => navigate("/admin/brand")} className='ml-2' htmlType="submit" danger>
       Danh sách brand
     </Button>
     </Form.Item>
   </Form>
        </div>
-    </div>
   )
 }
 

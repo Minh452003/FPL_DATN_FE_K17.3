@@ -43,7 +43,7 @@ const brandApi = createApi({
         }),
         updateBrand: builder.mutation({
             query: (brand: IBrand)=> ({
-                url: `/brands/${brand.id}`,
+                url: `/brands/${brand._id}`,
                 method: "PATCH",
                 body: brand
             }),

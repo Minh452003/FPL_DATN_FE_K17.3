@@ -98,7 +98,7 @@ export const router = createBrowserRouter([
                 path: 'brand', children: [
                     { index: true, element: <BrandsList /> },
                     { path :'add', element: <BrandAdd /> },
-                    { path :'edit/:id', element: <BrandUpdate /> },
+                    { path :'edit/:idBrand', element: <BrandUpdate /> },
                 ],
             },
             {
