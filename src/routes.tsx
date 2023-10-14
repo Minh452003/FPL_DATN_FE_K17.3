@@ -31,6 +31,8 @@ import BrandsList from "./pages/admin/brands/BrandsList";
 import BrandUpdate from "./pages/admin/brands/BrandUpdate";
 import ColorsAdd from "./pages/admin/colors/Colorsadd";
 import Colorslist from "./pages/admin/colors/ColorsList";
+import ContactPage from "./pages/view/contact/ContactPage";
+import ReviewPage from "./pages/view/Review/ReviewPage";
 
 export const router = createBrowserRouter([
     {
@@ -42,6 +44,7 @@ export const router = createBrowserRouter([
             { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
             {path: 'products/:idProduct', element: <Product_Detail />},
+            {path: 'review', element: <ReviewPage />},
 
             { path: 'user', element: <UserPage/>,children:[
                 {path:'purchase',element:<Purchase/>},
