@@ -35,9 +35,18 @@ const categoryApi = createApi({
             }),
             invalidatesTags: ['Category']
         }),
-        removeCategory: builder.mutation<ICategory, number>({
+        removeCategory: builder.mutation<ICategory, string|number>({
+            
             query: (id) => ({
+                
                 url: `/category/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Category']
+        }),
+        removeForceCategory: builder.mutation<ICategory, number>({
+            query: (id) => ({
+                url: `/category/force/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Category']
@@ -58,6 +67,7 @@ export const {
     useGetCategoryByIdQuery,
     useAddCategoryMutation,
     useRemoveCategoryMutation,
+    useRemoveForceCategoryMutation,
     useUpdateCategoryMutation
 } = categoryApi;
 export const categoryReducer = categoryApi.reducer;
