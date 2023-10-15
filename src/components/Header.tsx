@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { HiSearch } from "react-icons/hi";
-const Header = () => {
-    const [isMenuHidden, setIsMenuHidden] = useState(true);
+import { Link } from 'react-router-dom'
 
-    const toggleMenu = () => {
-      setIsMenuHidden(!isMenuHidden);
-    };
+const Header = () => {
+  const [isMenuHidden, setIsMenuHidden] = useState(true);
+
+  const toggleMenu = () => {
+    setIsMenuHidden(!isMenuHidden);
+  };
   return (
     <div>
-        <header className="bg-[#fff] lg:container shadow-lg fixed z-50">
+      <header className="bg-[#fff] lg:container shadow-lg fixed z-50 top-0">
         <section className="py-2">
           <div className="md:flex justify-between  max-w-7xl mx-auto p-0 m-0 ">
             <div className="md:flex items-center  ">
@@ -33,7 +35,7 @@ const Header = () => {
                 </form>
               </div>
             </div>
-  
+
             <div className="header-tell pt-2">
               <span className="text-xs text-center pl-2 pt-2 font-medium">
                 ĐẶT HÀNG TRỰC TUYẾN HOẶC GỌI CHO CHÚNG TÔI 0932-307-248
@@ -51,28 +53,28 @@ const Header = () => {
           {/* Menu */}
           <div className={`mx-auto max-w-7xl md:p-0 pl-3  md:flex justify-between justify-items-center ${isMenuHidden ? 'hidden' : ''}`}>
             <ul className="md:flex font-bold sm:mx-3   text-base p-0 m-0 items-center">
-              <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="#">Trang chủ</a></li>
-              <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="products">Sản phẩm</a></li>
-              <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="">Tin tức</a></li>
-              <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="">Giới thiệu</a></li>
-              <li><a className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" href="">Liên hệ</a></li>
+              <li><Link className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" to={'/'}>Trang chủ</Link></li>
+              <li><Link className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" to={'/products'}>Sản phẩm</Link></li>
+              <li><Link className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" to={'/news'}>Tin tức</Link></li>
+              <li><Link className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" to={'/review'}>Giới thiệu</Link></li>
+              <li><Link className="no-underline text-gray-900 hover:text-[#ff7600] mr-2" to={'/contact'}>Liên hệ</Link></li>
             </ul>
             <div className="flex">
               {/* User Icons */}
               <div className="items-center flex">
-                <img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/user.png?1693834920118" width="30px" alt="" />
+                <Link to={'/user/profile'}><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/user.png?1693834920118" width="30px" alt="" /></Link>
               </div>
               <div className="ml-2">
                 <div>
-                  <a href="" className="text-[14px] no-underline text-[#000] hover:text-[#ff7600]">Đăng kí</a>
+                  <Link to={'/signup'} className="text-[14px] no-underline text-[#000] hover:text-[#ff7600]">Đăng kí</Link>
                 </div>
                 <div>
-                  <a href="" className="text-[14px] no-underline text-[#000] hover:text-[#ff7600]">Đăng Nhập</a>
+                  <Link to={'/login'} className="text-[14px] no-underline text-[#000] hover:text-[#ff7600]">Đăng Nhập</Link>
                 </div>
               </div>
               {/* Cart Icon */}
               <div className="ml-2 items-center flex">
-                <a href=""><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/cart.png?1693834920118" width="41px" alt="" /></a>
+                <Link to={'/cart'}><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/cart.png?1693834920118" width="41px" alt="" /></Link>
               </div>
             </div>
           </div>

@@ -691,6 +691,10 @@ body {
     nav .icon {
         display: inline;
     }
+
+    li .a {
+        width: 100px;
+    }
 }
 
 /* Chỉ hiển thị biểu tượng trên màn hình thu nhỏ */
@@ -701,8 +705,8 @@ body {
 
     nav .icon {
         display: inline;
-        /* font-size: 20px; */
     }
+
 }
 
 @media screen and (max-width: 576px) {

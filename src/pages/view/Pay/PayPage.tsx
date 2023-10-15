@@ -1,5 +1,5 @@
-import { FaArrowRight, FaMoneyBill1,FaChevronLeft } from "react-icons/fa6"
-import {  Form, Input, Select, Space } from 'antd';
+import { FaArrowRight, FaMoneyBill1, FaChevronLeft } from "react-icons/fa6"
+import { Form, Input, Select, Space } from 'antd';
 import { Option } from "antd/es/mentions";
 import { Link } from "react-router-dom";
 const PayPage = () => {
@@ -7,7 +7,7 @@ const PayPage = () => {
         console.log('Received values of form: ', values);
     };
     return (
-        <div className="md:container md:mx-auto ">
+        <div className="container mx-auto mt-20">
             <div className="flex items-center pb-10">
                 <div className="float-left">Trang Chủ</div>
                 <FaArrowRight className="ml-2" />
@@ -146,7 +146,7 @@ const PayPage = () => {
                 </div>
                 {/* --------------------Col 3 --------------------------- */}
                 <div className="rounded-lg " style={{ background: '#FAFAFA' }}>
-                    <h3 className="pl-4 font-semibold bt-1 ">Đơn hàng (3 sản phẩm)</h3>
+                    <h3 className="pl-4 font-semibold bt-1">Đơn hàng (3 sản phẩm)</h3>
                     <hr />
                     {/* --------------- sp1 ------------------- */}
                     <div className="container w-auto h-24">
@@ -182,32 +182,32 @@ const PayPage = () => {
                             <div className="text-sm float-left w-52 font-semibold">Bộ bàn sofa IGEA Việt Nam phong cách Scanvdian </div>
                             <div className="text-sm float-left mt-2 ml-6 text-gray-500">16.430.000đ</div>
                             <p className="float-right text-xs ml-20 mr-4">x1</p>
-                        </div> 
+                        </div>
                         <p className="float-left text-xs"> size: xl</p>
-                      
+
 
                     </div>
                     <hr />
                     <div className="Coupons mt-5 mb-5">
-                        <input className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10" type="text" name="" id="" placeholder="  Nhập mã giảm giá"/>
-                        <button className="rounded-md  ml-2 w-28 h-10" style={{background:'#316595', color: 'white'}} >Áp Dụng</button>
+                        <input className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10" type="text" name="" id="" placeholder="  Nhập mã giảm giá" />
+                        <button className="rounded-md  ml-2 w-28 h-10" style={{ background: '#316595', color: 'white' }} >Áp Dụng</button>
                     </div>
                     <hr />
-                     <div className="provisional ml-4 mr-6 h-10">
-                        <p className="float-left">Tạm tính :</p>  <p className="price float-right text-gray-500">49.290.000đ</p>
-                     </div>
-                     <div className="shipp ml-4 mr-6 h-16">
-                        <p className="float-left">Phí vận chuyển :</p>  <p className="price float-right text-gray-500">10.000đ</p>
-                     </div>
-                     <hr />
-                     <div className="total ml-4 mr-6 h-16">
-                        <p className="float-left">Tổng cộng :</p>  <p className="price float-right text-gray-500">49.300.000đ</p>
-                     </div>
-                     <hr />
-                     <div className="submit h-20">
-                        <div className="ml-4 mt-2 "><FaChevronLeft className="float-left mt-1" /><a className="text-blue-900 float-left text-sm" style={{textDecoration: 'none'}} href=""><Link to={"/cart"}>Quay về giỏ hàng</Link></a></div>
-                        <button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" style={{background:'#316595', color: 'white'}} >Đặt hàng</button>
-                     </div>
+                    <div className="provisional ml-4 mr-6 h-5">
+                        <p >Tạm tính :</p>  <p className="price float-right text-gray-500 text-xl">49.290.000đ</p>
+                    </div>
+                    <div className="shipp ml-4 mr-6 h-16">
+                        <p className="float-left">Phí vận chuyển :</p>  <p className="price float-right text-gray-500 text-xl">10.000đ</p>
+                    </div>
+                    <hr />
+                    <div className="total ml-4 mr-6 h-16">
+                        <p className="float-left">Tổng cộng :</p>  <p className="price float-right text-gray-500 text-xl">49.300.000đ</p>
+                    </div>
+                    <hr />
+                    <div className="submit h-20">
+                        <div className="ml-4 mt-2 "><FaChevronLeft className="float-left mt-1" /><a className="text-blue-900 float-left text-sm" style={{ textDecoration: 'none' }} href=""><Link to={"/cart"}>Quay về giỏ hàng</Link></a></div>
+                        <button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" style={{ background: '#316595', color: 'white' }} >Đặt hàng</button>
+                    </div>
                 </div>
             </div>
         </div>
