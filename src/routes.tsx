@@ -15,7 +15,7 @@ import Categorylist from "./pages/admin/category/Categorylist";
 import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import Order from "./pages/view/Cart/Order";
-import ForgotPassword from "./pages/view/Sign/ForgotPassword";
+import ForgotPassword from "./pages/view/Auth/ForgotPassword";
 import Login from "./pages/view/Auth/Login";
 import UserPage from "./pages/view/User/User";
 import Profile from "./pages/view/User/Account/Profile";
@@ -45,29 +45,31 @@ export const router = createBrowserRouter([
             { path: 'cart', element: <CartPage /> },
             { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
-            {path: 'products/:idProduct', element: <Product_Detail />},
-            {path: 'review', element: <ReviewPage />},
+            { path: 'products/:idProduct', element: <Product_Detail /> },
+            { path: 'review', element: <ReviewPage /> },
+            { path: 'contact', element: <ContactPage /> },
 
-            { path: 'user', element: <UserPage/>,children:[
-                {path:'purchase',element:<Purchase/>},
-                {path:'voucher',element:<Voucher/>},
-                {path:'profile',element:<Profile/>},
-                {path:"address",element:<AddressPage/>}
-            ]},
+            {
+                path: 'user', element: <UserPage />, children: [
+                    { path: 'purchase', element: <Purchase /> },
+                    { path: 'voucher', element: <Voucher /> },
+                    { path: 'profile', element: <Profile /> },
+                    { path: "address", element: <AddressPage /> }
+                ]
+            },
             { path: 'products', element: <ProductPage /> },
             { path: 'news', element: <News /> },
             { path: 'forgotpassword', element: <ForgotPassword /> },
             {
                 path: 'order', children: [
                     { index: true, element: <Order /> },
-                    {path:'orderdetail', element:<OrderDetail/>}
+                    { path: 'orderdetail', element: <OrderDetail /> }
                 ],
             },
-          
+            { path: 'signup', element: <Signup /> },
+            { path: 'login', element: <Login /> },
         ]
     },
-    { path: 'signup', element: <Signup /> },
-    { path: 'login', element: <Login /> },
     {
         path: '/admin',
         element: < LayoutAdmin />,
@@ -91,28 +93,28 @@ export const router = createBrowserRouter([
             {
                 path: 'users', children: [
                     { index: true, element: <Userlist /> },
-                  
+
                 ],
             },
             {
                 path: 'brand', children: [
                     { index: true, element: <BrandsList /> },
-                    { path :'add', element: <BrandAdd /> },
-                    { path :'edit/:idBrand', element: <BrandUpdate /> },
+                    { path: 'add', element: <BrandAdd /> },
+                    { path: 'edit/:idBrand', element: <BrandUpdate /> },
                 ],
             },
             {
                 path: 'color', children: [
                     { index: true, element: <Colorslist /> },
-                    { path :'add', element: <ColorsAdd /> },
-                    { path :'edit/:id', element: <BrandUpdate /> },
+                    { path: 'add', element: <ColorsAdd /> },
+                    { path: 'edit/:id', element: <BrandUpdate /> },
                 ],
             },
             {
                 path: 'size', children: [
                     { index: true, element: <SizesList /> },
-                    { path :'add', element: <Sizesadd /> },
-                    { path :'edit/:id', element: <BrandUpdate /> },
+                    { path: 'add', element: <Sizesadd /> },
+                    { path: 'edit/:id', element: <BrandUpdate /> },
                 ],
             },
         ]

@@ -13,7 +13,7 @@ const Login = () => {
                             style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1513128034602-7814ccaddd4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8&w=1000&q=80")' }}
                         ></div>
                         <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
-                            <h3 className="pt-4 text-3xl text-center">Login 🔑</h3>
+                            <h3 className="pt-4 text-3xl text-center">ĐĂNG NHẬP 🔑</h3>
                             <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                                 <div className="mb-4">
                                     <label className="block mb-2 text-sm font-bold text-gray-700" >
@@ -29,7 +29,7 @@ const Login = () => {
                                 </div>
                                 <div className="mb-4">
                                     <label className="block mb-2 text-sm font-bold text-gray-700" >
-                                        Password
+                                        Mật khẩu
                                     </label>
                                     <input
                                         className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -45,14 +45,14 @@ const Login = () => {
                                         className="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-600 focus:outline-none focus:shadow-outline"
                                         type="submit"
                                     >
-                                        Login Now!
+                                        Đăng nhập ngay!
                                     </button>
                                 </div>
                                 <div className="text-left">
                                     <Link to="/forgotpassword">
                                         <a
                                             className="inline-block text-sm text-blue-700 align-baseline no-underline">
-                                            Forgot Password?
+                                            Quên mật khẩu?
                                         </a>
                                     </Link>
                                 </div>
@@ -60,7 +60,7 @@ const Login = () => {
                                 <div className="mb-6 text-center relative">
                                     <div className="flex justify-between items-center">
                                         <hr className="border-t w-1/3" />
-                                        <p className="text-sm bg-white">OR</p>
+                                        <p className="text-sm bg-white">HOẶC</p>
                                         <hr className="border-t w-1/3" />
                                     </div>
                                 </div>
@@ -78,12 +78,12 @@ const Login = () => {
                                     </button>
                                 </div>
                                 <div className="text-center">
-                                    <span>You just heard about Casa? </span>
+                                    <span>Bạn chưa có tài khoản? </span>
                                     <Link to="/signup">
                                         <a
                                             className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline"
                                         >
-                                            Signup!
+                                            Đăng ký!
                                         </a>
                                     </Link>
                                 </div>

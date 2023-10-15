@@ -65,49 +65,49 @@ const LayoutAdmin = () => {
           <li className="active">
             <Link to={'dashboard'} className="a">
               <span className="icon"><BsFillHouseDashFill /></span>
-              <span className="text1">Dashboard</span>
+              <span className="text1">Bảng điều khiển</span>
             </Link>
           </li>
           <li>
             <Link to={'products'} className="a">
               <span className="icon"><TbBrandProducthunt /></span>
-              <span className="text1">Products</span>
+              <span className="text1">Sản phẩm</span>
             </Link>
           </li>
           <li>
             <Link to={'categories'} className="a">
               <span className="icon"><MdCategory /></span>
-              <span className="text1">Categories</span>
+              <span className="text1">Danh mục</span>
             </Link>
           </li>
           <li>
             <Link to={'users'} className="a">
               <span className="icon"><AiOutlineUser /></span>
-              <span className="text1">Users</span>
+              <span className="text1">Khách hàng</span>
             </Link>
           </li>
           <li>
             <Link to={'comments'} className="a">
               <span className="icon"><AiOutlineComment /></span>
-              <span className="text1">Comments</span>
+              <span className="text1">Đánh giá</span>
             </Link>
           </li>
           <li>
             <Link to={'brand'} className="a">
               <span className="icon"><AiOutlineBranches /></span>
-              <span className="text1">Brand</span>
+              <span className="text1">Thương hiệu</span>
             </Link>
           </li>
           <li>
             <Link to={'orders'} className="a">
               <span className="icon"><AiOutlineShoppingCart /></span>
-              <span className="text1">Carts</span>
+              <span className="text1">Đơn hàng</span>
             </Link>
           </li>
           <li>
             <Link to="#" className="logout">
               <span className="icon"><RiLogoutCircleLine /></span>
-              <span className="text1" onClick={() => ''}>Logout</span>
+              <span className="text1" onClick={() => ''}>Đăng xuất</span>
             </Link>
           </li>
         </ul>
