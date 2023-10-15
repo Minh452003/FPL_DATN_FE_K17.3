@@ -1,6 +1,6 @@
 
 import categoryApi, { categoryReducer } from "@/api/categoryApi";
-import brandApi, {brandReducer} from "@/api/brandApi";
+import brandApi, { brandReducer } from "@/api/brandApi";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
     persistStore,
@@ -23,6 +23,7 @@ import userApi, { userReducer } from "@/api/authApi";
 import couponApi, { couponReducer } from "@/api/couponsApi";
 import statusApi, { statusReducer } from "@/api/statusApi";
 import materialsApi, { materialsReducer } from "@/api/materialApi";
+import uploadApi, { uploadReducer } from "@/api/uploadApi";
 
 
 const persistConfig = {
@@ -44,7 +45,8 @@ const rootReducer = combineReducers({
     users: userReducer,
     coupons: couponReducer,
     status: statusReducer,
-    materials:materialsReducer
+    materials: materialsReducer,
+    upload: uploadReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -60,8 +62,8 @@ const additionalMiddlewares: any = [
     userApi.middleware,
     couponApi.middleware,
     statusApi.middleware,
-    materialsApi.middleware
-    
+    materialsApi.middleware,
+    uploadApi.middleware
 ];
 
 export const store = configureStore({
