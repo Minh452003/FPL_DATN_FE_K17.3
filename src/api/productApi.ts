@@ -69,7 +69,11 @@ const productApi = createApi({
                 body: product
             }),
             invalidatesTags: ['Products']
-        })
+        }),
+        getProductSell: builder.query<any, void>({
+            query: () => '/products-sell',
+            providesTags: ['Products']
+        }),
     })
 });
 
@@ -82,7 +86,8 @@ export const {
     useRemoveProductMutation,
     useUpdateProductMutation,
     useRemoveForceProductMutation,
-    useUpdateRestoreProductMutation
+    useUpdateRestoreProductMutation,
+    useGetProductSellQuery
 } = productApi;
 export const productReducer = productApi.reducer;
 export default productApi
