@@ -36,7 +36,6 @@ const BrandUpdate = () => {
   };
   return (
     <div className='max-w-4xl mx-auto'>
-      <h2 className='font-bold text-2xl mb-4'>Thêm mới</h2>
       {isUpdateSuccess && <Alert message="Sua thanh cong" type="success" />}
     <Form
     form={form}
@@ -78,14 +77,3 @@ const BrandUpdate = () => {
 
 export default BrandUpdate
 
-
-
-{/* <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-      <Button type="primary" htmlType="submit" danger>
-      Thêm mới
-    </Button>
-  
-    <Button type='primary' onClick={() => navigate("/admin/product")}  className='ml-2 bg-blue' htmlType="submit" danger>
-      Danh sách Thương hiệu
-    </Button>
-    </Form.Item> */}

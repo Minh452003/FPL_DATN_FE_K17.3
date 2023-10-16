@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
 import { TbBrandProducthunt } from 'react-icons/tb';
 import { MdCategory } from 'react-icons/md';
-import { AiFillMessage, AiOutlineBranches, AiOutlineComment, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
+import { AiFillMessage, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
 const LayoutAdmin = () => {
@@ -96,6 +96,18 @@ const LayoutAdmin = () => {
             <Link to={'brand'} className="a">
               <span className="icon"><AiOutlineBranches /></span>
               <span className="text1">Brand</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'color'} className="a">
+              <span className="icon"><AiOutlineFontColors /></span>
+              <span className="text1">Color</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'size'} className="a">
+              <span className="icon"><AiOutlineFontSize /></span>
+              <span className="text1">Size</span>
             </Link>
           </li>
           <li>

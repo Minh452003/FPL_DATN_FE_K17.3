@@ -43,7 +43,7 @@ const sizeApi = createApi({
         }),
         updateSize: builder.mutation({
             query: (size: ISize)=> ({
-                url: `/size/${size.id}`,
+                url: `/size/${size._id}`,
                 method: "PATCH",
                 body: size
             }),
