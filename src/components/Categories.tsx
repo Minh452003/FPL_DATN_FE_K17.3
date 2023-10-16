@@ -20,7 +20,7 @@ const Categories = () => {
             <div className="container">
                 <div className="row">
                     {categories.category.docs.map((category: any) => (
-                        <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6 a">
+                        <div key={category._id} className="col-lg-4 col-md-4 col-sm-4 col-xs-6 a">
                             <Link to={''} className="tl" title="Phòng Khách">
                                 <p className="ttt">
                                     {category?.category_name}
