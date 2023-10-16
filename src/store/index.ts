@@ -24,6 +24,7 @@ import couponApi, { couponReducer } from "@/api/couponsApi";
 import statusApi, { statusReducer } from "@/api/statusApi";
 import materialsApi, { materialsReducer } from "@/api/materialApi";
 import uploadApi, { uploadReducer } from "@/api/uploadApi";
+import childProductApi, { childProductReducer } from "@/api/chilProductApi";
 
 
 const persistConfig = {
@@ -46,7 +47,8 @@ const rootReducer = combineReducers({
     coupons: couponReducer,
     status: statusReducer,
     materials: materialsReducer,
-    upload: uploadReducer
+    upload: uploadReducer,
+    childProduct:childProductReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -63,7 +65,8 @@ const additionalMiddlewares: any = [
     couponApi.middleware,
     statusApi.middleware,
     materialsApi.middleware,
-    uploadApi.middleware
+    uploadApi.middleware,
+    childProductApi.middleware
 ];
 
 export const store = configureStore({
