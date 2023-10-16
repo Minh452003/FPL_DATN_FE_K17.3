@@ -9,9 +9,11 @@ import { Skeleton } from 'antd';
 const ProductList = () => {
     const { data: products, error, isLoading: isLoadingFetching }: any = useGetProductsQuery();
     const { data: categories }: any = useGetCategoryQuery();
+
     // Chưa làm gì cả, chỉ mới gọi api thôi
     console.log(products);
     console.log(categories);
+    
 
     if (isLoadingFetching) return <Skeleton />;
     if (error) {
