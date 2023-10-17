@@ -36,6 +36,7 @@ import Sizesadd from "./pages/admin/sizes/SizesAdd";
 import ContactPage from "./pages/view/contact/ContactPage";
 import ReviewPage from "./pages/view/Review/ReviewPage";
 import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
+import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
 
 export const router = createBrowserRouter([
     {
@@ -115,7 +116,7 @@ export const router = createBrowserRouter([
                 path: 'size', children: [
                     { index: true, element: <SizesList /> },
                     { path: 'add', element: <Sizesadd /> },
-                    { path: 'edit/:id', element: <BrandUpdate /> },
+                    { path: 'edit/:idSize', element: <SizesUpdate /> },
                 ],
             },
         ]
