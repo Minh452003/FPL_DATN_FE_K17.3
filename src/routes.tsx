@@ -17,7 +17,6 @@ import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import Order from "./pages/view/Cart/Order";
 import ForgotPassword from "./pages/view/Auth/ForgotPassword";
 import Login from "./pages/view/Auth/Login";
-import UserPage from "./pages/view/User/User";
 import Profile from "./pages/view/User/Account/Profile";
 import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
@@ -33,11 +32,17 @@ import ColorsAdd from "./pages/admin/colors/Colorsadd";
 import Colorslist from "./pages/admin/colors/ColorsList";
 import SizesList from "./pages/admin/sizes/Sizeslist";
 import Sizesadd from "./pages/admin/sizes/SizesAdd";
-import ContactPage from "./pages/view/contact/ContactPage";
 import ReviewPage from "./pages/view/Review/ReviewPage";
 import MaterialAdd from "./pages/admin/material/MaterialAdd";
 import MaterialUpdate from "./pages/admin/material/MaterialUpdate";
 import MaterialList from "./pages/admin/material/MaterialList";
+import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
+import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
+import UserPage from "./pages/view/User/User";
+import ContactPage from "./pages/view/contact/ContactPage";
+import CouponsList from "./pages/admin/coupons/CouponsList";
+import CouponsAdd from "./pages/admin/coupons/CouponsAdd";
+import CouponsUpdate from "./pages/admin/coupons/CouponsUpdate";
 
 export const router = createBrowserRouter([
     {
@@ -110,14 +115,21 @@ export const router = createBrowserRouter([
                 path: 'color', children: [
                     { index: true, element: <Colorslist /> },
                     { path: 'add', element: <ColorsAdd /> },
-                    { path: 'edit/:id', element: <BrandUpdate /> },
+                    { path: 'edit/:idColor', element: <ColorsUpdate /> },
                 ],
             },
             {
                 path: 'size', children: [
                     { index: true, element: <SizesList /> },
                     { path: 'add', element: <Sizesadd /> },
-                    { path: 'edit/:id', element: <BrandUpdate /> },
+                    { path: 'edit/:idSize', element: <SizesUpdate /> },
+                ],
+            },
+            {
+                path: 'coupon', children: [
+                    { index: true, element: <CouponsList /> },
+                    { path: 'add', element: <CouponsAdd /> },
+                    { path: 'edit/:idCoupon', element: <CouponsUpdate /> },
                 ],
             },
             {

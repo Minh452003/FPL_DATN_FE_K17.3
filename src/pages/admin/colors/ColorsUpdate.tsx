@@ -1,5 +1,5 @@
 
-import { useGetBrandByIdQuery, useUpdateBrandMutation } from '@/api/brandApi';
+import { useGetColorByIdQuery, useUpdateColorMutation } from '@/api/colorApi';
 import { pause } from '@/utils/pause';
 import { Alert, Button, Form, Input } from 'antd';
 import { useEffect } from 'react';
@@ -8,26 +8,26 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 
 type FieldType = {
-  brand_name?: string;
+  colors_name?: string;
 
 };
-const BrandUpdate = () => {
-  const {idBrand} = useParams<{idBrand: string}>();
-  const {data: brandData, isLoading} = useGetBrandByIdQuery(idBrand || "");
-  const [updateBrand, {isLoading: isUpdateLoading, isSuccess: isUpdateSuccess}] = useUpdateBrandMutation();
+const ColorsUpdate = () => {
+  const {idColor} = useParams<{idColor: string}>();
+  const {data: colorData, isLoading} = useGetColorByIdQuery(idColor || "");
+  const [updateColor, {isLoading: isUpdateLoading, isSuccess: isUpdateSuccess}] = useUpdateColorMutation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   useEffect(() => {
     form.setFieldsValue({
-      brand_name: brandData?.brand_name,
+      colors_name: colorData?.colors_name,
     })
-  }, [brandData])
+  }, [colorData])
   const onFinish = (values: any) => {
-    updateBrand({...values, _id: idBrand})
+    updateColor({...values, _id: idColor})
     .unwrap()
     .then(async () => {
       await pause(1000);
-      navigate("/admin/brand");
+      navigate("/admin/color");
     })
   };
   
@@ -49,10 +49,9 @@ const BrandUpdate = () => {
     autoComplete="off"
   >
     <Form.Item<FieldType>
-      label="Tên Thương hiệu"
-      name="brand_name"
-      rules={[{ required: true, message: 'Please input your brand!' },
-      {min: 3, message: "It nhat 3 ky tu"}]}
+      label="Tên màu"
+      name="colors_name"
+      rules={[{ required: true, message: 'Please input your color!' }]}
     >
       <Input />
   </Form.Item>
@@ -62,11 +61,11 @@ const BrandUpdate = () => {
           {isUpdateLoading ? (
             <AiOutlineLoading3Quarters className="animate-spin" />
           ): (
-            "Cập nhật thương hiệu"
+            "Cập nhật màu"
           )}
         </Button>
-        <Button type='primary' danger className='ml-2' onClick={() => navigate("/admin/brand")}>
-        Danh sách Thương hiệu
+        <Button type='primary' danger className='ml-2' onClick={() => navigate("/admin/color")}>
+        Danh sách màu
         </Button>
       </Form.Item>
 
@@ -75,4 +74,5 @@ const BrandUpdate = () => {
   )
 }
 
-export default BrandUpdate
+export default ColorsUpdate
+

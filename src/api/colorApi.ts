@@ -44,7 +44,7 @@ const colorApi = createApi({
         }),
         updateColor: builder.mutation({
             query: (color: IColor)=> ({
-                url: `/colors/${color.id}`,
+                url: `/colors/${color._id}`,
                 method: "PATCH",
                 body: color
             }),

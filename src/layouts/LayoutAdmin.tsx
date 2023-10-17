@@ -7,6 +7,7 @@ import { FaAccusoft } from "react-icons/fa";
 import { AiFillMessage, AiOutlineBranches, AiOutlineComment, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
+import { BiSolidCoupon } from 'react-icons/bi';
 const LayoutAdmin = () => {
   const [isSidebarHidden, setSidebarHidden] = useState<boolean>(false);
 
@@ -97,6 +98,24 @@ const LayoutAdmin = () => {
             <Link to={'brand'} className="a">
               <span className="icon"><AiOutlineBranches /></span>
               <span className="text1">Thương hiệu</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'color'} className="a">
+              <span className="icon"><AiOutlineFontColors /></span>
+              <span className="text1">Màu sắc</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'size'} className="a">
+              <span className="icon"><AiOutlineFontSize /></span>
+              <span className="text1">Kích cỡ</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'coupon'} className="a">
+              <span className="icon"><BiSolidCoupon /></span>
+              <span className="text1">Phiếu giảm giá</span>
             </Link>
           </li>
           <li>
