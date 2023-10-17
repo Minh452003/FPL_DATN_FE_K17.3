@@ -1,16 +1,7 @@
 import { Image, Table, Button, } from 'antd';
 import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
-import { useGetChildProductByIdQuery, useGetChildProductPriceQuery } from '@/api/chilProductApi';
 const Productlist = () => {
-  // const {data:childProduct} = useGetChildProductPriceQuery({
-    // productId: '64f89c67e0441912b6a799b2',
-    // sizeId: '652d330ae203db769324b8fa',
-    // colorId: '6154d79a1f8e5a001f438724',
-  // })
-// console.log(childProduct);
-
-
   const dataSource = [
     {
       key: '1',
@@ -88,11 +79,10 @@ const Productlist = () => {
   ];
   return (
     <div className="container">
-      <h2 className="text-center text-2xl py-2">Trang Sản phẩm </h2>
+      <h3 className="font-semibold">Danh sách sản phẩm </h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='m-2 text-3xl text-blue-500'><Link to={'add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
         <Button className='m-2  float-right'><Link to={''}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
-
         <Table dataSource={dataSource} columns={columns} />
       </div>
     </div>

@@ -17,7 +17,6 @@ import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import Order from "./pages/view/Cart/Order";
 import ForgotPassword from "./pages/view/Auth/ForgotPassword";
 import Login from "./pages/view/Auth/Login";
-import UserPage from "./pages/view/Ushttps://github.com/Minh452003/FPL_DATN_FE_K17.3/pull/61/conflict?name=src%252Froutes.tsx&ancestor_oid=3b3ce7b92b8a1cb68a552ef6fe07a5c657223c1d&base_oid=076abbb8a5c8051676a23f98f916964b87df72aa&head_oid=0d1760ac8e9dcf4dcee99bb74c37fb983c7c5f08er/User";
 import Profile from "./pages/view/User/Account/Profile";
 import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
@@ -33,10 +32,11 @@ import ColorsAdd from "./pages/admin/colors/Colorsadd";
 import Colorslist from "./pages/admin/colors/ColorsList";
 import SizesList from "./pages/admin/sizes/Sizeslist";
 import Sizesadd from "./pages/admin/sizes/SizesAdd";
-import ContactPage from "./pages/view/contact/";
 import ReviewPage from "./pages/view/Review/ReviewPage";
 import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
 import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
+import UserPage from "./pages/view/User/User";
+import ContactPage from "./pages/view/contact/ContactPage";
 
 export const router = createBrowserRouter([
     {
