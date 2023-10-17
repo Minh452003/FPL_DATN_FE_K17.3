@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
 import { TbBrandProducthunt } from 'react-icons/tb';
 import { MdCategory } from 'react-icons/md';
+import { FaAccusoft } from "react-icons/fa";
 import { AiFillMessage, AiOutlineBranches, AiOutlineComment, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
@@ -102,6 +103,12 @@ const LayoutAdmin = () => {
             <Link to={'orders'} className="a">
               <span className="icon"><AiOutlineShoppingCart /></span>
               <span className="text1">Đơn hàng</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'material'} className="a">
+              <span className="icon"><FaAccusoft /></span>
+              <span className="text1">Nguyên vật liệu</span>
             </Link>
           </li>
           <li>

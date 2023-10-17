@@ -35,6 +35,9 @@ import SizesList from "./pages/admin/sizes/Sizeslist";
 import Sizesadd from "./pages/admin/sizes/SizesAdd";
 import ContactPage from "./pages/view/contact/ContactPage";
 import ReviewPage from "./pages/view/Review/ReviewPage";
+import MaterialAdd from "./pages/admin/material/MaterialAdd";
+import MaterialUpdate from "./pages/admin/material/MaterialUpdate";
+import MaterialList from "./pages/admin/material/MaterialList";
 
 export const router = createBrowserRouter([
     {
@@ -115,6 +118,13 @@ export const router = createBrowserRouter([
                     { index: true, element: <SizesList /> },
                     { path: 'add', element: <Sizesadd /> },
                     { path: 'edit/:id', element: <BrandUpdate /> },
+                ],
+            },
+            {
+                path: 'material', children: [
+                    { index: true, element: <MaterialList /> },
+                    { path: 'add', element: <MaterialAdd /> },
+                    { path: 'edit/:id', element: <MaterialUpdate /> },
                 ],
             },
         ]
