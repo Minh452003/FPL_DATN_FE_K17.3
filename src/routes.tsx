@@ -37,6 +37,9 @@ import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
 import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
 import UserPage from "./pages/view/User/User";
 import ContactPage from "./pages/view/contact/ContactPage";
+import CouponsList from "./pages/admin/coupons/CouponsList";
+import CouponsAdd from "./pages/admin/coupons/CouponsAdd";
+import CouponsUpdate from "./pages/admin/coupons/CouponsUpdate";
 
 export const router = createBrowserRouter([
     {
@@ -117,6 +120,13 @@ export const router = createBrowserRouter([
                     { index: true, element: <SizesList /> },
                     { path: 'add', element: <Sizesadd /> },
                     { path: 'edit/:idSize', element: <SizesUpdate /> },
+                ],
+            },
+            {
+                path: 'coupon', children: [
+                    { index: true, element: <CouponsList /> },
+                    { path: 'add', element: <CouponsAdd /> },
+                    { path: 'edit/:idCoupon', element: <CouponsUpdate /> },
                 ],
             },
         ]
