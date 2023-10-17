@@ -37,6 +37,7 @@ import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
 import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
 import UserPage from "./pages/view/User/User";
 import ContactPage from "./pages/view/contact/ContactPage";
+import CategoryTrash from "./pages/admin/category/CategoryTrash";
 
 export const router = createBrowserRouter([
     {
@@ -89,6 +90,7 @@ export const router = createBrowserRouter([
                 path: 'categories', children: [
                     { index: true, element: <Categorylist /> },
                     { path: 'add', element: <Categoryadd /> },
+                    { path: 'trash', element: <CategoryTrash /> },
                     { path: 'edit/:id', element: <Categoryupdate /> },
                 ],
             },
