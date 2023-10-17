@@ -31,11 +31,12 @@ import BrandsList from "./pages/admin/brands/BrandsList";
 import BrandUpdate from "./pages/admin/brands/BrandUpdate";
 import ColorsAdd from "./pages/admin/colors/Colorsadd";
 import Colorslist from "./pages/admin/colors/ColorsList";
-import SizesList from "./pages/admin/sizes/Sizeslist";
-import Sizesadd from "./pages/admin/sizes/SizesAdd";
 import ContactPage from "./pages/view/contact/ContactPage";
 import ReviewPage from "./pages/view/Review/ReviewPage";
 import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
+import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
+import Sizeslist from "./pages/admin/sizes/Sizeslist";
+import SizesAdd from "./pages/admin/sizes/SizesAdd";
 
 export const router = createBrowserRouter([
     {
@@ -113,9 +114,9 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'size', children: [
-                    { index: true, element: <SizesList /> },
-                    { path: 'add', element: <Sizesadd /> },
-                    { path: 'edit/:id', element: <BrandUpdate /> },
+                    { index: true, element: <Sizeslist /> },
+                    { path: 'add', element: <SizesAdd /> },
+                    { path: 'edit/:idSize', element: <SizesUpdate /> },
                 ],
             },
         ]

@@ -1,30 +1,47 @@
 
 
-import { useAddSizeMutation } from '@/api/sizeApi';
+import { useGetSizeByIdQuery, useUpdateSizeMutation } from '@/api/sizeApi';
 import { pause } from '@/utils/pause';
 import { Alert, Button, Form, Input } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 type FieldType = {
-  size_name?: string;
-  size_price?: number;
-  size_height?: number;
-  size_length?: number;
-  size_weight?: number;
-  size_width?: number
+    size_name?: string;
+    size_price?: number;
+    size_height?: number;
+    size_length?: number;
+    size_weight?: number;
+    size_width?: number
 
 };
-const SizesAdd = () => {
-  const [addSize, {isLoading, isSuccess: isAddSuccess}] = useAddSizeMutation();
+const SizesUpdate = () => {
+  const {idSize} = useParams<{idSize: string}>();
+  const {data: sizeData, isLoading} = useGetSizeByIdQuery(idSize || "");
+  const [updateSize, {isLoading: isUpdateLoading, isSuccess: isUpdateSuccess}] = useUpdateSizeMutation();
+  const [form] = Form.useForm();
   const navigate = useNavigate();
+  useEffect(() => {
+    form.setFieldsValue({
+        size_name: sizeData?.size_name,
+        size_price: sizeData?.size_price,
+        size_height: sizeData?.size_height,
+        size_length: sizeData?.size_length,
+        size_weight: sizeData?.size_weight,
+        size_width: sizeData?.size_width
+    })
+  }, [sizeData])
   const onFinish = (values: any) => {
-    addSize(values)
+    updateSize({...values, _id: idSize})
     .unwrap()
     .then(async () => {
       await pause(1000);
       navigate("/admin/size");
     })
   };
+  
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
@@ -34,12 +51,12 @@ const SizesAdd = () => {
       return Promise.reject("phai luon la so duong");
     }
     return Promise.resolve();
-  }
-  return ( 
+    }
+  return (
     <div className='max-w-4xl mx-auto'>
-      <h2 className='font-bold text-2xl mb-4'>Thêm mới kích cỡ</h2>
-      {isAddSuccess && <Alert message="Them thanh cong" type="success" />}
+      {isUpdateSuccess && <Alert message="Sua thanh cong" type="success" />}
     <Form
+    form={form}
     name="basic"
     labelCol={{ span: 8 }}
     wrapperCol={{ span: 16 }}
@@ -50,7 +67,7 @@ const SizesAdd = () => {
     autoComplete="off"
   >
     <Form.Item<FieldType>
-      label="Tên"
+      label="size name"
       name="size_name"
       rules={[{ required: true, message: 'Please input your size name!' }]}
     >
@@ -58,7 +75,7 @@ const SizesAdd = () => {
   </Form.Item>
 
   <Form.Item<FieldType>
-      label="Giá"
+      label="size price"
       name="size_price"
       rules={[{ required: true, message: 'Please input your size price!' }, {validator: validatePositiveNumber}]}
     >
@@ -66,7 +83,7 @@ const SizesAdd = () => {
   </Form.Item>
 
   <Form.Item<FieldType>
-      label="Chiều cao"
+      label="size height"
       name="size_height"
       rules={[{ required: true, message: 'Please input your size height!' }, {validator: validatePositiveNumber}]}
     >
@@ -74,7 +91,7 @@ const SizesAdd = () => {
   </Form.Item>
 
   <Form.Item<FieldType>
-      label="Độ dài"
+      label="size length"
       name="size_length"
       rules={[{ required: true, message: 'Please input your size length!' }, {validator: validatePositiveNumber}]}
     >
@@ -83,7 +100,7 @@ const SizesAdd = () => {
 
 
   <Form.Item<FieldType>
-      label="Cân nặng"
+      label="size weight"
       name="size_weight"
       rules={[{ required: true, message: 'Please input your size weight!' }, {validator: validatePositiveNumber}]}
     >
@@ -91,25 +108,30 @@ const SizesAdd = () => {
   </Form.Item>
 
   <Form.Item<FieldType>
-      label="Chiều dài"
+      label="size width"
       name="size_width"
       rules={[{ required: true, message: 'Please input your size width!' }, {validator: validatePositiveNumber}]}
     >
       <Input  type='number' />
   </Form.Item>
 
-    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-      <Button type="primary" htmlType="submit" danger>
-      Thêm mới
-    </Button>
-  
-    <Button type='primary' onClick={() => navigate("/admin/size")} className='ml-2' htmlType="submit" danger>
-      Danh sách size
-    </Button>
-    </Form.Item>
+  <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Button type="primary" danger htmlType="submit">
+          {isUpdateLoading ? (
+            <AiOutlineLoading3Quarters className="animate-spin" />
+          ): (
+            "Cập nhật kích cỡ"
+          )}
+        </Button>
+        <Button type='primary' danger className='ml-2' onClick={() => navigate("/admin/size")}>
+        Danh sách kích cỡ
+        </Button>
+      </Form.Item>
+
   </Form>
        </div>
   )
 }
 
-export default SizesAdd
+export default SizesUpdate
+
