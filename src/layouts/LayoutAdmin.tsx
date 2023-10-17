@@ -6,6 +6,7 @@ import { MdCategory } from 'react-icons/md';
 import { AiFillMessage, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
+import { BiSolidCoupon } from 'react-icons/bi';
 const LayoutAdmin = () => {
   const [isSidebarHidden, setSidebarHidden] = useState<boolean>(false);
 
@@ -108,6 +109,12 @@ const LayoutAdmin = () => {
             <Link to={'size'} className="a">
               <span className="icon"><AiOutlineFontSize /></span>
               <span className="text1">Kích cỡ</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'coupon'} className="a">
+              <span className="icon"><BiSolidCoupon /></span>
+              <span className="text1">Phiếu giảm giá</span>
             </Link>
           </li>
           <li>
