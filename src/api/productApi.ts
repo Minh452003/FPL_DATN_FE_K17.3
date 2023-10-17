@@ -74,6 +74,11 @@ const productApi = createApi({
             query: () => '/products-sell',
             providesTags: ['Products']
         }),
+        // Thêm query mới để lấy sản phẩm theo categoryId
+        getProductsByCategory: builder.query<any, string>({
+            query: (categoryId) => `/products?categoryId=${categoryId}`,
+            providesTags: ['Products'],
+        }),
     })
 });
 
@@ -87,7 +92,8 @@ export const {
     useUpdateProductMutation,
     useRemoveForceProductMutation,
     useUpdateRestoreProductMutation,
-    useGetProductSellQuery
+    useGetProductSellQuery,
+    useGetProductsByCategoryQuery
 } = productApi;
 export const productReducer = productApi.reducer;
 export default productApi

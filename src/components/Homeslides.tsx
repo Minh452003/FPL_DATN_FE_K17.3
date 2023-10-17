@@ -5,7 +5,7 @@ import { Navigation } from 'swiper/modules';
 
 const Homeslides = () => {
   return (
-    <div >
+    <div>
       <Swiper
         spaceBetween={50}
         slidesPerView={1}
