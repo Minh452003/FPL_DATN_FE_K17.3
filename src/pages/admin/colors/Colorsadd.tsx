@@ -1,24 +1,31 @@
 
-import { Button, Form, Input } from 'antd';
-
-const onFinish = (values: any) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
+import { useAddColorMutation } from '@/api/colorApi';
+import { pause } from '@/utils/pause';
+import { Alert, Button, Form, Input } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 type FieldType = {
-  brand_name?: string;
+  colors_name?: string;
 
 };
 const ColorsAdd = () => {
-  return (
-   
-    <div className='text-center'>
-     <h2 className="text-center text-2xl py-2">Thêm mới màu</h2>
-  <div >
+  const [addColor, {isLoading, isSuccess: isAddSuccess}] = useAddColorMutation();
+  const navigate = useNavigate();
+  const onFinish = (values: any) => {
+    addColor(values)
+    .unwrap()
+    .then(async () => {
+      await pause(1000);
+      navigate("/admin/color");
+    })
+  };
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
+  return ( 
+    <div className='max-w-4xl mx-auto'>
+      <h2 className='font-bold text-2xl mb-4'>Thêm mới màu</h2>
+      {isAddSuccess && <Alert message="Them thanh cong" type="success" />}
     <Form
     name="basic"
     labelCol={{ span: 8 }}
@@ -30,9 +37,9 @@ const ColorsAdd = () => {
     autoComplete="off"
   >
     <Form.Item<FieldType>
-      label="Màu"
-      className="username"
-      rules={[{ required: true, message: 'Please input your username!' }]}
+      label="Tên màu"
+      name="colors_name"
+      rules={[{ required: true, message: 'Please input your color!' }]}
     >
       <Input />
   </Form.Item>
@@ -42,12 +49,12 @@ const ColorsAdd = () => {
       Thêm mới
     </Button>
   
-    <Button href="/admin/color" className='ml-2' htmlType="submit" danger>
-      Bảng màu   </Button>
+    <Button type='primary' onClick={() => navigate("/admin/color")} className='ml-2' htmlType="submit" danger>
+      Danh sách màu
+    </Button>
     </Form.Item>
   </Form>
        </div>
-    </div>
   )
 }
 

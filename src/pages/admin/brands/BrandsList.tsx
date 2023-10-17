@@ -4,6 +4,7 @@ import { useGetBrandQuery, useRemoveBrandMutation } from '@/api/brandApi';
 import { IBrand } from '@/interfaces/brand';
 import { Button, Skeleton, Table, Popconfirm, Alert } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { Link } from "react-router-dom";
 
 
@@ -51,12 +52,12 @@ const BrandsList = () => {
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ): (
-                "Delete"
+                <FaTrashCan style={{ fontSize: '20', display: 'block' }} />
               )}
             </Button>
         </Popconfirm>
         <Button type="primary" danger className="ml-2">
-          <Link to={`/admin/brand/edit/${_id}`}>Update</Link>
+          <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
         </Button>
           </>
         )
@@ -70,8 +71,8 @@ const BrandsList = () => {
     <div className='flex justify-between items-center mb-4'>
       <h2 className='font-bold text-2xl'>Trang danh sách thương hiệu</h2>
       {isRemoveSuccess && <Alert message="Xoa thanh cong" type="success" />}
-      <Button type='primary' danger>
-        <Link to="/admin/brand/add">Thêm mới</Link>
+      <Button className='text-blue-500'>
+        <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
       </Button>
     </div>
     <Table dataSource={dataSource} columns={columns} pagination={{pageSize: 3}} />
