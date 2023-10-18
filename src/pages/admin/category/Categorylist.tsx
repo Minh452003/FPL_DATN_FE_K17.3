@@ -1,6 +1,7 @@
 import { useGetCategoryQuery, useRemoveCategoryMutation } from '@/api/categoryApi';
-import { Table, Button,Alert } from 'antd';
+import { Table, Button, } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { Table, Button,Alert, Popconfirm, message } from 'antd';
 import { FaCirclePlus, FaTrash, FaTrashCan, FaWrench } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -32,10 +33,7 @@ const Categorylist = () => {
       confirmButtonText: 'Vâng, tôi chắc chắn!',
       cancelButtonText: 'Huỷ'
     }).then((result) => {
-      if (result.isConfirmed) {
-        // Xóa sản phẩm
-        console.log(removeCategory(id).unwrap().then(()=>console.log(id)));
-        
+      if (result.isConfirmed) {        
         removeCategory(id).unwrap().then(() => {
           Swal.fire(
             'Xoá thành công!',
@@ -47,7 +45,7 @@ const Categorylist = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Thất bại',
-          'Thương hiệu xoá thất bại :)',
+          'Danh mục xoá thất bại :)',
           'error'
         )
       }
@@ -92,7 +90,6 @@ const Categorylist = () => {
   return (
     <div className="container">
       <h3 className="font-semibold">Danh sách danh mục</h3>
-      {isRemoveSuccess && <Alert message="danh mục chuyển vào thùng rác" type="success" />}
         <Button className='text-blue-500'>
           <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>

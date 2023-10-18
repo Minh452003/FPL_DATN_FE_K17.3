@@ -33,11 +33,18 @@ import Colorslist from "./pages/admin/colors/ColorsList";
 import SizesList from "./pages/admin/sizes/Sizeslist";
 import Sizesadd from "./pages/admin/sizes/SizesAdd";
 import ReviewPage from "./pages/view/Review/ReviewPage";
+import MaterialAdd from "./pages/admin/material/MaterialAdd";
+import MaterialUpdate from "./pages/admin/material/MaterialUpdate";
+import MaterialList from "./pages/admin/material/MaterialList";
 import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
 import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
 import UserPage from "./pages/view/User/User";
 import ContactPage from "./pages/view/contact/ContactPage";
 import CategoryTrash from "./pages/admin/category/CategoryTrash";
+import CouponsList from "./pages/admin/coupons/CouponsList";
+import CouponsAdd from "./pages/admin/coupons/CouponsAdd";
+import CouponsUpdate from "./pages/admin/coupons/CouponsUpdate";
+import ListproductChill from "./pages/admin/productchill/ListproductChill";
 
 export const router = createBrowserRouter([
     {
@@ -84,6 +91,7 @@ export const router = createBrowserRouter([
                     { index: true, element: <Productlist /> },
                     { path: 'add', element: <Productadd /> },
                     { path: 'edit/:id', element: <Productupdate /> },
+                    { path: 'chill/:productId', element: <ListproductChill /> },
                 ],
             },
             {
@@ -119,6 +127,20 @@ export const router = createBrowserRouter([
                     { index: true, element: <SizesList /> },
                     { path: 'add', element: <Sizesadd /> },
                     { path: 'edit/:idSize', element: <SizesUpdate /> },
+                ],
+            },
+            {
+                path: 'coupon', children: [
+                    { index: true, element: <CouponsList /> },
+                    { path: 'add', element: <CouponsAdd /> },
+                    { path: 'edit/:idCoupon', element: <CouponsUpdate /> },
+                ],
+            },
+            {
+                path: 'material', children: [
+                    { index: true, element: <MaterialList /> },
+                    { path: 'add', element: <MaterialAdd /> },
+                    { path: 'edit/:id', element: <MaterialUpdate /> },
                 ],
             },
         ]

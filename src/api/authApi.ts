@@ -13,7 +13,7 @@ const userApi = createApi({
             providesTags: ['User']
         }),
         getUserById: builder.query<IUser, number>({
-            query: (id) => `/users/${id}`,
+            query: (id:any) => `/users/${id}`,
             providesTags: ['User']
         }),
         // 
@@ -35,14 +35,14 @@ const userApi = createApi({
         }),
         // 
         removeUser: builder.mutation<IUser, number>({
-            query: (id) => ({
+            query: (id:any) => ({
                 url: `/users/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['User']
         }),
         removeUserByAdmin: builder.mutation<IUser, number>({
-            query: (id) => ({
+            query: (id:any) => ({
                 url: `/user/${id}/admin`,
                 method: 'DELETE',
             }),

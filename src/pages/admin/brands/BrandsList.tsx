@@ -2,7 +2,7 @@
 
 import { useGetBrandQuery, useRemoveBrandMutation } from '@/api/brandApi';
 import { IBrand } from '@/interfaces/brand';
-import { Button, Skeleton, Table, Popconfirm, Alert } from 'antd';
+import { Button, Skeleton, Table, Alert } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ const BrandsList = () => {
       name: brand_name
     }
   })
-  const deleteProduct = (id: any) => {
+  const deleteBrand = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
       text: "Khi xoá không thể phục hồi lại!",
@@ -61,7 +61,7 @@ const BrandsList = () => {
       render: ({ key: _id }: any) => {
         return (
           <>
-            <Button onClick={() => deleteProduct(_id)}>
+            <Button onClick={() => deleteBrand(_id)}>
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (

@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const materialsApi = createApi({
     reducerPath: 'materials',
-    tagTypes: ['materials'],
+    tagTypes: ['Materials'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         prepareHeaders: (headers) => {
@@ -17,47 +17,47 @@ const materialsApi = createApi({
 
     }),
     endpoints: (builder) => ({
-        getmaterials: builder.query<IMaterials[], void>({
-            query: () => `/materials`,
-            providesTags: ['materials']
+        getMaterial: builder.query<IMaterials[], void>({
+            query: () => '/materials',
+            providesTags: ['Materials']
         }),
-        getmaterialsById: builder.query<IMaterials, number | string>({
+        getMaterialById: builder.query<IMaterials, number | string>({
             query: (id) => `/materials/${id}`,
-            providesTags: ['materials']
+            providesTags: ['Materials']
         }),
-        addmaterials: builder.mutation({
+        addMaterial: builder.mutation({
             query: (materials: IMaterials)=> ({
                 url: '/materials',
                 method: "POST",
                 body: materials
             }),
-            invalidatesTags:['materials']
+            invalidatesTags:['Materials']
         }),
-        removematerials: builder.mutation({
+        removeMaterial: builder.mutation({
             query: (id) =>({
                 url: `/materials/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ['materials']
+            invalidatesTags: ['Materials']
         }),
-        updatematerials: builder.mutation({
+        updateMaterial: builder.mutation({
             query: (materials: IMaterials)=> ({
                 url: `/materials/${materials.id}`,
                 method: "PATCH",
                 body: materials
             }),
-            invalidatesTags:['materials']
+            invalidatesTags:['Materials']
         })
     })
 });
 
 
 export const {
-    useAddmaterialsMutation,
-    useGetmaterialsByIdQuery,
-    useGetmaterialsQuery,
-    useRemovematerialsMutation,
-    useUpdatematerialsMutation
+    useGetMaterialQuery,
+    useGetMaterialByIdQuery,
+    useAddMaterialMutation,
+    useRemoveMaterialMutation,
+    useUpdateMaterialMutation
 } = materialsApi;
 export const materialsReducer = materialsApi.reducer;
 export default materialsApi
