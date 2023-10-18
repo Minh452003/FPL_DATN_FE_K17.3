@@ -1,18 +1,48 @@
-import { useGetCategoryQuery, useRemoveCategoryMutation } from '@/api/categoryApi';
-import { Table, Button, } from 'antd';
+import { useGetAllDeleteQuery, useRestoreCategoryMutation } from '@/api/categoryApi';
+import { Table, Button,Alert } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { Table, Button,Alert, Popconfirm, message } from 'antd';
-import { FaCirclePlus, FaTrash, FaTrashCan, FaWrench } from "react-icons/fa6";
+import { FaCirclePlus, FaWindowRestore} from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 
-const Categorylist = () => {
-  const { data }: any = useGetCategoryQuery();
-  const categories = data?.category.docs;
-  const [removeCategory, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveCategoryMutation()
+const CategoryTrash = () => {
+  const { data }: any = useGetAllDeleteQuery();
+  const categories = data?.category;
+  
+  const [restoreCategory,{ isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =  useRestoreCategoryMutation()
 
-
+  const restoreCategory1 = (id:any)=>{
+    Swal.fire({
+      title: 'Bạn chắc chứ?',
+      text: "bạn có muốn khôi phục lại!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Vâng, tôi chắc chắn!',
+      cancelButtonText: 'Huỷ'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Xóa sản phẩm
+        
+        restoreCategory(id).unwrap().then(() => {
+          Swal.fire(
+            'khôi thành công!',
+            'danh mục của bạn đã được khôi.',
+            'success'
+          )
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Hiển thị thông báo hủy xóa sản phẩm
+        Swal.fire(
+          'Thất bại',
+          'Thương hiệu xoá thất bại :)',
+          'error'
+        )
+      }
+    })
+  }
 
   const data1 = categories?.map((category: any) => {
     return {
@@ -22,35 +52,7 @@ const Categorylist = () => {
       image: <img width={50} src={category.category_image?.url} alt="" />
     }
   });
-  const deleteProduct = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: "Khi có thể vào thùng rác để khôi phục lại!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ'
-    }).then((result) => {
-      if (result.isConfirmed) {        
-        removeCategory(id).unwrap().then(() => {
-          Swal.fire(
-            'Xoá thành công!',
-            'danh mục của bạn đã được xoá.',
-            'success'
-          )
-        })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire(
-          'Thất bại',
-          'Danh mục xoá thất bại :)',
-          'error'
-        )
-      }
-    })
-  }
+
   const columns = [
     {
       title: 'Ảnh ',
@@ -71,18 +73,15 @@ const Categorylist = () => {
       title: 'Chức năng',
       render: ({ key: _id }: { key: number | string }) => (
         <div>
-          <Button  onClick={() => deleteProduct(_id)}>
+            <Button onClick={() => restoreCategory1(_id)} type="primary" danger className="ml-2">
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                <FaTrashCan/>
+                <FaWindowRestore />
               )}
             </Button>
-            <Button type="primary" danger className="ml-2">
-              <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
-            </Button>
         </div>
-      ),
+      )
 
     }
 
@@ -90,14 +89,13 @@ const Categorylist = () => {
   return (
     <div className="container">
       <h3 className="font-semibold">Danh sách danh mục</h3>
+      {isRemoveSuccess && <Alert message="Xoa thanh cong" type="success" />}
         <Button className='text-blue-500'>
           <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
-      <Button className='m-2  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
         <Table dataSource={data1} columns={columns} />
     </div>
-    
   )
 }
 
-export default Categorylist
+export default CategoryTrash

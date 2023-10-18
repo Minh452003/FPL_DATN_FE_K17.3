@@ -21,9 +21,13 @@ const categoryApi = createApi({
             query: () => '/category',
             providesTags: ['Category']
         }),
-        
+        getAllDelete:builder.query<ICategory[],void>({
+            query:() => '/category/delete',
+            providesTags: ['Category']
+        })
+        ,
         getCategoryById: builder.query<ICategory, number | string>({
-            query: (id) => `/category/${id}`,
+            query: (id:any) => `/category/${id}`,
             providesTags: ['Category']
         }),
         // 
@@ -35,16 +39,14 @@ const categoryApi = createApi({
             }),
             invalidatesTags: ['Category']
         }),
-        removeCategory: builder.mutation<ICategory, string|number>({
-            
+        removeCategory: builder.mutation<ICategory, string>({
             query: (id) => ({
-                
                 url: `/category/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Category']
         }),
-        removeForceCategory: builder.mutation<ICategory, number>({
+        removeForceCategory: builder.mutation<ICategory, number|string>({
             query: (id) => ({
                 url: `/category/force/${id}`,
                 method: 'DELETE',
@@ -58,6 +60,13 @@ const categoryApi = createApi({
                 body: category
             }),
             invalidatesTags: ['Category']
+        }),
+        restoreCategory: builder.mutation({
+            query: (id) => ({
+                url: `/category/restore/${id}`,
+                method: 'PATCH'
+            }),
+            invalidatesTags: ['Category']
         })
     })
 });
@@ -65,10 +74,12 @@ const categoryApi = createApi({
 export const {
     useGetCategoryQuery,
     useGetCategoryByIdQuery,
+    useGetAllDeleteQuery,
     useAddCategoryMutation,
     useRemoveCategoryMutation,
     useRemoveForceCategoryMutation,
-    useUpdateCategoryMutation
+    useUpdateCategoryMutation,
+    useRestoreCategoryMutation
 } = categoryApi;
 export const categoryReducer = categoryApi.reducer;
 export default categoryApi
