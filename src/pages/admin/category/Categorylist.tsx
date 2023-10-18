@@ -1,7 +1,6 @@
 import { useGetCategoryQuery, useRemoveCategoryMutation } from '@/api/categoryApi';
-import { Table, Button, } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { Table, Button,Alert, Popconfirm, message } from 'antd';
+import { Table, Button } from 'antd';
 import { FaCirclePlus, FaTrash, FaTrashCan, FaWrench } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -10,7 +9,7 @@ import Swal from 'sweetalert2';
 const Categorylist = () => {
   const { data }: any = useGetCategoryQuery();
   const categories = data?.category.docs;
-  const [removeCategory, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveCategoryMutation()
+  const [removeCategory, { isLoading: isRemoveLoading }] = useRemoveCategoryMutation()
 
 
 
@@ -33,7 +32,7 @@ const Categorylist = () => {
       confirmButtonText: 'Vâng, tôi chắc chắn!',
       cancelButtonText: 'Huỷ'
     }).then((result) => {
-      if (result.isConfirmed) {        
+      if (result.isConfirmed) {
         removeCategory(id).unwrap().then(() => {
           Swal.fire(
             'Xoá thành công!',
@@ -71,16 +70,16 @@ const Categorylist = () => {
       title: 'Chức năng',
       render: ({ key: _id }: { key: number | string }) => (
         <div>
-          <Button  onClick={() => deleteProduct(_id)}>
-              {isRemoveLoading ? (
-                <AiOutlineLoading3Quarters className="animate-spin" />
-              ) : (
-                <FaTrashCan/>
-              )}
-            </Button>
-            <Button type="primary" danger className="ml-2">
-              <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
-            </Button>
+          <Button onClick={() => deleteProduct(_id)}>
+            {isRemoveLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              <FaTrashCan />
+            )}
+          </Button>
+          <Button type="primary" danger className="ml-2">
+            <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
+          </Button>
         </div>
       ),
 
@@ -90,13 +89,13 @@ const Categorylist = () => {
   return (
     <div className="container">
       <h3 className="font-semibold">Danh sách danh mục</h3>
-        <Button className='text-blue-500'>
-          <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
-        </Button>
+      <Button className='text-blue-500'>
+        <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
+      </Button>
       <Button className='m-2  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
-        <Table dataSource={data1} columns={columns} />
+      <Table dataSource={data1} columns={columns} />
     </div>
-    
+
   )
 }
 
