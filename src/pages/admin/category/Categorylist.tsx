@@ -1,15 +1,15 @@
 import { useGetCategoryQuery, useRemoveCategoryMutation } from '@/api/categoryApi';
-
-import { Table, Button, Popconfirm, message } from 'antd';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { Table, Button } from 'antd';
 import { FaCirclePlus, FaTrash, FaTrashCan, FaWrench } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 const Categorylist = () => {
   const { data }: any = useGetCategoryQuery();
   const categories = data?.category.docs;
-  const [removeCategory] = useRemoveCategoryMutation()
-  const [messageApi, contextHolder] = message.useMessage();
+  const [removeCategory, { isLoading: isRemoveLoading }] = useRemoveCategoryMutation()
 
 
 
@@ -21,8 +21,35 @@ const Categorylist = () => {
       image: <img width={50} src={category.category_image?.url} alt="" />
     }
   });
-  console.log(data1);
-
+  const deleteProduct = (id: any) => {
+    Swal.fire({
+      title: 'Bạn chắc chứ?',
+      text: "Khi có thể vào thùng rác để khôi phục lại!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Vâng, tôi chắc chắn!',
+      cancelButtonText: 'Huỷ'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeCategory(id).unwrap().then(() => {
+          Swal.fire(
+            'Xoá thành công!',
+            'danh mục của bạn đã được xoá.',
+            'success'
+          )
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Hiển thị thông báo hủy xóa sản phẩm
+        Swal.fire(
+          'Thất bại',
+          'Danh mục xoá thất bại :)',
+          'error'
+        )
+      }
+    })
+  }
   const columns = [
     {
       title: 'Ảnh ',
@@ -43,25 +70,16 @@ const Categorylist = () => {
       title: 'Chức năng',
       render: ({ key: _id }: { key: number | string }) => (
         <div>
-          <Popconfirm
-            title="Xóa sản phẩm"
-            description="Mày có chắc cmn chắn muốn xóa không??"
-            onConfirm={() => {
-              removeCategory(_id)
-                .unwrap()
-                .then(() => {
-                  messageApi.open({
-                    type: "success",
-                    content: "Xóa sản phẩm thành công",
-                  });
-                });
-            }}
-            okText="Có"
-            cancelText="Không"
-          >
-            <Button className='text-red-500'><FaTrashCan /></Button>
-          </Popconfirm>
-          <Button className='mr-5 text-blue-500' ><Link to={'edit/:id'}><FaWrench /></Link></Button>
+          <Button onClick={() => deleteProduct(_id)}>
+            {isRemoveLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              <FaTrashCan />
+            )}
+          </Button>
+          <Button type="primary" danger className="ml-2">
+            <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
+          </Button>
         </div>
       ),
 
@@ -71,10 +89,13 @@ const Categorylist = () => {
   return (
     <div className="container">
       <h3 className="font-semibold">Danh sách danh mục</h3>
-      <Button className='m-2 text-3xl text-blue-500'><Link to={'add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
-      <Button className='m-2  float-right'><Link to={''}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
+      <Button className='text-blue-500'>
+        <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
+      </Button>
+      <Button className='m-2  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
       <Table dataSource={data1} columns={columns} />
     </div>
+
   )
 }
 

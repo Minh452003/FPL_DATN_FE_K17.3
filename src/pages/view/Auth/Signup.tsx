@@ -2,45 +2,45 @@ import { BiLogoFacebookCircle } from 'react-icons/bi';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '@/api/authApi';
-import {useForm, SubmitHandler} from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import Swal from 'sweetalert2';
 
 
 type TypeInputs = {
     first_name?: string,
     last_name?: string,
-    email:string,
+    email: string,
     password?: string,
-    confirmPassword?:string
+    confirmPassword?: string
 }
 
 const Signup = () => {
-        const [signUp] = useSignUpMutation()
-        const {register, handleSubmit} = useForm<TypeInputs >();
-        const navigate = useNavigate();
-        
-        const onSubmit: SubmitHandler<TypeInputs> = async data => {
-            
-            const response: any = await signUp(data)
-            if (response.error) {
+    const [signUp] = useSignUpMutation()
+    const { register, handleSubmit } = useForm<TypeInputs>();
+    const navigate = useNavigate();
 
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: response.error.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Register has been added successfully!',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                navigate("/");
-            }
+    const onSubmit: SubmitHandler<TypeInputs> = async data => {
+
+        const response: any = await signUp(data)
+        if (response.error) {
+
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: response.error.data.message,
+                showConfirmButton: false,
+                timer: 3000
+            });
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Đăng kí thành công, vui lòng đăng nhập!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            navigate("/signin");
+        }
     }
 
     return (
@@ -54,10 +54,10 @@ const Signup = () => {
                         ></div>
                         <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                             <h3 className="pt-4 text-3xl text-center">ĐĂNG KÝ TÀI KHOẢN! 👤</h3>
-                            <form onSubmit = {handleSubmit(onSubmit)} className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+                            <form onSubmit={handleSubmit(onSubmit)} className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                                 <div className="mb-4 md:flex md:justify-between">
                                     <div className="mb-4 md:mr-2 md:mb-0">
-                                        <label  className="block mb-2 text-sm font-bold text-gray-700" >
+                                        <label className="block mb-2 text-sm font-bold text-gray-700" >
                                             Tên
                                         </label>
                                         <input
@@ -66,7 +66,7 @@ const Signup = () => {
                                             type="text"
                                             placeholder="Tên"
                                             required
-                                            {...register('first_name', {required: true})}
+                                            {...register('first_name', { required: true })}
                                         />
                                     </div>
                                     <div className="md:ml-2">
@@ -79,7 +79,7 @@ const Signup = () => {
                                             type="text"
                                             placeholder="Họ"
                                             required
-                                            {...register('last_name', {required: true})}
+                                            {...register('last_name', { required: true })}
 
                                         />
                                     </div>
@@ -94,8 +94,8 @@ const Signup = () => {
                                         type="email"
                                         placeholder="Email"
                                         required
-                                        {...register('email', {required: true})}
-                                        
+                                        {...register('email', { required: true })}
+
                                     />
                                 </div>
                                 <div className="mb-4 md:flex md:justify-between">
@@ -109,7 +109,7 @@ const Signup = () => {
                                             type="password"
                                             placeholder="******************"
                                             required
-                                            {...register('password', {required: true})}
+                                            {...register('password', { required: true })}
 
                                         />
                                     </div>
@@ -123,7 +123,7 @@ const Signup = () => {
                                             type="password"
                                             placeholder="******************"
                                             required
-                                            {...register('confirmPassword', {required: true})}
+                                            {...register('confirmPassword', { required: true })}
 
                                         />
                                     </div>

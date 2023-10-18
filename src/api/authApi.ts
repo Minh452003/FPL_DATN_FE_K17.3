@@ -13,10 +13,10 @@ const userApi = createApi({
             providesTags: ['User']
         }),
         getUserById: builder.query<IUser, number>({
-            query: (id:any) => `/users/${id}`,
+            query: (id: any) => `/users/${id}`,
             providesTags: ['User']
         }),
-        // 
+        // Đăng nhập
         signIn: builder.mutation({
             query: (user: IUser) => ({
                 url: '/signin',
@@ -25,6 +25,7 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
+        // Đăng kí
         signUp: builder.mutation({
             query: (user: IUser) => ({
                 url: '/signup',
@@ -33,16 +34,15 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
-        // 
         removeUser: builder.mutation<IUser, number>({
-            query: (id:any) => ({
+            query: (id: any) => ({
                 url: `/users/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['User']
         }),
         removeUserByAdmin: builder.mutation<IUser, number>({
-            query: (id:any) => ({
+            query: (id: any) => ({
                 url: `/user/${id}/admin`,
                 method: 'DELETE',
             }),

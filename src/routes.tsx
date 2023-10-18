@@ -16,7 +16,7 @@ import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import Order from "./pages/view/Cart/Order";
 import ForgotPassword from "./pages/view/Auth/ForgotPassword";
-import Login from "./pages/view/Auth/Login";
+import SignIn from "./pages/view/Auth/SignIn";
 import Profile from "./pages/view/User/Account/Profile";
 import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
@@ -40,9 +40,11 @@ import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
 import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
 import UserPage from "./pages/view/User/User";
 import ContactPage from "./pages/view/contact/ContactPage";
+import CategoryTrash from "./pages/admin/category/CategoryTrash";
 import CouponsList from "./pages/admin/coupons/CouponsList";
 import CouponsAdd from "./pages/admin/coupons/CouponsAdd";
 import CouponsUpdate from "./pages/admin/coupons/CouponsUpdate";
+import ListproductChill from "./pages/admin/productchill/ListproductChill";
 
 export const router = createBrowserRouter([
     {
@@ -75,7 +77,7 @@ export const router = createBrowserRouter([
                 ],
             },
             { path: 'signup', element: <Signup /> },
-            { path: 'login', element: <Login /> },
+            { path: 'signin', element: <SignIn /> },
         ]
     },
     {
@@ -89,12 +91,14 @@ export const router = createBrowserRouter([
                     { index: true, element: <Productlist /> },
                     { path: 'add', element: <Productadd /> },
                     { path: 'edit/:id', element: <Productupdate /> },
+                    { path: 'chill/:productId', element: <ListproductChill /> },
                 ],
             },
             {
                 path: 'categories', children: [
                     { index: true, element: <Categorylist /> },
                     { path: 'add', element: <Categoryadd /> },
+                    { path: 'trash', element: <CategoryTrash /> },
                     { path: 'edit/:id', element: <Categoryupdate /> },
                 ],
             },
