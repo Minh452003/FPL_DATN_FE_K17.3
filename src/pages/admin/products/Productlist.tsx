@@ -5,14 +5,14 @@ import { Link } from 'react-router-dom';
 import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetBrandQuery } from '@/api/brandApi';
-import { useGetmaterialsQuery } from '@/api/materialApi';
+import { useGetMaterialQuery } from '@/api/materialApi';
 
 const Productlist = () => {
   const {data} = useGetProductsQuery();
   const {data:categories} = useGetCategoryQuery<any>();
   const {data:colors}=useGetColorsQuery<any>();
   const {data:brands} = useGetBrandQuery<any>();
-  const {data:materials} = useGetmaterialsQuery<any>();
+  const {data:materials} = useGetMaterialQuery<any>();
   const [removeForceProduct] = useRemoveForceProductMutation();
   
   
