@@ -40,6 +40,7 @@ import ContactPage from "./pages/view/contact/ContactPage";
 import CouponsList from "./pages/admin/coupons/CouponsList";
 import CouponsAdd from "./pages/admin/coupons/CouponsAdd";
 import CouponsUpdate from "./pages/admin/coupons/CouponsUpdate";
+import ListproductChill from "./pages/admin/productchill/ListproductChill";
 
 export const router = createBrowserRouter([
     {
@@ -86,6 +87,7 @@ export const router = createBrowserRouter([
                     { index: true, element: <Productlist /> },
                     { path: 'add', element: <Productadd /> },
                     { path: 'edit/:id', element: <Productupdate /> },
+                    { path: 'chill/:productId', element: <ListproductChill /> },
                 ],
             },
             {
