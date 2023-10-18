@@ -43,14 +43,6 @@ const ForgotPassword = () => {
         </div>
       </div>
     </div>
-
-    // <div className="container mx-auto p-4 bg-white rounded shadow-lg w-full sm:w-96">
-    //     <h2 className="text-2xl font-semibold mb-4">Forgot Password</h2>
-    //     <p className="text-gray-600 mb-4">Enter your email address to reset your password.</p>
-    //     <input type="email" id="email" placeholder="Enter your email" className="w-full px-4 py-2 border rounded mb-4" required/>
-    //     <button  className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">Reset Password</button>
-    //     <p id="message" className="mt-2"></p>
-    // </div>
   );
 };
 export default ForgotPassword;
