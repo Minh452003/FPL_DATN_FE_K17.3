@@ -4,7 +4,7 @@ import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
 import { TbBrandProducthunt } from 'react-icons/tb';
 import { MdCategory } from 'react-icons/md';
 import { FaAccusoft } from "react-icons/fa";
-import { AiFillMessage, AiOutlineBranches, AiOutlineComment, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
+import { AiFillMessage, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
 import { BiSolidCoupon } from 'react-icons/bi';
