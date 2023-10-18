@@ -16,7 +16,7 @@ import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import Order from "./pages/view/Cart/Order";
 import ForgotPassword from "./pages/view/Auth/ForgotPassword";
-import Login from "./pages/view/Auth/Login";
+import SignIn from "./pages/view/Auth/SignIn";
 import Profile from "./pages/view/User/Account/Profile";
 import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
@@ -77,7 +77,7 @@ export const router = createBrowserRouter([
                 ],
             },
             { path: 'signup', element: <Signup /> },
-            { path: 'login', element: <Login /> },
+            { path: 'signin', element: <SignIn /> },
         ]
     },
     {
