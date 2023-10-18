@@ -1,6 +1,6 @@
 import { useGetProductsQuery, useRemoveForceProductMutation } from '@/api/productApi';
 import { Image, Table, Button, Popconfirm} from 'antd';
-import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash } from "react-icons/fa6";
+import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash,FaProductHunt } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetColorsQuery } from '@/api/colorApi';
@@ -59,7 +59,7 @@ const Productlist = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text: any) => <a>{text}</a>,
+render: (text: any) => <a>{text}</a>,
     },
     {
       title: 'Ảnh',
@@ -71,25 +71,25 @@ const Productlist = () => {
       title: 'Danh Mục',
       dataIndex: 'category',
       key: 'category',
-      render: (record:any) => {
+    render: (record:any) => {
         const catename = category?.find((cate:any) => cate._id === record);
         return catename?.category_name
         ;
     }
 
     },
-    
+
     {
       title: 'Thương hiệu',
       dataIndex: 'brand',
       key: 'brand',
-      render: (record:string) => {
+render: (record:string) => {
         const brandname = brand?.find((bra:any) => bra._id === record);
         return brandname?.brand_name
         ;
     }
     },
-   
+
     {
       title: 'Chất liệu',
       dataIndex: 'materials',
@@ -106,7 +106,7 @@ const Productlist = () => {
       title: 'Màu Sắc',
       dataIndex: 'colors',
       key: 'colors',
-      render: (record:string) => {
+render: (record:string) => {
         const colorname = color?.find((corlors:any) => colors._id === record);
         return colorname?.colors_name
         ;
@@ -127,18 +127,19 @@ const Productlist = () => {
       title: 'Chức năng',
       render: ({key:_id} :any) => (
         <div >
+          <Button className='mr-5 text-blue-500' ><Link to={`chill/${_id}`}><FaProductHunt /></Link></Button>
           <Button className='mr-5 text-blue-500' ><Link to={'edit/:id'}><FaWrench /></Link></Button>
           <Popconfirm
             title="Xóa sản phẩm"
             description="Mày có chắc cmn chắn muốn xóa không??"
             onConfirm={() => removeForceProduct(_id)
-                
+
             }
             okText="Có"
             cancelText="Không"
           >
            <Button className='text-red-500'><FaTrashCan /></Button>
-           
+
           </Popconfirm>
           
         </div>
