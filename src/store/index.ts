@@ -48,7 +48,7 @@ const rootReducer = combineReducers({
     status: statusReducer,
     materials: materialsReducer,
     upload: uploadReducer,
-    childProduct:childProductReducer
+    childProduct: childProductReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [

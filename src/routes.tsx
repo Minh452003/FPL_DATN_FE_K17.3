@@ -45,6 +45,7 @@ import CouponsList from "./pages/admin/coupons/CouponsList";
 import CouponsAdd from "./pages/admin/coupons/CouponsAdd";
 import CouponsUpdate from "./pages/admin/coupons/CouponsUpdate";
 import ListproductChill from "./pages/admin/productchill/ListproductChill";
+import VerifyOTP from "./pages/view/Auth/VerifyOTP";
 
 export const router = createBrowserRouter([
     {
@@ -76,8 +77,14 @@ export const router = createBrowserRouter([
                     { path: 'orderdetail', element: <OrderDetail /> }
                 ],
             },
-            { path: 'signup', element: <Signup /> },
+            {
+                path: 'signup', children: [
+                    { index: true, element: <Signup /> },
+                    { path: 'verifyOTP/:userId', element: <VerifyOTP /> }
+                ],
+            },
             { path: 'signin', element: <SignIn /> },
+
         ]
     },
     {
