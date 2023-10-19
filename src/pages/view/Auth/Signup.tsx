@@ -19,9 +19,14 @@ const Signup = () => {
     const { register, handleSubmit } = useForm<TypeInputs>();
     const navigate = useNavigate();
 
+
+
+
     const onSubmit: SubmitHandler<TypeInputs> = async data => {
 
         const response: any = await signUp(data)
+        // console.log(response.data.user._id);
+
         if (response.error) {
 
             Swal.fire({
@@ -29,19 +34,22 @@ const Signup = () => {
                 icon: 'error',
                 title: response.error.data.message,
                 showConfirmButton: false,
-                timer: 3000
+                timer: 1500
             });
         } else {
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Đăng kí thành công, vui lòng đăng nhập!',
+                title: 'Vui lòng Check Gmail để xác minh tài khoản',
                 showConfirmButton: false,
                 timer: 1500
             });
-            navigate("/signin");
+            navigate(`/signup/verifyOTP/${response.data.user._id}`);
         }
     }
+
+
+
 
     return (
         <div className="system-ui bg-gray-300">
