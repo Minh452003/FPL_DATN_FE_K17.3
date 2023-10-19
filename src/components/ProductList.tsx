@@ -1,189 +1,175 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
-import { useGetProductsQuery } from '@/api/productApi';
-import { useGetCategoryQuery } from '@/api/categoryApi';
-import { Skeleton } from 'antd';
+import { useGetProductsQuery, useRemoveForceProductMutation, useRemoveProductMutation } from '@/api/productApi';
+import { Image, Table, Button, Popconfirm } from 'antd';
+import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash, FaProductHunt } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useGetCategoryQuery } from '@/api/categoryApi';
+import { useGetColorsQuery } from '@/api/colorApi';
+import { useGetBrandQuery } from '@/api/brandApi';
+import { useGetMaterialQuery } from '@/api/materialApi';
 
-const ProductList = () => {
-    const { data: categories }: any = useGetCategoryQuery();
-    const { data: products, error, isLoading: isLoadingFetching }: any = useGetProductsQuery();
-    const [slidesPerView, setSlidesPerView] = useState(1); // Mặc định là 1
-    useEffect(() => {
-        // Xác định kích thước màn hình và cài đặt slidesPerView dựa trên kích thước
-        const handleResize = () => {
-            if (window.innerWidth >= 1024) {
-                setSlidesPerView(4); // Đối với laptop và màn hình lớn hơn
-            } else if (window.innerWidth >= 768) {
-                setSlidesPerView(2); // Đối với iPad
-            } else {
-                setSlidesPerView(1); // Đối với màn hình nhỏ hơn, ví dụ điện thoại
+const Productlist = () => {
+  const { data } = useGetProductsQuery();
+  const { data: categories } = useGetCategoryQuery<any>();
+  const { data: colors } = useGetColorsQuery<any>();
+  const { data: brands } = useGetBrandQuery<any>();
+  const { data: materials } = useGetMaterialQuery<any>();
+  const [removeForceProduct] = useRemoveForceProductMutation();
+  const [removeProduct]=useRemoveProductMutation()
+
+
+
+
+
+  const products = data?.product.docs;
+  const category = categories?.category?.docs;
+  const color = colors?.color;
+  const brand = brands?.brand;
+  const material = materials?.material;
+
+
+
+
+  const data1 = products?.map((product: any, index: number) => {
+    return {
+      key: product._id,
+      STT: index + 1,
+      name: product.product_name,
+      price: product.product_price,
+      category: product.categoryId,
+      brand: product.brandId,
+      colors: product.colorsId,
+      materials: product.materialId,
+      quantity: product.sold_quantity,
+
+
+      image: <img width={50} src={product.product?.url} alt="" />
+    }
+  });
+
+
+
+
+  const columns = [
+    {
+      title: 'STT',
+      dataIndex: 'STT',
+      key: 'STT',
+      render: (index: any) => <a>{index}</a>,
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text: any) => <a>{text}</a>,
+    },
+    {
+      title: 'Ảnh',
+      dataIndex: 'image',
+      key: 'image',
+      render: () => <Image src={"https://faha.vn/wp-content/uploads/2023/07/ban-ghe-cafe-ghe-cafe-dau-trau-gg01-6.jpg"} width={100} />
+    },
+    {
+      title: 'Danh Mục',
+      dataIndex: 'category',
+      key: 'category',
+      render: (record: any) => {
+        const catename = category?.find((cate: any) => cate._id === record);
+        return catename?.category_name
+          ;
+      }
+
+    },
+
+    {
+      title: 'Thương hiệu',
+      dataIndex: 'brand',
+      key: 'brand',
+      render: (record: string) => {
+        const brandname = brand?.find((bra: any) => bra._id === record);
+        return brandname?.brand_name
+          ;
+      }
+    },
+
+    {
+      title: 'Chất liệu',
+      dataIndex: 'materials',
+      key: 'materials',
+      render: (record: string) => {
+        const materialname = material?.find((materials: any) => materials._id === record);
+        return materialname?.material_name
+
+          ;
+      }
+    },
+
+    {
+      title: 'Màu Sắc',
+      dataIndex: 'colors',
+      key: 'colors',
+      render: (record: string) => {
+        const colorname = color?.find((corlors: any) => colors._id === record);
+        return colorname?.colors_name
+          ;
+      }
+    },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      render: (text: any) => <a>{text}</a>,
+    },
+    {
+      title: 'Chức năng',
+      render: ({ key: _id }: any) => (
+        <div >
+          <Button className='mr-5 text-blue-500' ><Link to={`chill/${_id}`}><FaProductHunt /></Link></Button>
+          <Button className='mr-5 text-blue-500' ><Link to={'edit/:id'}><FaWrench /></Link></Button>
+          <Popconfirm
+            title="Xóa sản phẩm"
+            description="Mày có chắc cmn chắn muốn xóa không??"
+            onConfirm={() => removeForceProduct(_id)
+
             }
-        };
-        window.addEventListener('resize', handleResize);
-        handleResize(); // Gọi lần đầu khi tải trang
+            okText="Có"
+            cancelText="Không"
+          >
+            <Button className='text-red-500'><FaTrashCan /></Button>
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+          </Popconfirm>
+          <Popconfirm
+            title="Xóa vĩnh viễn sản phẩm"
+            description="Mày có chắc cmn chắn muốn xóa vĩnh viễn không??"
+            onConfirm={() => removeProduct(_id)
 
+            }
+            okText="Có"
+            cancelText="Không"
+          >
+            <Button className='text-red-500'><FaTrashCan /></Button>
 
-    const formatCurrency = (number: number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-    if (isLoadingFetching) return <Skeleton />;
-    if (error) {
-        if ("data" in error && "status" in error) {
-            return (
-                <div>
-                    {error.status} - {JSON.stringify(error.data)}
-                </div>
-            );
-        }
-    }
-    return (
-        <div>
-            {categories && categories.category.docs.map((category: any) => {
-                if (products && products.product && products.product.docs) {
-                    const categoryProducts = products.product.docs.filter((product: any) => product.categoryId === category._id);
-                    return (
-                        <div key={category._id} className="main-col2 bg_menu lazyload" data-was-processed="true">
-                            <div className="container">
-                                <div className="std">
-                                    <div
-                                        className="best-seller-pro menu"
-                                        style={{ visibility: "visible" }}
-                                    >
-                                        <div className="slider-items-products">
-                                            <div className="new_title lt clear_pd">
-                                                <h4>
-                                                    <Link to={''} title={category.category_name}>
-                                                        {category.category_name}
-                                                    </Link>
-                                                </h4>
-                                            </div>
-                                            <div id="best-seller-slider" className="hidden-buttons">
-                                                <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
-                                                    <Swiper
-                                                        slidesPerView={slidesPerView}
-                                                        navigation={true}
-                                                        modules={[Navigation]}
-                                                    >
-                                                        <div aria-live="polite" className="slick-list draggable">
-                                                            <div
-                                                                className="slick-track"
-                                                                role="listbox"
-                                                                style={{
-                                                                    opacity: 1,
-                                                                    width: "2264px",
-                                                                    transform: "translate3d(0px, 0px, 0px)",
-                                                                }}
-                                                            >
-                                                                {categoryProducts && categoryProducts.map((product: any, index: number) => (
-                                                                    <SwiperSlide key={product._id}>
-                                                                        <div
-                                                                            className="item slick-slide slick-current slick-active"
-                                                                            tabIndex={-1}
-                                                                            role="option"
-                                                                            aria-describedby={`slick-slide${index + 10}`}
-                                                                            style={{ width: "273px" }}
-                                                                            data-slick-index={`${index}`}
-                                                                            aria-hidden="false"
-                                                                        >
-                                                                            <div className="col-item1 ">
-                                                                                <div className="item-inner">
-                                                                                    <div className="product-wrapper">
-                                                                                        <div className="thumb-wrapper">
-                                                                                            <Link
-                                                                                                to={''}
-                                                                                                className="thumb flip"
-                                                                                                title={product.product_name}
-                                                                                                tabIndex={0}
-                                                                                            >
-                                                                                                <img
-                                                                                                    className="lazyload loaded"
-                                                                                                    src={product.image.url}
-                                                                                                    alt={product.product_name}
-                                                                                                />
-                                                                                            </Link>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="item-info">
-                                                                                        <div className="info-inner">
-                                                                                            <h3 className="item-title">
-                                                                                                {" "}
-                                                                                                <Link
-                                                                                                    to={''}
-                                                                                                    title={product.product_name}
-                                                                                                    tabIndex={0}
-                                                                                                >
-                                                                                                    {product.product_name}
-                                                                                                </Link>{" "}
-                                                                                            </h3>
-                                                                                            <div className="item-content">
-                                                                                                <div className="item-price">
-                                                                                                    <div className="price-box">
-                                                                                                        <span className="regular-price">
-                                                                                                            {" "}
-                                                                                                            <span className="price">
-                                                                                                                {formatCurrency(product.product_price)}₫
-                                                                                                            </span>{" "}
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
+          </Popconfirm>
 
-                                                                                        <div className="actions hidden-xs hidden-sm remove_html">
-                                                                                            <form>
-                                                                                                <button
-                                                                                                    className="button btn-cart btn-more"
-                                                                                                    title="Chi tiết sản phẩm"
-                                                                                                    type="button"
-                                                                                                    tabIndex={0}
-                                                                                                >
-                                                                                                    <Link to={''}>
-                                                                                                        Chi tiết
-                                                                                                    </Link>
-                                                                                                </button>
-                                                                                                <input type="hidden" tabIndex={0} />
-                                                                                                <button
-                                                                                                    className="button btn-cart"
-                                                                                                    title="Mua hàng"
-                                                                                                    type="button"
-                                                                                                    tabIndex={0}
-                                                                                                >
-                                                                                                    <Link to={''}>Mua hàng</Link>
-                                                                                                </button>
-                                                                                            </form>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </SwiperSlide>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    </Swiper>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                } else {
-                    <p>..................không có sản phẩm nào.</p>
-                }
-            })}
         </div>
-    )
+      )
+    }
+
+  ];
+  return (
+    <div className="container">
+      <h3 className="font-semibold">Danh sách sản phẩm </h3>
+      <div className="overflow-x-auto drop-shadow-xl rounded-lg">
+        <Button className='m-2 text-3xl text-blue-500'><Link to={'add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
+        <Button className='m-2  float-right'><Link to={''}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
+        <Table dataSource={data1} columns={columns} />
+      </div>
+    </div>
+  )
 }
 
-export default ProductList
+export default Productlist
