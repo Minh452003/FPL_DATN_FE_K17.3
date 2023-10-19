@@ -3,41 +3,41 @@ import { useGetChildProductByProductIdQuery, useRemovecChildProductMutation } fr
 import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetSizeQuery } from '@/api/sizeApi';
 import { IChildProduct } from '@/interfaces/childProduct';
-import { Image, Table, Button,message, Popconfirm} from 'antd';
+import { Image, Table, Button, message, Popconfirm } from 'antd';
 import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash } from "react-icons/fa6";
 import { Link, useParams } from 'react-router-dom';
 const ListproductChill = () => {
-    const { productId } = useParams<string>();
-    const { data } = useGetChildProductByProductIdQuery<IChildProduct>(productId);
-    const {data:colors}=useGetColorsQuery<any>();
-    const {data:sizes} = useGetSizeQuery<any>()
-    const [RemoveChillproduct] = useRemovecChildProductMutation()
-    const [messageApi, contextHolder] = message.useMessage();
-    
+  const { productId }: any = useParams<string>();
+  const { data }: any = useGetChildProductByProductIdQuery<IChildProduct>(productId);
+  const { data: colors } = useGetColorsQuery<any>();
+  const { data: sizes } = useGetSizeQuery<any>()
+  const [RemoveChillproduct] = useRemovecChildProductMutation()
+  const [messageApi] = message.useMessage();
 
-    
-    const products = data?.products
-    const color =colors?.color; 
-    const size = sizes?.size
-  
-    
-    
-    const data1 = products?.map((product: any,index:number) => {
-        return {
-          key: product._id,
-          STT: index + 1,
-          name: product.product_name,
-          price:product.product_price,
-          colors:product.colorsId,
-          size:product.sizeId,
-          materials:product.materialId,
-          quantity:product.sold_quantity,
-    
-          image: <img width={50} src={product.product?.url} alt="" />
-        }
-      });
- 
-      
+
+
+  const products = data?.products
+  const color = colors?.color;
+  const size = sizes?.size
+
+
+
+  const data1 = products?.map((product: any, index: number) => {
+    return {
+      key: product._id,
+      STT: index + 1,
+      name: product.product_name,
+      price: product.product_price,
+      colors: product.colorsId,
+      size: product.sizeId,
+      materials: product.materialId,
+      quantity: product.sold_quantity,
+
+      image: <img width={50} src={product.product?.url} alt="" />
+    }
+  });
+
+
   const columns = [
     {
       title: 'STT',
@@ -58,26 +58,26 @@ const ListproductChill = () => {
       render: () => <Image src={"https://faha.vn/wp-content/uploads/2023/07/ban-ghe-cafe-ghe-cafe-dau-trau-gg01-6.jpg"} width={100} />
     },
     {
-        title: 'Kích cỡ',
-        dataIndex: 'sizes',
-        key: 'sizes',
-        render: (record:string) => {
-          const sizesname = size?.find((sizes:any) => size._id === record);
-          return sizesname?.size_name
+      title: 'Kích cỡ',
+      dataIndex: 'sizes',
+      key: 'sizes',
+      render: (record: string) => {
+        const sizesname = size?.find((s: any) => s._id === record);
+        return sizesname?.size_name
           ;
       }
-     }
-   ,
-   {
-    title: 'Màu Sắc',
-    dataIndex: 'colors',
-    key: 'colors',
-    render: (record:string) => {
-      const colorname = color?.find((corlors:any) => colors._id === record);
-      return colorname?.colors_name
-      ;
-  }
-  },
+    }
+    ,
+    {
+      title: 'Màu Sắc',
+      dataIndex: 'colors',
+      key: 'colors',
+      render: (record: string) => {
+        const colorname = color?.find((colors: any) => colors._id === record);
+        return colorname?.colors_name
+          ;
+      }
+    },
     {
       title: 'Giá',
       dataIndex: 'price',
@@ -91,7 +91,7 @@ const ListproductChill = () => {
     },
     {
       title: 'Chức năng',
-      render: ({ key: _id }: { key: number | string }) => (
+      render: ({ key: _id }: any) => (
         <div>
           <Popconfirm
             title="Xóa sản phẩm"
@@ -125,10 +125,10 @@ const ListproductChill = () => {
         <Button className='m-2 text-3xl text-blue-500'><Link to={'add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
         <Button className='m-2  float-right'><Link to={''}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
         {data1 && data1.length > 0 ? (
-                    <Table dataSource={data1} columns={columns} />
-                ) : (
-                    <p className='text-red-500 text-center py-4'>Không có sản phẩm thiết kế nào.</p>
-                )}
+          <Table dataSource={data1} columns={columns} />
+        ) : (
+          <p className='text-red-500 text-center py-4'>Không có sản phẩm thiết kế nào.</p>
+        )}
       </div>
     </div>
   )

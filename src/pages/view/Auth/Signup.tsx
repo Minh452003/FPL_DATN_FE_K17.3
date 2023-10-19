@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '@/api/authApi';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Swal from 'sweetalert2';
+import { IUser } from '@/interfaces/auth';
 
 
 type TypeInputs = {
@@ -19,16 +20,10 @@ const Signup = () => {
     const { register, handleSubmit } = useForm<TypeInputs>();
     const navigate = useNavigate();
 
-
-
-
-    const onSubmit: SubmitHandler<TypeInputs> = async data => {
-
+    const onSubmit: SubmitHandler<TypeInputs> = async (data: IUser) => {
         const response: any = await signUp(data)
-        // console.log(response.data.user._id);
 
         if (response.error) {
-
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -40,15 +35,13 @@ const Signup = () => {
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Vui lòng Check Gmail để xác minh tài khoản',
+                title: 'Vui lòng check email để xác minh tài khoản',
                 showConfirmButton: false,
                 timer: 1500
             });
             navigate(`/signup/verifyOTP/${response.data.user._id}`);
         }
     }
-
-
 
 
     return (
@@ -166,12 +159,8 @@ const Signup = () => {
                                 </div>
                                 <div className="text-center">
                                     <span> Bạn đã có tài khoản? </span>
-                                    <Link to="/login">
-                                        <a
-                                            className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline"
-                                        >
-                                            Đăng nhập!
-                                        </a>
+                                    <Link to="/signin" className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline">
+                                        Đăng nhập!
                                     </Link>
                                 </div>
                             </form>
