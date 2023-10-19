@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '@/api/authApi';
 import Swal from 'sweetalert2';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { IUser } from '@/interfaces/auth';
 
 
 type TypeInputs = {
@@ -16,11 +17,10 @@ const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<TypeInputs>()
     const navigate = useNavigate();
 
-    const onSubmit: SubmitHandler<TypeInputs> = async data => {
+    const onSubmit: SubmitHandler<TypeInputs> = async (data: IUser) => {
 
         const response: any = await signIn(data)
         if (response.error) {
-
             Swal.fire({
                 position: "center",
                 icon: "error",
@@ -93,11 +93,8 @@ const Login = () => {
                                     </button>
                                 </div>
                                 <div className="text-left">
-                                    <Link to="/forgotpassword">
-                                        <a
-                                            className="inline-block text-sm text-blue-700 align-baseline no-underline">
-                                            Quên mật khẩu?
-                                        </a>
+                                    <Link to="/forgotpassword" className="inline-block text-sm text-blue-700 align-baseline no-underline">
+                                        Quên mật khẩu?
                                     </Link>
                                 </div>
 
@@ -123,12 +120,8 @@ const Login = () => {
                                 </div>
                                 <div className="text-center">
                                     <span>Bạn chưa có tài khoản? </span>
-                                    <Link to="/signup">
-                                        <a
-                                            className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline"
-                                        >
-                                            Đăng ký!
-                                        </a>
+                                    <Link to="/signup" className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline">
+                                        Đăng ký!
                                     </Link>
                                 </div>
                             </form>

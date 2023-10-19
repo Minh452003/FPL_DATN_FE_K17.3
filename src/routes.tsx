@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
             { path: 'review', element: <ReviewPage /> },
-                { path: 'contact', element: <ContactPage /> },
+            { path: 'contact', element: <ContactPage /> },
 
             {
                 path: 'user', element: <UserPage />, children: [
@@ -106,7 +106,7 @@ export const router = createBrowserRouter([
                     { index: true, element: <Categorylist /> },
                     { path: 'add', element: <Categoryadd /> },
                     { path: 'trash', element: <CategoryTrash /> },
-                    { path: 'edit/:id', element: <Categoryupdate /> },
+                    { path: ':id/edit', element: <Categoryupdate /> },
                 ],
             },
             {

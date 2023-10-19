@@ -69,7 +69,7 @@ const Header = () => {
                   <Link to={'/signup'} className="text-[14px] no-underline text-[#000] hover:text-[#ff7600]">Đăng kí</Link>
                 </div>
                 <div>
-                  <Link to={'/login'} className="text-[14px] no-underline text-[#000] hover:text-[#ff7600]">Đăng Nhập</Link>
+                  <Link to={'/signin'} className="text-[14px] no-underline text-[#000] hover:text-[#ff7600]">Đăng Nhập</Link>
                 </div>
               </div>
               {/* Cart Icon */}

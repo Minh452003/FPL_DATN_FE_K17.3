@@ -16,9 +16,9 @@ const Categorylist = () => {
   const data1 = categories?.map((category: any) => {
     return {
       key: category._id,
-      name: category.category_name,
-      stake: category.price_increase_percent,
-      image: <img width={50} src={category.category_image?.url} alt="" />
+      category_name: category.category_name,
+      price_increase_percent: category.price_increase_percent,
+      category_image: <img width={50} src={category.category_image?.url} alt="" />
     }
   });
   const deleteProduct = (id: any) => {
@@ -53,18 +53,18 @@ const Categorylist = () => {
   const columns = [
     {
       title: 'Ảnh ',
-      dataIndex: 'image',
-      key: 'image',
+      dataIndex: 'category_image',
+      key: 'category_image',
     },
     {
       title: 'Danh Mục',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'category_name',
+      key: 'category_name',
     },
     {
       title: 'Tiền đặt cọc (%)',
-      dataIndex: 'stake',
-      key: 'stake',
+      dataIndex: 'price_increase_percent',
+      key: 'price_increase_percent',
     },
     {
       title: 'Chức năng',
@@ -78,7 +78,7 @@ const Categorylist = () => {
             )}
           </Button>
           <Button type="primary" danger className="ml-2">
-            <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
+            <Link to={`/admin/categories/${_id}/edit`}><FaWrench /></Link>
           </Button>
         </div>
       ),
@@ -90,7 +90,7 @@ const Categorylist = () => {
     <div className="container">
       <h3 className="font-semibold">Danh sách danh mục</h3>
       <Button className='text-blue-500'>
-        <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
+        <Link to="/admin/categories/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
       </Button>
       <Button className='m-2  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
       <Table dataSource={data1} columns={columns} />

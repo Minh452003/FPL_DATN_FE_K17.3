@@ -23,12 +23,21 @@ const uploadApi = createApi({
             }),
             invalidatesTags: ['Upload']
         }),
+        deleteImage: builder.mutation({
+            query: (publicId) => ({
+                url: `/images/${publicId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Upload'],
+        }),
+
     }),
 });
 
 export const {
     useAddImageMutation,
-    useUpdateImageMutation
+    useUpdateImageMutation,
+    useDeleteImageMutation
 } = uploadApi;
 export const uploadReducer = uploadApi.reducer;
 export default uploadApi
