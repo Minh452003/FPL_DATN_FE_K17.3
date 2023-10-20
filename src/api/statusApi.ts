@@ -7,14 +7,6 @@ const statusApi = createApi({
     tagTypes: ['Status'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
-        prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
-            }
-            return headers;
-        },
-
     }),
     endpoints: (builder) => ({
         getStatus: builder.query<IStatus[], void>({
@@ -22,20 +14,20 @@ const statusApi = createApi({
             providesTags: ['Status']
         }),
         addStatus: builder.mutation({
-            query: (status: IStatus)=> ({
+            query: (status: IStatus) => ({
                 url: '/status',
                 method: "POST",
                 body: status
             }),
-            invalidatesTags:['Status']
+            invalidatesTags: ['Status']
         }),
         updateStatus: builder.mutation({
-            query: (status: IStatus)=> ({
+            query: (status: IStatus) => ({
                 url: `/status/${status.id}`,
                 method: "PATCH",
                 body: status
             }),
-            invalidatesTags:['Status']
+            invalidatesTags: ['Status']
         })
     })
 });

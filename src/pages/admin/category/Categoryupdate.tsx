@@ -1,11 +1,11 @@
-import { useGetCategoryByIdQuery } from '@/api/categoryApi';
-import { useUpdateCategoryMutation } from '@/api/chilProductApi';
+import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/api/categoryApi';
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
 import { Button, Form, Input, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 type FieldType = {
@@ -23,7 +23,6 @@ const Categoryupdate = () => {
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
     const [imageUrl, setImageUrl] = useState<any>({});
     const navigate = useNavigate();
-
 
     useEffect(() => {
         if (categories) {
@@ -43,7 +42,35 @@ const Categoryupdate = () => {
     };
 
     const onFinish = (values: any) => {
-        console.log('Success:', values);
+        try {
+            if (Object.keys(imageUrl).length > 0) {
+                values.category_image = imageUrl;
+                updateCategory(values).then(() => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Cập nhật danh mục thành công!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    navigate('/admin/categories');
+                });
+            } else {
+                updateCategory(values).then(() => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Cập nhật danh mục thành công!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    navigate('/admin/categories');
+                });
+            }
+
+        } catch (error) {
+
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -56,17 +83,23 @@ const Categoryupdate = () => {
         customRequest: async ({ file }: any) => {
         },
         onChange(info: any) {
+
             if (info.file) {
                 const formData = new FormData();
                 formData.append('images', info.file.originFileObj);
                 try {
                     (async () => {
                         if (info.file.status === 'uploading') {
-                            const response: any = await updateImage(formData);
-                            if (response.data && response.data.urls) {
+                            const response: any = await updateImage(({
+                                publicId: categories.category?.category_image?.publicId,
+                                files: formData,
+                            } as any));
+                            if (response.data && response.data.publicId) {
                                 info.file.status = 'done'
                                 setFileList(info.fileList);
-                                setImageUrl(response.data.urls[0])
+                                const publicId = response.data.publicId;
+                                const url = response.data.url;
+                                setImageUrl({ url: url, publicId: publicId })
                             }
                         }
                     })()
@@ -152,7 +185,7 @@ const Categoryupdate = () => {
                                 }}>
                                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
                             </Upload>
-                            {categories.category.category_image && categories.category.category_image.url && (
+                            {Object.keys(imageUrl).length <= 0 && categories.category.category_image && categories.category.category_image.url && (
                                 <div className="mt-3">
                                     <img src={categories.category.category_image.url} alt="Ảnh danh mục hiện tại" style={{ maxWidth: '100px' }} />
                                 </div>
@@ -162,7 +195,9 @@ const Categoryupdate = () => {
                         <Form.Item wrapperCol={{ span: 16 }}>
 
                             <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
-                                Cập nhập
+                                {resultUpdate.isLoading ? <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div> : " Cập nhật danh mục"}
                             </Button>
                         </Form.Item>
                     </Form>

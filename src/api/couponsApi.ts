@@ -8,14 +8,6 @@ const couponApi = createApi({
     tagTypes: ['Coupon'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
-        prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
-            }
-            return headers;
-        },
-
     }),
     endpoints: (builder) => ({
         getCoupon: builder.query<ICoupon[], void>({
@@ -27,27 +19,27 @@ const couponApi = createApi({
             providesTags: ['Coupon']
         }),
         addCoupon: builder.mutation({
-            query: (coupon: ICoupon)=> ({
+            query: (coupon: ICoupon) => ({
                 url: '/coupons',
                 method: "POST",
                 body: coupon
             }),
-            invalidatesTags:['Coupon']
+            invalidatesTags: ['Coupon']
         }),
         removeCoupon: builder.mutation({
-            query: (id) =>({
+            query: (id) => ({
                 url: `/coupons/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ['Coupon']
         }),
         updateCoupon: builder.mutation({
-            query: (coupon: ICoupon)=> ({
+            query: (coupon: ICoupon) => ({
                 url: `/coupons/${coupon.id}`,
                 method: "PATCH",
                 body: coupon
             }),
-            invalidatesTags:['Coupon']
+            invalidatesTags: ['Coupon']
         })
     })
 });

@@ -8,20 +8,22 @@ const orderApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken') || '');
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
+            const storedData = localStorage.getItem('accessToken');
+            if (storedData) {
+                const { accessToken } = JSON.parse(storedData);
+                if (accessToken) {
+                    headers.set('Authorization', `Bearer ${accessToken}`);
+                }
             }
             return headers;
         },
-
     }),
     endpoints: (builder) => ({
         getOrder: builder.query<IOrder[], void>({
             query: () => '/order',
             providesTags: ['Order']
         }),
-        
+
         getOrderById: builder.query<IOrder, number | string>({
             query: (id) => `/order/${id}`,
             providesTags: ['Order']

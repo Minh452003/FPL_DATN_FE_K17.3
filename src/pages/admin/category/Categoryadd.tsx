@@ -136,7 +136,7 @@ const Categoryadd = () => {
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
                             <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
-                                {resultAdd.isLoading ? <div className="spinner-border text-info" role="status">
+                                {resultAdd.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Thêm danh mục"}
                             </Button>

@@ -29,8 +29,10 @@ const Login = () => {
                 timer: 3000
             })
         } else {
-            const accessToken: any = response.data.accessToken
-            localStorage.setItem('accessToken', JSON.stringify(accessToken));
+            const accessToken: any = response.data.accessToken;
+            const expirationTime = new Date().getTime() + 2 * 60 * 60 * 1000; // 2 giờ
+            const dataToStore = { accessToken, expirationTime };
+            localStorage.setItem('accessToken', JSON.stringify(dataToStore));
             Swal.fire({
                 position: 'center',
                 icon: 'success',

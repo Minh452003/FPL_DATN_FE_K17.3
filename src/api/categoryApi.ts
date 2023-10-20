@@ -8,9 +8,12 @@ const categoryApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
+            const storedData = localStorage.getItem('accessToken');
+            if (storedData) {
+                const { accessToken } = JSON.parse(storedData);
+                if (accessToken) {
+                    headers.set('Authorization', `Bearer ${accessToken}`);
+                }
             }
             return headers;
         },
@@ -21,13 +24,13 @@ const categoryApi = createApi({
             query: () => '/category',
             providesTags: ['Category']
         }),
-        getAllDelete:builder.query<ICategory[],void>({
-            query:() => '/category/delete',
+        getAllDelete: builder.query<ICategory[], void>({
+            query: () => '/category/delete',
             providesTags: ['Category']
         })
         ,
         getCategoryById: builder.query<ICategory, number | string>({
-            query: (id:any) => `/category/${id}`,
+            query: (id: any) => `/category/${id}`,
             providesTags: ['Category']
         }),
         // 
@@ -46,7 +49,7 @@ const categoryApi = createApi({
             }),
             invalidatesTags: ['Category']
         }),
-        removeForceCategory: builder.mutation<ICategory, number|string>({
+        removeForceCategory: builder.mutation<ICategory, number | string>({
             query: (id) => ({
                 url: `/category/force/${id}`,
                 method: 'DELETE',
@@ -55,7 +58,7 @@ const categoryApi = createApi({
         }),
         updateCategory: builder.mutation({
             query: (category: ICategory) => ({
-                url: `/category/${category.id}`,
+                url: `/category/${category._id}`,
                 method: 'PATCH',
                 body: category
             }),
