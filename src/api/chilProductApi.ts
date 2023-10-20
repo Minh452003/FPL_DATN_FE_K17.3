@@ -25,7 +25,7 @@ const childProductApi = createApi({
             providesTags: ['child-products']
         }),
         getChildProductById: builder.query<IChildProduct, number | string>({
-            query: (id) => `/child-products/${id}`,
+            query: (id) => `/child-product/${id}`,
             providesTags: ['child-products']
         }),
         // 
@@ -42,7 +42,7 @@ const childProductApi = createApi({
             }),
             invalidatesTags: ['child-products']
         }),
-        removecChildProduct: builder.mutation<IChildProduct, number>({
+        removecChildProduct: builder.mutation<IChildProduct, number|string>({
             query: (id) => ({
                 url: `/child-products/${id}`,
                 method: 'DELETE',
@@ -51,7 +51,7 @@ const childProductApi = createApi({
         }),
         updateChildProduct: builder.mutation({
             query: (childProduct: IChildProduct) => ({
-                url: `/child-product/${childProduct.id}`,
+                url: `/child-product/${childProduct._id}`,
                 method: 'PATCH',
                 body: childProduct
             }),
