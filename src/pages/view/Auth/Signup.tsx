@@ -2,24 +2,27 @@ import { BiLogoFacebookCircle } from 'react-icons/bi';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '@/api/authApi';
-import {useForm, SubmitHandler} from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import Swal from 'sweetalert2';
+import { IUser } from '@/interfaces/auth';
 
 
 type TypeInputs = {
     first_name?: string,
     last_name?: string,
+
     email?:string,
+
     password?: string,
-    confirmPassword?:string
+    confirmPassword?: string
 }
 
 const Signup = () => {
-        const [signUp] = useSignUpMutation()
-        const {register, handleSubmit} = useForm<TypeInputs >();
-        const navigate = useNavigate();
-        
-        const onSubmit: SubmitHandler<TypeInputs> = async data => {
+    const [signUp] = useSignUpMutation()
+    const { register, handleSubmit } = useForm<TypeInputs>();
+    const navigate = useNavigate();
+
+const onSubmit: SubmitHandler<TypeInputs> = async data => {
             
             const response: any = await signUp(data)
             if (response.error) {
@@ -43,7 +46,6 @@ const Signup = () => {
             }
 
         }
-        
     return (
         <div className="system-ui bg-gray-300">
             <div className="container mx-auto">
@@ -55,10 +57,10 @@ const Signup = () => {
                         ></div>
                         <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                             <h3 className="pt-4 text-3xl text-center">ĐĂNG KÝ TÀI KHOẢN! 👤</h3>
-                            <form onSubmit = {handleSubmit(onSubmit)} className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+                            <form onSubmit={handleSubmit(onSubmit)} className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                                 <div className="mb-4 md:flex md:justify-between">
                                     <div className="mb-4 md:mr-2 md:mb-0">
-                                        <label  className="block mb-2 text-sm font-bold text-gray-700" >
+                                        <label className="block mb-2 text-sm font-bold text-gray-700" >
                                             Tên
                                         </label>
                                         <input
@@ -67,9 +69,8 @@ const Signup = () => {
                                             type="text"
                                             placeholder="Tên"
                                             required
-                                            {...register('first_name', {required: true})}
+                                            {...register('first_name', { required: true })}
                                         />
-                                        {errors.name && <span style={{color: 'red'}}>This field is required</span>}
                                     </div>
                                     <div className="md:ml-2">
                                         <label className="block mb-2 text-sm font-bold text-gray-700" >
@@ -81,7 +82,7 @@ const Signup = () => {
                                             type="text"
                                             placeholder="Họ"
                                             required
-                                            {...register('last_name', {required: true})}
+                                            {...register('last_name', { required: true })}
 
                                         />
                                     </div>
@@ -96,8 +97,8 @@ const Signup = () => {
                                         type="email"
                                         placeholder="Email"
                                         required
-                                        {...register('email', {required: true})}
-                                        
+                                        {...register('email', { required: true })}
+
                                     />
                                 </div>
                                 <div className="mb-4 md:flex md:justify-between">
@@ -111,7 +112,7 @@ const Signup = () => {
                                             type="password"
                                             placeholder="******************"
                                             required
-                                            {...register('password', {required: true})}
+                                            {...register('password', { required: true })}
 
                                         />
                                     </div>
@@ -125,7 +126,7 @@ const Signup = () => {
                                             type="password"
                                             placeholder="******************"
                                             required
-                                            {...register('confirmPassword', {required: true})}
+                                            {...register('confirmPassword', { required: true })}
 
                                         />
                                     </div>
@@ -160,12 +161,8 @@ const Signup = () => {
                                 </div>
                                 <div className="text-center">
                                     <span> Bạn đã có tài khoản? </span>
-                                    <Link to="/login">
-                                        <a
-                                            className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline"
-                                        >
-                                            Đăng nhập!
-                                        </a>
+                                    <Link to="/signin" className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline">
+                                        Đăng nhập!
                                     </Link>
                                 </div>
                             </form>

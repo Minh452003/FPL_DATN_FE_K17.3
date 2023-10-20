@@ -33,7 +33,12 @@ const ProductSell = () => {
     const formatCurrency = (number: number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
-
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth", // Cuộn mượt
+        });
+    };
     if (isLoadingFetching) return <Skeleton />;
     if (error) {
         if ("data" in error && "status" in error) {
@@ -98,7 +103,7 @@ const ProductSell = () => {
                                                             <div className="product-wrapper">
                                                                 <div className="thumb-wrapper">
                                                                     <Link
-                                                                        to={''}
+                                                                        to={`/products/${product._id}`}
                                                                         className="thumb flip"
                                                                         title={product?.product_name}
                                                                         tabIndex={0}
@@ -116,7 +121,7 @@ const ProductSell = () => {
                                                                     <h3 className="item-title">
                                                                         {" "}
                                                                         <Link
-                                                                            to={''}
+                                                                            to={`/products/${product._id}`}
                                                                             title={product?.product_name}
                                                                             tabIndex={0}
                                                                         >
@@ -145,7 +150,7 @@ const ProductSell = () => {
                                                                             type="button"
                                                                             tabIndex={0}
                                                                         >
-                                                                            <Link to={''}>
+                                                                            <Link className='lickct' onClick={scrollToTop} to={`/products/${product._id}`}>
                                                                                 Chi tiết
                                                                             </Link>
                                                                         </button>

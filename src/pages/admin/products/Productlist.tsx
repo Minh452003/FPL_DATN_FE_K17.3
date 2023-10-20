@@ -8,6 +8,7 @@ import { useGetBrandQuery } from '@/api/brandApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
 
 const Productlist = () => {
+
   const { data } = useGetProductsQuery();
   const { data: categories } = useGetCategoryQuery<any>();
   const { data: colors } = useGetColorsQuery<any>();

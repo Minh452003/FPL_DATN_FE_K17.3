@@ -8,10 +8,10 @@ const cartApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken') || '');
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
-            }
+            // const accessToken = JSON.parse(localStorage.getItem('accessToken') || '');
+            // if (accessToken) {
+            //     headers.set('Authorization', `Bearer ${accessToken}`);
+            // }
             return headers;
         },
 
@@ -31,7 +31,7 @@ const cartApi = createApi({
         }),
         removeProductInCart: builder.mutation<any, { userId: string, productId: string }>({
             query: ({ userId, productId }) => ({
-                url: `/carts/${userId}?idProduct=${productId}/remove`,
+                url: `/carts/${userId}/remove?idProduct=${productId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Carts']

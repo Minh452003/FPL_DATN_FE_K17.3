@@ -8,9 +8,12 @@ const childProductApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
+            const storedData = localStorage.getItem('accessToken');
+            if (storedData) {
+                const { accessToken } = JSON.parse(storedData);
+                if (accessToken) {
+                    headers.set('Authorization', `Bearer ${accessToken}`);
+                }
             }
             return headers;
         },
@@ -19,7 +22,7 @@ const childProductApi = createApi({
     endpoints: (builder) => ({
         getChildProductPrice: builder.query({
             query: (query) => `/get-child-product?${query.productId ? `productId=${query.productId}` : ''}${query.sizeId ? `&sizeId=${query.sizeId}` : ''}${query.colorId ? `&colorId=${query.colorId}` : ''}`,
-            providesTags: ['child-products'] 
+            providesTags: ['child-products']
         }),
         getChildProductById: builder.query<IChildProduct, number | string>({
             query: (id) => `/child-product/${id}`,

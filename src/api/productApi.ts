@@ -7,13 +7,15 @@ const productApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
+            const storedData = localStorage.getItem('accessToken');
+            if (storedData) {
+                const { accessToken } = JSON.parse(storedData);
+                if (accessToken) {
+                    headers.set('Authorization', `Bearer ${accessToken}`);
+                }
             }
             return headers;
         },
-
     }),
     endpoints: (builder) => ({
         getProducts: builder.query<any, void>({

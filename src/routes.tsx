@@ -16,7 +16,7 @@ import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
 import Order from "./pages/view/Cart/Order";
 import ForgotPassword from "./pages/view/Auth/ForgotPassword";
-import Login from "./pages/view/Auth/Login";
+import SignIn from "./pages/view/Auth/SignIn";
 import Profile from "./pages/view/User/Account/Profile";
 import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
@@ -47,6 +47,7 @@ import CouponsUpdate from "./pages/admin/coupons/CouponsUpdate";
 import ListproductChill from "./pages/admin/productchill/ListproductChill";
 import AddChildProduct from "./pages/admin/productchill/AddChildProduct";
 import UpdateChildProduct from "./pages/admin/productchill/UpdateChildProduct";
+import VerifyOTP from "./pages/view/Auth/VerifyOTP";
 
 export const router = createBrowserRouter([
     {
@@ -78,8 +79,14 @@ export const router = createBrowserRouter([
                     { path: 'orderdetail', element: <OrderDetail /> }
                 ],
             },
-            { path: 'signup', element: <Signup /> },
-            { path: 'login', element: <Login /> },
+            {
+                path: 'signup', children: [
+                    { index: true, element: <Signup /> },
+                    { path: 'verifyOTP/:userId', element: <VerifyOTP /> }
+                ],
+            },
+            { path: 'signin', element: <SignIn /> },
+
         ]
     },
     {
@@ -103,7 +110,7 @@ export const router = createBrowserRouter([
                     { index: true, element: <Categorylist /> },
                     { path: 'add', element: <Categoryadd /> },
                     { path: 'trash', element: <CategoryTrash /> },
-                    { path: 'edit/:id', element: <Categoryupdate /> },
+                    { path: ':id/edit', element: <Categoryupdate /> },
                 ],
             },
             {

@@ -1,8 +1,49 @@
 import { BiLogoFacebookCircle } from 'react-icons/bi';
 import { AiOutlineGoogle } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSignInMutation } from '@/api/authApi';
+import Swal from 'sweetalert2';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { IUser } from '@/interfaces/auth';
+
+
+type TypeInputs = {
+    email: string,
+    password: string
+}
 
 const Login = () => {
+    const [signIn] = useSignInMutation();
+    const { register, handleSubmit, formState: { errors } } = useForm<TypeInputs>()
+    const navigate = useNavigate();
+
+    const onSubmit: SubmitHandler<TypeInputs> = async (data: IUser) => {
+
+        const response: any = await signIn(data)
+        if (response.error) {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: response.error.data.message,
+                showConfirmButton: false,
+                timer: 3000
+            })
+        } else {
+            const accessToken: any = response.data.accessToken;
+            const expirationTime = new Date().getTime() + 2 * 60 * 60 * 1000; // 2 giờ
+            const dataToStore = { accessToken, expirationTime };
+            localStorage.setItem('accessToken', JSON.stringify(dataToStore));
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Đăng nhập thành công',
+                showConfirmButton: false,
+                timer: 2000
+            })
+            navigate("/")
+        }
+    }
+
     return (
         <div className="system-ui bg-gray-300">
             <div className="container mx-auto">
@@ -14,7 +55,7 @@ const Login = () => {
                         ></div>
                         <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                             <h3 className="pt-4 text-3xl text-center">ĐĂNG NHẬP 🔑</h3>
-                            <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+                            <form onSubmit={handleSubmit(onSubmit)} className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                                 <div className="mb-4">
                                     <label className="block mb-2 text-sm font-bold text-gray-700" >
                                         Email
@@ -24,8 +65,11 @@ const Login = () => {
                                         id="email"
                                         type="email"
                                         placeholder="Email"
-                                        required
+                                        // required
+                                        {...register('email', { required: true })}
                                     />
+                                    {errors.email && <p className="text-red-500 text-xs mt-1">Email là trường bắt buộc.</p>}
+
                                 </div>
                                 <div className="mb-4">
                                     <label className="block mb-2 text-sm font-bold text-gray-700" >
@@ -36,8 +80,10 @@ const Login = () => {
                                         id="password"
                                         type="password"
                                         placeholder="******************"
-                                        required
+                                        // required
+                                        {...register('password', { required: true })}
                                     />
+                                    {errors.password && <p className="text-red-500 text-xs mt-1"> Mật khẩu là trường bắt buộc.</p>}
                                 </div>
 
                                 <div className="mb-6 text-center">
@@ -49,11 +95,8 @@ const Login = () => {
                                     </button>
                                 </div>
                                 <div className="text-left">
-                                    <Link to="/forgotpassword">
-                                        <a
-                                            className="inline-block text-sm text-blue-700 align-baseline no-underline">
-                                            Quên mật khẩu?
-                                        </a>
+                                    <Link to="/forgotpassword" className="inline-block text-sm text-blue-700 align-baseline no-underline">
+                                        Quên mật khẩu?
                                     </Link>
                                 </div>
 
@@ -79,12 +122,8 @@ const Login = () => {
                                 </div>
                                 <div className="text-center">
                                     <span>Bạn chưa có tài khoản? </span>
-                                    <Link to="/signup">
-                                        <a
-                                            className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline"
-                                        >
-                                            Đăng ký!
-                                        </a>
+                                    <Link to="/signup" className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline">
+                                        Đăng ký!
                                     </Link>
                                 </div>
                             </form>

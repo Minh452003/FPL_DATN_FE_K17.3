@@ -8,14 +8,6 @@ const sizeApi = createApi({
     tagTypes: ['Size'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
-        prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
-            }
-            return headers;
-        },
-
     }),
     endpoints: (builder) => ({
         getSize: builder.query<ISize[], void>({
@@ -27,27 +19,27 @@ const sizeApi = createApi({
             providesTags: ['Size']
         }),
         addSize: builder.mutation({
-            query: (size: ISize)=> ({
+            query: (size: ISize) => ({
                 url: '/size',
                 method: "POST",
                 body: size
             }),
-            invalidatesTags:['Size']
+            invalidatesTags: ['Size']
         }),
         removeSize: builder.mutation({
-            query: (id) =>({
+            query: (id) => ({
                 url: `/size/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ['Size']
         }),
         updateSize: builder.mutation({
-            query: (size: ISize)=> ({
+            query: (size: ISize) => ({
                 url: `/size/${size._id}`,
                 method: "PATCH",
                 body: size
             }),
-            invalidatesTags:['Size']
+            invalidatesTags: ['Size']
         })
     })
 });

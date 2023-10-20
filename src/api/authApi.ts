@@ -13,10 +13,19 @@ const userApi = createApi({
             providesTags: ['User']
         }),
         getUserById: builder.query<IUser, number>({
-            query: (id:any) => `/users/${id}`,
+            query: (id) => `/users/${id}`,
             providesTags: ['User']
         }),
-        // 
+        // VerifyOTP
+        verifyOTP: builder.mutation({
+            query: (user: IUser) => ({
+                url: '/verifyOTP',
+                method: 'POST',
+                body: user
+            }),
+            invalidatesTags: ['User']
+        }),
+        // Đăng nhập
         signIn: builder.mutation({
             query: (user: IUser) => ({
                 url: '/signin',
@@ -25,6 +34,7 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
+        // Đăng kí
         signUp: builder.mutation({
             query: (user: IUser) => ({
                 url: '/signup',
@@ -33,16 +43,15 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
-        // 
         removeUser: builder.mutation<IUser, number>({
-            query: (id:any) => ({
+            query: (id) => ({
                 url: `/users/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['User']
         }),
         removeUserByAdmin: builder.mutation<IUser, number>({
-            query: (id:any) => ({
+            query: (id) => ({
                 url: `/user/${id}/admin`,
                 method: 'DELETE',
             }),
@@ -63,19 +72,23 @@ const userApi = createApi({
                 body: user
             }),
             invalidatesTags: ['User']
-        })
-    })
+        }),
+    
+    }),
+
+
 });
 
 export const {
     useGetUsersQuery,
     useGetUserByIdQuery,
+    useVerifyOTPMutation,
     useSignInMutation,
     useSignUpMutation,
     useRemoveUserMutation,
     useUpdateUserMutation,
     useRemoveUserByAdminMutation,
-    useUpdateUserByAdminMutation
+    useUpdateUserByAdminMutation,
 } = userApi;
 export const userReducer = userApi.reducer;
 export default userApi
