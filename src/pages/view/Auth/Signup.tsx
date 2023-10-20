@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 type TypeInputs = {
     first_name?: string,
     last_name?: string,
-    email:string,
+    email?:string,
     password?: string,
     confirmPassword?:string
 }
@@ -41,8 +41,9 @@ const Signup = () => {
                 });
                 navigate("/");
             }
-    }
 
+        }
+        
     return (
         <div className="system-ui bg-gray-300">
             <div className="container mx-auto">
@@ -68,6 +69,7 @@ const Signup = () => {
                                             required
                                             {...register('first_name', {required: true})}
                                         />
+                                        {errors.name && <span style={{color: 'red'}}>This field is required</span>}
                                     </div>
                                     <div className="md:ml-2">
                                         <label className="block mb-2 text-sm font-bold text-gray-700" >
