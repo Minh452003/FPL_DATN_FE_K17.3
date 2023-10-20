@@ -26,12 +26,11 @@ const ListproductChill = () => {
     return {
       key: product._id,
       STT: index + 1,
-      name: product.product_name,
       price: product.product_price,
-      colors: product.colorsId,
-      size: product.sizeId,
+      colors: product.colorId,
+      sizes: product.sizeId,
       materials: product.materialId,
-      quantity: product.sold_quantity,
+      quantity: product.stock_quantity,
 
       image: <img width={50} src={product.product?.url} alt="" />
     }
@@ -46,12 +45,6 @@ const ListproductChill = () => {
       render: (index: any) => <a>{index}</a>,
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text: any) => <a>{text}</a>,
-    },
-    {
       title: 'Ảnh',
       dataIndex: 'image',
       key: 'image',
@@ -61,8 +54,10 @@ const ListproductChill = () => {
       title: 'Kích cỡ',
       dataIndex: 'sizes',
       key: 'sizes',
-      render: (record: string) => {
-        const sizesname = size?.find((s: any) => s._id === record);
+      render: (record: any) => {
+        console.log(size);
+
+        const sizesname = size?.find((s: any) => s._id == record);
         return sizesname?.size_name
           ;
       }
@@ -111,7 +106,7 @@ const ListproductChill = () => {
           >
             <Button className='text-red-500'><FaTrashCan /></Button>
           </Popconfirm>
-          <Button className='mr-5 text-blue-500' ><Link to={'edit/:id'}><FaWrench /></Link></Button>
+          <Button className='mr-5 text-blue-500' ><Link to={`/admin/products/childProduct/${_id}/edit`}><FaWrench /></Link></Button>
         </div>
       ),
 
@@ -122,7 +117,7 @@ const ListproductChill = () => {
     <div className="container">
       <h3 className="font-semibold">Danh sách sản phẩm thiết kế</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-        <Button className='m-2 text-3xl text-blue-500'><Link to={'add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
+        <Button className='m-2 text-3xl text-blue-500'><Link to={'/admin/products/childProduct/add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
         <Button className='m-2  float-right'><Link to={''}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
         {data1 && data1.length > 0 ? (
           <Table dataSource={data1} columns={columns} />

@@ -29,9 +29,9 @@ const cartApi = createApi({
             }),
             invalidatesTags: ['Carts']
         }),
-        removeProductInCart: builder.mutation<any, { userId: string, productId: string }>({
-            query: ({ userId, productId }) => ({
-                url: `/carts/${userId}/remove?idProduct=${productId}`,
+        removeProductInCart: builder.mutation<any, { userId: string, productId: string, colorId: string, sizeId: string, materialId: string }>({
+            query: ({ userId, productId, colorId, sizeId, materialId }) => ({
+                url: `/carts/${userId}/remove?idProduct=${productId}&colorId=${colorId}&sizeId=${sizeId}&materialId=${materialId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Carts']
@@ -72,13 +72,13 @@ const cartApi = createApi({
 });
 
 export const {
-   useGetCartsQuery,
-   useAddCartMutation,
-   useChangeQuantityMutation,
-   useRemoveAllCartMutation,
-   useRemoveProductInCartMutation,
-   useUpdateApplyCouponMutation,
-   useUpdateRemoveCouponMutation
+    useGetCartsQuery,
+    useAddCartMutation,
+    useChangeQuantityMutation,
+    useRemoveAllCartMutation,
+    useRemoveProductInCartMutation,
+    useUpdateApplyCouponMutation,
+    useUpdateRemoveCouponMutation
 } = cartApi;
 export const cartReducer = cartApi.reducer;
 export default cartApi
