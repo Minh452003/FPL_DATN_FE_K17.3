@@ -7,14 +7,6 @@ const materialsApi = createApi({
     tagTypes: ['Materials'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
-        prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
-            }
-            return headers;
-        },
-
     }),
     endpoints: (builder) => ({
         getMaterial: builder.query<IMaterials[], void>({
@@ -26,27 +18,27 @@ const materialsApi = createApi({
             providesTags: ['Materials']
         }),
         addMaterial: builder.mutation({
-            query: (materials: IMaterials)=> ({
+            query: (materials: IMaterials) => ({
                 url: '/materials',
                 method: "POST",
                 body: materials
             }),
-            invalidatesTags:['Materials']
+            invalidatesTags: ['Materials']
         }),
         removeMaterial: builder.mutation({
-            query: (id) =>({
+            query: (id) => ({
                 url: `/materials/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ['Materials']
         }),
         updateMaterial: builder.mutation({
-            query: (materials: IMaterials)=> ({
+            query: (materials: IMaterials) => ({
                 url: `/materials/${materials.id}`,
                 method: "PATCH",
                 body: materials
             }),
-            invalidatesTags:['Materials']
+            invalidatesTags: ['Materials']
         })
     })
 });

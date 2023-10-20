@@ -9,14 +9,6 @@ const colorApi = createApi({
     tagTypes: ['Colors'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
-        prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
-            }
-            return headers;
-        },
-
     }),
     endpoints: (builder) => ({
         getColors: builder.query<IColor[], void>({
@@ -28,27 +20,27 @@ const colorApi = createApi({
             providesTags: ['Colors']
         }),
         addColor: builder.mutation({
-            query: (color: IColor)=> ({
+            query: (color: IColor) => ({
                 url: '/colors',
                 method: "POST",
                 body: color
             }),
-            invalidatesTags:['Colors']
+            invalidatesTags: ['Colors']
         }),
         removeColor: builder.mutation({
-            query: (id) =>({
+            query: (id) => ({
                 url: `/colors/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ['Colors']
         }),
         updateColor: builder.mutation({
-            query: (color: IColor)=> ({
+            query: (color: IColor) => ({
                 url: `/colors/${color._id}`,
                 method: "PATCH",
                 body: color
             }),
-            invalidatesTags:['Colors']
+            invalidatesTags: ['Colors']
         })
     })
 });

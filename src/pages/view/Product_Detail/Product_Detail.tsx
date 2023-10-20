@@ -1,7 +1,6 @@
 import { FaArrowRight, FaChevronRight } from "react-icons/fa";
 import "./Product_detail.css";
 import "./Responsive_Product_Detail.css";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -10,44 +9,54 @@ import { useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "@/api/productApi";
 import { useGetBrandQuery } from "@/api/brandApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
-
 import { useGetMaterialQuery } from "@/api/materialApi";
+import { Skeleton } from "antd";
+import { useState } from "react";
 
 const Product_Detail = () => {
-  const { idProduct } = useParams();
-  // console.log(idProduct)
-
-  const { data, isLoading } = useGetProductByIdQuery(idProduct || "");
-  // console.log(data?.product)
+  const { idProduct }: any = useParams();
+  const { data, isLoading: isLoadingFetching, error }: any = useGetProductByIdQuery(idProduct || "");
+  const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
   const listOneData = data?.product;
-  // console.log(listOneData?.image.url)
-
-  const { data: brand } = useGetBrandQuery();
+  // --------------------------
+  const { data: brand }: any = useGetBrandQuery();
   const brandList = brand?.brand;
-
   const brandListOne = brandList?.find(
     (brandList: any) => brandList?._id === listOneData?.brandId
   )?.brand_name;
-  // console.log(brandListOne)
-
-  const { data: catgory } = useGetCategoryQuery();
-  //  console.log(catgory);
-
+  // -------------------------
+  const { data: catgory }: any = useGetCategoryQuery();
   const categoryLish = catgory?.category.docs;
-  // console.log(categoryLish);
   const categoryLishOne = categoryLish?.find(
     (categoryLish: any) => categoryLish?._id === listOneData?.categoryId
   )?.category_name;
-  // console.log(categoryLishOne);
-
-  const { data: material } = useGetMaterialQuery();
-  // console.log(material);
+  // --------------------------
+  const { data: material }: any = useGetMaterialQuery();
   const materialList = material?.material;
-  //  console.log(materialList);
   const materialLishOne = materialList?.find(
     (materialList: any) => materialList?._id === listOneData?.materialId
   )?.material_name;
-  //  console.log(materialLishOne);
+  const formatCurrency = (number: number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1); // Cập nhật số lượng
+    }
+  }
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1); // Cập nhật số lượng
+  }
+  if (isLoadingFetching) return <Skeleton />;
+  if (error) {
+    if ("data" in error && "status" in error) {
+      return (
+        <div>
+          {error.status} - {JSON.stringify(error.data)}
+        </div>
+      );
+    }
+  }
   return (
     <div className="container_swap">
       <div className="container">
@@ -63,7 +72,7 @@ const Product_Detail = () => {
             <h3 className="font-bold pt-10 pl-52 iklm">
               {listOneData?.product_name}
             </h3>
-            <p className="price">{listOneData?.product_price}</p>
+            <p className="price">{formatCurrency(listOneData?.product_price)}₫</p>
           </div>
           <div className="grid grid-cols-2 gap-2 np">
             <img
@@ -74,23 +83,23 @@ const Product_Detail = () => {
             <div className="product-text">
               <div className="col-span-2 flex mt-4 ef">
                 <div className="text1">Tình trạng:</div>
-                <div className="text2 pl-8 lp">Còn hàng</div>
+                <div className="text2 pl-10 lp">Còn hàng</div>
               </div>
-              <div className="col-span-2 flex">
-                <div className="text1">Mã sản phẩm:</div>
-                <div className="text2 pl-3 up">Đang cập nhật...</div>
+              <div className="col-span-2 flex ef">
+                <div className="text1">Đã bán:  </div>
+                <div className="text2 pl-16 lp">{listOneData?.sold_quantity} chiếc</div>
               </div>
-              <div className="col-span-2 flex">
-                <div className="text1">Hãng sản xuất:</div>
-                <div className="text2 pl-1">{brandListOne}</div>
+              <div className="col-span-2 flex ef">
+                <div className="text1">Thương hiệu:</div>
+                <div className="text2 pl-4 lp">{brandListOne}</div>
               </div>
-              <div className="col-span-2 flex">
+              <div className="col-span-2 flex ef">
                 <div className="text1">Loại:</div>
-                <div className="text2 pl-20 kj">{categoryLishOne}</div>
+                <div className="text2 kj lp">{categoryLishOne}</div>
               </div>
-              <div className="col-span-2 flex">
+              <div className="col-span-2 flex ef">
                 <div className="text1">Chất liệu:</div>
-                <div className="text2 pl-20 kj">{materialLishOne}</div>
+                <div className="text2 pl-14 lp">{materialLishOne}</div>
               </div>
               <div className="color">
                 <p>Màu sắc</p>
@@ -118,13 +127,12 @@ const Product_Detail = () => {
                   X
                 </button>
               </div>
-              <div className="quantity">
-                <p>{listOneData?.sold_quantity}</p>
-              </div>
+              <br />
               <div className="flex">
                 <button
                   aria-label="Decrease"
                   className="btn3 btn-solid-primary3 btn-c"
+                  onClick={decreaseQuantity}
                 >
                   -
                 </button>
@@ -132,11 +140,13 @@ const Product_Detail = () => {
                   className="btn4 btn-solid-primary4 btn-d mn"
                   aria-live="assertive"
                   aria-valuenow={1}
-                  value={1}
+                  value={quantity}
+                  onChange={(e) => setQuantity(parseInt(e.target.value))}
                 />
                 <button
                   aria-label="Increase"
                   className="btn5 btn-solid-primary5 btn-e"
+                  onClick={increaseQuantity}
                 >
                   +
                 </button>
@@ -155,12 +165,8 @@ const Product_Detail = () => {
                   TỰ THIẾT KẾ
                 </button>
               </div>
-              <div className="information">
-                <p>{listOneData?.description}</p>
-              </div>
             </div>
           </div>
-
           <div className="product-medium">
             <img
               className="image3"
@@ -173,16 +179,16 @@ const Product_Detail = () => {
               alt=""
             />
           </div>
-          <div className="include">
+          <div className="include ">
             <input type="radio" id="chi-tiet" name="tab" checked />
             <label
               htmlFor="chi-tiet"
-              className="detail tab-link current"
+              className="detail tab-link active"
               data-tab="tab-1"
             >
               Thông tin chi tiết
+              <hr className="w-52" />
             </label>
-
             <input type="radio" id="binh-luan" name="tab" />
             <label
               htmlFor="binh-luan"
@@ -190,73 +196,49 @@ const Product_Detail = () => {
               data-tab="tab-2"
             >
               Bình luận
+              <hr className="w-50" />
             </label>
-
-            <hr />
-
             <div id="chi-tiet-content">
-              <ul className="abcd">
-                <li>Phòng ngủ có vai trò quan trọng</li>
-                <li>đối với mỗi cá nhân để định hình</li>
-                <li>cá tính và quan điểm sống của chủ nhân</li>
-                <li>khi nghỉ ngơi mỗi ngày để lấy lại năng lượng</li>
-                <li>mỗi ngày hứng khởi vừa có không gian</li>
-                <li>nghiên cứu và sáng tạo cho học tập...</li>
-              </ul>
+              <br />
+              <div className="max-w-4xl mx-auto px-4">
+                <p className="text-gray-500 dark:text-gray-400">{listOneData?.description}</p>
+              </div>
             </div>
-
             <div id="binh-luan-content">
-              <div className="evaluate">
-                <img
-                  className="avatar"
-                  src="https://haycafe.vn/wp-content/uploads/2022/03/Background-cay-xanh-tren-thao-nguyen.jpg"
-                  alt=""
-                />
-                <p>Lộc</p>
-              </div>
-              <div className="col-span-2 flex mt-3">
-                <div className="text5">2023-01-01 12:00</div>
-              </div>
-              <div className="col-span-2 flex">
-                <div className="text3">Màu sắc:</div>
-                <div className="text4 pl-3">Nâu nhạt</div>
-              </div>
-              <div className="col-span-2 flex">
-                <div className="text3">Kích thước:</div>
-                <div className="text4 pl-1">S</div>
-              </div>
-              <div className="col-span-2 flex">
-                <div className="text3">Đồ gỗ xịn</div>
-              </div>
-              <div className="product-small">
-                <img
-                  className="image5"
-                  src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
-                  alt=""
-                />
-                <img
-                  className="image6"
-                  src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
-                  alt=""
-                />
-              </div>
-              <hr />
-              <div className="evaluate1">
-                <img
-                  className="avatar"
-                  src="https://haycafe.vn/wp-content/uploads/2022/03/Background-cay-xanh-tren-thao-nguyen.jpg"
-                  alt=""
-                />
-                <p>Nhận xét của bạn</p>
-              </div>
-              <input type="text" className="fill" />
-              <button
-                type="button"
-                aria-disabled="false"
-                className="btn7 btn-solid-primary7 btn-g"
-              >
-                Gửi
-              </button>
+              <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
+                <div className="max-w-4xl mx-auto px-4">
+                  <article className="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
+                    <footer className="flex justify-between items-center mb-2">
+                      <div className="flex items-center evaluate">
+                        <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold"><img
+                          className="mr-2 w-8 h-8 rounded-full"
+                          src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                          alt="Michael Gough" />Phùng Quang Minh</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400"><time
+                          title="February 8th, 2022">Feb. 8, 2022</time></p>
+                      </div>
+                      <button id="dropdownMenuIconHorizontalButton" data-dropdown-toggle="dropdownDotsHorizontal" className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                          <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                        </svg>
+                      </button>
+                    </footer>
+                    <p className="text-gray-500 dark:text-gray-400">Bài viết rất thẳng thắn. Thực sự đáng thời gian đọc. Cảm ơn! Nhưng các công cụ chỉ là công cụ dành cho các nhà thiết kế UX. Kiến thức về các công cụ thiết kế cũng quan trọng như việc tạo ra chiến lược thiết kế.</p>
+                    <div className="product-small">
+                      <img
+                        className="image5"
+                        src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
+                        alt=""
+                      />
+                      <img
+                        className="image6"
+                        src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
+                        alt=""
+                      />
+                    </div>
+                  </article>
+                </div>
+              </section>
             </div>
           </div>
 
@@ -660,9 +642,18 @@ const Product_Detail = () => {
           <div className="main-col2s sock_to_days">
             <div className="containers">
               <div className="product-sokss">
-                <h4 className="text-center ml-20 mt-10 cd">
-                  SẢN PHẨM LIÊN QUAN
-                </h4>
+                <div className="new_titles text-center">
+                  <h2 className="mt-6 kg zd">
+                    <a
+                      className="no-underline"
+                      href="san-pham-cung-loai"
+                      title="Sản phẩm cùng loại"
+                    >
+                      Sản phẩm liên quan
+                    </a>
+                  </h2>
+                </div>
+
 
                 <div className="sock_slidess slider-itemss slick_margins slick-initializeds slick-sliderss kh">
                   <div className="swiper-contaner">

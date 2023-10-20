@@ -8,14 +8,6 @@ const brandApi = createApi({
     tagTypes: ['Brands'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
-        prepareHeaders: (headers) => {
-            const accessToken = JSON.parse(localStorage.getItem('accessToken')!);
-            if (accessToken) {
-                headers.set('Authorization', `Bearer ${accessToken}`);
-            }
-            return headers;
-        },
-
     }),
     endpoints: (builder) => ({
         getBrand: builder.query<IBrand[], void>({
@@ -27,31 +19,31 @@ const brandApi = createApi({
             providesTags: ['Brands']
         }),
         addBrand: builder.mutation({
-            query: (brand: IBrand)=> ({
+            query: (brand: IBrand) => ({
                 url: '/brands',
                 method: "POST",
                 body: brand
             }),
-            invalidatesTags:['Brands']
+            invalidatesTags: ['Brands']
         }),
         removeBrand: builder.mutation({
-            query: (id) =>({
+            query: (id) => ({
                 url: `/brands/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ['Brands']
         }),
         updateBrand: builder.mutation({
-            query: (brand: IBrand)=> ({
+            query: (brand: IBrand) => ({
                 url: `/brands/${brand._id}`,
                 method: "PATCH",
                 body: brand
             }),
-            invalidatesTags:['Brands']
+            invalidatesTags: ['Brands']
         })
     })
 });
 
-export const {useGetBrandQuery, useGetBrandByIdQuery, useAddBrandMutation, useRemoveBrandMutation, useUpdateBrandMutation} = brandApi;
+export const { useGetBrandQuery, useGetBrandByIdQuery, useAddBrandMutation, useRemoveBrandMutation, useUpdateBrandMutation } = brandApi;
 export const brandReducer = brandApi.reducer;
 export default brandApi
