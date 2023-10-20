@@ -2,24 +2,23 @@ import { useAddChildProductMutation } from "@/api/chilProductApi";
 import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetProductsQuery } from "@/api/productApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
-import { Button, Form, Input, Upload, Select, Spin } from "antd";
+import { Button, Form, Input, Select, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 const AddChildProduct = () => {
-  const { data: Products, isLoading: isLoadingProducts } = useGetProductsQuery();
-  const { data: Colors, isLoading: isLoadingColors } = useGetColorsQuery();
-  const { data: Sizes, isLoading: isLoadingSizes } = useGetSizeQuery();
+  const { data: Products, isLoading: isLoadingProducts }: any = useGetProductsQuery();
+  const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
+  const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
   const [addChildProduct] = useAddChildProductMutation();
-  // console.log(isLoadingProducts);
-
   const products = isLoadingProducts ? [] : Products.product.docs;
   const colors = isLoadingColors ? [] : Colors?.color;
-
   const sizes = isLoadingSizes ? [] : Sizes?.size;
   const navigate = useNavigate();
+
+
   const onFinish = async (values: any) => {
     try {
-      addChildProduct(values).then(() => {
+      await addChildProduct(values).then((response: any) => {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -27,7 +26,7 @@ const AddChildProduct = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        console.log(values);
+        navigate(`/admin/products/childProduct/${response.data.product.productId}`)
       });
     } catch (error) {
       console.error("Đã xảy ra lỗi:", error);

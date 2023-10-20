@@ -128,7 +128,7 @@ const Productlist = () => {
       title: 'Chức năng',
       render: ({ key: _id }: any) => (
         <div >
-          <Button className='mr-5 text-blue-500' ><Link to={`chill/${_id}`}><FaProductHunt /></Link></Button>
+          <Button className='mr-5 text-blue-500' ><Link to={`childProduct/${_id}`}><FaProductHunt /></Link></Button>
           <Button className='mr-5 text-blue-500' ><Link to={'edit/:id'}><FaWrench /></Link></Button>
           <Popconfirm
             title="Xóa sản phẩm"
