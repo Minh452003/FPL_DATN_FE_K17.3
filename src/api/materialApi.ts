@@ -26,7 +26,7 @@ const materialsApi = createApi({
             invalidatesTags: ['Materials']
         }),
         removeMaterial: builder.mutation({
-            query: (id) => ({
+            query: (id: string) => ({
                 url: `/materials/${id}`,
                 method: "DELETE",
             }),
@@ -34,7 +34,7 @@ const materialsApi = createApi({
         }),
         updateMaterial: builder.mutation({
             query: (materials: IMaterials) => ({
-                url: `/materials/${materials.id}`,
+                url: `/materials/${materials._id}`,
                 method: "PATCH",
                 body: materials
             }),

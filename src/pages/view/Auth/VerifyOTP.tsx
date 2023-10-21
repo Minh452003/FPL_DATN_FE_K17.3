@@ -14,30 +14,22 @@ type TypeInputs = {
 
 const VerifyOTP = () => {
     const navigate = useNavigate();
-    const { userId } = useParams();
+    const { userId }: any = useParams();
     const { register, handleSubmit } = useForm<TypeInputs>();
     const [verifyOTPRequest] = useVerifyOTPMutation();
 
 
     const onSubmit: SubmitHandler<TypeInputs> = async (data: any) => {
-        console.log(data);
-
 
         const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
-        // Chuyển đổi 6 object riêng biệt thành 1 chuỗi 
         const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
-        console.log(combinedOTP);
-
-        const response : any = await verifyOTPRequest({ userId, otp: combinedOTP })
-
-        console.log(response);
-
+        const response: any = await verifyOTPRequest({ userId, otp: combinedOTP })
         if (response.error) {
             Swal.fire({
                 position: "center",
                 icon: "error",
                 title: response.error.data.message,
-                showCancelButton: false,
+                showCancelButton: true,
                 timer: 2000
             });
         } else {
@@ -45,7 +37,7 @@ const VerifyOTP = () => {
                 position: "center",
                 icon: "success",
                 title: "Xác minh tài khoản thành công!",
-                showConfirmButton: false,
+                showConfirmButton: true,
                 timer: 2000
             })
             navigate("/signin")

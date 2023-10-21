@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 
 const BrandsList = () => {
   const { data, error, isLoading }: any = useGetBrandQuery();
-  const [removeBrand, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveBrandMutation();
+  const [removeBrand, { isLoading: isRemoveLoading }] = useRemoveBrandMutation();
   const brand = data?.brand
   const dataSource = brand?.map(({ _id, brand_name }: IBrand) => {
     return {
@@ -42,7 +42,7 @@ const BrandsList = () => {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
-          'Thất bại',
+          'Đã huỷ',
           'Thương hiệu xoá thất bại :)',
           'error'
         )
@@ -60,18 +60,18 @@ const BrandsList = () => {
       key: 'action',
       render: ({ key: _id }: any) => {
         return (
-          <>
+          <div>
             <Button onClick={() => deleteBrand(_id)}>
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                <FaTrashCan style={{ fontSize: '20', display: 'block' }} />
+                <FaTrashCan />
               )}
             </Button>
             <Button type="primary" danger className="ml-2">
               <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
             </Button>
-          </>
+          </div>
         )
       }
     },
@@ -90,11 +90,10 @@ const BrandsList = () => {
     <div className="container">
       <h3 className="font-semibold">Danh sách thương hiệu </h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-        {isRemoveSuccess && <Alert message="Xoa thanh cong" type="success" />}
         <Button className='text-blue-500'>
           <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>
     </div>
   );

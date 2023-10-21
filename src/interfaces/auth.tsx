@@ -17,6 +17,8 @@ export interface IUser {
     passwordResetToken?: string
     passwordResetExpires?: string
     passwordChangeAt?: string
+    userId?: string;
+    otp?: string
 }
 export interface IImage {
     url: string;
