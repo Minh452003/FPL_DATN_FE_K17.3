@@ -48,6 +48,9 @@ import ListproductChill from "./pages/admin/productchill/ListproductChill";
 import AddChildProduct from "./pages/admin/productchill/AddChildProduct";
 import UpdateChildProduct from "./pages/admin/productchill/UpdateChildProduct";
 import VerifyOTP from "./pages/view/Auth/VerifyOTP";
+import OrdersUnconfirmed from "./pages/admin/orders/OrdersUnconfirmed";
+import OrdersConfirmed from "./pages/admin/orders/OrdersConfirmed";
+import OrdersCompleted from "./pages/admin/orders/OrdersCompleted";
 
 export const router = createBrowserRouter([
     {
@@ -145,6 +148,13 @@ export const router = createBrowserRouter([
                     { index: true, element: <CouponsList /> },
                     { path: 'add', element: <CouponsAdd /> },
                     { path: 'edit/:idCoupon', element: <CouponsUpdate /> },
+                ],
+            },
+            {
+                path: 'order', children: [
+                    { path: 'unconfirmed', element: <OrdersUnconfirmed /> },
+                    { path: 'confirmed', element: <OrdersConfirmed /> },
+                    { path: 'completed', element: <OrdersCompleted /> },
                 ],
             },
             {

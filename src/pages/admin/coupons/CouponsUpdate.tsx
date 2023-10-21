@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 
-
 type FieldType = {
     coupon_name?: string,
     coupon_code?: string,
@@ -17,22 +16,30 @@ type FieldType = {
     min_purchase_amount?: number
 };
 const CouponsUpdate = () => {
-  const {idCoupon} = useParams<{idCoupon: string}>();
-  const {data: couponData, isLoading} = useGetCouponByIdQuery(idCoupon || "");
+  const { idCoupon }: any = useParams();
+  const { data: coupons, isLoading }: any = useGetCouponByIdQuery(idCoupon || "");
   const [updateCoupon, {isLoading: isUpdateLoading, isSuccess: isUpdateSuccess}] = useUpdateCouponMutation();
-  const [form] = Form.useForm();
   const navigate = useNavigate();
-  useEffect(() => {
-    form.setFieldsValue({
-      coupon_name: couponData?.coupon_name,
-      coupon_code: couponData?.coupon_code,
-      coupon_content: couponData?.coupon_content,
-      coupon_quantity: couponData?.coupon_quantity,
-      discount_amount: couponData?.discount_amount,
-      expiration_date: couponData?.expiration_date,
-      min_purchase_amount: couponData?.min_purchase_amount
-    })
-  }, [couponData])
+  const [form] = Form.useForm();
+useEffect(() => {
+  if (coupons) {
+      setFields();
+  }
+}, [coupons]);
+
+const setFields = () => {
+  form.setFieldsValue({
+      _id: coupons.coupon?._id,
+      coupon_name: coupons.coupon?.coupon_name,
+      coupon_code: coupons.coupon?.coupon_code,
+      coupon_content: coupons.coupon?.coupon_content,
+      coupon_quantity: coupons.coupon?.coupon_quantity,
+      discount_amount: coupons.coupon?.discount_amount,
+      expiration_date: coupons.coupon?.expiration_date,
+      min_purchase_amount: coupons.coupon?.min_purchase_amount
+  });
+};
+
   const onFinish = (values: any) => {
     updateCoupon({...values, _id: idCoupon})
     .unwrap()
@@ -116,7 +123,7 @@ const CouponsUpdate = () => {
       <Input type='number' />
   </Form.Item>
 
-  <Form.Item<FieldType>
+ <Form.Item<FieldType>
       label="Ngày hết hạn"
       name="expiration_date"
       rules={[{ required: true, message: 'Please input your expiration_date!' },
@@ -124,8 +131,7 @@ const CouponsUpdate = () => {
       
     >
       <Input type='Date' />
-  </Form.Item>
-
+  </Form.Item> 
     
   <Form.Item<FieldType>
       label="Số tiền mua tối thiểu"
@@ -156,3 +162,4 @@ const CouponsUpdate = () => {
 }
 
 export default CouponsUpdate
+
