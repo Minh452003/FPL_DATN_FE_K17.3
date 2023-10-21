@@ -1,5 +1,3 @@
-
-
 import { useGetSizeByIdQuery, useUpdateSizeMutation } from '@/api/sizeApi';
 import { pause } from '@/utils/pause';
 import { Alert, Button, Form, Input } from 'antd';
@@ -18,21 +16,28 @@ type FieldType = {
 
 };
 const SizesUpdate = () => {
-  const {idSize} = useParams<{idSize: string}>();
-  const {data: sizeData, isLoading} = useGetSizeByIdQuery(idSize || "");
-  const [updateSize, {isLoading: isUpdateLoading, isSuccess: isUpdateSuccess}] = useUpdateSizeMutation();
-  const [form] = Form.useForm();
-  const navigate = useNavigate();
+    const { idSize }: any = useParams();
+    const { data: sizes, isLoading }: any = useGetSizeByIdQuery(idSize || "");
+    const [updateSize, {isLoading: isUpdateLoading, isSuccess: isUpdateSuccess}] = useUpdateSizeMutation();
+    const navigate = useNavigate();
+    const [form] = Form.useForm();
+
   useEffect(() => {
+    if (sizes) {
+        setFields();
+    }
+}, [sizes]);
+const setFields = () => {
     form.setFieldsValue({
-        size_name: sizeData?.size_name,
-        size_price: sizeData?.size_price,
-        size_height: sizeData?.size_height,
-        size_length: sizeData?.size_length,
-        size_weight: sizeData?.size_weight,
-        size_width: sizeData?.size_width
-    })
-  }, [sizeData])
+        _id: sizes.size?._id,
+        size_name: sizes.size?.size_name,
+        size_price: sizes.size?.size_price,
+        size_height: sizes.size?.size_height,
+        size_length: sizes.size?.size_length,
+        size_weight: sizes.size?.size_weight,
+        size_width: sizes.size?.size_width
+    });
+};
   const onFinish = (values: any) => {
     updateSize({...values, _id: idSize})
     .unwrap()

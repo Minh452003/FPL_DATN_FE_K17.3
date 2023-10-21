@@ -2,7 +2,7 @@
 
 import { useGetBrandQuery, useRemoveBrandMutation } from '@/api/brandApi';
 import { IBrand } from '@/interfaces/brand';
-import { Button, Skeleton, Table } from 'antd';
+import { Button, Skeleton, Table, Alert } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { Link } from "react-router-dom";
@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 
 const BrandsList = () => {
   const { data, error, isLoading }: any = useGetBrandQuery();
-  const [removeBrand, { isLoading: isRemoveLoading }] = useRemoveBrandMutation();
+  const [removeBrand, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveBrandMutation();
   const brand = data?.brand
   const dataSource = brand?.map(({ _id, brand_name }: IBrand) => {
     return {
@@ -90,6 +90,7 @@ const BrandsList = () => {
     <div className="container">
       <h3 className="font-semibold">Danh sách thương hiệu </h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
+        {isRemoveSuccess && <Alert message="Xoa thanh cong" type="success" />}
         <Button className='text-blue-500'>
           <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>

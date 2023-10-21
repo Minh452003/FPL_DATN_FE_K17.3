@@ -473,7 +473,39 @@ body {
 .text1 {
     margin-left: 10px;
 }
-
+.text4 {
+    margin-left: -1px;
+}
+#sidebar .side-menu li.active {
+    background: none;
+    position: relative;
+}
+#sidebar .side-menu li.active:hover {
+    background: none;
+    position: relative;
+}
+#sidebar .side-menu li.active::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    top: -40px;
+    right: 0;
+    box-shadow: none;
+    z-index: -1;
+}
+#sidebar .side-menu li.active::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    bottom: -40px;
+    right: 0;
+    box-shadow: none;
+    z-index: -1;
+}
 .a {
     text-decoration: none;
 }
