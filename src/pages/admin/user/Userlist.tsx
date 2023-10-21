@@ -6,19 +6,23 @@ import { useGetUsersQuery } from '@/api/authApi';
 const Userlist = () => {
   const { data }: any = useGetUsersQuery();
   const user = data?.data;
+  console.log(user);
+
   const data1 = user?.map((user: any, index: number) => {
     return {
       key: user._id,
       STT: index + 1,
       name: user.first_name,
       email: user.email,
-      phone: user.phone,
-      address: user.address,
-      image: <Image
-        width={100}
-        height={100}
-        src={user.avatar.url}
-      />
+      phone: user.phone ? user.phone : "Chưa có số điện thoại",
+      address: user.address ? user.address : "Chưa có địa chỉ",
+      image: user.avatar
+        ? <Image
+          width={80}
+          height={80}
+          src={user.avatar.url}
+        />
+        : "Chưa có ảnh"
     }
   });
   const columns = [
@@ -42,8 +46,8 @@ const Userlist = () => {
       reder: (record: any) => {
         return (
           <Image
-            width={100}
-            height={100}
+            width={80}
+            height={80}
             src={record.url}
           />
         )
@@ -73,7 +77,7 @@ const Userlist = () => {
     <div className="container">
       <h3 className="font-semibold">Danh sách khách hàng </h3>
       <br />
-      <Table dataSource={data1} columns={columns} />
+      <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
     </div>
   );
 }

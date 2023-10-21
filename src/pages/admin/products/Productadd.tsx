@@ -1,25 +1,107 @@
-import { Button, Form, Input, Upload,Select } from 'antd';
+import { useGetBrandQuery } from '@/api/brandApi';
+import { useGetCategoryQuery } from '@/api/categoryApi';
+import { useGetMaterialQuery } from '@/api/materialApi';
+import { useAddProductMutation } from '@/api/productApi';
+import { useAddImageMutation, useDeleteImageMutation } from '@/api/uploadApi';
+import { Button, Form, Input, Upload, Select, message, InputNumber } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { RcFile, UploadProps } from 'antd/es/upload';
+import { useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
+
+type FieldType = {
+    product_name?: string;
+    product_price?: string;
+    image?: any;
+    description?: string;
+    categoryId?: string;
+    brandId?: string;
+    materialId?: string;
+};
+
 const Productadd = () => {
+    const [addProduct, resultAdd] = useAddProductMutation();
+    const { data: categories } = useGetCategoryQuery<any>();
+    const { data: brands } = useGetBrandQuery<any>();
+    const { data: materials } = useGetMaterialQuery<any>();
+    const [addImage] = useAddImageMutation();
+    const [deleteImage] = useDeleteImageMutation();
+    const [fileList, setFileList] = useState<RcFile[]>([]);
+    const [imageUrl, setImageUrl] = useState<any>([]);
+    const navigate = useNavigate();
+
     const onFinish = (values: any) => {
-        console.log('Success:', values);
+        if (imageUrl.length > 0) {
+            values.image = imageUrl;
+            addProduct(values).then(() => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Thêm sản phẩm thành công!',
+                    showConfirmButton: true,
+                    timer: 1500
+                });
+                navigate("/admin/products");
+            })
+        } else {
+            message.error(`Thêm sản phẩm thất bại`);
+            return
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
 
-    type FieldType = {
-        username?: string;
-        password?: string;
-        remember?: string;
+    const props: UploadProps = {
+        name: 'image',
+        fileList: fileList, // Sử dụng state fileList
+        customRequest: async ({ file }: any) => {
+        },
+        onChange(info: any) {
+            if (info.file) {
+                const formData = new FormData();
+                formData.append('images', info.file.originFileObj);
+                try {
+                    (async () => {
+                        if (info.file.status === 'uploading') {
+                            const response: any = await addImage(formData);
+                            if (response.data && response.data.urls) {
+                                info.file.status = 'done'
+                                info.file.uid = response.data.urls[0].publicId
+                                setFileList(info.fileList);
+                                setImageUrl((prevUrls: any) => [...prevUrls, response.data.urls[0]]);
+                            }
+                        }
+                    })()
+                } catch (error) {
+                    console.error(error);
+                }
+                if (info.file.status === 'error') {
+                    message.error(`${info.file.name} upload thất bại.`);
+                } else if (info.file.status === 'removed') {
+                    const publicId = info.file.uid;
+                    (async () => {
+                        await deleteImage(publicId);
+                        const removedFile = info.file;
+                        const updatedFileList = fileList.filter(item => item.uid !== removedFile.uid);
+                        setFileList(updatedFileList);
+                        const updateImage = imageUrl.filter((item: any) => item.publicId !== removedFile.uid);
+                        setImageUrl(updateImage);
+                    })();
+                }
+            }
+        },
     };
+
     return (
         <div className="container-fluid mb-7">
             <div className="row">
                 <div className="card-body">
-                <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm Sản Phẩm</h5>
+                    <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm Sản Phẩm</h5>
                     <Form
                         name="basic"
                         labelCol={{ span: 8 }}
@@ -29,122 +111,102 @@ const Productadd = () => {
                         onFinish={onFinish}
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
-
                     >
                         <Form.Item<FieldType>
                             label="Tên"
-                            name="name"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Please input your name!' }]}
+                            name="product_name"
+                            labelCol={{ span: 24 }}
+                            wrapperCol={{ span: 24 }}
+                            rules={[{ required: true, message: 'Tên sản phẩm không được để trống!' }]}
                             style={{ marginLeft: '20px' }}
                         >
                             <Input placeholder='Tên sản phẩm' />
                         </Form.Item>
-
-                        <Form.Item
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            style={{ marginLeft: '20px' }}
-                            id="images" name="product_images" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}>
-                            <Upload action="https://tclq6w-8080.csb.app/api/images/upload" listType="picture" name='images' multiple>
-                                <Button icon={<FaUpload />}>Choose images</Button>
-                            </Upload>
-                        </Form.Item>
-
                         <Form.Item<FieldType>
                             label="Giá Niêm Yết"
-                            name="price"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Please input your name!' }]}
+                            name="product_price"
+                            labelCol={{ span: 24 }}
+                            wrapperCol={{ span: 24 }}
+                            rules={[{ required: true, message: 'Trường giá không được để trống!' }]}
                             style={{ marginLeft: '20px' }}
                         >
-                            <Input  />
+                            <InputNumber style={{ width: '100%' }} />
                         </Form.Item>
-
-                        <Form.Item<FieldType>
-                            label="Giá Khuyến mại"
-                            name="price"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Please input your name!' }]}
+                        <Form.Item
+                            labelCol={{ span: 24 }}
+                            wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
-                        >
-                            <Input  />
+                            id="images" name="image" label="Ảnh" rules={[{ required: true, message: 'Ảnh không được để trống' }]}>
+                            <Upload {...props} listType="picture" multiple
+                                fileList={fileList}
+                                beforeUpload={file => {
+                                    setFileList([...fileList, file]);
+                                }}
+                            >
+                                <Button icon={<FaUpload />}>Chọn ảnh</Button>
+                            </Upload>
                         </Form.Item>
-
-                        <Form.Item 
-                            label="Danh Mục"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Please input your select!' }]}
+                        <Form.Item
+                            label="Danh mục"
+                            name="categoryId"
+                            rules={[{ required: true, message: 'Danh mục không được để trống!' }]}
+                            labelCol={{ span: 24 }}
+                            wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
                         >
-                            <Select>
-                                <Select.Option value="demo">Giường</Select.Option>
-                                <Select value="1">Ghế</Select>
-                                <Select value="2">Tủ</Select>
+                            <Select >
+                                {categories && categories?.category.docs?.map((category: any) => {
+                                    return <Select.Option key={category?._id} value={category._id}>{category.category_name}</Select.Option>
+                                })}
                             </Select>
                         </Form.Item>
-
-                        <Form.Item 
+                        <Form.Item
                             label="Thương hiệu"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Please input your select!' }]}
+                            name="brandId"
+                            rules={[{ required: true, message: 'Thương hiệu không được để trống!' }]}
+                            labelCol={{ span: 24 }}
+                            wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
                         >
-                            <Select>
-                                <Select.Option value="demo">Casa</Select.Option>
-                                <Select value="1">Casa</Select>
-                                <Select value="2">Casa</Select>
+                            <Select >
+                                {brands && brands?.brand?.map((brand: any) => {
+                                    return <Select.Option key={brand?._id} value={brand._id}>{brand.brand_name}</Select.Option>
+                                })}
                             </Select>
                         </Form.Item>
-
-                        <Form.Item<FieldType>
-                            label="Số lượng"
-                            name="quantity"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Please input your quantity!' }]}
+                        <Form.Item
+                            label="Chất liệu"
+                            name="materialId"
+                            rules={[{ required: true, message: 'Chất liệu không được để trống!' }]}
+                            labelCol={{ span: 24 }}
+                            wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
                         >
-                            <Input  />
-                        </Form.Item>
-
-                        <Form.Item 
-                            label="Màu Sắc"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Please input your select!' }]}
-                            style={{ marginLeft: '20px' }}
-                        >
-                            <Select>
-                                <Select.Option value="demo">Nâu</Select.Option>
-                                <Select value="1">Đỏ</Select>
-                                <Select value="2">Vàng</Select>
+                            <Select >
+                                {materials && materials?.material?.map((mate: any) => {
+                                    return <Select.Option key={mate?._id} value={mate._id}>{mate.material_name}</Select.Option>
+                                })}
                             </Select>
                         </Form.Item>
 
                         <Form.Item<FieldType>
                             label="Mô tả"
-                            name="price"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Please input your name!' }]}
+                            name="description"
+                            labelCol={{ span: 24 }}
+                            wrapperCol={{ span: 24 }}
+                            rules={[{ required: true, message: 'Mô tả không được để trống!' }]}
                             style={{ marginLeft: '20px' }}
                         >
                             <TextArea rows={4} />
                         </Form.Item>
-
-
-                        
-
                         <Form.Item wrapperCol={{ span: 16 }}>
-
                             <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
-                                Thêm Danh Mục
+                                {resultAdd.isLoading ? <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div> : " Thêm sản phẩm"}
+                            </Button>
+                            <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/products")} htmlType="submit">
+                                Danh sách sản phẩm
                             </Button>
                         </Form.Item>
                     </Form>

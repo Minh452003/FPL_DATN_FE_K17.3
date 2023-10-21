@@ -36,8 +36,8 @@ const Login = () => {
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Đăng nhập thành công',
-                showConfirmButton: false,
+                title: 'Đăng nhập thành công!',
+                showConfirmButton: true,
                 timer: 2000
             })
             navigate("/")

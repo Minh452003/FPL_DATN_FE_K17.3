@@ -30,7 +30,7 @@ const Categoryadd = () => {
                     position: 'center',
                     icon: 'success',
                     title: 'Thêm danh mục thành công!',
-                    showConfirmButton: false,
+                    showConfirmButton: true,
                     timer: 1500
                 });
                 navigate("/admin/categories");
@@ -139,6 +139,9 @@ const Categoryadd = () => {
                                 {resultAdd.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Thêm danh mục"}
+                            </Button>
+                            <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/categories")} htmlType="submit">
+                                Danh sách danh mục
                             </Button>
                         </Form.Item>
                     </Form>

@@ -1,6 +1,6 @@
 import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/api/categoryApi';
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
-import { Button, Form, Input, Upload, message } from 'antd';
+import { Button, Form, Input, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
@@ -50,7 +50,7 @@ const Categoryupdate = () => {
                         position: 'center',
                         icon: 'success',
                         title: 'Cập nhật danh mục thành công!',
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                         timer: 1500,
                     });
                     navigate('/admin/categories');
@@ -61,7 +61,7 @@ const Categoryupdate = () => {
                         position: 'center',
                         icon: 'success',
                         title: 'Cập nhật danh mục thành công!',
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                         timer: 1500,
                     });
                     navigate('/admin/categories');
@@ -124,11 +124,10 @@ const Categoryupdate = () => {
             }
         },
     };
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
 
+    if (isLoading) return <Skeleton />;
     if (isError || !categories || !categories.category) {
+
         return <div>Error: Unable to fetch category data.</div>;
     }
 
@@ -198,6 +197,9 @@ const Categoryupdate = () => {
                                 {resultUpdate.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Cập nhật danh mục"}
+                            </Button>
+                            <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/categories")} htmlType="submit">
+                                Danh sách danh mục
                             </Button>
                         </Form.Item>
                     </Form>

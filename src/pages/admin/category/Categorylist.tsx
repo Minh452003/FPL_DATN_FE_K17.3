@@ -36,14 +36,14 @@ const Categorylist = () => {
         removeCategory(id).unwrap().then(() => {
           Swal.fire(
             'Xoá thành công!',
-            'danh mục của bạn đã được xoá.',
+            'Danh mục của bạn đã được xoá.',
             'success'
           )
         })
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
-          'Thất bại',
+          'Đã huỷ',
           'Danh mục xoá thất bại :)',
           'error'
         )
@@ -93,7 +93,7 @@ const Categorylist = () => {
         <Link to="/admin/categories/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
       </Button>
       <Button className='m-2  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
-      <Table dataSource={data1} columns={columns} />
+      <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
     </div>
 
   )

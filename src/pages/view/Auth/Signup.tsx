@@ -11,7 +11,7 @@ type TypeInputs = {
     first_name?: string,
     last_name?: string,
 
-    email?:string,
+    email?: string,
 
     password?: string,
     confirmPassword?: string
@@ -22,30 +22,29 @@ const Signup = () => {
     const { register, handleSubmit } = useForm<TypeInputs>();
     const navigate = useNavigate();
 
-const onSubmit: SubmitHandler<TypeInputs> = async data => {
-            
-            const response: any = await signUp(data)
-            if (response.error) {
+    const onSubmit: SubmitHandler<TypeInputs> = async data => {
 
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: response.error.data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Register has been added successfully!',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                navigate("/");
-            }
-
+        const response: any = await signUp(data)
+        if (response.error) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: response.error.data.message,
+                showConfirmButton: true,
+                timer: 1500
+            });
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Vui lòng xác minh tài khoản!',
+                showConfirmButton: true,
+                timer: 1500
+            });
+            navigate(`/signup/verifyOTP/${response?.data?.user?._id}`);
         }
+
+    }
     return (
         <div className="system-ui bg-gray-300">
             <div className="container mx-auto">
