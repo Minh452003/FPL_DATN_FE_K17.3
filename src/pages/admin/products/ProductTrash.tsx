@@ -1,23 +1,26 @@
-import { useGetProductsQuery, useRemoveProductMutation } from '@/api/productApi';
+import { useGetProductsDeleteQuery, useRemoveForceProductMutation, useRestoreProductMutation } from '@/api/productApi';
 import { Image, Table, Button } from 'antd';
-import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash, FaProductHunt } from "react-icons/fa6";
+import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash, FaProductHunt, FaWindowRestore } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetBrandQuery } from '@/api/brandApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
 import Swal from 'sweetalert2';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { BiFoodMenu } from 'react-icons/bi';
 
-const Productlist = () => {
+const ProductTrash = () => {
 
-  const { data } = useGetProductsQuery();
+  const { data }:any = useGetProductsDeleteQuery();
   const { data: categories } = useGetCategoryQuery<any>();
   const { data: brands } = useGetBrandQuery<any>();
   const { data: materials } = useGetMaterialQuery<any>();
-  const [removeProduct, { isLoading: isRemoveLoading }] = useRemoveProductMutation();
+  const [removeProduct, { isLoading: isRemoveLoading }] = useRemoveForceProductMutation();
+  const [restoreProduct,{ isLoading: isRestoreLoading }] = useRestoreProductMutation()
 
-  const products = data?.product.docs;
-  console.log(products);
+  console.log(data);
+  
+  const products = data?.product;
   
   const category = categories?.category?.docs;
   const brand = brands?.brand;
@@ -42,7 +45,7 @@ const Productlist = () => {
   const deleteProduct = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
-      text: "Khi có thể vào thùng rác để khôi phục lại!",
+      text: "Khi xóa bạn không thể khôi phục lại!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -55,6 +58,35 @@ const Productlist = () => {
           Swal.fire(
             'Xoá thành công!',
             'Sản phẩm của bạn đã được xoá.',
+            'success'
+          )
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Hiển thị thông báo hủy xóa sản phẩm
+        Swal.fire(
+          'Thất bại',
+          'Sản phẩm xoá thất bại :)',
+          'error'
+        )
+      }
+    })
+  }
+  const restoreProduct1 = (id: any) => {
+    Swal.fire({
+      title: 'Bạn chắc chứ?',
+      text: "bạn có muốn khôi phục lại!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Vâng, tôi chắc chắn!',
+      cancelButtonText: 'Huỷ'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        restoreProduct(id).unwrap().then(() => {
+          Swal.fire(
+            'khôi phục thành công!',
+            'Sản phẩm của bạn đã được khôi phục.',
             'success'
           )
         })
@@ -139,22 +171,28 @@ const Productlist = () => {
               <FaTrashCan />
             )}
           </Button>
-          <Button className='mr-1 text-blue-500' ><Link to={`/admin/products/edit/${_id}`}><FaWrench /></Link></Button>
-          <Button className='mr-1 text-blue-500' ><Link to={`childProduct/${_id}`}><FaProductHunt /></Link></Button>
+
+          <Button className='mr-1 text-blue-500' onClick={() => restoreProduct1(_id)} >
+            {isRestoreLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            ) : (
+              <FaWindowRestore />
+            )}
+          </Button>
+
         </div>
       )
     }
   ];
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách sản phẩm </h3>
+      <h3 className="font-semibold">Danh sách sản phẩm đã xóa </h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-        <Button className='m-2 text-3xl text-blue-500'><Link to={'add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
-        <Button className='m-2  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
+        <Button className='m-2  float-right'><Link to={'trash'}><BiFoodMenu style={{ fontSize: '20', display: 'block' }} /></Link></Button>
         <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>
     </div>
   )
 }
 
-export default Productlist
+export default ProductTrash

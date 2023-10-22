@@ -51,6 +51,7 @@ import VerifyOTP from "./pages/view/Auth/VerifyOTP";
 import OrdersUnconfirmed from "./pages/admin/orders/OrdersUnconfirmed";
 import OrdersConfirmed from "./pages/admin/orders/OrdersConfirmed";
 import OrdersCompleted from "./pages/admin/orders/OrdersCompleted";
+import ProductTrash from "./pages/admin/products/ProductTrash";
 
 export const router = createBrowserRouter([
     {
@@ -106,6 +107,7 @@ export const router = createBrowserRouter([
                     { path: 'childProduct/:productId', element: <ListproductChill /> },
                     { path: 'childProduct/add', element: <AddChildProduct /> },
                     { path: 'childProduct/:id/edit', element: <UpdateChildProduct /> },
+                    { path: 'trash', element: <ProductTrash /> },
                 ],
             },
             {

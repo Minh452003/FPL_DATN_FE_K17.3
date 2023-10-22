@@ -22,7 +22,7 @@ const productApi = createApi({
             query: () => '/products',
             providesTags: ['Products']
         }),
-        getProductsDelete: builder.query<IProduct, number | string>({
+        getProductsDelete: builder.query<IProduct[], void>({
             query: () => `/products/delete`,
             providesTags: ['Products']
         }),
@@ -64,11 +64,10 @@ const productApi = createApi({
             }),
             invalidatesTags: ['Products']
         }),
-        updateRestoreProduct: builder.mutation({
-            query: (product: IProduct) => ({
-                url: `/products/restore/${product.id}`,
-                method: 'PATCH',
-                body: product
+        RestoreProduct: builder.mutation({
+            query: (id) => ({
+                url: `/products/restore/${id}`,
+                method: 'PATCH'
             }),
             invalidatesTags: ['Products']
         }),
@@ -93,7 +92,7 @@ export const {
     useRemoveProductMutation,
     useUpdateProductMutation,
     useRemoveForceProductMutation,
-    useUpdateRestoreProductMutation,
+    useRestoreProductMutation,
     useGetProductSellQuery,
     useGetProductsByCategoryQuery
 } = productApi;
