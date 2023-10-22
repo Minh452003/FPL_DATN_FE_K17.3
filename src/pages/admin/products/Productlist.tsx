@@ -138,7 +138,7 @@ const Productlist = () => {
               <FaTrashCan />
             )}
           </Button>
-          <Button className='mr-1 text-blue-500' ><Link to={'edit/:id'}><FaWrench /></Link></Button>
+          <Button className='mr-1 text-blue-500' ><Link to={`/admin/products/edit/${_id}`}><FaWrench /></Link></Button>
           <Button className='mr-1 text-blue-500' ><Link to={`childProduct/${_id}`}><FaProductHunt /></Link></Button>
         </div>
       )
