@@ -117,7 +117,7 @@ const ProductList = () => {
                                             >
                                               <img
                                                 className="lazyload loaded"
-                                                src={product.image.url}
+                                                src={product.image[0]?.url}
                                                 alt={product.product_name}
                                               />
                                             </Link>
