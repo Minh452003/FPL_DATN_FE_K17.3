@@ -1,6 +1,7 @@
+
 import { useState } from "react";
-import { HiSearch } from "react-icons/hi";
 import { Link } from 'react-router-dom'
+import Search from "./Search";
 
 const Header = () => {
   const [isMenuHidden, setIsMenuHidden] = useState(true);
@@ -17,23 +18,7 @@ const Header = () => {
               <div className="flex md:p-0 pl-3">
                 <img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/logo.png?1693834920118" width={100} alt="" />
               </div>
-              <div className="pr-3">
-                <form className="pt-2 pl-4 flex justify-items-center  mr-auto">
-                  <input
-                    className="block w-full h-10 px-5 py-2 outline-none hover:border-secondary border hover:border duration-200 rounded-s-lg"
-                    type="text"
-                    placeholder="Tim kiếm sản phẩm ..."
-                  />
-                  <button
-                    id="clickShowProduct"
-                    type="submit"
-                    className="px-5 py-2  rounded d-r-lg bg-secondary"
-                    aria-label="Justify"
-                  >
-                    <HiSearch />
-                  </button>
-                </form>
-              </div>
+             <Search/>
             </div>
 
             <div className="header-tell pt-2">

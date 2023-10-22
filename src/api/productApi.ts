@@ -81,7 +81,7 @@ const productApi = createApi({
             query: (categoryId) => `/products?categoryId=${categoryId}`,
             providesTags: ['Products'],
         }),
-    })
+            })
 });
 
 export const {
