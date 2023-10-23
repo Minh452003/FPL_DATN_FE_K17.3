@@ -104,7 +104,7 @@ const ListproductChill = () => {
             okText="Có"
             cancelText="Không"
           >
-            <Button className='text-red-500'><FaTrashCan /></Button>
+            <Button className='mr-5 text-red-500'><FaTrashCan /></Button>
           </Popconfirm>
           <Button className='mr-5 text-blue-500' ><Link to={`/admin/products/childProduct/${_id}/edit`}><FaWrench /></Link></Button>
         </div>
@@ -117,7 +117,8 @@ const ListproductChill = () => {
     <div className="container">
       <h3 className="font-semibold">Danh sách sản phẩm thiết kế</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-        <Button className='m-2 text-3xl text-blue-500'><Link to={'/admin/products/childProduct/add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
+      <Button className='mr-5 text-blue-500'><Link to={`/admin/products/childProduct/add/${productId}`}><FaCirclePlus/></Link></Button>
+        
         <Button className='m-2  float-right'><Link to={''}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
         {data1 && data1.length > 0 ? (
           <Table dataSource={data1} columns={columns} />

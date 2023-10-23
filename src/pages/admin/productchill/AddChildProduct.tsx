@@ -1,24 +1,35 @@
-import { useAddChildProductMutation } from "@/api/chilProductApi";
+import {
+  useAddChildProductMutation,
+  useGetChildProductByProductIdQuery,
+} from "@/api/chilProductApi";
 import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetProductsQuery } from "@/api/productApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
-import { Button, Form, Input, Select, Spin } from "antd";
-import { useNavigate } from "react-router-dom";
+import { IChildProduct } from "@/interfaces/childProduct";
+import { Button, Form, Input, InputNumber, Select, Spin } from "antd";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 const AddChildProduct = () => {
-  const { data: Products, isLoading: isLoadingProducts }: any = useGetProductsQuery();
+  // const { data: Products, isLoading: isLoadingProducts }: any =useGetProductsQuery();
+  const { productId }: any = useParams<string>();
+  console.log(productId);
+  
+  const { data, isLoading: isLoadingChildProducts }: any =useGetChildProductByProductIdQuery<IChildProduct>(productId);
   const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
   const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
   const [addChildProduct] = useAddChildProductMutation();
-  const products = isLoadingProducts ? [] : Products.product.docs;
   const colors = isLoadingColors ? [] : Colors?.color;
   const sizes = isLoadingSizes ? [] : Sizes?.size;
-  const navigate = useNavigate();
+  const childProducts = isLoadingChildProducts ? [] : data;
+ 
 
+  const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
     try {
-      await addChildProduct(values).then((response: any) => {
+      const dataToSend = { ...values, productId };
+      await addChildProduct(dataToSend).then(() => {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -26,7 +37,9 @@ const AddChildProduct = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(`/admin/products/childProduct/${response.data.product.productId}`)
+      console.log(dataToSend);
+      
+        navigate(`/admin/products/childProduct/${productId}`);
       });
     } catch (error) {
       console.error("Đã xảy ra lỗi:", error);
@@ -52,7 +65,7 @@ const AddChildProduct = () => {
           <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">
             Thêm Sản Phẩm Con
           </h5>
-          {isLoadingProducts && isLoadingColors && isLoadingSizes ? (
+          {isLoadingChildProducts && isLoadingColors && isLoadingSizes ? (
             <Spin className="pt-5" tip="Loading" size="large">
               <div></div>
             </Spin>
@@ -67,27 +80,6 @@ const AddChildProduct = () => {
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
-              <Form.Item
-                label="Chọn Sản Phẩm"
-                name="productId"
-                labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                rules={[
-                  { required: true, message: "Please input your select!" },
-                ]}
-                style={{ marginLeft: "20px" }}
-              >
-                <Select>
-                  {products.map((product: any) => (
-                    <Select.Option
-                      key={product._id}
-                      value={product._id}
-                    >
-                      {product.product_name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
               <Form.Item<FieldType>
                 label="Giá Sản Phẩm"
                 name="product_price"
@@ -96,7 +88,7 @@ const AddChildProduct = () => {
                 rules={[{ required: true, message: "Please input your name!" }]}
                 style={{ marginLeft: "20px" }}
               >
-                <Input />
+                <InputNumber style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item<FieldType>
@@ -107,7 +99,7 @@ const AddChildProduct = () => {
                 rules={[{ required: true, message: "Please input your name!" }]}
                 style={{ marginLeft: "20px" }}
               >
-                <Input />
+                <InputNumber style={{ width: '100%' }} />
               </Form.Item>
 
               <Form.Item

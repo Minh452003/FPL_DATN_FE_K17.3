@@ -105,7 +105,7 @@ export const router = createBrowserRouter([
                     { path: 'add', element: <Productadd /> },
                     { path: 'edit/:id', element: <Productupdate /> },
                     { path: 'childProduct/:productId', element: <ListproductChill /> },
-                    { path: 'childProduct/add', element: <AddChildProduct /> },
+                    { path: 'childProduct/add/:productId', element: <AddChildProduct /> },
                     { path: 'childProduct/:id/edit', element: <UpdateChildProduct /> },
                     { path: 'trash', element: <ProductTrash /> },
                 ],
