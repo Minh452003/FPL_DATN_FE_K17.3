@@ -1,7 +1,22 @@
 import "swiper/css";
 import "swiper/css/navigation";
-
+import { useNavigate, useParams } from "react-router-dom";
+import { useGetOrderByUserIdQuery } from "@/api/orderApi";
+import { getDecodedAccessToken } from "@/decoder";
+import { format } from 'date-fns';
 const Order = () => {
+  const { userID } = useParams();
+  const { data } = useGetOrderByUserIdQuery<any>(userID);
+  const Navigate = useNavigate();
+  const orders = data?.order;
+  const decodedToken: any = getDecodedAccessToken();
+  const id = decodedToken ? decodedToken.id : null;
+
+  if (!id || id !== userID) {
+    Navigate('/signin');
+    return null;
+  }
+  
   return (
     <div className="bg-slate-50 border-solid border-1 rounded">
       <div className="m-3">
@@ -26,142 +41,28 @@ const Order = () => {
         </ul>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 ">
-        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md ">
+        {orders?.map((order:any )=>{
+          console.log(order.products[0].image);
+          
+              return (
+        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md " key={order._id}>
           <div className="flex justify-start items-center mx-5 ">
           <img
             width="100"
             height="100"
-            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-free-sales-flaticons-lineal-color-flat-icons.png"
+            src={order.products[0].image}
             alt="external-free-sales-flaticons-lineal-color-flat-icons"
           />
           </div>
           <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-            <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
-            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
-            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
+            <p>Đơn hàng ngày: <span className="text-[#FF1493]">{format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy")}</span></p>
+            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">{order.total}</span></p>
+            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">{order.status}</span></p>
             <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
           </div>
         </div>
-
-        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md ">
-          <div className="flex justify-start items-center mx-5 ">
-          <img
-            width="100"
-            height="100"
-            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-free-sales-flaticons-lineal-color-flat-icons.png"
-            alt="external-free-sales-flaticons-lineal-color-flat-icons"
-          />
-          </div>
-          <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-            <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
-            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
-            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
-            <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md ">
-          <div className="flex justify-start items-center mx-5 ">
-          <img
-            width="100"
-            height="100"
-            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-free-sales-flaticons-lineal-color-flat-icons.png"
-            alt="external-free-sales-flaticons-lineal-color-flat-icons"
-          />
-          </div>
-          <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-            <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
-            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
-            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
-            <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md ">
-          <div className="flex justify-start items-center mx-5 ">
-          <img
-            width="100"
-            height="100"
-            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-free-sales-flaticons-lineal-color-flat-icons.png"
-            alt="external-free-sales-flaticons-lineal-color-flat-icons"
-          />
-          </div>
-          <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-            <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
-            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
-            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
-            <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md ">
-          <div className="flex justify-start items-center mx-5 ">
-          <img
-            width="100"
-            height="100"
-            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-free-sales-flaticons-lineal-color-flat-icons.png"
-            alt="external-free-sales-flaticons-lineal-color-flat-icons"
-          />
-          </div>
-          <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-            <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
-            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
-            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
-             <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md ">
-          <div className="flex justify-start items-center mx-5 ">
-          <img
-            width="100"
-            height="100"
-            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-free-sales-flaticons-lineal-color-flat-icons.png"
-            alt="external-free-sales-flaticons-lineal-color-flat-icons"
-          />
-          </div>
-          <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-            <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
-            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
-            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
-            <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md ">
-          <div className="flex justify-start items-center mx-5 ">
-          <img
-            width="100"
-            height="100"
-            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-free-sales-flaticons-lineal-color-flat-icons.png"
-            alt="external-free-sales-flaticons-lineal-color-flat-icons"
-          />
-          </div>
-          <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-            <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
-            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
-            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
-            <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md ">
-          <div className="flex justify-start items-center mx-5 ">
-          <img
-            width="100"
-            height="100"
-            src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-free-sales-flaticons-lineal-color-flat-icons.png"
-            alt="external-free-sales-flaticons-lineal-color-flat-icons"
-          />
-          </div>
-          <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-            <p>Đơn hàng ngày: <span className="text-[#FF1493]">2022-12-02</span></p>
-            <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">2755.000đ</span></p>
-            <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">Đã nhận hàng</span></p>
-            <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
-          </div>
-        </div>
-        
+              )
+        })}
       </div>
       </div>
     </div>
