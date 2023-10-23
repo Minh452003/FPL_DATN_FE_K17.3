@@ -1,5 +1,14 @@
+import { useGetUserByIdQuery } from "@/api/authApi";
+
 import { PiUserBold } from "react-icons/pi";
+import { useParams } from "react-router-dom";
 const Profile = () => {
+  const {idUser}:any=useParams();
+  const { data :user, error }: any = useGetUserByIdQuery(idUser|| "");
+
+
+  
+
   return (
     <div className="container">
       <div className="header">
@@ -19,8 +28,9 @@ const Profile = () => {
                   <div className="">
                     <input
                       type="text"
-                      placeholder="duongcb"
+                      placeholder={user?.data[0].first_name}
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md transition duration-300 hover:ease-in-out"
+                      disabled
                     />
                   </div>
                 </td>
@@ -33,8 +43,9 @@ const Profile = () => {
                   <div className="py-4">
                     <input
                       type="text"
-                      placeholder="Chu Bach Duong"
+                      placeholder={user?.data[0].last_name}
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
+                      disabled
                     />
                   </div>
                 </td>
@@ -44,7 +55,7 @@ const Profile = () => {
                   <label className="pl-4 pb-3 py-3">Email</label>
                 </td>
                 <td className="flex">
-                  <div className="py-4 px-3">duongcbph21404@gmail.com</div>
+                  <div className="py-4 px-3">{user?.data[0].email}</div>
                   <div className="py-4 px-3">
                     <a href="">thay đổi</a>
                   </div>
@@ -58,8 +69,9 @@ const Profile = () => {
                   <div className="py-4">
                     <input
                       type="text"
-                      placeholder="099999999"
+                      placeholder={user?.data[0].phone}
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
+                      disabled
                     />
                   </div>
                 </td>
