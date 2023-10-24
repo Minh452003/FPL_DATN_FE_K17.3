@@ -59,8 +59,6 @@ const Productadd = () => {
     const props: UploadProps = {
         name: 'image',
         fileList: fileList, // Sử dụng state fileList
-        customRequest: async ({ file }: any) => {
-        },
         onChange(info: any) {
             if (info.file) {
                 const formData = new FormData();

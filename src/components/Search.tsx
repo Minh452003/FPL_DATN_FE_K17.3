@@ -9,15 +9,15 @@ const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-  const onHandleSearch = (e:any) => {
+  const onHandleSearch = (e: any) => {
     const keyword = e.target.value.toLowerCase();
     setSearchKeyword(keyword);
     searchProduct(keyword);
   };
 
-  const searchProduct = (keyword:any) => {
+  const searchProduct = (keyword: any) => {
     const results = listdata.filter(
-      (item:any) => item.product_name.toLowerCase().includes(keyword)
+      (item: any) => item.product_name.toLowerCase().includes(keyword)
     );
     setSearchResults(results);
   };
@@ -48,11 +48,10 @@ const Search = () => {
             <div className="rounded-md z-50 absolute w-[530px] mt-5" id="listProduct">
               <div className="container">
                 <div className="p-2 bg-white rounded-md">
-                  {/* Check if there are search results */}
                   {searchResults.length === 0 ? (
                     <div className="text-center">Không tìm thấy sản phẩm nào</div>
                   ) : (
-                    searchResults.map((product:any, index) => (
+                    searchResults.map((product: any, index) => (
                       <div key={index}>
                         <div className="grid grid-cols-[80px,auto] h-full p-2 border rounded-md border-slate-200 gap-y-5 focus:visible">
                           <div>
