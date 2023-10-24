@@ -142,7 +142,7 @@ const Product_Detail = () => {
           </div>
           <div className="grid grid-cols-2 gap-2 np">
             <div className="product-image">
-              {/* <div className="mb-6">
+              <div className="mb-6">
                 {listOneData?.image?.map((img: any, index: any) => {
                   if (!selectedIndex && index === 0) {
                     return (
@@ -171,8 +171,8 @@ const Product_Detail = () => {
                     )
                   }
                 })}
-              </div> */}
-              {/* <ul
+              </div>
+              <ul
                 className="mb-5 flex list-none flex-col flex-wrap pl-0 md:flex-row"
                 id="pills-tab"
                 role="tablist"
@@ -195,7 +195,7 @@ const Product_Detail = () => {
                     </Link>
                   </li>
                 ))}
-              </ul> */}
+              </ul>
             </div>
             <div className="product-text">
               <div className="col-span-2 flex mt-4 ef">
@@ -348,7 +348,18 @@ const Product_Detail = () => {
                         {/* Các phần khác của comment */}
                       </footer>
                       <p className="text-gray-500 dark:text-gray-400">{comment.description}</p>
-                      {/* Các hình ảnh khác nếu có */}
+                      <div className="product-small">
+                      <img
+                        className="image5"
+                        src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
+                        alt=""
+                      />
+                      <img
+                        className="image6"
+                        src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
+                        alt=""
+                      />
+                    </div>
                     </article>
                   ))}
                 </div>
