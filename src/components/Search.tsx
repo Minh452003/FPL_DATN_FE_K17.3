@@ -9,15 +9,15 @@ const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-  const onHandleSearch = (e:any) => {
+  const onHandleSearch = (e: any) => {
     const keyword = e.target.value.toLowerCase();
     setSearchKeyword(keyword);
     searchProduct(keyword);
   };
 
-  const searchProduct = (keyword:any) => {
+  const searchProduct = (keyword: any) => {
     const results = listdata.filter(
-      (item:any) => item.product_name.toLowerCase().includes(keyword)
+      (item: any) => item.product_name.toLowerCase().includes(keyword)
     );
     setSearchResults(results);
   };
@@ -52,13 +52,13 @@ const Search = () => {
                   {searchResults.length === 0 ? (
                     <div className="text-center">Không tìm thấy sản phẩm nào</div>
                   ) : (
-                    searchResults.map((product:any, index) => (
+                    searchResults.map((product: any, index) => (
                       <div key={index}>
                         <div className="grid grid-cols-[80px,auto] h-full p-2 border rounded-md border-slate-200 gap-y-5 focus:visible">
                           <div>
                             <Link to={`/products/${product?._id}`}>
                               <img
-                                src={product?.image.url}
+                                src={product?.image[0].url}
                                 alt="ảnh"
                                 className="transition duration-200 ease-in-out hover:scale-105 md:h-[30px] md:w-[30px]"
                               />
@@ -67,7 +67,7 @@ const Search = () => {
                           <div className="gap-y-3">
                             <Link
                               to={`/products/${product?._id}`}
-                              className="hover:text-yellow-500 transition duration-200"
+                              className="text-black hover:text-yellow-500 transition duration-200 no-underline	"
                             >
                               {product?.product_name}
                             </Link>

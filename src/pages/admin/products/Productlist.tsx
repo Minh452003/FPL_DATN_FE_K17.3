@@ -18,7 +18,7 @@ const Productlist = () => {
 
   const products = data?.product.docs;
   console.log(products);
-  
+
   const category = categories?.category?.docs;
   const brand = brands?.brand;
   const material = materials?.material;
@@ -32,7 +32,7 @@ const Productlist = () => {
       brand: product.brandId,
       materials: product.materialId,
       quantity: product.sold_quantity,
-      image: <img width={50} src={product.image?.url} alt="" />
+      image: <img width={50} src={product.image[0]?.url} alt="" />
     }
   });
   const formatCurrency = (number: number) => {
