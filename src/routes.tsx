@@ -78,7 +78,7 @@ export const router = createBrowserRouter([
             { path: 'news', element: <News /> },
             { path: 'forgotpassword', element: <ForgotPassword /> },
             {
-                path: 'orders', children: [
+                path: 'order', children: [
                     { index: true, element: <Order /> },
                     { path: ':id/orderdetail', element: <OrderDetail /> }
                 ],

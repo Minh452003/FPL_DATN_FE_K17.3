@@ -1,6 +1,6 @@
 import "swiper/css";
 import "swiper/css/navigation";
-import { useGetOrderByUserIdQuery } from "@/api/orderApi";
+import {  useGetOrderByUserIdQuery } from "@/api/orderApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { format } from 'date-fns';
 import { Skeleton } from "antd";
@@ -10,8 +10,6 @@ const Order = () => {
   const id = decodedToken ? decodedToken.id : null;
   const { data, error, isLoading: isLoadingFetching } = useGetOrderByUserIdQuery<any>(id);
   const orders = data?.order;
-
-
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
     if ("data" in error && "status" in error) {
@@ -65,7 +63,7 @@ const Order = () => {
                   <p>Đơn hàng ngày: <span className="text-[#FF1493]">{format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy")}</span></p>
                   <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">{order.total}</span></p>
                   <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">{order.status.status_name}</span></p>
-                  <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white"><Link to={"orderdetail"} style={{ textDecoration: "none", color: "black" }}>Chi tiết</Link></button>
+                  <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white"><Link to={`/order/${order._id}/orderdetail`} style={{ textDecoration: "none", color: "black" }}>Chi tiết</Link></button>
                 </div>
               </div>
             )
