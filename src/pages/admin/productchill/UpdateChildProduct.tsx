@@ -102,7 +102,7 @@ const UpdateChildProduct = () => {
                 rules={[
                   { required: true, message: "Please input your select!" },
                 ]}
-                style={{ marginLeft: "20px" }}
+                style={{ marginLeft: "20px",display:'none' }}
               >
                 <Select>
                   {products.map((product: any) => (

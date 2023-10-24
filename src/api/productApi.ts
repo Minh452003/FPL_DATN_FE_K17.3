@@ -80,7 +80,11 @@ const productApi = createApi({
             query: (categoryId) => `/products?categoryId=${categoryId}`,
             providesTags: ['Products'],
         }),
-            })
+        getProductViews: builder.query<any, string>({
+            query: (id) => `products/views/${id}`,
+            providesTags: ['Products'],
+        }),
+    })
 });
 
 export const {
@@ -94,7 +98,8 @@ export const {
     useRemoveForceProductMutation,
     useRestoreProductMutation,
     useGetProductSellQuery,
-    useGetProductsByCategoryQuery
+    useGetProductsByCategoryQuery,
+    useGetProductViewsQuery
 } = productApi;
 export const productReducer = productApi.reducer;
 export default productApi
