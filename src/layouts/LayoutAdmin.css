@@ -157,11 +157,11 @@ body {
 }
 
 #sidebar .side-menu.top li.active a {
-    color: #3C91E6;
+    color: #3C91E6 !important;
 }
 
 #sidebar.hide .side-menu li a {
-    width: calc(48px - (4px * 2));
+    width: calc(48px - (4px * 2)) !important;
     transition: width .3s ease;
 }
 
@@ -473,17 +473,21 @@ body {
 .text1 {
     margin-left: 10px;
 }
+
 .text4 {
     margin-left: -1px;
 }
+
 #sidebar .side-menu li.active {
-    background: none;
+    background: #eee;
     position: relative;
 }
+
 #sidebar .side-menu li.active:hover {
-    background: none;
+    background: #eee;
     position: relative;
 }
+
 #sidebar .side-menu li.active::before {
     content: '';
     position: absolute;
@@ -495,6 +499,7 @@ body {
     box-shadow: none;
     z-index: -1;
 }
+
 #sidebar .side-menu li.active::after {
     content: '';
     position: absolute;
@@ -506,6 +511,7 @@ body {
     box-shadow: none;
     z-index: -1;
 }
+
 .a {
     text-decoration: none;
 }
