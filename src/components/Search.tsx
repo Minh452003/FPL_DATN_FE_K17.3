@@ -57,7 +57,7 @@ const Search = () => {
                           <div>
                             <Link to={`/products/${product?._id}`}>
                               <img
-                                src={product?.image.url}
+                                src={product?.image[0].url}
                                 alt="ảnh"
                                 className="transition duration-200 ease-in-out hover:scale-105 md:h-[30px] md:w-[30px]"
                               />
@@ -66,7 +66,7 @@ const Search = () => {
                           <div className="gap-y-3">
                             <Link
                               to={`/products/${product?._id}`}
-                              className="hover:text-yellow-500 transition duration-200"
+                              className="text-black hover:text-yellow-500 transition duration-200 no-underline	"
                             >
                               {product?.product_name}
                             </Link>

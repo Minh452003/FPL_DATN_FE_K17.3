@@ -148,7 +148,7 @@ const LayoutAdmin = () => {
             <details className="">
               <summary className="flex cursor-pointer items-center rounded-lg">
                 <li>
-                  <Link to={'order/unconfirmed/add'} className="a">
+                  <Link to={'order/unconfirmed'} className="a">
                     <span className="icon"><AiOutlineShoppingCart /></span>
                     <span className="text1">Đơn hàng</span>
                   </Link>

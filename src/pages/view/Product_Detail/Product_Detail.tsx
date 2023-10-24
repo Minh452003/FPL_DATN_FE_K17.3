@@ -1,23 +1,40 @@
-import { FaArrowRight, FaChevronRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import "./Product_detail.css";
 import "./Responsive_Product_Detail.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { useParams } from "react-router-dom";
-import { useGetProductByIdQuery } from "@/api/productApi";
+import { Link, useParams } from "react-router-dom";
+import { useGetProductByIdQuery, useGetProductViewsQuery, useGetProductsQuery } from "@/api/productApi";
 import { useGetBrandQuery } from "@/api/brandApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
 import { Skeleton } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useGetChildProductByProductIdQuery, useGetChildProductPriceQuery } from "@/api/chilProductApi";
+import { useGetColorsQuery } from "@/api/colorApi";
+import { useGetSizeQuery } from "@/api/sizeApi";
+import {
+  Tab,
+  initTE,
+} from "tw-elements";
 
 const Product_Detail = () => {
   const { idProduct }: any = useParams();
   const { data, isLoading: isLoadingFetching, error }: any = useGetProductByIdQuery(idProduct || "");
+  const { data: colors, isLoading: isLoadingColor } = useGetColorsQuery<any>();
+  const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>()
+  const { data: products, isLoading: isLoadingProduct }: any = useGetProductsQuery();
   const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
+  const [activeColor, setActiveColor] = useState(null);
+  const [activeSize, setActiveSize] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(false);;
   const listOneData = data?.product;
+  const similarProducts = products?.product?.docs.filter((siproduct: any) => siproduct.categoryId === listOneData?.categoryId);
+  useEffect(() => {
+    initTE({ Tab });
+  }, [selectedIndex]);
   // --------------------------
   const { data: brand }: any = useGetBrandQuery();
   const brandList = brand?.brand;
@@ -36,6 +53,11 @@ const Product_Detail = () => {
   const materialLishOne = materialList?.find(
     (materialList: any) => materialList?._id === listOneData?.materialId
   )?.material_name;
+  // -------------------------- 
+  const { data: childProducts, isLoading: isLoadingChild }: any = useGetChildProductByProductIdQuery(idProduct || "");
+  const { data: childProduct }: any = useGetChildProductPriceQuery({ productId: idProduct, sizeId: activeSize, colorId: activeColor });
+  const { data: productView }: any = useGetProductViewsQuery(idProduct);
+
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
@@ -47,7 +69,46 @@ const Product_Detail = () => {
   const increaseQuantity = () => {
     setQuantity(quantity + 1); // Cập nhật số lượng
   }
+
+  const handleClickSize = (sizeId: any) => {
+    setActiveSize(sizeId);
+
+  }
+  const handleClickColor = (colorId: any) => {
+    setActiveColor(colorId);
+
+  }
+  const [slidesPerView, setSlidesPerView] = useState(1); // Mặc định là 1
+  useEffect(() => {
+    // Xác định kích thước màn hình và cài đặt slidesPerView dựa trên kích thước
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSlidesPerView(4); // Đối với laptop và màn hình lớn hơn
+      } else if (window.innerWidth >= 768) {
+        setSlidesPerView(2); // Đối với iPad
+      } else {
+        setSlidesPerView(1); // Đối với màn hình nhỏ hơn, ví dụ điện thoại
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Gọi lần đầu khi tải trang
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Cuộn mượt
+    });
+  };
   if (isLoadingFetching) return <Skeleton />;
+  if (isLoadingChild) return <Skeleton />;
+  if (isLoadingColor) return <Skeleton />;
+  if (isLoadingSize) return <Skeleton />;
+  if (isLoadingProduct) return <Skeleton />;
+
   if (error) {
     if ("data" in error && "status" in error) {
       return (
@@ -72,14 +133,65 @@ const Product_Detail = () => {
             <h3 className="font-bold pt-10 pl-52 iklm">
               {listOneData?.product_name}
             </h3>
-            <p className="price">{formatCurrency(listOneData?.product_price)}₫</p>
+            {childProduct ? <p className="price">{formatCurrency(childProduct?.product?.product_price)}₫</p> : <p className="price">{formatCurrency(listOneData?.product_price)}₫</p>}
           </div>
           <div className="grid grid-cols-2 gap-2 np">
-            <img
-              className="product-image"
-              src={listOneData?.image.url}
-              alt=""
-            />
+            <div className="product-image">
+              <div className="mb-6">
+                {listOneData?.image?.map((img: any, index: any) => {
+                  if (!selectedIndex && index === 0) {
+                    return (
+                      < div
+                        className='hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block'
+                        id={`image-tab-${index}`}
+                        role="tabpanel"
+                        aria-labelledby={`tab-${index}`}
+                        key={`image-content-${index}`}
+                        data-te-tab-active
+                      >
+                        <img src={img?.url} className={`object-cover img1`} />
+                      </div>
+                    );
+                  } else {
+                    return (
+                      < div
+                        className='hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block'
+                        id={`image-tab-${index}`}
+                        role="tabpanel"
+                        aria-labelledby={`tab-${index}`}
+                        key={`image-content-${index}`}
+                      >
+                        <img src={img?.url} className={`object-cover img1`} />
+                      </div>
+                    )
+                  }
+                })}
+              </div>
+              <ul
+                className="mb-5 flex list-none flex-col flex-wrap pl-0 md:flex-row"
+                id="pills-tab"
+                role="tablist"
+                data-te-nav-ref>
+                {listOneData?.image?.map((img: any, index: any) => (
+                  <li role="presentation">
+                    <Link
+                      to={`#image-tab-${index}`}
+                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index ? 'bg-primary-100 text-primary-700' : 'bg-neutral-700 text-white'} md:mr-4 `}
+                      id={`image-tab-${index}`}
+                      data-te-toggle="tab"
+                      key={`tab-${index}`}
+                      data-te-tab-active={index === 0 ? 'true' : 'false'}
+                      role="tab"
+                      aria-controls={`image-tab-${index}`}
+                      aria-selected='false'
+                      onClick={() => setSelectedIndex(true)}
+                    >
+                      <img src={img?.url} className="pill-img" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="product-text">
               <div className="col-span-2 flex mt-4 ef">
                 <div className="text1">Tình trạng:</div>
@@ -103,32 +215,46 @@ const Product_Detail = () => {
               </div>
               <div className="color">
                 <p>Màu sắc</p>
-              </div>
-              <div className="flex">
-                <img className="image1" src={listOneData?.image.url} alt="" />
-                <img className="image2" src={listOneData?.image.url} alt="" />
+                <div className="flex">
+                  {childProducts ? childProducts.products.map((color: any) => {
+                    const colorname = colors?.color?.find((colors: any) => colors._id === color.colorId);
+                    const isActive = color.colorId === activeColor; return (
+                      <button
+                        key={color.colorId}
+                        aria-label="M"
+                        aria-disabled="false"
+                        className={`btn2 btn-solid-primary2 btn-b ${isActive ? 'active1' : ''}`}
+                        onClick={() => handleClickColor(color.colorId)}
+                      >
+                        {colorname.colors_name}
+                      </button>
+                    )
+                  }) : <p className="sp2">Không có màu</p>}
+                </div>
               </div>
               <div className="size">
                 <p>Kích thước</p>
+                <div className="flex">
+                  {childProducts ? childProducts.products.map((size: any) => {
+                    const sizesname = sizes?.size?.find((s: any) => s._id == size.sizeId);
+                    const isActive = size.sizeId === activeSize;
+                    return (
+                      <button
+                        key={size.sizeId}
+                        aria-label="M"
+                        aria-disabled="false"
+                        className={`btn2 btn-solid-primary2 btn-b ${isActive ? 'active1' : ''}`}
+                        onClick={() => handleClickSize(size.sizeId)}
+                        type="submit"
+                      >
+                        {sizesname.size_name}
+                      </button>
+                    )
+                  }) : <p className="sp2">Không có kích thước</p>}
+                </div>
               </div>
-              <div className="flex">
-                <button
-                  aria-label="M"
-                  aria-disabled="false"
-                  className="btn1 btn-solid-primary1 btn-a"
-                >
-                  M
-                </button>
-                <button
-                  aria-label="X"
-                  aria-disabled="false"
-                  className="btn2 btn-solid-primary2 btn-b"
-                >
-                  X
-                </button>
-              </div>
-              <br />
-              <div className="flex">
+              {childProduct ? <p className="sp1">Còn {childProduct.product.stock_quantity} sản phẩm</p> : ''}
+              <div className="flex button">
                 <button
                   aria-label="Decrease"
                   className="btn3 btn-solid-primary3 btn-c"
@@ -167,23 +293,11 @@ const Product_Detail = () => {
               </div>
             </div>
           </div>
-          <div className="product-medium">
-            <img
-              className="image3"
-              src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
-              alt=""
-            />
-            <img
-              className="image4"
-              src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
-              alt=""
-            />
-          </div>
-          <div className="include ">
+          <div className="include">
             <input type="radio" id="chi-tiet" name="tab" checked />
             <label
               htmlFor="chi-tiet"
-              className="detail tab-link active"
+              className="detail tab-link"
               data-tab="tab-1"
             >
               Thông tin chi tiết
@@ -241,404 +355,7 @@ const Product_Detail = () => {
               </section>
             </div>
           </div>
-
-          <div className="main-cols sock_to_days">
-            <div className="containers">
-              <div className="product-soks">
-                <div className="new_titles text-center">
-                  <h2 className="mt-6 kg zd">
-                    <a
-                      className="no-underline"
-                      href="san-pham-cung-loai"
-                      title="Sản phẩm cùng loại"
-                    >
-                      Sản phẩm cùng loại
-                    </a>
-                  </h2>
-                </div>
-
-                <div className="sock_slides slider-itemss slick_margins slick-initializeds slick-sliders">
-                  <div aria-live="polite" className="slick-lists draggables">
-                    <div
-                      className="slick-tracks"
-                      role="listbox"
-                      style={{
-                        opacity: 1,
-                        width: "2264px",
-                        transform: "translate3d(0px, 0px, 0px)",
-                      }}
-                    >
-                      <div
-                        className="items slick-slides slick-currents slick-actives"
-                        tabIndex={-1}
-                        role="option"
-                        aria-describedby="slick-slide10s"
-                        style={{ width: "240px" }}
-                        data-slick-index="0"
-                        aria-hidden="false"
-                      >
-                        <div className="col-item1s">
-                          <div className="sale-labels sale-top-rights">
-                            <span>- 16%</span>
-                          </div>
-
-                          <div className="item-inners">
-                            <div className="product-wrappers">
-                              <div className="thumb-wrappers">
-                                <a
-                                  href="/products/ban-tra-go-tu-nhien-5cbt-136"
-                                  className="thumbs flips"
-                                  title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                  tabIndex={0}
-                                >
-                                  <img
-                                    className="lazyloads loadeds"
-                                    src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
-                                    alt="Bàn trà gỗ tự nhiên 5CBT-136"
-                                  />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="item-infos">
-                              <div className="info-inners">
-                                <h3 className="item-titles">
-                                  {" "}
-                                  <a
-                                    href="/products/ban-tra-go-tu-nhien-5cbt-136"
-                                    title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                    tabIndex={0}
-                                  >
-                                    Bàn trà gỗ tự nhiên 5CBT-136{" "}
-                                  </a>{" "}
-                                </h3>
-                                <div className="item-contents">
-                                  <div className="item-prices">
-                                    <div className="price-boxs">
-                                      <p className="special-prices">
-                                        <span className="prices">
-                                          6.590.000₫
-                                        </span>
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="actionss hidden-xs hidden-sm remove_html">
-                                <form>
-                                  <input type="hidden" tabIndex={0} />
-                                  <button
-                                    className="buttons btn-carts"
-                                    title="Mua hàng"
-                                    type="button"
-                                    tabIndex={0}
-                                  >
-                                    <a href="/cart">Mua hàng</a>
-                                  </button>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div
-                        className="items slick-slides slick-actives"
-                        tabIndex={-1}
-                        role="option"
-                        aria-describedby="slick-slide11s"
-                        style={{ width: "240px" }}
-                        data-slick-index="1"
-                        aria-hidden="false"
-                      >
-                        <div className="col-item2s">
-                          <div className="item-inners">
-                            <div className="product-wrappers">
-                              <div className="thumb-wrappers">
-                                <a
-                                  href="/products/ke-tivi-phong-khach-doc-dao-5ckt-17"
-                                  className="thumbs flips"
-                                  title="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                  tabIndex={0}
-                                >
-                                  <img
-                                    className="lazyloads loadeds"
-                                    src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
-                                    alt="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                  />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="item-infos">
-                              <div className="info-inners">
-                                <h3 className="item-titles">
-                                  {" "}
-                                  <a
-                                    href="/products/ke-tivi-phong-khach-doc-dao-5ckt-17"
-                                    title="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                    tabIndex={0}
-                                  >
-                                    Kệ tivi phòng khách độc đáo 5CKT-17{" "}
-                                  </a>{" "}
-                                </h3>
-                                <div className="item-contents">
-                                  <div className="item-prices">
-                                    <div className="price-boxs">
-                                      <span className="regular-prices">
-                                        {" "}
-                                        <span className="prices">
-                                          8.250.000₫
-                                        </span>{" "}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="actionss hidden-xs hidden-sm remove_html">
-                                <form>
-                                  <input type="hidden" tabIndex={0} />
-                                  <button
-                                    className="buttons btn-carts add_to_carts"
-                                    title="Mua hàng"
-                                    tabIndex={0}
-                                  >
-                                    <a href="/cart">Mua hàng</a>
-                                  </button>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div
-                        className="items slick-slides slick-actives"
-                        tabIndex={-1}
-                        role="option"
-                        aria-describedby="slick-slide12s"
-                        style={{ width: "240px" }}
-                        data-slick-index="2"
-                        aria-hidden="false"
-                      >
-                        <div className="col-item3s">
-                          <div className="item-inners">
-                            <div className="product-wrappers">
-                              <div className="thumb-wrappers">
-                                <a
-                                  href="/products/ke-tivi-phong-khach-dep-5ckt-08"
-                                  className="thumbs flips"
-                                  title="Kệ tivi phòng khách đẹp 5CKT-08"
-                                  tabIndex={0}
-                                >
-                                  <img
-                                    className="lazyloads loadeds"
-                                    src="https://bizweb.dktcdn.net/100/368/970/products/ke-tivi-phong-khach-kieu-dang-trang-nha-600x600.jpg?v=1577206170977"
-                                    alt="Kệ tivi phòng khách đẹp 5CKT-08"
-                                  />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="item-infos">
-                              <div className="info-inners">
-                                <h3 className="item-titles">
-                                  {" "}
-                                  <a
-                                    href="/products/ke-tivi-phong-khach-dep-5ckt-08"
-                                    title="Kệ tivi phòng khách đẹp 5CKT-08"
-                                    tabIndex={0}
-                                  >
-                                    Kệ tivi phòng khách đẹp 5CKT-08{" "}
-                                  </a>{" "}
-                                </h3>
-                                <div className="item-contents">
-                                  <div className="item-prices">
-                                    <div className="price-boxs">
-                                      <span className="regular-prices">
-                                        {" "}
-                                        <span className="prices">
-                                          9.250.000₫
-                                        </span>{" "}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="actionss hidden-xs hidden-sm remove_html">
-                                <form>
-                                  <input type="hidden" tabIndex={0} />
-                                  <button
-                                    className="buttons btn-carts add_to_carts"
-                                    title="Mua hàng"
-                                    tabIndex={0}
-                                  >
-                                    <a href="/cart">Mua hàng</a>
-                                  </button>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div
-                        className="items slick-slides slick-actives"
-                        tabIndex={-1}
-                        role="option"
-                        aria-describedby="slick-slide13s"
-                        style={{ width: "240px" }}
-                        data-slick-index="3"
-                        aria-hidden="false"
-                      >
-                        <div className="col-item4s">
-                          <div className="sale-labels sale-top-rights">
-                            <span>- 23%</span>
-                          </div>
-
-                          <div className="item-inners">
-                            <div className="product-wrappers">
-                              <div className="thumb-wrappers">
-                                <a
-                                  href="/products/ke-tivi-go-tu-nhien-chan-cao-5ckt-168"
-                                  className="thumbs flips"
-                                  title="Kệ tivi gỗ tự nhiên chân cao 5CKT-168"
-                                  tabIndex={0}
-                                >
-                                  <img
-                                    className="lazyloads loadeds"
-                                    src="https://bizweb.dktcdn.net/100/368/970/products/ke-tivi-go-tu-nhien-chan-cao-kt168-600x600.jpg?v=1577206060690"
-                                    alt="Kệ tivi gỗ tự nhiên chân cao 5CKT-168"
-                                  />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="item-infos">
-                              <div className="info-inners">
-                                <h3 className="item-titles">
-                                  {" "}
-                                  <a
-                                    href="/products/ke-tivi-go-tu-nhien-chan-cao-5ckt-168"
-                                    title="Kệ tivi gỗ tự nhiên chân cao 5CKT-168"
-                                    tabIndex={0}
-                                  >
-                                    Kệ tivi gỗ tự nhiên chân cao 5CKT-168{" "}
-                                  </a>{" "}
-                                </h3>
-                                <div className="item-contents">
-                                  <div className="item-prices">
-                                    <div className="price-boxs">
-                                      <p className="special-prices">
-                                        <span className="prices">
-                                          7.860.000₫
-                                        </span>
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="actionss hidden-xs hidden-sm remove_html">
-                                <form>
-                                  <input type="hidden" tabIndex={0} />
-                                  <button
-                                    className="buttons btn-carts add_to_carts"
-                                    title="Mua hàng"
-                                    tabIndex={0}
-                                  >
-                                    <a href="/cart">Mua hàng</a>
-                                  </button>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div
-                        className="items slick-slides slick-currents slick-actives"
-                        tabIndex={-1}
-                        role="option"
-                        aria-describedby="slick-slide10"
-                        style={{ width: "240px" }}
-                        data-slick-index="0"
-                        aria-hidden="false"
-                      >
-                        <div className="col-item1s">
-                          <div className="sale-labels sale-top-rights">
-                            <span>- 16%</span>
-                          </div>
-
-                          <div className="item-inners">
-                            <div className="product-wrappers">
-                              <div className="thumb-wrappers">
-                                <a
-                                  href="/products/ban-tra-go-tu-nhien-5cbt-136"
-                                  className="thumbs flips"
-                                  title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                  tabIndex={0}
-                                >
-                                  <img
-                                    className="lazyloads loadeds"
-                                    src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
-                                    alt="Bàn trà gỗ tự nhiên 5CBT-136"
-                                  />
-                                </a>
-                              </div>
-                            </div>
-                            <div className="item-infos">
-                              <div className="info-inners">
-                                <h3 className="item-titles">
-                                  {" "}
-                                  <a
-                                    href="/products/ban-tra-go-tu-nhien-5cbt-136"
-                                    title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                    tabIndex={0}
-                                  >
-                                    Bàn trà gỗ tự nhiên 5CBT-136{" "}
-                                  </a>{" "}
-                                </h3>
-                                <div className="item-contents">
-                                  <div className="item-prices">
-                                    <div className="price-boxs">
-                                      <p className="special-prices">
-                                        <span className="prices">
-                                          6.590.000₫
-                                        </span>
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="actionss hidden-xs hidden-sm remove_html">
-                                <form>
-                                  <input type="hidden" tabIndex={0} />
-                                  <button
-                                    className="buttons btn-carts"
-                                    title="Mua hàng"
-                                    type="button"
-                                    tabIndex={0}
-                                  >
-                                    <a href="/cart">Mua hàng</a>
-                                  </button>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="seemore">
-            <div className="float-left font-bold op">Xem thêm</div>
-            <FaChevronRight className="text-xs" />
-            <FaChevronRight className="text-xs" />
-          </div>
+          {/*  */}
           <div className="main-col2s sock_to_days">
             <div className="containers">
               <div className="product-sokss">
@@ -658,7 +375,7 @@ const Product_Detail = () => {
                 <div className="sock_slidess slider-itemss slick_margins slick-initializeds slick-sliderss kh">
                   <div className="swiper-contaner">
                     <Swiper
-                      slidesPerView={4}
+                      slidesPerView={slidesPerView}
                       navigation={true}
                       modules={[Navigation]}
                     >
@@ -675,469 +392,93 @@ const Product_Detail = () => {
                             transform: "translate3d(0px, 0px, 0px)",
                           }}
                         >
-                          <SwiperSlide
-                            style={{ width: "285px", marginLeft: "27px" }}
-                          >
-                            <div
-                              className="items slick-slides slick-currents slick-actives"
-                              tabIndex={-1}
-                              role="option"
-                              aria-describedby="slick-slide10s"
-                              style={{
-                                width: "235px",
-                                marginLeft: "-18px",
-                                marginRight: "37px",
-                              }}
-                              data-slick-index="0"
-                              aria-hidden="false"
+                          {similarProducts ? similarProducts.map((similar: any, index: any) => (
+                            < SwiperSlide
+                              style={{ width: "285px", marginLeft: "27px" }}
                             >
-                              <div className="col-item5s">
-                                <div className="sale-labels sale-top-rights">
-                                  <span>- 16%</span>
-                                </div>
-
-                                <div className="item-inners">
-                                  <div className="product-wrappers">
-                                    <div className="thumb-wrappers">
-                                      <a
-                                        href="/products/ban-tra-go-tu-nhien-5cbt-136"
-                                        className="thumbs flips"
-                                        title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                        tabIndex={0}
-                                      >
-                                        <img
-                                          className="lazyloads loadeds"
-                                          src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
-                                          alt="Bàn trà gỗ tự nhiên 5CBT-136"
-                                        />
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <div className="item-infos">
-                                    <div className="info-inners">
-                                      <h3 className="item-titles">
-                                        {" "}
-                                        <a
-                                          href="/products/ban-tra-go-tu-nhien-5cbt-136"
+                              <div
+                                className="items slick-slides slick-currents slick-actives"
+                                tabIndex={-1}
+                                role="option"
+                                aria-describedby={`slick-slide${index + 10}`}
+                                style={{
+                                  width: "235px",
+                                  marginLeft: "-18px",
+                                  // marginRight: "37px",
+                                }}
+                                data-slick-index={`${index}`}
+                                aria-hidden="false"
+                              >
+                                <div className="col-item5s">
+                                  <div className="item-inners">
+                                    <div className="product-wrappers">
+                                      <div className="thumb-wrappers">
+                                        <Link
+                                          to={''}
+                                          className="thumbs flips"
                                           title="Bàn trà gỗ tự nhiên 5CBT-136"
                                           tabIndex={0}
                                         >
-                                          Bàn trà gỗ tự nhiên 5CBT-136{" "}
-                                        </a>{" "}
-                                      </h3>
-                                      <div className="item-contents">
-                                        <div className="item-prices">
-                                          <div className="price-boxs">
-                                            <p className="special-prices">
-                                              <span className="prices">
-                                                6.590.000₫
-                                              </span>
-                                            </p>
+                                          <img
+                                            className="lazyloads loadeds"
+                                            src={similar.image[0].url}
+                                          />
+                                        </Link>
+                                      </div>
+                                    </div>
+                                    <div className="item-infos">
+                                      <div className="info-inners">
+                                        <h3 className="item-titles">
+                                          {" "}
+                                          <Link
+                                            to={''}
+                                            tabIndex={0}
+                                          >
+                                            {similar.product_name}
+                                            {" "}
+                                          </Link>{" "}
+                                        </h3>
+                                        <div className="item-contents">
+                                          <div className="item-prices">
+                                            <div className="price-boxs">
+                                              <p className="special-prices">
+                                                <span className="prices">
+                                                  {formatCurrency(similar?.product_price)}₫
+                                                </span>
+                                              </p>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
 
-                                    <div className="actionss hidden-xs hidden-sm remove_html">
-                                      <form>
-                                        <input type="hidden" tabIndex={0} />
-                                        <button
-                                          className="buttons btn-carts"
-                                          title="Mua hàng"
-                                          type="button"
-                                          tabIndex={0}
-                                        >
-                                          <a href="/cart">Mua hàng</a>
-                                        </button>
-                                      </form>
+                                      <div className="actionss hidden-xs hidden-sm remove_html">
+                                        <form>
+                                          <input type="hidden" tabIndex={0} />
+                                          <button
+                                            className="buttons btn-carts"
+                                            title="Mua hàng"
+                                            type="button"
+                                            tabIndex={0}
+                                          >
+                                            <Link onClick={scrollToTop} to={`/products/${similar._id}`}>Chi tiết</Link>
+                                          </button>
+                                          <button
+                                            className="buttons btn-carts"
+                                            title="Mua hàng"
+                                            type="button"
+                                            tabIndex={0}
+                                          >
+                                            <Link to={''}>Mua hàng</Link>
+                                          </button>
+                                        </form>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </SwiperSlide>
-
-                          <SwiperSlide>
-                            <div
-                              className="items slick-slides slick-actives"
-                              tabIndex={-1}
-                              role="option"
-                              aria-describedby="slick-slide11"
-                              style={{
-                                width: "268px",
-                                marginLeft: "-65px",
-                                marginRight: "18px",
-                              }}
-                              data-slick-index="1"
-                              aria-hidden="false"
-                            >
-                              <div className="col-item6s jk">
-                                <div className="item-inners">
-                                  <div className="product-wrappers">
-                                    <div className="thumb-wrappers">
-                                      <a
-                                        href="/products/ke-tivi-phong-khach-doc-dao-5ckt-17"
-                                        className="thumbs flips"
-                                        title="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                        tabIndex={0}
-                                      >
-                                        <img
-                                          className="lazyloads loadeds"
-                                          src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
-                                          alt="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                        />
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <div className="item-infos">
-                                    <div className="info-inners">
-                                      <h3 className="item-titles">
-                                        {" "}
-                                        <a
-                                          href="/products/ke-tivi-phong-khach-doc-dao-5ckt-17"
-                                          title="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                          tabIndex={0}
-                                        >
-                                          Kệ tivi phòng khách độc đáo 5CKT-17{" "}
-                                        </a>{" "}
-                                      </h3>
-                                      <div className="item-contents">
-                                        <div className="item-prices">
-                                          <div className="price-boxs">
-                                            <span className="regular-prices">
-                                              {" "}
-                                              <span className="prices">
-                                                8.250.000₫
-                                              </span>{" "}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className="actionss hidden-xs hidden-sm remove_html">
-                                      <form>
-                                        <input type="hidden" tabIndex={0} />
-                                        <button
-                                          className="buttons btn-carts add_to_carts"
-                                          title="Mua hàng"
-                                          tabIndex={0}
-                                        >
-                                          <a href="/cart">Mua hàng</a>
-                                        </button>
-                                      </form>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </SwiperSlide>
-
-                          <SwiperSlide>
-                            <div
-                              className="items slick-slides slick-actives"
-                              tabIndex={-1}
-                              role="option"
-                              aria-describedby="slick-slide12s"
-                              style={{
-                                width: "273px",
-                                marginLeft: "-64px",
-                                marginRight: "42px",
-                              }}
-                              data-slick-index="2"
-                              aria-hidden="false"
-                            >
-                              <div className="col-item7s ap">
-                                <div className="item-inners">
-                                  <div className="product-wrappers">
-                                    <div className="thumb-wrappers">
-                                      <a
-                                        href="/products/ke-tivi-phong-khach-dep-5ckt-08"
-                                        className="thumbs flips"
-                                        title="Kệ tivi phòng khách đẹp 5CKT-08"
-                                        tabIndex={0}
-                                      >
-                                        <img
-                                          className="lazyloads loadeds"
-                                          src="https://bizweb.dktcdn.net/100/368/970/products/ke-tivi-phong-khach-kieu-dang-trang-nha-600x600.jpg?v=1577206170977"
-                                          alt="Kệ tivi phòng khách đẹp 5CKT-08"
-                                        />
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <div className="item-infos">
-                                    <div className="info-inners">
-                                      <h3 className="item-titles">
-                                        {" "}
-                                        <a
-                                          href="/products/ke-tivi-phong-khach-dep-5ckt-08"
-                                          title="Kệ tivi phòng khách đẹp 5CKT-08"
-                                          tabIndex={0}
-                                        >
-                                          Kệ tivi phòng khách đẹp 5CKT-08{" "}
-                                        </a>{" "}
-                                      </h3>
-                                      <div className="item-contents">
-                                        <div className="item-prices">
-                                          <div className="price-boxs">
-                                            <span className="regular-prices">
-                                              {" "}
-                                              <span className="prices">
-                                                9.250.000₫
-                                              </span>{" "}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className="actionss hidden-xs hidden-sm remove_html">
-                                      <form>
-                                        <input type="hidden" tabIndex={0} />
-                                        <button
-                                          className="buttons btn-carts add_to_carts"
-                                          title="Mua hàng"
-                                          tabIndex={0}
-                                        >
-                                          <a href="/cart">Mua hàng</a>
-                                        </button>
-                                      </form>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </SwiperSlide>
-
-                          <SwiperSlide>
-                            <div
-                              className="items slick-slides slick-actives"
-                              tabIndex={-1}
-                              role="option"
-                              aria-describedby="slick-slide13s"
-                              style={{
-                                width: "267px",
-                                marginLeft: "-56px",
-                                marginRight: "57px",
-                              }}
-                              data-slick-index="3"
-                              aria-hidden="false"
-                            >
-                              <div className="col-item8s kp">
-                                <div className="sale-labels sale-top-rights">
-                                  <span>- 23%</span>
-                                </div>
-
-                                <div className="item-inners">
-                                  <div className="product-wrappers">
-                                    <div className="thumb-wrappers">
-                                      <a
-                                        href="/products/ke-tivi-go-tu-nhien-chan-cao-5ckt-168"
-                                        className="thumbs flips"
-                                        title="Kệ tivi gỗ tự nhiên chân cao 5CKT-168"
-                                        tabIndex={0}
-                                      >
-                                        <img
-                                          className="lazyloads loadeds"
-                                          src="https://bizweb.dktcdn.net/100/368/970/products/ke-tivi-go-tu-nhien-chan-cao-kt168-600x600.jpg?v=1577206060690"
-                                          alt="Kệ tivi gỗ tự nhiên chân cao 5CKT-168"
-                                        />
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <div className="item-infos">
-                                    <div className="info-inners">
-                                      <h3 className="item-titles">
-                                        {" "}
-                                        <a
-                                          href="/products/ke-tivi-go-tu-nhien-chan-cao-5ckt-168"
-                                          title="Kệ tivi gỗ tự nhiên chân cao 5CKT-168"
-                                          tabIndex={0}
-                                        >
-                                          Kệ tivi gỗ tự nhiên chân cao 5CKT-168{" "}
-                                        </a>{" "}
-                                      </h3>
-                                      <div className="item-contents">
-                                        <div className="item-prices">
-                                          <div className="price-boxs">
-                                            <p className="special-prices">
-                                              <span className="prices">
-                                                7.860.000₫
-                                              </span>
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className="actionss hidden-xs hidden-sm remove_html">
-                                      <form>
-                                        <input type="hidden" tabIndex={0} />
-                                        <button
-                                          className="buttons btn-carts add_to_carts"
-                                          title="Mua hàng"
-                                          tabIndex={0}
-                                        >
-                                          <a href="/cart">Mua hàng</a>
-                                        </button>
-                                      </form>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </SwiperSlide>
-
-                          <SwiperSlide>
-                            <div
-                              className="items slick-slides slick-currents slick-actives"
-                              tabIndex={-1}
-                              role="option"
-                              aria-describedby="slick-slide10s"
-                              style={{
-                                width: "264px",
-                                marginLeft: "-57px" /* ,marginRight: "37px" */,
-                              }}
-                              data-slick-index="0"
-                              aria-hidden="false"
-                            >
-                              <div className="col-item9s kp">
-                                <div className="sale-labels sale-top-rights">
-                                  <span>- 16%</span>
-                                </div>
-
-                                <div className="item-inners">
-                                  <div className="product-wrappers">
-                                    <div className="thumb-wrappers">
-                                      <a
-                                        href="/products/ban-tra-go-tu-nhien-5cbt-136"
-                                        className="thumbs flips"
-                                        title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                        tabIndex={0}
-                                      >
-                                        <img
-                                          className="lazyloads loadeds"
-                                          src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
-                                          alt="Bàn trà gỗ tự nhiên 5CBT-136"
-                                        />
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <div className="item-infos">
-                                    <div className="info-inners">
-                                      <h3 className="item-titles">
-                                        {" "}
-                                        <a
-                                          href="/products/ban-tra-go-tu-nhien-5cbt-136"
-                                          title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                          tabIndex={0}
-                                        >
-                                          Bàn trà gỗ tự nhiên 5CBT-136{" "}
-                                        </a>{" "}
-                                      </h3>
-                                      <div className="item-contents">
-                                        <div className="item-prices">
-                                          <div className="price-boxs">
-                                            <p className="special-prices">
-                                              <span className="prices">
-                                                6.590.000₫
-                                              </span>
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className="actionss hidden-xs hidden-sm remove_html">
-                                      <form>
-                                        <input type="hidden" tabIndex={0} />
-                                        <button
-                                          className="buttons btn-carts"
-                                          title="Mua hàng"
-                                          type="button"
-                                          tabIndex={0}
-                                        >
-                                          <a href="/cart">Mua hàng</a>
-                                        </button>
-                                      </form>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </SwiperSlide>
-
-                          <SwiperSlide>
-                            <div
-                              className="items slick-slides slick-actives"
-                              tabIndex={-1}
-                              role="option"
-                              aria-describedby="slick-slide11s"
-                              style={{ width: "259px", marginLeft: "-50px" }}
-                              data-slick-index="2"
-                              aria-hidden="false"
-                            >
-                              <div className="col-item10s kp">
-                                <div className="item-inners">
-                                  <div className="product-wrappers">
-                                    <div className="thumb-wrappers">
-                                      <a
-                                        href="/products/ke-tivi-phong-khach-doc-dao-5ckt-17"
-                                        className="thumbs flips"
-                                        title="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                        tabIndex={0}
-                                      >
-                                        <img
-                                          className="lazyloads loadeds"
-                                          src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
-                                          alt="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                        />
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <div className="item-infos">
-                                    <div className="info-inners">
-                                      <h3 className="item-titles">
-                                        {" "}
-                                        <a
-                                          href="/products/ke-tivi-phong-khach-doc-dao-5ckt-17"
-                                          title="Kệ tivi phòng khách độc đáo 5CKT-17"
-                                          tabIndex={0}
-                                        >
-                                          Kệ tivi phòng khách độc đáo 5CKT-17{" "}
-                                        </a>{" "}
-                                      </h3>
-                                      <div className="item-contents">
-                                        <div className="item-prices">
-                                          <div className="price-boxs">
-                                            <span className="regular-prices">
-                                              {" "}
-                                              <span className="prices">
-                                                8.250.000₫
-                                              </span>{" "}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className="actionss hidden-xs hidden-sm remove_html">
-                                      <form>
-                                        <input type="hidden" tabIndex={0} />
-                                        <button
-                                          className="buttons btn-carts add_to_carts"
-                                          title="Mua hàng"
-                                          tabIndex={0}
-                                        >
-                                          <a href="/cart">Mua hàng</a>
-                                        </button>
-                                      </form>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </SwiperSlide>
+                            </SwiperSlide>
+                          ))
+                            : 'Không có sản phẩm liên quan'}
                         </div>
                       </div>
                     </Swiper>
@@ -1147,8 +488,8 @@ const Product_Detail = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 export default Product_Detail;

@@ -21,6 +21,12 @@
         height: 239px;
     }
 
+    .img1 {
+        padding-left: 189px;
+        width: 496px;
+        height: 239px;
+    }
+
     .product-medium {
         display: flex;
         padding-left: 164px;
@@ -382,6 +388,27 @@
         height: 106px;
     }
 
+    .img1 {
+        width: 100%;
+        height: 106px;
+    }
+
+    .test {
+        width: 50px;
+        height: 50px;
+    }
+
+    .btn2 {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 10px !important;
+    }
+
+    .pill-img {
+        width: 60px;
+        height: 100%;
+    }
+
     .text1 {
         font-size: 10px;
     }
@@ -423,9 +450,8 @@
     }
 
     .color p {
-        font-size: 14px;
-        margin-top: 95px;
-        margin-left: -108px;
+        font-size: 12px;
+        margin-top: 15px;
     }
 
     .image1 {
@@ -440,10 +466,8 @@
     }
 
     .size p {
-        font-size: 14px;
+        font-size: 12px;
         padding-right: 16px;
-        margin-top: -80px;
-        margin-left: 61px;
     }
 
     button.btn-a {
