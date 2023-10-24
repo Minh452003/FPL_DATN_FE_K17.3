@@ -48,7 +48,6 @@ const Search = () => {
             <div className="rounded-md z-50 absolute w-[530px] mt-5" id="listProduct">
               <div className="container">
                 <div className="p-2 bg-white rounded-md">
-                  {/* Check if there are search results */}
                   {searchResults.length === 0 ? (
                     <div className="text-center">Không tìm thấy sản phẩm nào</div>
                   ) : (
