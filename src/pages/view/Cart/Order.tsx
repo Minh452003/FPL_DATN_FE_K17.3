@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetOrderByUserIdQuery } from "@/api/orderApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { format } from 'date-fns';
+import { Link } from "react-router-dom";
 const Order = () => {
   const { userID } = useParams();
   const { data } = useGetOrderByUserIdQuery<any>(userID);
@@ -58,7 +59,7 @@ const Order = () => {
             <p>Đơn hàng ngày: <span className="text-[#FF1493]">{format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy")}</span></p>
             <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">{order.total}</span></p>
             <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">{order.status}</span></p>
-            <button className="bg-[#63B8FF] border-solid rounded border-1 py-1 px-3 text-white">Chi tiết</button>
+            <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white"><Link to={"orderdetail"} style={{textDecoration: "none", color: "black"}}>Chi tiết</Link></button>
           </div>
         </div>
               )
