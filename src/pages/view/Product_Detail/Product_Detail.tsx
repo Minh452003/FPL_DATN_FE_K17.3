@@ -10,7 +10,7 @@ import { useGetProductByIdQuery, useGetProductViewsQuery, useGetProductsQuery } 
 import { useGetBrandQuery } from "@/api/brandApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
-import { Skeleton } from "antd";
+import { Button, Skeleton, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useGetChildProductByProductIdQuery, useGetChildProductPriceQuery } from "@/api/chilProductApi";
 import { useGetColorsQuery } from "@/api/colorApi";
@@ -20,21 +20,26 @@ import {
   initTE,
 } from "tw-elements";
 import { useGetCommentByProductIdQuery } from "@/api/commentApi";
+import { useAddCartMutation } from "@/api/cartApi";
+import { getDecodedAccessToken } from "@/decoder";
+import Swal from "sweetalert2";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Product_Detail = () => {
   const { idProduct }: any = useParams();
+  const decodedToken: any = getDecodedAccessToken();
+  const id = decodedToken ? decodedToken.id : null;
   const { data, isLoading: isLoadingFetching, error }: any = useGetProductByIdQuery(idProduct || "");
   const { data: colors, isLoading: isLoadingColor } = useGetColorsQuery<any>();
   const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>()
   const { data: products, isLoading: isLoadingProduct }: any = useGetProductsQuery();
   const { data: comment, isLoading: isLoadingComment }: any = useGetCommentByProductIdQuery(idProduct || "");
-
+  const [addCart, resultAdd] = useAddCartMutation();
   const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
   const [activeColor, setActiveColor] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(false);
   const commentProductDetail = comment?.comments
-  
   const listOneData = data?.product;
   const similarProducts = products?.product?.docs.filter((siproduct: any) => siproduct.categoryId === listOneData?.categoryId);
   useEffect(() => {
@@ -62,6 +67,62 @@ const Product_Detail = () => {
   const { data: childProducts, isLoading: isLoadingChild }: any = useGetChildProductByProductIdQuery(idProduct || "");
   const { data: childProduct }: any = useGetChildProductPriceQuery({ productId: idProduct, sizeId: activeSize, colorId: activeColor });
   const { data: productView }: any = useGetProductViewsQuery(idProduct);
+  // --------------------------
+  const userId: string = id
+  const handleAddToCart = () => {
+    if (data && userId) {
+      const data: any = {
+        productId: listOneData._id,
+        product_name: listOneData.product_name,
+        product_price: childProduct?.product?.product_price,
+        image: listOneData.image[0]?.url,
+        stock_quantity: quantity,
+        colorId: activeColor,
+        sizeId: activeSize,
+        materialId: listOneData.materialId
+      };
+
+      Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng,tôi chắc chắn!',
+        cancelButtonText: 'Huỷ'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Xóa sản phẩm
+          addCart({ data, userId }).then((response: any) => {
+            if (response.error) {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: response.error.data.message,
+                showConfirmButton: true,
+                timer: 1500
+              });
+            } else {
+              Swal.fire(
+                'Sản phẩm đã được thêm vào giỏ hàng',
+                'Bạn có thể vào giỏ hàng để xem.',
+                'success'
+              )
+            }
+          })
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // Hiển thị thông báo hủy xóa sản phẩm
+          Swal.fire(
+            'Huỷ',
+            'Sản phẩm không được thêm vào giỏ hàng:)',
+            'error'
+          )
+        }
+      })
+    }
+  };
+
 
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -72,9 +133,14 @@ const Product_Detail = () => {
     }
   }
   const increaseQuantity = () => {
-    setQuantity(quantity + 1); // Cập nhật số lượng
+    // Tăng số lượng lên 1 nếu chưa đạt tới giới hạn của stock_quantity
+    if (quantity < childProduct?.product?.stock_quantity) {
+      setQuantity(quantity + 1);
+    }
   }
-
+  useEffect(() => {
+    setQuantity(1);
+  }, [childProduct]);
   const handleClickSize = (sizeId: any) => {
     setActiveSize(sizeId);
 
@@ -113,7 +179,7 @@ const Product_Detail = () => {
   if (isLoadingColor) return <Skeleton />;
   if (isLoadingSize) return <Skeleton />;
   if (isLoadingProduct) return <Skeleton />;
-  if(isLoadingComment) return <Skeleton/>
+  if (isLoadingComment) return <Skeleton />
   if (error) {
     if ("data" in error && "status" in error) {
       return (
@@ -281,13 +347,23 @@ const Product_Detail = () => {
                 >
                   +
                 </button>
-                <button
-                  type="button"
-                  aria-disabled="false"
-                  className="btn6 btn-solid-primary6 btn-f hl"
-                >
-                  MUA HÀNG
-                </button>
+                <Tooltip title={id && activeColor && activeSize ? '' : 'Bạn phải chọn màu và kích thước'}>
+                  {resultAdd.isLoading ? (
+                    <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                  ) : (
+                    <Button
+                      aria-disabled={!id || !activeColor || !activeSize}
+                      className="btn6 btn-solid-primary6 btn-f hl"
+                      onClick={() => {
+                        if (id && activeColor && activeSize) {
+                          handleAddToCart();
+                        }
+                      }}
+                    >
+                      MUA HÀNG
+                    </Button>
+                  )}
+                </Tooltip>
                 <button
                   type="button"
                   aria-disabled="false"
@@ -299,7 +375,7 @@ const Product_Detail = () => {
             </div>
           </div>
           <div className="include">
-            <input type="radio" id="chi-tiet" name="tab" checked />
+            <input type="radio" id="chi-tiet" name="tab" defaultChecked />
             <label
               htmlFor="chi-tiet"
               className="detail tab-link"
@@ -324,9 +400,9 @@ const Product_Detail = () => {
               </div>
             </div>
             <div id="binh-luan-content">
-            <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
+              <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
                 <div className="max-w-4xl mx-auto px-4">
-                  {commentProductDetail.map((comment:any) => (
+                  {comment ? commentProductDetail.map((comment: any) => (
                     <article key={comment._id} className="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
                       <footer className="flex justify-between items-center mb-2">
                         <div className="flex items-center evaluate">
@@ -341,27 +417,25 @@ const Product_Detail = () => {
                           <p className="text-sm text-gray-600 dark:text-gray-400">
                             {comment.formattedCreatedAt}
                           </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {comment.formattedCreatedAt}
-                          </p>
                         </div>
+
                         {/* Các phần khác của comment */}
                       </footer>
                       <p className="text-gray-500 dark:text-gray-400">{comment.description}</p>
                       <div className="product-small">
-                      <img
-                        className="image5"
-                        src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
-                        alt=""
-                      />
-                      <img
-                        className="image6"
-                        src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
-                        alt=""
-                      />
-                    </div>
+                        <img
+                          className="image5"
+                          src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
+                          alt=""
+                        />
+                        <img
+                          className="image6"
+                          src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
+                          alt=""
+                        />
+                      </div>
                     </article>
-                  ))}
+                  )) : <p className="sp2">Không có đánh giá</p>}
                 </div>
               </section>
             </div>
@@ -432,7 +506,7 @@ const Product_Detail = () => {
                                         >
                                           <img
                                             className="lazyloads loadeds"
-                                            // src={similar.image[0].url}
+                                            src={similar.image[0].url}
                                           />
                                         </Link>
                                       </div>
@@ -498,7 +572,7 @@ const Product_Detail = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div >
       </div >
     </div >
   );
