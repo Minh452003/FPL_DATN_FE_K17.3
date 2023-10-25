@@ -53,6 +53,7 @@ import OrdersConfirmed from "./pages/admin/orders/OrdersConfirmed";
 import OrdersCompleted from "./pages/admin/orders/OrdersCompleted";
 import ProductTrash from "./pages/admin/products/ProductTrash";
 import OrdersDetail from "./pages/admin/orders/OrdersDetail";
+import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
 
 export const router = createBrowserRouter([
     {
@@ -64,6 +65,8 @@ export const router = createBrowserRouter([
             { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
+            { path: 'products/customProduct', element: <CustomProductDetail /> },
+
             { path: 'review', element: <ReviewPage /> },
             { path: 'contact', element: <ContactPage /> },
 
