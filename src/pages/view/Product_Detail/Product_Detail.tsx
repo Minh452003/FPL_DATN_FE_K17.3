@@ -23,7 +23,7 @@ import { useGetCommentByProductIdQuery } from "@/api/commentApi";
 import { useAddCartMutation } from "@/api/cartApi";
 import { getDecodedAccessToken } from "@/decoder";
 import Swal from "sweetalert2";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiFillStar, AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Product_Detail = () => {
   const { idProduct }: any = useParams();
@@ -402,9 +402,12 @@ const Product_Detail = () => {
             <div id="binh-luan-content">
               <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
                 <div className="max-w-4xl mx-auto px-4">
-                  {comment ? commentProductDetail.map((comment: any) => (
-                    <article key={comment._id} className="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
-                      <footer className="flex justify-between items-center mb-2">
+                  {commentProductDetail.map((comment: any) => (
+                    <article
+                      key={comment._id}
+                      className="p-6 text-base bg-white rounded-lg dark:bg-gray-900"
+                    >
+                      <footer className="flex items-center">
                         <div className="flex items-center evaluate">
                           <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
                             <img
@@ -412,16 +415,22 @@ const Product_Detail = () => {
                               src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                               alt="Michael Gough"
                             />
-                            {comment.userId.last_name}
-                          </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {comment.formattedCreatedAt}
+                            {/* {comment.userId.last_name} */}
                           </p>
                         </div>
-
                         {/* Các phần khác của comment */}
                       </footer>
-                      <p className="text-gray-500 dark:text-gray-400">{comment.description}</p>
+                      <div className="stars flex ml-16 ">
+                        {Array.from({ length: comment.rating }, (_, index) => (
+                          <AiFillStar style={{ color: 'orange' }} />
+                        ))}
+                      </div>
+                      <p className="ml-16 text-xs text-gray-600 dark:text-gray-400">
+                        {comment.formattedCreatedAt}
+                      </p>
+                      <p className="ml-16 text-gray-500 dark:text-gray-400">
+                        {comment.description}
+                      </p>
                       <div className="product-small">
                         <img
                           className="image5"
@@ -435,7 +444,7 @@ const Product_Detail = () => {
                         />
                       </div>
                     </article>
-                  )) : <p className="sp2">Không có đánh giá</p>}
+                  ))}
                 </div>
               </section>
             </div>
