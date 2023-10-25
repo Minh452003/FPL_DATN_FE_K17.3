@@ -52,6 +52,7 @@ import OrdersUnconfirmed from "./pages/admin/orders/OrdersUnconfirmed";
 import OrdersConfirmed from "./pages/admin/orders/OrdersConfirmed";
 import OrdersCompleted from "./pages/admin/orders/OrdersCompleted";
 import ProductTrash from "./pages/admin/products/ProductTrash";
+import OrdersDetail from "./pages/admin/orders/OrdersDetail";
 
 export const router = createBrowserRouter([
     {
@@ -155,6 +156,7 @@ export const router = createBrowserRouter([
             {
                 path: 'order', children: [
                     { path: 'unconfirmed', element: <OrdersUnconfirmed /> },
+                    { path: ':id/detail', element: <OrdersDetail /> },
                     { path: 'confirmed', element: <OrdersConfirmed /> },
                     { path: 'completed', element: <OrdersCompleted /> },
                 ],
