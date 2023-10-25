@@ -19,6 +19,7 @@ import {
   Tab,
   initTE,
 } from "tw-elements";
+import { useGetCommentByProductIdQuery } from "@/api/commentApi";
 
 const Product_Detail = () => {
   const { idProduct }: any = useParams();
@@ -26,10 +27,14 @@ const Product_Detail = () => {
   const { data: colors, isLoading: isLoadingColor } = useGetColorsQuery<any>();
   const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>()
   const { data: products, isLoading: isLoadingProduct }: any = useGetProductsQuery();
+  const { data: comment, isLoading: isLoadingComment }: any = useGetCommentByProductIdQuery(idProduct || "");
+
   const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
   const [activeColor, setActiveColor] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(false);;
+  const [selectedIndex, setSelectedIndex] = useState(false);
+  const commentProductDetail = comment?.comments
+  
   const listOneData = data?.product;
   const similarProducts = products?.product?.docs.filter((siproduct: any) => siproduct.categoryId === listOneData?.categoryId);
   useEffect(() => {
@@ -108,7 +113,7 @@ const Product_Detail = () => {
   if (isLoadingColor) return <Skeleton />;
   if (isLoadingSize) return <Skeleton />;
   if (isLoadingProduct) return <Skeleton />;
-
+  if(isLoadingComment) return <Skeleton/>
   if (error) {
     if ("data" in error && "status" in error) {
       return (
@@ -319,26 +324,31 @@ const Product_Detail = () => {
               </div>
             </div>
             <div id="binh-luan-content">
-              <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
+            <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
                 <div className="max-w-4xl mx-auto px-4">
-                  <article className="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
-                    <footer className="flex justify-between items-center mb-2">
-                      <div className="flex items-center evaluate">
-                        <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold"><img
-                          className="mr-2 w-8 h-8 rounded-full"
-                          src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                          alt="Michael Gough" />Phùng Quang Minh</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400"><time
-                          title="February 8th, 2022">Feb. 8, 2022</time></p>
-                      </div>
-                      <button id="dropdownMenuIconHorizontalButton" data-dropdown-toggle="dropdownDotsHorizontal" className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
-                        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                          <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                        </svg>
-                      </button>
-                    </footer>
-                    <p className="text-gray-500 dark:text-gray-400">Bài viết rất thẳng thắn. Thực sự đáng thời gian đọc. Cảm ơn! Nhưng các công cụ chỉ là công cụ dành cho các nhà thiết kế UX. Kiến thức về các công cụ thiết kế cũng quan trọng như việc tạo ra chiến lược thiết kế.</p>
-                    <div className="product-small">
+                  {commentProductDetail.map((comment:any) => (
+                    <article key={comment._id} className="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
+                      <footer className="flex justify-between items-center mb-2">
+                        <div className="flex items-center evaluate">
+                          <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+                            <img
+                              className="mr-2 w-8 h-8 rounded-full"
+                              src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                              alt="Michael Gough"
+                            />
+                            {comment.userId.last_name}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {comment.formattedCreatedAt}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {comment.formattedCreatedAt}
+                          </p>
+                        </div>
+                        {/* Các phần khác của comment */}
+                      </footer>
+                      <p className="text-gray-500 dark:text-gray-400">{comment.description}</p>
+                      <div className="product-small">
                       <img
                         className="image5"
                         src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
@@ -350,7 +360,8 @@ const Product_Detail = () => {
                         alt=""
                       />
                     </div>
-                  </article>
+                    </article>
+                  ))}
                 </div>
               </section>
             </div>
@@ -421,7 +432,7 @@ const Product_Detail = () => {
                                         >
                                           <img
                                             className="lazyloads loadeds"
-                                            src={similar.image[0].url}
+                                            // src={similar.image[0].url}
                                           />
                                         </Link>
                                       </div>
