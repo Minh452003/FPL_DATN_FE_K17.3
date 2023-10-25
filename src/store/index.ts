@@ -27,6 +27,9 @@ import uploadApi, { uploadReducer } from "@/api/uploadApi";
 import childProductApi, { childProductReducer } from "@/api/chilProductApi";
 import passportApi, { passportReducer } from "@/api/passportApi";
 
+import customizedProductApi, { CustomizedproductsReducer } from "@/api/CustomizedProductAPI";
+
+
 
 const persistConfig = {
     key: 'root',
@@ -50,7 +53,9 @@ const rootReducer = combineReducers({
     materials: materialsReducer,
     upload: uploadReducer,
     childProduct: childProductReducer,
-    passport: passportReducer
+    passport: passportReducer,
+    customizedproducts: CustomizedproductsReducer
+    
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -69,7 +74,8 @@ const additionalMiddlewares: any = [
     materialsApi.middleware,
     uploadApi.middleware,
     childProductApi.middleware,
-    passportApi.middleware
+    passportApi.middleware,
+    customizedProductApi.middleware
 ];
 
 export const store = configureStore({

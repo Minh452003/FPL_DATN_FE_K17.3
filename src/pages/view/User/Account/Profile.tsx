@@ -4,6 +4,7 @@ import { getDecodedAccessToken } from "@/decoder";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PiUserBold } from "react-icons/pi";
+
 // Đây là hàm gửi yêu cầu lấy thông tin người dùng từ máy chủ dựa trên token
 
 const Profile = () => {
@@ -11,6 +12,8 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const { data: user } = useGetUserByIdQuery(userId);
+  console.log({ data: user })
+  
 
   useEffect(() => {
     const fetchUser = async () => {

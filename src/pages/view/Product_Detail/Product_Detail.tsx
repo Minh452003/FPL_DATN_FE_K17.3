@@ -29,6 +29,8 @@ const Product_Detail = () => {
   const { idProduct }: any = useParams();
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
+  console.log(id);
+  
   const { data, isLoading: isLoadingFetching, error }: any = useGetProductByIdQuery(idProduct || "");
   const { data: colors, isLoading: isLoadingColor } = useGetColorsQuery<any>();
   const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>()
@@ -69,6 +71,8 @@ const Product_Detail = () => {
   const { data: productView }: any = useGetProductViewsQuery(idProduct);
   // --------------------------
   const userId: string = id
+
+  
   const handleAddToCart = () => {
     if (data && userId) {
       const data: any = {
