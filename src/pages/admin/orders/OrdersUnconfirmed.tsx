@@ -71,7 +71,7 @@ const OrdersUnconfirmed = () => {
             key: 'action',
             render: (_, record: any) => (
                 <Space size="middle">
-                    <Button danger style={{ border: '1px solid blue' }}><Link to={`/admin/order/${record.key}/detail`}> <CgDetailsMore className='text-danger' /></Link></Button>
+                    <Button danger style={{ border: '1px solid blue' }}><Link to={`/admin/order/${record.key}/detail`}><button style={{textDecoration: "none"}}>Chi tiết</button></Link></Button>
                 </Space>
             ),
         },

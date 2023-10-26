@@ -1,11 +1,11 @@
 import { FaArrowRight } from "react-icons/fa";
-import "./Product_detail.css";
-import "./Responsive_Product_Detail.css";
+import "../Product_Detail/Product_detail.css";
+import "../Product_Detail/Responsive_Product_Detail.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetProductByIdQuery, useGetProductViewsQuery, useGetProductsQuery } from "@/api/productApi";
 import { useGetBrandQuery } from "@/api/brandApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
@@ -23,23 +23,26 @@ import { useGetCommentByProductIdQuery } from "@/api/commentApi";
 import { useAddCartMutation } from "@/api/cartApi";
 import { getDecodedAccessToken } from "@/decoder";
 import Swal from "sweetalert2";
-import { AiFillStar, AiOutlineLoading3Quarters } from "react-icons/ai";
-
-const Product_Detail = () => {
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import {  Form } from 'antd';
+import { useGetUserByIdQuery, useGetUsersQuery } from "@/api/authApi";
+import { useGetCustomizedproductsByUserIdQuery, useUpdateCustomProductMutation } from "@/api/CustomizedProductAPI";
+const CustomizedProductAdd = () => {
   const { idProduct }: any = useParams();
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
-  console.log(id);
-  
   const { data, isLoading: isLoadingFetching, error }: any = useGetProductByIdQuery(idProduct || "");
   const { data: colors, isLoading: isLoadingColor } = useGetColorsQuery<any>();
-  const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>()
+  const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>();
+  const { data: materials, isLoading: isLoadingMaterial } = useGetMaterialQuery<any>();
   const { data: products, isLoading: isLoadingProduct }: any = useGetProductsQuery();
   const { data: comment, isLoading: isLoadingComment }: any = useGetCommentByProductIdQuery(idProduct || "");
+
   const [addCart, resultAdd] = useAddCartMutation();
   const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
   const [activeColor, setActiveColor] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
+  const [activeMaterial, setActiveMaterial] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(false);
   const commentProductDetail = comment?.comments
   const listOneData = data?.product;
@@ -67,12 +70,10 @@ const Product_Detail = () => {
   )?.material_name;
   // -------------------------- 
   const { data: childProducts, isLoading: isLoadingChild }: any = useGetChildProductByProductIdQuery(idProduct || "");
-  const { data: childProduct }: any = useGetChildProductPriceQuery({ productId: idProduct, sizeId: activeSize, colorId: activeColor });
+  const { data: childProduct }: any = useGetChildProductPriceQuery({ productId: idProduct, sizeId: activeSize, colorId: activeColor, materialId: activeMaterial });
   const { data: productView }: any = useGetProductViewsQuery(idProduct);
   // --------------------------
   const userId: string = id
-
-  
   const handleAddToCart = () => {
     if (data && userId) {
       const data: any = {
@@ -83,7 +84,8 @@ const Product_Detail = () => {
         stock_quantity: quantity,
         colorId: activeColor,
         sizeId: activeSize,
-        materialId: listOneData.materialId
+        materialId: activeMaterial,
+        /* materialId: listOneData.materialId */
       };
 
       Swal.fire({
@@ -126,10 +128,33 @@ const Product_Detail = () => {
       })
     }
   };
+  const [form] = Form.useForm();
+  const {
+    data: customProduct,
+    error1,
+    isLoading: isLoadingFetchingCustomProduct,
+  } = useGetCustomizedproductsByUserIdQuery<any>(id);
+  const [updateCustomizedProduct] = useUpdateCustomProductMutation<any>();
+  const navigate = useNavigate();
+  const onFinish = (values: any) => {
+    updateCustomizedProduct(values).then(() => {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Thêm sản phẩm tự thiết kế thành công!',
+        showConfirmButton: true,
+        timer: 1500,
+      });
+      navigate(`/customizedProducts/${id}`);
+    });
+  };
 
-
-  const formatCurrency = (number: number) => {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const formatCurrency = (number: { toString: () => string; }) => {
+    if (number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    } else {
+      return "0"; // Giá trị mặc định hoặc xử lý khác
+    }
   }
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -151,6 +176,10 @@ const Product_Detail = () => {
   }
   const handleClickColor = (colorId: any) => {
     setActiveColor(colorId);
+
+  }
+  const handleClickMaterial = (materialId: any) => {
+    setActiveMaterial(materialId);
 
   }
   const [slidesPerView, setSlidesPerView] = useState(1); // Mặc định là 1
@@ -178,10 +207,12 @@ const Product_Detail = () => {
       behavior: "smooth", // Cuộn mượt
     });
   };
+  if (isLoadingFetchingCustomProduct) return <Skeleton />;
   if (isLoadingFetching) return <Skeleton />;
   if (isLoadingChild) return <Skeleton />;
   if (isLoadingColor) return <Skeleton />;
   if (isLoadingSize) return <Skeleton />;
+  if (isLoadingMaterial) return <Skeleton />;
   if (isLoadingProduct) return <Skeleton />;
   if (isLoadingComment) return <Skeleton />
   if (error) {
@@ -314,6 +345,7 @@ const Product_Detail = () => {
                     const sizesname = sizes?.size?.find((s: any) => s._id == size.sizeId);
                     const isActive = size.sizeId === activeSize;
                     return (
+                      
                       <button
                         key={size.sizeId}
                         aria-label="M"
@@ -328,8 +360,29 @@ const Product_Detail = () => {
                   }) : <p className="sp2">Không có kích thước</p>}
                 </div>
               </div>
+              <div className="material">
+                <p>Nguyên vật liệu</p>
+                <div className="flex">
+                  {childProducts ? childProducts.products.map((material: any) => {
+                    const materialname = materials?.material?.find((materials: any) => materials._id === material.materialId);
+                    const isActive = material.materialId === activeMaterial; return (
+                      <button
+                        key={material.materialId}
+                        aria-label="M"
+                        aria-disabled="false"
+                        className={`btn2 btn-solid-primary2 btn-b ${isActive ? 'active1' : ''}`}
+                        onClick={() => handleClickMaterial(material.materialId)}
+                      >
+                        {materialname.material_name}
+                      </button>
+                    )
+                  }) : <p className="sp2">Không có nguyên vật liệu</p>}
+                </div>
+              </div>
+              
               {childProduct ? <p className="sp1">Còn {childProduct.product.stock_quantity} sản phẩm</p> : ''}
               <div className="flex button">
+              
                 <button
                   aria-label="Decrease"
                   className="btn3 btn-solid-primary3 btn-c"
@@ -351,39 +404,35 @@ const Product_Detail = () => {
                 >
                   +
                 </button>
-                <Tooltip title={id && activeColor && activeSize ? '' : 'Bạn phải chọn màu và kích thước'}>
+                <Form
+                  form={form}
+                  name="basic"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                  style={{ maxWidth: 1000 }}
+                  initialValues={{ remember: true }}
+                  onFinish={onFinish}
+                  autoComplete="off"
+                >
+                <Tooltip title={id && activeColor && activeSize && activeMaterial ? '' : 'Bạn phải chọn màu, kích thước và nguyên vật liệu'}>
                   {resultAdd.isLoading ? (
                     <AiOutlineLoading3Quarters className="animate-spin m-auto" />
                   ) : (
                     <Button
-                      aria-disabled={!id || !activeColor || !activeSize}
+                      aria-disabled={!id || !activeColor || !activeSize || !activeMaterial}
                       className="btn6 btn-solid-primary6 btn-f hl"
                       onClick={() => {
-                        if (id && activeColor && activeSize) {
+                        if (id && activeColor && activeSize && activeMaterial) {
                           handleAddToCart();
+                          navigate(`/customizedProducts/${id}`);
                         }
                       }}
-                    >
-                      MUA HÀNG
+                     >
+                      ĐẶT HÀNG
                     </Button>
                   )}
                 </Tooltip>
-                {/* <button
-                  type="button"
-                  aria-disabled="false"
-                  className="btn10 btn-solid-primary10 btn-p hq"
-                >
-                  TỰ THIẾT KẾ
-                </button> */}
-                <Link to={`/customized/${idProduct}/add`} style={{textDecoration: "none", color: "#fff"}}>
-                <button
-                  type="button"
-                  aria-disabled="false"
-                  className="btn10 btn-solid-primary10 btn-p hq"
-                >
-                  TỰ THIẾT KẾ
-                </button>
-              </Link>
+              </Form>
               </div>
             </div>
           </div>
@@ -415,12 +464,9 @@ const Product_Detail = () => {
             <div id="binh-luan-content">
               <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
                 <div className="max-w-4xl mx-auto px-4">
-                  {commentProductDetail?.map((comment: any) => (
-                    <article
-                      key={comment._id}
-                      className="p-6 text-base bg-white rounded-lg dark:bg-gray-900"
-                    >
-                      <footer className="flex items-center">
+                  {comment ? commentProductDetail.map((comment: any) => (
+                    <article key={comment._id} className="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
+                      <footer className="flex justify-between items-center mb-2">
                         <div className="flex items-center evaluate">
                           <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
                             <img
@@ -428,22 +474,16 @@ const Product_Detail = () => {
                               src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                               alt="Michael Gough"
                             />
-                            {/* {comment.userId.last_name} */}
+                            {comment.userId.last_name}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {comment.formattedCreatedAt}
                           </p>
                         </div>
+
                         {/* Các phần khác của comment */}
                       </footer>
-                      <div className="stars flex ml-16 ">
-                        {Array.from({ length: comment.rating }, (_, index) => (
-                          <AiFillStar style={{ color: 'orange' }} />
-                        ))}
-                      </div>
-                      <p className="ml-16 text-xs text-gray-600 dark:text-gray-400">
-                        {comment.formattedCreatedAt}
-                      </p>
-                      <p className="ml-16 text-gray-500 dark:text-gray-400">
-                        {comment.description}
-                      </p>
+                      <p className="text-gray-500 dark:text-gray-400">{comment.description}</p>
                       <div className="product-small">
                         <img
                           className="image5"
@@ -457,7 +497,7 @@ const Product_Detail = () => {
                         />
                       </div>
                     </article>
-                  ))}
+                  )) : <p className="sp2">Không có đánh giá</p>}
                 </div>
               </section>
             </div>
@@ -599,4 +639,4 @@ const Product_Detail = () => {
     </div >
   );
 };
-export default Product_Detail;
+export default CustomizedProductAdd;
