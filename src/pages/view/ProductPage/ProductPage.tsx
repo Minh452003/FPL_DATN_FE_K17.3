@@ -5,12 +5,10 @@ import { Pagination } from '@mui/material';
 import { Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from "react-icons/fa6"
-
+import { useState } from "react";
 const ProductPage = () => {
   const { data: products, error, isLoading: isLoadingFetching }: any = useGetProductSellQuery();
-
- 
-
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
   const formatCurrency = (number: number) => {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
@@ -25,6 +23,15 @@ const ProductPage = () => {
           );
       }
   }
+  // Lọc sản phẩm dựa trên bộ lọc giá đã chọn
+const filteredProducts = products.filter((product: any) => {
+  if (selectedPriceFilter === "all") {
+    return true; // Hiển thị tất cả sản phẩm khi "Tất cả giá" được chọn
+  }
+  
+ 
+return product.product_price === parseInt(selectedPriceFilter); // Liệt kê sản phẩm đã lọc thay vì sản phẩm ban đầu
+});
   return (
     <div className="px-6 lg:px-0 m-28">
        <div className="flex items-center pb-10">
@@ -43,12 +50,16 @@ const ProductPage = () => {
           <option value="FR">France</option>
           <option value="DE">Germany</option>
         </select>
-        <select id="small" className="block mr-4 p-2 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option selected>Lọc giá</option>
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          <option value="FR">France</option>
-          <option value="DE">Germany</option>
+        <select id="small" 
+        value={selectedPriceFilter}
+        onChange={(e) => setSelectedPriceFilter(e.target.value)}
+        className="block mr-4 p-2 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="all">Tất cả giá</option>
+          <option value="111">111</option>
+          <option value="222">222</option>
+          <option value="333">333</option>
+          <option value="444">444</option>
         </select>
         <select id="small" className="block p-2 mb-6 text-sm  text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           <option selected>Loại</option>
@@ -62,8 +73,10 @@ const ProductPage = () => {
       <div className="new_title lt clear_pd " style={{width: "1255px"}}><h4><a  href="/">Tất cả sản phẩm</a></h4></div>
     {/* --------------------------- List data products -------------------------- */}
     <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
-  {products.length > 0 ? (
-    products.map((product: any, index: any) => (
+    {/* filter theo giá sản phẩm  */}
+  {filteredProducts.length > 0 ? (
+    filteredProducts.map((product: any, index: any) => (
+      
       <div
         key={product._id}
         className="item slick-slide slick-current slick-active mt-10"
