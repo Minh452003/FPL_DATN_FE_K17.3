@@ -4,7 +4,6 @@ import { getDecodedAccessToken } from "@/decoder";
 import { Pagination } from "@mui/material";
 import { Skeleton } from "antd";
 import { Link } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa6";
 const ListCustomizedProduct = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
