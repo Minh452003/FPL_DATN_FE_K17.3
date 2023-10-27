@@ -68,7 +68,7 @@ export const router = createBrowserRouter([
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
             { path: 'products/customProduct', element: <CustomProductDetail /> },
-            { path: 'customizedProducts/:userId', element: <ListCustomizedProduct /> },
+            { path: 'customizedProducts', element: <ListCustomizedProduct /> },
             { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },
             { path: 'review', element: <ReviewPage /> },
             { path: 'contact', element: <ContactPage /> },
