@@ -368,6 +368,14 @@ const Product_Detail = () => {
                     </Button>
                   )}
                 </Tooltip>
+                {/* <button
+                  type="button"
+                  aria-disabled="false"
+                  className="btn10 btn-solid-primary10 btn-p hq"
+                >
+                  TỰ THIẾT KẾ
+                </button> */}
+                <Link to={`/customized/${idProduct}/add`} style={{textDecoration: "none", color: "#fff"}}>
                 <button
                   type="button"
                   aria-disabled="false"
@@ -375,6 +383,7 @@ const Product_Detail = () => {
                 >
                   TỰ THIẾT KẾ
                 </button>
+              </Link>
               </div>
             </div>
           </div>
@@ -406,7 +415,7 @@ const Product_Detail = () => {
             <div id="binh-luan-content">
               <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
                 <div className="max-w-4xl mx-auto px-4">
-                  {commentProductDetail.map((comment: any) => (
+                  {commentProductDetail?.map((comment: any) => (
                     <article
                       key={comment._id}
                       className="p-6 text-base bg-white rounded-lg dark:bg-gray-900"

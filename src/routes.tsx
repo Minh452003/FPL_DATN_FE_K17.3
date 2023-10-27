@@ -54,6 +54,7 @@ import OrdersCompleted from "./pages/admin/orders/OrdersCompleted";
 import ProductTrash from "./pages/admin/products/ProductTrash";
 import OrdersDetail from "./pages/admin/orders/OrdersDetail";
 import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
+import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProductAdd";
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
 
 export const router = createBrowserRouter([
@@ -67,7 +68,8 @@ export const router = createBrowserRouter([
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
             { path: 'products/customProduct', element: <CustomProductDetail /> },
-            { path: 'customizedProducts/:userId', element: <ListCustomizedProduct /> },
+            { path: 'customizedProducts', element: <ListCustomizedProduct /> },
+            { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },
             { path: 'review', element: <ReviewPage /> },
             { path: 'contact', element: <ContactPage /> },
 

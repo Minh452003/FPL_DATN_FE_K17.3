@@ -72,7 +72,7 @@ const ListCustomizedProduct = () => {
                         >
                           <img
                             className="lazyload "
-                            src={product.image?.url}
+                            src={product.image[0]?.url}
                             alt={product?.product_name}
                             
                           />
