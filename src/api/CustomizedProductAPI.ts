@@ -20,7 +20,7 @@ const  customizedProductApi= createApi({
     }),
     endpoints: (builder) => ({  
         getCustomizedproductsById: builder.query<any, number | string>({
-            query: (id) => `/customized-products/${id}`,
+            query: (id) => `/customized-products/id/${id}`,
             providesTags: ['customized-products']
         }),
         getCustomizedproductsByUserId: builder.query<any, number | string>({
