@@ -16,20 +16,11 @@ const OrdersDetail = () => {
     const navigate = useNavigate();
     const [updateStatus, { isLoading: isAddingStatus }] = useUpdateStatusMutation();
     const { data: status } = useGetStatusQuery()
-    const { productId }: any = useParams<string>();
-    console.log(productId);
 
 
     const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
     const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
     const { data: Materials, isLoading: isLoadingMaterials }: any = useGetMaterialQuery();
-
-
-
-    const colors = isLoadingColors ? [] : Colors?.color;
-    const sizes = isLoadingSizes ? [] : Sizes?.size;
-    const materials = isLoadingMaterials ? [] : Materials?.material;
-
 
     useEffect(() => {
         if (orderDetail) {
@@ -95,11 +86,8 @@ const OrdersDetail = () => {
 
                     {orderDetail?.order?.products.map((order: any) => {
                         const colorname = Colors?.color?.find((colors: any) => colors._id == order.colorId);
-                        console.log(colorname);
                         const sizesname = Sizes?.size?.find((sizes: any) => sizes._id == order.sizeId);
-                        console.log(sizesname);
                         const materialsname = Materials?.material?.find((materials: any) => materials._id == order.materialId);
-                        console.log(materialsname);
 
 
                         return (
