@@ -90,12 +90,6 @@
     margin-top: 10px;
 }
 
-.material p {
-    font-size: 18px;
-    font-weight: 700;
-    margin-top: 10px;
-}
-
 .sp2 {
     font-size: 15px !important;
     color: #8B8B8B;
@@ -467,6 +461,22 @@ div .btn-g {
     display: block;
 }
 
+.cm-name {
+    font-size: 17px !important;
+    text-decoration: none;
+    color: #444;
+    cursor: pointer;
+}
+
+.avatar {
+    height: 50px !important;
+    width: 50px !important;
+}
+
+.time {
+    font-size: 13px !important;
+}
+
 .include {
     display: flex;
     margin-top: 10%;
@@ -502,7 +512,7 @@ div .btn-g {
     width: 250px;
     color: #8B8B8B;
     font-weight: bold;
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 .abso {

@@ -5,16 +5,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PiUserBold } from "react-icons/pi";
 
-// Đây là hàm gửi yêu cầu lấy thông tin người dùng từ máy chủ dựa trên token
 
 const Profile = () => {
   const [userId, setUserId] = useState(0);
   const navigate = useNavigate();
-
   const { data: user } = useGetUserByIdQuery(userId);
-  console.log({ data: user })
-  
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -22,10 +17,8 @@ const Profile = () => {
         const response = await getDecodedAccessToken(); // Assumed function to get user info by token
         setUserId((response as { id: number }).id);
 
-        // Cập nhật state với thông tin người dùng nhận được từ máy chủ
       } catch (error) {
         console.error("Lỗi khi lấy thông tin người dùng: ", error);
-        // Xử lý lỗi nếu cần thiết, ví dụ: chuyển hướng đến trang lỗi hoặc hiển thị thông báo lỗi
         navigate("/error"); // Chuyển hướng đến trang lỗi nếu không thể lấy thông tin người dùng
       }
     };
@@ -59,7 +52,7 @@ const Profile = () => {
 
                       placeholder={user.first_name}
 
-               
+
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md transition duration-300 hover:ease-in-out"
                       disabled
                     />
@@ -91,7 +84,7 @@ const Profile = () => {
 
                   <div className="py-4 px-3">{user.email}</div>
 
-                 
+
 
                   <div className="py-4 px-3">
                     <a href="">thay đổi</a>
