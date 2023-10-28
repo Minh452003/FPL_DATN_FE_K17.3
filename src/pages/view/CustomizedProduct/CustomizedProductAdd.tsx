@@ -14,7 +14,7 @@ import {
 } from "tw-elements";
 
 import { getDecodedAccessToken } from "@/decoder";
-import {  AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useGetCategoryQuery } from "@/api/categoryApi";
 import { useAddCustomProductMutation } from "@/api/CustomizedProductAPI";
 import Swal from "sweetalert2";
@@ -32,12 +32,9 @@ const CustomizedProductAdd = () => {
   const [activeSize, setActiveSize] = useState(null);
   const [activeMaterial, setActiveMaterial] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(false);
-  const listOneData = data?.product;
-  console.log(activeSize);
-  console.log(activeColor);
-  console.log(activeMaterial);
+  const listOneData = data?.product;;
   const navigate = useNavigate();
- 
+
   const { data: catgory }: any = useGetCategoryQuery();
   const categoryLish = catgory?.category.docs;
   const categoryLishOne = categoryLish?.find(
@@ -47,16 +44,11 @@ const CustomizedProductAdd = () => {
     initTE({ Tab });
   }, [selectedIndex]);
   // --------------------------
-  
-  // --------------------------
-  const userId: string = id
-
-
   const [addCustom, resultAdd]: any = useAddCustomProductMutation()
   const handleAddToCart = () => {
-    if (data && userId) {
+    if (data && id) {
       const data: any = {
-        userId: listOneData._id,
+        userId: id,
         productId: idProduct,
         categoryId: listOneData.categoryId,
         product_name: listOneData.product_name,
@@ -66,7 +58,7 @@ const CustomizedProductAdd = () => {
         colorId: activeColor,
         sizeId: activeSize,
         materialId: activeMaterial
-      };      
+      };
 
       Swal.fire({
         title: 'Bạn chắc chứ?',
@@ -89,7 +81,7 @@ const CustomizedProductAdd = () => {
                 showConfirmButton: true,
                 timer: 1500
               });
-              
+
             } else {
               Swal.fire(
                 'Thêm sản phẩm tự thiết kế thành công',
@@ -110,7 +102,7 @@ const CustomizedProductAdd = () => {
       })
     }
   };
-  
+
   const formatCurrency = (number: { toString: () => string; }) => {
     if (number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -125,11 +117,11 @@ const CustomizedProductAdd = () => {
   }
   const increaseQuantity = () => {
     // Tăng số lượng lên 1 nếu chưa đạt tới giới hạn của stock_quantity
-    
-      setQuantity(quantity + 1);
-    
+
+    setQuantity(quantity + 1);
+
   }
-  
+
   const handleClickSize = (sizeId: any) => {
     setActiveSize(sizeId);
 
@@ -143,11 +135,11 @@ const CustomizedProductAdd = () => {
 
   }
 
-  
+
   if (isLoadingColor) return <Skeleton />;
   if (isLoadingSize) return <Skeleton />;
   if (isLoadingMaterial) return <Skeleton />;
- 
+
   if (error) {
     if ("data" in error && "status" in error) {
       return (
@@ -171,7 +163,7 @@ const CustomizedProductAdd = () => {
           <div className="flex">
             <h3 className="font-bold pt-10 pl-52 iklm1">
               {listOneData?.product_name}
-            </h3> 
+            </h3>
             <p className="price1">{formatCurrency(listOneData?.product_price)}₫</p>
           </div>
           <div className="grid grid-cols-2 gap-2 np1">
@@ -240,16 +232,16 @@ const CustomizedProductAdd = () => {
                 <div className="text1s">Đã bán:  </div>
                 <div className="text2s pl-16 lps">{listOneData?.sold_quantity} chiếc</div>
               </div>
-              
+
               <div className="col-span-2 flex efs">
                 <div className="text1s">Loại:</div>
                 <div className="text2s kjs lps">{categoryLishOne}</div>
               </div>
-              
+
               <div className="colors">
                 <p>Màu sắc</p>
                 <div className="flex">
-                  {colors?colors?.color?.map((color: any) => {
+                  {colors ? colors?.color?.map((color: any) => {
                     const isActive = color._id === activeColor; return (
                       <button
                         key={color._id}
@@ -267,8 +259,8 @@ const CustomizedProductAdd = () => {
               <div className="sizes">
                 <p>Kích thước</p>
                 <div className="flex">
-                  {sizes?sizes?.size?.map((size: any) => {
-                    
+                  {sizes ? sizes?.size?.map((size: any) => {
+
                     const isActive = size._id === activeSize;
                     return (
                       <button
@@ -288,7 +280,7 @@ const CustomizedProductAdd = () => {
               <div className="materials">
                 <p>Nguyên vật liệu</p>
                 <div className="flex">
-                  {materials?materials?.material.map((material: any) => {
+                  {materials ? materials?.material.map((material: any) => {
                     const isActive = material._id === activeMaterial; return (
                       <button
                         key={material._id}
@@ -303,7 +295,7 @@ const CustomizedProductAdd = () => {
                   }) : <p className="sp2s">Không có nguyên vật liệu</p>}
                 </div>
               </div>
-              
+
               <div className="flex button1">
                 <button
                   aria-label="Decrease"
@@ -326,7 +318,7 @@ const CustomizedProductAdd = () => {
                 >
                   +
                 </button>
-                
+
                 <Tooltip title={id && activeColor && activeSize && activeMaterial ? '' : 'Bạn phải chọn màu, kích thước và nguyên vật liệu'}>
                   {resultAdd.isLoading ? (
                     <AiOutlineLoading3Quarters className="animate-spin m-auto" />
@@ -339,16 +331,16 @@ const CustomizedProductAdd = () => {
                           handleAddToCart();
                         }
                       }}
-                     >
-                     Thêm sản phẩm
+                    >
+                      Thêm sản phẩm
                     </Button>
                   )}
                 </Tooltip>
-             
+
               </div>
             </div>
           </div>
-          
+
         </div >
       </div >
     </div >

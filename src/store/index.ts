@@ -29,6 +29,7 @@ import passportApi, { passportReducer } from "@/api/passportApi";
 
 import customizedProductApi, { CustomizedproductsReducer } from "@/api/CustomizedProductAPI";
 import shipApi, { shipReducer } from "@/api/shipApi";
+import paymentApi, { paymentReducer } from "@/api/paymentApi";
 
 
 
@@ -56,7 +57,8 @@ const rootReducer = combineReducers({
     childProduct: childProductReducer,
     passport: passportReducer,
     customizedproducts: CustomizedproductsReducer,
-    ships: shipReducer
+    ships: shipReducer,
+    payments: paymentReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -77,7 +79,8 @@ const additionalMiddlewares: any = [
     childProductApi.middleware,
     passportApi.middleware,
     customizedProductApi.middleware,
-    shipApi.middleware
+    shipApi.middleware,
+    paymentApi.middleware
 ];
 
 export const store = configureStore({

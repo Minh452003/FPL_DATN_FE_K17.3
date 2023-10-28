@@ -13,8 +13,8 @@ const ListCustomizedProduct = () => {
     isLoading: isLoadingFetching,
   } = useGetCustomizedproductsByUserIdQuery<any>(id);
   const CustomizedProduct = customProduct?.products;
-  console.log("haha",CustomizedProduct);
-  
+  console.log("haha", CustomizedProduct);
+
   if (!id) {
     return (
       <div>
@@ -76,7 +76,7 @@ const ListCustomizedProduct = () => {
                             className="lazyload "
                             src={product.image[0]?.url}
                             alt={product?.product_name}
-                            
+
                           />
                         </Link>
                       </div>
