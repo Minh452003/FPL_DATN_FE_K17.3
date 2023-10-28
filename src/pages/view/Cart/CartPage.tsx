@@ -13,7 +13,6 @@ import { getDecodedAccessToken } from '@/decoder';
 const CartPage = () => {
     const decodedToken: any = getDecodedAccessToken();
     const id = decodedToken ? decodedToken.id : null;
-
     const { data: colors } = useGetColorsQuery<any>();
     const { data: sizes } = useGetSizeQuery<any>();
     const { data: materials } = useGetMaterialQuery<any>();
@@ -170,7 +169,7 @@ const CartPage = () => {
                 <span className='float-right font-bold'>Tổng tiền : <Link to={'/'} className='pl-4  ' style={{ textDecoration: 'none', color: '#FF0606' }}>{formatCurrency(carts.data.total)}₫</Link></span>
             </div>
             <div className='pb-20'>
-                <button className="w-60 h-12   bg-slate-600 text-white font-bold float-right "><Link style={{ textDecoration: "none", color: "white" }} to={'/pay'}>TIẾN HÀNH THANH TOÁN</Link></button>
+                <button className="w-60 h-12   bg-slate-600 text-white font-bold float-right "><Link style={{ textDecoration: "none", color: "white", cursor: 'pointer' }} to={'/pay'}>TIẾN HÀNH THANH TOÁN</Link></button>
             </div>
 
         </div>

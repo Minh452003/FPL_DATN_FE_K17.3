@@ -10,7 +10,7 @@ import { useGetProductByIdQuery, useGetProductViewsQuery, useGetProductsQuery } 
 import { useGetBrandQuery } from "@/api/brandApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
-import { Button, Skeleton, Tooltip } from "antd";
+import { Button, Image, Skeleton, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useGetChildProductByProductIdQuery, useGetChildProductPriceQuery } from "@/api/chilProductApi";
 import { useGetColorsQuery } from "@/api/colorApi";
@@ -29,8 +29,6 @@ const Product_Detail = () => {
   const { idProduct }: any = useParams();
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
-  console.log(id);
-  
   const { data, isLoading: isLoadingFetching, error }: any = useGetProductByIdQuery(idProduct || "");
   const { data: colors, isLoading: isLoadingColor } = useGetColorsQuery<any>();
   const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>()
@@ -69,10 +67,44 @@ const Product_Detail = () => {
   const { data: childProducts, isLoading: isLoadingChild }: any = useGetChildProductByProductIdQuery(idProduct || "");
   const { data: childProduct }: any = useGetChildProductPriceQuery({ productId: idProduct, sizeId: activeSize, colorId: activeColor });
   const { data: productView }: any = useGetProductViewsQuery(idProduct);
+  const [uniqueColors, setUniqueColors] = useState(new Set());
+  const [filteredColors, setFilteredColors] = useState([]);
+  const [uniqueSizes, setUniqueSizes] = useState(new Set());
+  const [filteredSizes, setFilteredSizes] = useState([]);
+  // Sử dụng useEffect để cập nhật danh sách màu duy nhất từ danh sách childProducts
+  useEffect(() => {
+    const uniqueColorsSet = new Set();
+    const filteredProducts: any = [];
+    childProducts?.products.forEach((product: any) => {
+      const colorId = product.colorId;
+      if (!uniqueColorsSet.has(colorId)) {
+        uniqueColorsSet.add(colorId);
+        filteredProducts.push(product);
+      }
+    });
+    setUniqueColors(uniqueColorsSet);
+    setFilteredColors(filteredProducts);
+  }, [childProducts]);
+  // Sử dụng useEffect để cập nhật danh sách kích cỡ duy nhất từ danh sách sizes
+  useEffect(() => {
+    const uniqueSizesSet = new Set();
+    const filteredSizesList: any = [];
+
+    childProducts?.products.forEach((product: any) => {
+      const sizeId = product.sizeId;
+      if (!uniqueSizesSet.has(sizeId)) {
+        uniqueSizesSet.add(sizeId);
+        filteredSizesList.push(product);
+      }
+    });
+
+    setUniqueSizes(uniqueSizesSet);
+    setFilteredSizes(filteredSizesList);
+  }, [childProducts]);
   // --------------------------
   const userId: string = id
 
-  
+
   const handleAddToCart = () => {
     if (data && userId) {
       const data: any = {
@@ -248,7 +280,7 @@ const Product_Detail = () => {
                 role="tablist"
                 data-te-nav-ref>
                 {listOneData?.image?.map((img: any, index: any) => (
-                  <li role="presentation">
+                  <li role="presentation" key={img.publicId}>
                     <Link
                       to={`#image-tab-${index}`}
                       className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index ? 'bg-primary-100 text-primary-700' : 'bg-neutral-700 text-white'} md:mr-4 `}
@@ -291,9 +323,10 @@ const Product_Detail = () => {
               <div className="color">
                 <p>Màu sắc</p>
                 <div className="flex">
-                  {childProducts ? childProducts.products.map((color: any) => {
+                  {childProducts ? filteredColors.map((color: any) => {
                     const colorname = colors?.color?.find((colors: any) => colors._id === color.colorId);
-                    const isActive = color.colorId === activeColor; return (
+                    const isActive = color.colorId === activeColor;
+                    return (
                       <button
                         key={color.colorId}
                         aria-label="M"
@@ -310,7 +343,7 @@ const Product_Detail = () => {
               <div className="size">
                 <p>Kích thước</p>
                 <div className="flex">
-                  {childProducts ? childProducts.products.map((size: any) => {
+                  {childProducts ? filteredSizes.map((size: any) => {
                     const sizesname = sizes?.size?.find((s: any) => s._id == size.sizeId);
                     const isActive = size.sizeId === activeSize;
                     return (
@@ -406,36 +439,34 @@ const Product_Detail = () => {
             <div id="binh-luan-content">
               <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
                 <div className="max-w-4xl mx-auto px-4">
-                  {commentProductDetail.map((comment: any) => (
+                  {comment ? commentProductDetail.map((comment: any) => (
                     <article
                       key={comment._id}
                       className="p-6 text-base bg-white rounded-lg dark:bg-gray-900"
                     >
                       <footer className="flex items-center">
                         <div className="flex items-center evaluate">
-                          <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
-                            <img
-                              className="mr-2 w-8 h-8 rounded-full"
-                              src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                              alt="Michael Gough"
+                          <div className="inline-flex items-center mr-3 text-xs text-gray-900 dark:text-white font-semibold">
+                            <Image
+                              className="mr-2 w-8 h-8 rounded-full avatar"
+                              src={comment?.userId.avatar?.url}
                             />
-                            {/* {comment.userId.last_name} */}
+                            <a className="cm-name">{comment.userId.last_name}</a>
+                          </div>
+                          <p className="ml-16 text-xs text-gray-600 dark:text-gray-400 time">
+                            {comment.formattedCreatedAt}
                           </p>
                         </div>
-                        {/* Các phần khác của comment */}
                       </footer>
-                      <div className="stars flex ml-16 ">
+                      <div className="stars ml-24 flex ml-16 ">
                         {Array.from({ length: comment.rating }, (_, index) => (
                           <AiFillStar style={{ color: 'orange' }} />
                         ))}
                       </div>
-                      <p className="ml-16 text-xs text-gray-600 dark:text-gray-400">
-                        {comment.formattedCreatedAt}
-                      </p>
-                      <p className="ml-16 text-gray-500 dark:text-gray-400">
+                      <p className="ml-24 text-gray-500 dark:text-gray-400">
                         {comment.description}
                       </p>
-                      <div className="product-small">
+                      <div className="product-small ml-">
                         <img
                           className="image5"
                           src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
@@ -448,7 +479,7 @@ const Product_Detail = () => {
                         />
                       </div>
                     </article>
-                  ))}
+                  )) : <p className="sp2">Không có binh luận</p>}
                 </div>
               </section>
             </div>
@@ -493,6 +524,7 @@ const Product_Detail = () => {
                           {similarProducts ? similarProducts.map((similar: any, index: any) => (
                             < SwiperSlide
                               style={{ width: "285px", marginLeft: "27px" }}
+                              key={similar._id}
                             >
                               <div
                                 className="items slick-slides slick-currents slick-actives"

@@ -1,5 +1,6 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { ICustomizedProduct } from '@/interfaces/customizedproducts';
 
 
 const  customizedProductApi= createApi({
@@ -27,13 +28,40 @@ const  customizedProductApi= createApi({
             query: (userId) => `/customized-products/${userId}`,
             providesTags: ['customized-products']
         }),
+        addCustomProduct: builder.mutation({
+            query: (customizedProduct: ICustomizedProduct) => ({
+                url: '/customized-products',
+                method: 'POST',
+                body: customizedProduct
+            }),
+            invalidatesTags: ['customized-products']
+        }),
+        updateCustomProduct: builder.mutation({
+            query: (customizedProduct: ICustomizedProduct) => ({
+                url: `/customized-products/${customizedProduct.id}`,
+                method: 'PATCH',
+                body: customizedProduct
+            }),
+            invalidatesTags: ['customized-products']
+        }),
+        updateRestoreCustomProduct: builder.mutation({
+            query: (customizedProduct: ICustomizedProduct) => ({
+                url: `/customized-products/restore/${customizedProduct.id}`,
+                method: 'PATCH',
+                body: customizedProduct
+            }),
+            invalidatesTags: ['customized-products']
+        })
  
     })
 });
 
 export const {
    useGetCustomizedproductsByIdQuery,
-   useGetCustomizedproductsByUserIdQuery
+   useGetCustomizedproductsByUserIdQuery,
+   useAddCustomProductMutation,
+   useUpdateCustomProductMutation,
+   useUpdateRestoreCustomProductMutation
 } = customizedProductApi;
 export const CustomizedproductsReducer = customizedProductApi.reducer;
 export default customizedProductApi
