@@ -56,6 +56,7 @@ import OrdersDetail from "./pages/admin/orders/OrdersDetail";
 import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
 import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProductAdd";
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
+import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDetail";
 
 export const router = createBrowserRouter([
     {
@@ -68,6 +69,7 @@ export const router = createBrowserRouter([
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
             { path: 'products/customProduct', element: <CustomProductDetail /> },
+            { path: '/customized-products/:id', element: <Custom_ProductDetail /> },
             { path: 'customizedProducts', element: <ListCustomizedProduct /> },
             { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },
             { path: 'review', element: <ReviewPage /> },

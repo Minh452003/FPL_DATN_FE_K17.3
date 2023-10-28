@@ -13,6 +13,8 @@ const ListCustomizedProduct = () => {
     isLoading: isLoadingFetching,
   } = useGetCustomizedproductsByUserIdQuery<any>(id);
   const CustomizedProduct = customProduct?.products;
+  console.log("haha",CustomizedProduct);
+  
   if (!id) {
     return (
       <div>
@@ -48,7 +50,7 @@ const ListCustomizedProduct = () => {
           {CustomizedProduct.length > 0 ? (
             CustomizedProduct.map((product: any, index: any) => (
               <div
-                key={product._id}
+                key={product?._id}
                 className="item slick-slide slick-current slick-active mt-10"
                 tabIndex={-1}
                 role="option"
@@ -97,7 +99,7 @@ const ListCustomizedProduct = () => {
                               <span className="regular-price">
                                 {" "}
                                 <span className="price">
-                                  {formatCurrency(product.product_price)}₫
+                                  {formatCurrency(product?.product_price)}₫
                                 </span>{" "}
                               </span>
                             </div>
@@ -113,7 +115,7 @@ const ListCustomizedProduct = () => {
                             type="button"
                             tabIndex={0}
                           >
-                            <Link to={""}>Chi tiết</Link>
+                            <Link to={`/customized-products/${product?._id}`}>Chi tiết</Link>
                           </button>
                           <input type="hidden" tabIndex={0} />
                           <button
