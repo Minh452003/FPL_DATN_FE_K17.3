@@ -320,6 +320,7 @@ hr {
     opacity: 0.6;
 }
 
+
 .abcd li {
     list-style-type: disc;
     font-weight: 400;
@@ -466,8 +467,15 @@ div .btn-g {
     text-decoration: none;
     color: #444;
     cursor: pointer;
+    margin-right: 10px; 
 }
-
+.cm-name1 {
+    font-size: 12px !important;
+    text-decoration: none;
+    color: #444;
+    cursor: pointer;
+    margin-right: 10px; 
+}
 .avatar {
     height: 50px !important;
     width: 50px !important;
@@ -1647,3 +1655,27 @@ p {
 .swiper-container {
     width: 100%;
 }
+.stars {
+    display: flex;
+    align-items: center;
+  }
+  
+  .star-rating {
+    display: flex;
+    align-items: center;
+  }
+  
+  .button-wrapper {
+    margin-left: auto; /* Để đẩy nút xóa ra bên phải */
+  }
+  footer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .evaluate {
+    display: flex;
+    flex-direction: row; /* Đảm bảo các phần tử nằm trên cùng một hàng */
+    align-items: center;
+  }
+  
