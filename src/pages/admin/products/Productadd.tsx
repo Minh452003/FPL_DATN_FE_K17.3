@@ -4,14 +4,13 @@ import { useGetMaterialQuery } from '@/api/materialApi';
 import { useAddProductMutation } from '@/api/productApi';
 import { useAddImageMutation, useDeleteImageMutation } from '@/api/uploadApi';
 import { Button, Form, Input, Upload, Select, message, InputNumber } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
-
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 type FieldType = {
     product_name?: string;
     product_price?: string;
@@ -32,8 +31,10 @@ const Productadd = () => {
     const [fileList, setFileList] = useState<RcFile[]>([]);
     const [imageUrl, setImageUrl] = useState<any>([]);
     const navigate = useNavigate();
+    const [productDescription, setProductDescription] = useState('');
 
     const onFinish = (values: any) => {
+        values.description = productDescription
         if (imageUrl.length > 0) {
             values.image = imageUrl;
             addProduct(values).then(() => {
@@ -59,6 +60,9 @@ const Productadd = () => {
     const props: UploadProps = {
         name: 'image',
         fileList: fileList, // Sử dụng state fileList
+        customRequest: async ({ file }: any) => {
+            console.log(file);
+        },
         onChange(info: any) {
             if (info.file) {
                 const formData = new FormData();
@@ -79,7 +83,7 @@ const Productadd = () => {
                     console.error(error);
                 }
                 if (info.file.status === 'error') {
-                    message.error(`${info.file.name} upload thất bại.`);
+                    message.error(`${info.file.name} upload ảnh thất bại.`);
                 } else if (info.file.status === 'removed') {
                     const publicId = info.file.uid;
                     (async () => {
@@ -195,7 +199,18 @@ const Productadd = () => {
                             rules={[{ required: true, message: 'Mô tả không được để trống!' }]}
                             style={{ marginLeft: '20px' }}
                         >
-                            <TextArea rows={4} />
+                            <CKEditor
+                                editor={ClassicEditor}
+                                config={{
+                                    mediaEmbed: {
+                                        previewsInData: true
+                                    }
+                                }}
+                                onChange={(event, editor) => {
+                                    const data = editor.getData();
+                                    setProductDescription(data);
+                                }}
+                            />
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
                             <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">

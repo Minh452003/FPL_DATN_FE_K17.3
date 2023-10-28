@@ -435,7 +435,7 @@ const Product_Detail = () => {
             <div id="chi-tiet-content">
               <br />
               <div className="max-w-4xl mx-auto px-4">
-                <p className="text-gray-500 dark:text-gray-400">{listOneData?.description}</p>
+                <div className="text-gray-500 dark:text-gray-400" dangerouslySetInnerHTML={{ __html: listOneData?.description }}></div>
               </div>
             </div>
             <div id="binh-luan-content">
