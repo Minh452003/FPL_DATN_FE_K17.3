@@ -401,13 +401,15 @@ const Product_Detail = () => {
                     </Button>
                   )}
                 </Tooltip>
-                <button
-                  type="button"
-                  aria-disabled="false"
-                  className="btn10 btn-solid-primary10 btn-p hq"
-                >
-                  TỰ THIẾT KẾ
-                </button>
+                <Link to={`/customized/${idProduct}/add`} style={{ textDecoration: "none", color: "#fff" }}>
+                  <button
+                    type="button"
+                    aria-disabled="false"
+                    className="btn10 btn-solid-primary10 btn-p hq"
+                  >
+                    TỰ THIẾT KẾ
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

@@ -68,7 +68,6 @@ export const router = createBrowserRouter([
             { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
-            { path: 'products/customProduct', element: <CustomProductDetail /> },
             { path: '/customized-products/:id', element: <Custom_ProductDetail /> },
             { path: 'customizedProducts', element: <ListCustomizedProduct /> },
             { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },

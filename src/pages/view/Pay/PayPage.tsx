@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useGetAvailableMutation, useGetCityQuery, useGetDistrictMutation, useGetShippingMutation, useGetWardMutation } from "@/api/shipApi";
 import Swal from "sweetalert2";
 import { useAddOrderMutation } from "@/api/orderApi";
+import { usePayMomoMutation } from "@/api/paymentApi";
 const PayPage = () => {
     const decodedToken: any = getDecodedAccessToken();
     const id = decodedToken ? decodedToken.id : null;
@@ -27,6 +28,7 @@ const PayPage = () => {
     const [addShipping] = useGetShippingMutation();
     const [addOrder] = useAddOrderMutation();
     const [removeAllCart] = useRemoveAllCartMutation();
+    const [addMomo] = usePayMomoMutation();
 
     const { data: user } = useGetUserByIdQuery(id);
     const [district, setDistrict] = useState([]);
@@ -153,6 +155,38 @@ const PayPage = () => {
                                 )
                             }).then(() => removeAllCart(id))
                             navigate('/order')
+                        })()
+
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Hiển thị thông báo hủy xóa sản phẩm
+                        Swal.fire(
+                            'Huỷ',
+                            'Đơn hàng chưa được mua :)',
+                            'error'
+                        )
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+            }
+        } else if (pay && pay == 'momo') {
+            try {
+                Swal.fire({
+                    title: 'Bạn chắc chứ?',
+                    text: "Đơn hàng này sẽ được đặt!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Vâng, tôi chắc chắn!',
+                    cancelButtonText: 'Huỷ'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        (async () => {
+                            const response: any = await addMomo({ ...cartDataWithoutId, address, phone, notes });
+                            if (response) {
+                                window.location.href = response.data.payUrl
+                            }
                         })()
 
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
