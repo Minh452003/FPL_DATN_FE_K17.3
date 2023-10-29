@@ -41,14 +41,14 @@ const commentApi = createApi({
             }),
             invalidatesTags: ['Comment']
         }),
-        removeComment: builder.mutation<IComment, number>({
-            query: (id) => ({
-                url: `/comment/${id}/remove`,
+        removeComment: builder.mutation<IComment,any>({
+            query: ({id,userId}) => ({
+                url: `/comment/${id}/remove?userId=${userId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Comment']
         }),
-        removeCommentAdmin: builder.mutation<IComment, number>({
+        removeCommentAdmin: builder.mutation<any,any>({
             query: (id) => ({
                 url: `/comments/${id}/admin`,
                 method: 'DELETE',

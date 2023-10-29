@@ -9,7 +9,6 @@ import Swal from 'sweetalert2';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const Productlist = () => {
-
   const { data } = useGetProductsQuery();
   const { data: categories } = useGetCategoryQuery<any>();
   const { data: brands } = useGetBrandQuery<any>();
