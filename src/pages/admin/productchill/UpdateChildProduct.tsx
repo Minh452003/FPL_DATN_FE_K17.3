@@ -45,7 +45,7 @@ const UpdateChildProduct = () => {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Thêm thương sản phẩm con thành công!",
+          title: "Cập nhật sản phẩm con thành công!",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -120,7 +120,7 @@ const UpdateChildProduct = () => {
                 name="product_price"
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                rules={[{ required: true, message: "Please input your name!" }]}
+                rules={[{ required: true, message: "Giá sản phẩm không được để trống!" }]}
                 style={{ marginLeft: "20px" }}
               >
                 <InputNumber style={{ width: '100%' }} />
@@ -131,7 +131,7 @@ const UpdateChildProduct = () => {
                 name="stock_quantity"
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                rules={[{ required: true, message: "Please input your name!" }]}
+                rules={[{ required: true, message: "Số lượng sản phẩm không được để trống!" }]}
                 style={{ marginLeft: "20px" }}
               >
                 <InputNumber style={{ width: '100%' }} />

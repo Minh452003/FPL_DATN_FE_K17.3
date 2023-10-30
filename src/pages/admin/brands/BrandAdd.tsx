@@ -48,7 +48,7 @@ const BrandAdd = () => {
               label="Tên thương hiệu"
               name="brand_name"
               rules={[{ required: true, message: 'Tên thương hiệu không được để trống!' },
-              { min: 3, message: "Nhập ít nhất 3 ký tự" }]}
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
