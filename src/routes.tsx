@@ -58,6 +58,7 @@ import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProdu
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
 import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDetail";
 import Listcomments from "./pages/admin/comment/Listcomments";
+import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
 
 export const router = createBrowserRouter([
     {
@@ -71,6 +72,7 @@ export const router = createBrowserRouter([
             { path: 'products/:idProduct', element: <Product_Detail /> },
             { path: '/customized-products/:id', element: <Custom_ProductDetail /> },
             { path: 'customizedProducts', element: <ListCustomizedProduct /> },
+            { path: 'customizedProducts/trash', element: <ListCustomizedProductTrash /> },
             { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },
             { path: 'review', element: <ReviewPage /> },
             { path: 'contact', element: <ContactPage /> },
