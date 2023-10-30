@@ -16,7 +16,7 @@ const MaterialAdd = () => {
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Thêm chất liệu thành công!',
+                title: 'Thêm vật liệu thành công!',
                 showConfirmButton: true,
                 timer: 1500
             });
@@ -27,11 +27,17 @@ const MaterialAdd = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
+    const validatePositiveNumber = (_: any, value: any) => {
+        if(parseFloat(value) <= 0) {
+          return Promise.reject("Phải luôn là số dương");
+        }
+        return Promise.resolve();
+      }
     return (
         <div className="container-fluid">
             <div className="row">
                 <div className="card-body">
-                    <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm chất liệu</h5>
+                    <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm vật liệu</h5>
                     <div className="flex items-center ">
                     </div>
                     <Form
@@ -49,7 +55,9 @@ const MaterialAdd = () => {
                             name="material_name"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Tên vật liệu bắt buộc nhập!' }]}
+                            rules={[{ required: true, message: 'Tên vật liệu bắt buộc nhập!' },
+                            { min: 2, message: "Nhập ít nhất 2 ký tự" }
+                        ]}
                             style={{ marginLeft: '20px' }}
                         >
                             <Input />
@@ -60,7 +68,9 @@ const MaterialAdd = () => {
                             name="material_price"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Giá vật liệu bắt buộc nhập!' }]}
+                            rules={[{ required: true, message: 'Giá vật liệu bắt buộc nhập!' },
+                            {validator: validatePositiveNumber}
+                        ]}
                             style={{ marginLeft: '20px' }}
                         >
                             <InputNumber style={{ width: '100%' }} />
@@ -71,10 +81,10 @@ const MaterialAdd = () => {
                             <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
                                 {resultAdd.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
-                                </div> : " Thêm chất liệu"}
+                                </div> : " Thêm vật liệu"}
                             </Button>
                             <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/material")} htmlType="submit">
-                                Danh sách chất liệu
+                                Danh sách vật liệu
                             </Button>
                         </Form.Item>
                     </Form>

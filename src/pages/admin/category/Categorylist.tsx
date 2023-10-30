@@ -44,7 +44,7 @@ const Categorylist = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Đã huỷ',
-          'Danh mục xoá thất bại :)',
+          'Danh mục xoá thất bại.',
           'error'
         )
       }
@@ -69,15 +69,15 @@ const Categorylist = () => {
     {
       title: 'Chức năng',
       render: ({ key: _id }: { key: number | string }) => (
-        <div>
-          <Button onClick={() => deleteProduct(_id)}>
+        <div style={{ width: '150px' }}>
+          <Button className='mr-1 text-red-500' onClick={() => deleteProduct(_id)}>
             {isRemoveLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />
             ) : (
               <FaTrashCan />
             )}
           </Button>
-          <Button type="primary" danger className="ml-2">
+          <Button className='mr-1 text-blue-500'>
             <Link to={`/admin/categories/${_id}/edit`}><FaWrench /></Link>
           </Button>
         </div>

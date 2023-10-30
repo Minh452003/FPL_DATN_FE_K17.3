@@ -1,5 +1,5 @@
 import { useGetProductsQuery, useRemoveProductMutation } from '@/api/productApi';
-import { Image, Table, Button } from 'antd';
+import { Table, Button } from 'antd';
 import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash, FaProductHunt } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { useGetCategoryQuery } from '@/api/categoryApi';
@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const Productlist = () => {
+
   const { data } = useGetProductsQuery();
   const { data: categories } = useGetCategoryQuery<any>();
   const { data: brands } = useGetBrandQuery<any>();
@@ -61,7 +62,7 @@ const Productlist = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Thất bại',
-          'Sản phẩm xoá thất bại :)',
+          'Sản phẩm xoá thất bại.',
           'error'
         )
       }

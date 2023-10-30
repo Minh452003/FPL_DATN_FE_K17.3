@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 const Colorslist = () => {
   const { data, error, isLoading }: any = useGetColorsQuery();
-  const [removeColor, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveColorMutation();
+  const [removeColor, { isLoading: isRemoveLoading }] = useRemoveColorMutation();
   const color = data?.color
   const dataSource = color?.map(({ _id, colors_name }: IColor) => {
     return {
@@ -42,7 +42,7 @@ const Colorslist = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Thất bại',
-          'Màu xoá thất bại :)',
+          'Màu xoá thất bại.',
           'error'
         )
       }
@@ -50,27 +50,26 @@ const Colorslist = () => {
   }
   const columns = [
     {
-      title: 'Tên Màu',
+      title: 'Tên màu',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: 'Chức năng',
       render: ({ key: _id }: any) => {
         return (
-          <>
-            <Button onClick={() => deleteColor(_id)}>
+          <div style={{ width: '150px' }}>
+            <Button className='mr-1 text-red-500' onClick={() => deleteColor(_id)}>
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                <FaTrashCan style={{ fontSize: '20', display: 'block' }} />
+                <FaTrashCan />
               )}
             </Button>
-            <Button type="primary" danger className="ml-2">
+            <Button className='mr-1 text-blue-500'>
               <Link to={`/admin/color/edit/${_id}`}><FaWrench /></Link>
             </Button>
-          </>
+          </div>
         )
       }
     },
@@ -87,13 +86,12 @@ const Colorslist = () => {
   }
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách Màu</h3>
+      <h3 className="font-semibold">Danh sách màu</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-        {isRemoveSuccess && <Alert message="Xoa thanh cong" type="success" />}
         <Button className='text-blue-500'>
           <Link to="/admin/color/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>
     </div>
   );

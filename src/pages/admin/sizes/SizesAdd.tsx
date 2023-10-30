@@ -1,9 +1,9 @@
 
 
 import { useAddSizeMutation } from '@/api/sizeApi';
-import { pause } from '@/utils/pause';
-import { Alert, Button, Form, Input } from 'antd';
+import { Alert, Button, Form, Input, InputNumber } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 type FieldType = {
   size_name?: string;
@@ -15,13 +15,17 @@ type FieldType = {
 
 };
 const SizesAdd = () => {
-  const [addSize, {isLoading, isSuccess: isAddSuccess}] = useAddSizeMutation();
+  const [addSize, resultAdd] = useAddSizeMutation();
   const navigate = useNavigate();
   const onFinish = (values: any) => {
-    addSize(values)
-    .unwrap()
-    .then(async () => {
-      await pause(1000);
+    addSize(values).then(() => {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Thêm kích cỡ thành công!',
+        showConfirmButton: true,
+        timer: 1500
+      });
       navigate("/admin/size");
     })
   };
@@ -31,14 +35,17 @@ const SizesAdd = () => {
 
   const validatePositiveNumber = (_: any, value: any) => {
     if(parseFloat(value) <= 0) {
-      return Promise.reject("phai luon la so duong");
+      return Promise.reject("Phải luôn là số dương");
     }
     return Promise.resolve();
   }
   return ( 
-    <div className='max-w-4xl mx-auto'>
-      <h2 className='font-bold text-2xl mb-4'>Thêm mới kích cỡ</h2>
-      {isAddSuccess && <Alert message="Them thanh cong" type="success" />}
+    <div className="container-fluid">
+    <div className="row">
+      <div className="card-body">
+        <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm kích cỡ</h5>
+        <div className="flex items-center ">
+        </div>
     <Form
     name="basic"
     labelCol={{ span: 8 }}
@@ -49,66 +56,94 @@ const SizesAdd = () => {
     onFinishFailed={onFinishFailed}
     autoComplete="off"
   >
-    <Form.Item<FieldType>
-      label="Tên"
-      name="size_name"
-      rules={[{ required: true, message: 'Please input your size name!' }]}
-    >
-      <Input />
-  </Form.Item>
+          <Form.Item<FieldType>
+              label="Tên kích cỡ"
+              name="size_name"
+              rules={[{ required: true, message: 'Tên kích cỡ không được để trống!' },
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Input />
+            </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Giá"
-      name="size_price"
-      rules={[{ required: true, message: 'Please input your size price!' }, {validator: validatePositiveNumber}]}
-    >
-      <Input type='number' />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Giá kích cỡ"
+              name="size_price"
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              rules={[{ required: true, message: 'Giá kích cỡ bắt buộc nhập!' },
+              {validator: validatePositiveNumber}]}
+              style={{ marginLeft: '20px' }}
+          >
+              <InputNumber style={{ width: '100%' }} />
+          </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Chiều cao"
-      name="size_height"
-      rules={[{ required: true, message: 'Please input your size height!' }, {validator: validatePositiveNumber}]}
-    >
-      <Input  type='number' />
-  </Form.Item>
-
-  <Form.Item<FieldType>
-      label="Độ dài"
-      name="size_length"
-      rules={[{ required: true, message: 'Please input your size length!' }, {validator: validatePositiveNumber}]}
-    >
-      <Input  type='number' />
-  </Form.Item>
+          <Form.Item<FieldType>
+              label="Chiều cao kích cỡ"
+              name="size_height"
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              rules={[{ required: true, message: 'Chiều cao kích cỡ bắt buộc nhập!' },
+              {validator: validatePositiveNumber}]}
+              style={{ marginLeft: '20px' }}
+          >
+              <InputNumber style={{ width: '100%' }} />
+          </Form.Item>
 
 
-  <Form.Item<FieldType>
-      label="Cân nặng"
-      name="size_weight"
-      rules={[{ required: true, message: 'Please input your size weight!' }, {validator: validatePositiveNumber}]}
-    >
-      <Input  type='number' />
-  </Form.Item>
+          <Form.Item<FieldType>
+              label="Độ dài kích cỡ"
+              name="size_length"
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              rules={[{ required: true, message: 'Độ dài kích cỡ bắt buộc nhập!' },
+              {validator: validatePositiveNumber}]}
+              style={{ marginLeft: '20px' }}
+          >
+              <InputNumber style={{ width: '100%' }} />
+          </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Chiều dài"
-      name="size_width"
-      rules={[{ required: true, message: 'Please input your size width!' }, {validator: validatePositiveNumber}]}
-    >
-      <Input  type='number' />
-  </Form.Item>
+          <Form.Item<FieldType>
+              label="Cân nặng kích cỡ"
+              name="size_weight"
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              rules={[{ required: true, message: 'Cân nặng kích cỡ bắt buộc nhập!' },
+              {validator: validatePositiveNumber}]}
+              style={{ marginLeft: '20px' }}
+          >
+              <InputNumber style={{ width: '100%' }} />
+          </Form.Item>
 
-    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-      <Button type="primary" htmlType="submit" danger>
-      Thêm mới
-    </Button>
-  
-    <Button type='primary' onClick={() => navigate("/admin/size")} className='ml-2' htmlType="submit" danger>
-      Danh sách size
-    </Button>
-    </Form.Item>
+          <Form.Item<FieldType>
+              label="Chiều dài kích cỡ"
+              name="size_width"
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              rules={[{ required: true, message: 'Chiều dài kích cỡ bắt buộc nhập!' },
+              {validator: validatePositiveNumber}]}
+              style={{ marginLeft: '20px' }}
+          >
+              <InputNumber style={{ width: '100%' }} />
+          </Form.Item>
+
+  <Form.Item wrapperCol={{ span: 16 }}>
+
+<Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+    {resultAdd.isLoading ? <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+    </div> : " Thêm kích cỡ"}
+</Button>
+<Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/size")} htmlType="submit">
+    Danh sách kích cỡ
+</Button>
+</Form.Item>
   </Form>
-       </div>
+  </div>
+      </div>
+    </div>
   )
 }
 
