@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { useGetAvailableMutation, useGetCityQuery, useGetDistrictMutation, useGetShippingMutation, useGetWardMutation } from "@/api/shipApi";
 import Swal from "sweetalert2";
 import { useAddOrderMutation } from "@/api/orderApi";
-import { usePayMomoMutation } from "@/api/paymentApi";
+import { usePayMomoMutation, usePayPaypalMutation } from "@/api/paymentApi";
 const PayPage = () => {
     const decodedToken: any = getDecodedAccessToken();
     const id = decodedToken ? decodedToken.id : null;
@@ -29,6 +29,7 @@ const PayPage = () => {
     const [addOrder] = useAddOrderMutation();
     const [removeAllCart] = useRemoveAllCartMutation();
     const [addMomo] = usePayMomoMutation();
+    const [addPaypal] = usePayPaypalMutation();
 
     const { data: user } = useGetUserByIdQuery(id);
     const [district, setDistrict] = useState([]);
@@ -42,6 +43,7 @@ const PayPage = () => {
     const [averageWeight, setAverageWeight] = useState(0);
     const [ship, setShip] = useState<any>({});
     const [pay, setPay] = useState<any>('');
+    const [total, setTotal] = useState<number>(0);
 
     const sizeTotal = () => {
         if (productsInCart) {
@@ -75,6 +77,7 @@ const PayPage = () => {
     useEffect(() => {
         if (user) {
             setFields();
+            setTotal(carts?.data?.total)
         }
     }, [user]);
 
@@ -147,7 +150,7 @@ const PayPage = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         (async () => {
-                            await addOrder({ ...cartDataWithoutId, address, phone, notes }).then(() => {
+                            await addOrder({ ...cartDataWithoutId, address, phone, notes, shipping: ship.total }).then(() => {
                                 Swal.fire(
                                     'Thành công!',
                                     'Đơn hàng của bạn đã được đặt.',
@@ -183,9 +186,41 @@ const PayPage = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         (async () => {
-                            const response: any = await addMomo({ ...cartDataWithoutId, address, phone, notes });
+                            const response: any = await addMomo({ ...cartDataWithoutId, address, phone, notes, shipping: ship.total });
                             if (response) {
                                 window.location.href = response.data.payUrl
+                            }
+                        })()
+
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Hiển thị thông báo hủy xóa sản phẩm
+                        Swal.fire(
+                            'Huỷ',
+                            'Đơn hàng chưa được mua :)',
+                            'error'
+                        )
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+            }
+        } else if (pay && pay == 'paypal') {
+            try {
+                Swal.fire({
+                    title: 'Bạn chắc chứ?',
+                    text: "Đơn hàng này sẽ được đặt!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Vâng, tôi chắc chắn!',
+                    cancelButtonText: 'Huỷ'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        (async () => {
+                            const response: any = await addPaypal({ ...cartDataWithoutId, address, phone, notes, shipping: ship.total });
+                            if (response) {
+                                window.location.href = response.data.approval_url
                             }
                         })()
 
@@ -222,7 +257,7 @@ const PayPage = () => {
             <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-3 ml-4">
                 {/* --------------------Col 1 --------------------------- */}
                 <div className="rounded-lg">
-                    <h3 className="pl-16 font-semibold pb-2">Thanh Toán</h3>
+                    <h3 className="pl-4 font-semibold pb-2">Thông tin nhận hàng</h3>
                     <h5 className="font-extralight italic pb-2">Thông tin nhận hàng</h5>
                     <Form
                         form={form}
@@ -310,11 +345,14 @@ const PayPage = () => {
                         >
                             <Input.TextArea showCount maxLength={100} style={{ width: 330 }} placeholder="Ghi chú" />
                         </Form.Item>
-                        <div className="ml-4 mt-2 "><FaChevronLeft className="float-left mt-1" /><Link className="text-blue-900 float-left text-sm" style={{ textDecoration: 'none' }} to={"/cart"}>Quay về giỏ hàng</Link></div>
+                        <div className="ml-4 mt-2 pt-4"><FaChevronLeft className="float-left mt-1" /><Link className="text-blue-900 float-left text-sm" style={{ textDecoration: 'none' }} to={"/cart"}>Quay về giỏ hàng</Link></div>
                         <Form.Item >
                             <div className="submit h-20">
                                 <Tooltip title={pay ? '' : 'Bạn phải chọn phương thức thanh toán'}>
-                                    <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: '#316595', color: 'white' }} >Đặt hàng</Button>
+                                    {pay == 'cod' && total > 5000000 ? <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: 'rgb(74, 74, 170)', color: 'white' }} >Cọc tiền</Button>
+                                        : <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: '#316595', color: 'white' }} >Đặt hàng</Button>
+                                    }
+
                                 </Tooltip>
                             </div>
                         </Form.Item>
@@ -322,26 +360,34 @@ const PayPage = () => {
                 </div>
                 {/* --------------------Col 2 --------------------------- */}
                 <div className="rounded-lg">
-                    {/* <h3 className="pl-4 font-semibold pb-3">Vận Chuyển</h3>
-                    <div className="text-green-800 w-80 h-14 pl-2 pt-3 " style={{ background: '#D1ECF1' }} >Vui lòng nhập thông tin giao hàng</div> */}
-                    <h3 className="pl-4 font-semibold pb-3 pt-10">Thanh Toán</h3>
+                    <h3 className="pl-4 font-semibold pb-3">Thanh Toán</h3>
                     <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 mb-10">
-                        <input type="radio" name="paymentMethod" value={'cod'} onChange={(e: any) => setPay(e.target.value)} />Thanh Toán Khi giao hàng(COD)
+                        <input type="radio" name="paymentMethod" value={'cod'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán khi giao hàng(COD)
                         <p className="float-right mr-6 mt-1" style={{ color: '#1990C6' }}><FaMoneyBill1 /></p>
                     </div>
                     <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 mb-10">
-                        <input type="radio" name="paymentMethod" value={'momo'} onChange={(e: any) => setPay(e.target.value)} /> Thanh Toán bằng momo
+                        <input type="radio" name="paymentMethod" value={'momo'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng momo
                         <img className="w-6 h-6 float-right mr-5 " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnV4cUM7jBauINof35Yn_unOz976Iz5okV8A&usqp=CAU" />
                     </div>
-                    <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 ">
-                        <input type="radio" name="paymentMethod" value={'paypal'} onChange={(e: any) => setPay(e.target.value)} /> Thanh Toán bằng ví paypal
+                    <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5">
+                        <input type="radio" name="paymentMethod" value={'paypal'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng ví paypal
                         <img className="w-5 h-5 float-right mr-5 " src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw" />
                     </div>
-
+                    {pay == 'cod' && total > 5000000 ? <div>
+                        <h3 className="pl-4 font-semibold pb-3 pt-10">Cọc tiền</h3>
+                        <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 mb-10">
+                            <input type="radio" name="paymentMethod" value={'momo'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng momo
+                            <img className="w-6 h-6 float-right mr-5 " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnV4cUM7jBauINof35Yn_unOz976Iz5okV8A&usqp=CAU" />
+                        </div>
+                        <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5">
+                            <input type="radio" name="paymentMethod" value={'paypal'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng ví paypal
+                            <img className="w-5 h-5 float-right mr-5 " src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw" />
+                        </div>
+                    </div> : ''}
                 </div>
                 {/* --------------------Col 3 --------------------------- */}
-                <div className="rounded-lg " style={{ background: '#FAFAFA' }}>
-                    <h3 className="pl-4 font-semibold bt-1">Đơn hàng (3 sản phẩm)</h3>
+                <div className="rounded-lg" style={{ background: '#FAFAFA' }}>
+                    <h3 className="pl-4 font-semibold bt-1">Đơn hàng ({productsInCart.length})</h3>
                     <hr />
                     {productsInCart ? productsInCart?.map((product: any) => {
                         const colorname = Colors?.color?.find((colors: any) => colors._id == product.colorId);
