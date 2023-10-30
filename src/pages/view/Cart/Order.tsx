@@ -1,6 +1,6 @@
 import "swiper/css";
 import "swiper/css/navigation";
-import {  useGetOrderByUserIdQuery } from "@/api/orderApi";
+import { useGetOrderByUserIdQuery } from "@/api/orderApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { format } from 'date-fns';
 import { Skeleton } from "antd";
@@ -10,6 +10,12 @@ const Order = () => {
   const id = decodedToken ? decodedToken.id : null;
   const { data, error, isLoading: isLoadingFetching } = useGetOrderByUserIdQuery<any>(id);
   const orders = data?.order;
+
+
+
+  const formatCurrency = (number: number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
     if ("data" in error && "status" in error) {
@@ -47,8 +53,8 @@ const Order = () => {
             </li>
           </ul>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 ">
-          {orders?.map((order: any) => {
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-3 ">
+          {orders ? orders?.map((order: any) => {
             return (
               <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md " key={order._id}>
                 <div className="flex justify-start items-center mx-5 ">
@@ -61,13 +67,13 @@ const Order = () => {
                 </div>
                 <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
                   <p>Đơn hàng ngày: <span className="text-[#FF1493]">{format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy")}</span></p>
-                  <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">{order.total}</span></p>
+                  <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">{formatCurrency(order.total)}₫</span></p>
                   <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">{order.status.status_name}</span></p>
                   <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white"><Link to={`/order/${order._id}/orderdetail`} style={{ textDecoration: "none", color: "black" }}>Chi tiết</Link></button>
                 </div>
               </div>
             )
-          })}
+          }) : "Lỗi"}
         </div>
       </div>
     </div>
