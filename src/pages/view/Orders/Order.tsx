@@ -53,11 +53,11 @@ const Order = () => {
             </li>
           </ul>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-3 ">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
           {orders ? orders?.map((order: any) => {
             return (
-              <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-md " key={order._id}>
-                <div className="flex justify-start items-center mx-5 ">
+              <div className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-lg " key={order._id}>
+                <div className="flex justify-start items-center mx-5">
                   <img
                     width="100"
                     height="100"
@@ -65,11 +65,11 @@ const Order = () => {
                     alt="external-free-sales-flaticons-lineal-color-flat-icons"
                   />
                 </div>
-                <div className="flex flex-col font-medium justify-center items-center px-10 py-4 ">
-                  <p>Đơn hàng ngày: <span className="text-[#FF1493]">{format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy")}</span></p>
-                  <p className="pl-4">Tổng tiền: <span className="text-[#FF1493]">{formatCurrency(order.total)}₫</span></p>
+                <div className="flex flex-col font-medium justify-center px-10 py-4 ">
+                  <p>Ngày mua: <span className="text-[#FF1493]">{format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy")}</span></p>
+                  <p className="total1">Tổng tiền: <span className="text-[#FF1493]">{formatCurrency(order.total)}₫</span></p>
                   <p className="justify-start">Trạng thái: <span className="text-[#FF1493]">{order.status.status_name}</span></p>
-                  <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white"><Link to={`/order/${order._id}/orderdetail`} style={{ textDecoration: "none", color: "black" }}>Chi tiết</Link></button>
+                  <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white"><Link className="ctorder" to={`/user/orders/${order._id}/orderdetail`} style={{ textDecoration: "none", color: "black" }}>Chi tiết</Link></button>
                 </div>
               </div>
             )

@@ -14,7 +14,7 @@ import Productupdate from "./pages/admin/products/Productupdate";
 import Categorylist from "./pages/admin/category/Categorylist";
 import Categoryadd from "./pages/admin/category/Categoryadd";
 import Categoryupdate from "./pages/admin/category/Categoryupdate";
-import Order from "./pages/view/Cart/Order";
+import Order from "./pages/view/Orders/Order";
 import ForgotPassword from "./pages/view/Auth/ForgotPassword";
 import SignIn from "./pages/view/Auth/SignIn";
 import Profile from "./pages/view/User/Account/Profile";
@@ -24,7 +24,7 @@ import Voucher from "./pages/view/User/voucher";
 import Userlist from "./pages/admin/user/Userlist";
 import HomePage from "./pages/view/Home/HomePage";
 import Product_Detail from "./pages/view/Product_Detail/Product_Detail";
-import OrderDetail from "./pages/view/Cart/Order_Detail";
+import OrderDetail from "./pages/view/Orders/Order_Detail";
 import BrandAdd from "./pages/admin/brands/BrandAdd";
 import BrandsList from "./pages/admin/brands/BrandsList";
 import BrandUpdate from "./pages/admin/brands/BrandUpdate";
@@ -53,7 +53,6 @@ import OrdersConfirmed from "./pages/admin/orders/OrdersConfirmed";
 import OrdersCompleted from "./pages/admin/orders/OrdersCompleted";
 import ProductTrash from "./pages/admin/products/ProductTrash";
 import OrdersDetail from "./pages/admin/orders/OrdersDetail";
-import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
 import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProductAdd";
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
 import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDetail";
@@ -76,25 +75,23 @@ export const router = createBrowserRouter([
             { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },
             { path: 'review', element: <ReviewPage /> },
             { path: 'contact', element: <ContactPage /> },
-
             {
                 path: 'user', element: <UserPage />, children: [
                     { index: true, element: <Profile /> },
                     { path: 'purchase', element: <Purchase /> },
                     { path: 'voucher', element: <Voucher /> },
-                    
+                    {
+                        path: 'orders', children: [
+                            { index: true, element: <Order /> },
+                            { path: ':id/orderdetail', element: <OrderDetail /> }
+                        ],
+                    },
                     { path: "address", element: <AddressPage /> }
                 ]
             },
             { path: 'products', element: <ProductPage /> },
             { path: 'news', element: <News /> },
             { path: 'forgotpassword', element: <ForgotPassword /> },
-            {
-                path: 'order', children: [
-                    { index: true, element: <Order /> },
-                    { path: ':id/orderdetail', element: <OrderDetail /> }
-                ],
-            },
             {
                 path: 'signup', children: [
                     { index: true, element: <Signup /> },
@@ -182,7 +179,7 @@ export const router = createBrowserRouter([
             {
                 path: 'comments', children: [
                     { index: true, element: <Listcomments /> },
-                 
+
                 ],
             },
         ]

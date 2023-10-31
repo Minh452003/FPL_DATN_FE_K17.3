@@ -48,6 +48,7 @@ const PayPage = () => {
     const [averageWeight, setAverageWeight] = useState(0);
     const [ship, setShip] = useState<any>({});
     const [pay, setPay] = useState<any>('');
+    const [type, setType] = useState<any>('');
     const [total, setTotal] = useState<number>(0);
 
     const sizeTotal = () => {
@@ -84,7 +85,7 @@ const PayPage = () => {
             setFields();
             setTotal(carts?.data?.total)
         }
-    }, [user]);
+    }, [user, total]);
 
     const handleCityChange = async (value: any, option: any) => {
         const id = Number(option.key); // Lấy id từ option.key
@@ -136,47 +137,117 @@ const PayPage = () => {
 
     const onFinish = ({ address, phone, notes }: any) => {
         const cartDataWithoutId = { ...carts?.data };
-        cartDataWithoutId.total = carts.data.total + ship.total;
         delete cartDataWithoutId._id;
         delete cartDataWithoutId.createdAt;
         delete cartDataWithoutId.updatedAt;
         address = `${address.ward}, ${address.district}, ${address.street}`
         if (pay && pay == 'cod') {
-            try {
-                Swal.fire({
-                    title: 'Bạn chắc chứ?',
-                    text: "Đơn hàng này sẽ được đặt!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Vâng, tôi chắc chắn!',
-                    cancelButtonText: 'Huỷ'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        (async () => {
-                            await addOrder({ ...cartDataWithoutId, address, phone, notes, shipping: ship.total }).then(() => {
-                                Swal.fire(
-                                    'Thành công!',
-                                    'Đơn hàng của bạn đã được đặt.',
-                                    'success'
-                                )
-                            }).then(() => removeAllCart(id))
-                            navigate('/order')
-                        })()
+            if (cartDataWithoutId.total > 5000000) {
+                if (type && type == 'momo') {
+                    try {
+                        Swal.fire({
+                            title: 'Bạn chắc chứ?',
+                            text: "Khi mua đơn hàng này sẽ phải cọc 20% !",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Vâng, tôi chắc chắn!',
+                            cancelButtonText: 'Huỷ'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                (async () => {
+                                    const response: any = await addOrder({ ...cartDataWithoutId, address, phone, notes, shipping: ship.total, type: type });
+                                    if (response) {
+                                        window.location.href = response.data.payUrl
+                                    }
+                                })()
 
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        // Hiển thị thông báo hủy xóa sản phẩm
-                        Swal.fire(
-                            'Huỷ',
-                            'Đơn hàng chưa được mua :)',
-                            'error'
-                        )
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                // Hiển thị thông báo hủy xóa sản phẩm
+                                Swal.fire(
+                                    'Huỷ',
+                                    'Đơn hàng chưa được cọc :)',
+                                    'error'
+                                )
+                            }
+                        })
+                    } catch (error) {
+                        console.log(error);
                     }
-                })
-            } catch (error) {
-                console.log(error);
+                } else if (type && type == 'paypal') {
+                    try {
+                        Swal.fire({
+                            title: 'Bạn chắc chứ?',
+                            text: "Khi mua đơn hàng này sẽ phải cọc 20% !",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Vâng, tôi chắc chắn!',
+                            cancelButtonText: 'Huỷ'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                (async () => {
+                                    const response: any = await addOrder({ ...cartDataWithoutId, address, phone, notes, shipping: ship.total, type: type });
+                                    if (response) {
+                                        window.location.href = response.data.approval_url
+                                    }
+                                })()
+
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                // Hiển thị thông báo hủy xóa sản phẩm
+                                Swal.fire(
+                                    'Huỷ',
+                                    'Đơn hàng chưa được cọc :)',
+                                    'error'
+                                )
+                            }
+                        })
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+
+            } else {
+                try {
+                    cartDataWithoutId.total = carts.data.total + ship.total;
+                    Swal.fire({
+                        title: 'Bạn chắc chứ?',
+                        text: "Đơn hàng này sẽ được đặt!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Vâng, tôi chắc chắn!',
+                        cancelButtonText: 'Huỷ'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            (async () => {
+                                await addOrder({ ...cartDataWithoutId, address, phone, notes, shipping: ship.total }).then(() => {
+                                    Swal.fire(
+                                        'Thành công!',
+                                        'Đơn hàng của bạn đã được đặt.',
+                                        'success'
+                                    )
+                                }).then(() => removeAllCart(id))
+                                navigate('/user/orders')
+                            })()
+
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            // Hiển thị thông báo hủy xóa sản phẩm
+                            Swal.fire(
+                                'Huỷ',
+                                'Đơn hàng chưa được mua :)',
+                                'error'
+                            )
+                        }
+                    })
+                } catch (error) {
+                    console.log(error);
+                }
             }
+
         } else if (pay && pay == 'momo') {
             try {
                 Swal.fire({
@@ -353,12 +424,13 @@ const PayPage = () => {
                         <div className="ml-4 mt-2 pt-4"><FaChevronLeft className="float-left mt-1" /><Link className="text-blue-900 float-left text-sm" style={{ textDecoration: 'none' }} to={"/cart"}>Quay về giỏ hàng</Link></div>
                         <Form.Item >
                             <div className="submit h-20">
-                                <Tooltip title={pay ? '' : 'Bạn phải chọn phương thức thanh toán'}>
-                                    {pay == 'cod' && total > 5000000 ? <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: 'rgb(74, 74, 170)', color: 'white' }} >Cọc tiền</Button>
-                                        : <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: '#316595', color: 'white' }} >Đặt hàng</Button>
-                                    }
-
+                                {pay == 'cod' && total > 5000000 ? <Tooltip title={type ? '' : 'Bạn phải chọn phương thức cọc'}>
+                                    <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: 'rgb(74, 74, 170)', color: 'white' }} >Cọc tiền</Button>
                                 </Tooltip>
+                                    : <Tooltip title={pay ? '' : 'Bạn phải chọn phương thức thanh toán'}>
+                                        <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: '#316595', color: 'white' }} >Đặt hàng</Button>
+                                    </Tooltip>
+                                }
                             </div>
                         </Form.Item>
                     </Form>
@@ -381,11 +453,11 @@ const PayPage = () => {
                     {pay == 'cod' && total > 5000000 ? <div>
                         <h3 className="pl-4 font-semibold pb-3 pt-10">Cọc tiền</h3>
                         <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 mb-10">
-                            <input type="radio" name="paymentMethod" value={'momo'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng momo
+                            <input type="radio" name="deposite" value={'momo'} onChange={(e: any) => setType(e.target.value)} /> Thanh toán bằng momo
                             <img className="w-6 h-6 float-right mr-5 " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnV4cUM7jBauINof35Yn_unOz976Iz5okV8A&usqp=CAU" />
                         </div>
                         <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5">
-                            <input type="radio" name="paymentMethod" value={'paypal'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng ví paypal
+                            <input type="radio" name="deposite" value={'paypal'} onChange={(e: any) => setType(e.target.value)} /> Thanh toán bằng ví paypal
                             <img className="w-5 h-5 float-right mr-5 " src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw" />
                         </div>
                     </div> : ''}
