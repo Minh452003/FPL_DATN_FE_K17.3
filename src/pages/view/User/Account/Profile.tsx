@@ -6,24 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Profile.css"
 const Profile = () => {
-  const [userId, setUserId] = useState(0);
+  const decodedToken: any = getDecodedAccessToken();
+  const id = decodedToken ? decodedToken.id : null;
+
   const navigate = useNavigate();
-  const { data: user } = useGetUserByIdQuery(userId);
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        // Gửi yêu cầu lấy thông tin người dùng từ máy chủ dựa trên token
-        const response = await getDecodedAccessToken(); // Assumed function to get user info by token
-        setUserId((response as { id: number }).id);
-
-      } catch (error) {
-        console.error("Lỗi khi lấy thông tin người dùng: ", error);
-        navigate("/error"); // Chuyển hướng đến trang lỗi nếu không thể lấy thông tin người dùng
-      }
-    };
-    fetchUser(); // Gọi hàm fetchUser khi component được tạo ra
-  }, [navigate]); // useEffect sẽ chạy lại khi navigate thay đổi, giúp lấy lại thông tin người dùng khi người dùng đăng xuất và đăng nhập lại
-
+  const { data: user } = useGetUserByIdQuery(id);
   if (!user) {
     return <div>Loading...</div>; // Hiển thị thông báo loading khi đang lấy thông tin người dùng từ máy chủ
   }
@@ -35,7 +22,6 @@ const Profile = () => {
         <h3 className="text-lg font-semibold mt-4 ml-4">Quản Lý Thông Tin Hồ Sơ</h3>
         <hr />
       </div>
-      
       <div className="bottom flex">
         <div className="left">
           <form action="">
@@ -48,10 +34,7 @@ const Profile = () => {
                   <div className="py-4">
                     <input
                       type="text"
-
                       placeholder={user.first_name}
-
-
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md transition duration-300 hover:ease-in-out"
                       disabled
                     />
@@ -66,9 +49,7 @@ const Profile = () => {
                   <div className="py-4">
                     <input
                       type="text"
-
                       placeholder={user.last_name}
-
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
                       disabled
                     />
@@ -80,16 +61,11 @@ const Profile = () => {
                   <label className="pl-4 pb-3 py-3">Email :</label>
                 </td>
                 <td className="flex">
-
                   <td>
                     <div className="py-4">
                       <input
                         type="text"
-
                         placeholder={user.email}
-
-
-
                         className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
                         disabled
                       />
@@ -105,11 +81,7 @@ const Profile = () => {
                   <div className="py-4">
                     <input
                       type="text"
-
                       placeholder={user.phone}
-
-
-
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
                       disabled
                     />
@@ -126,11 +98,7 @@ const Profile = () => {
                   <div className="py-4">
                     <input
                       type="text py-4"
-
                       placeholder={user.address}
-
-
-
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
                       disabled
                     />
@@ -140,7 +108,7 @@ const Profile = () => {
 
             </table>
             <button className=" bg-green-500 rounded py-2 px-4 ml-4 mt-4">
-              <Link to={""} style={{ textDecoration: "none", color: "black" }}>Cập Nhập</Link>
+              <Link to={""} style={{ textDecoration: "none", color: "black" }}>Cập Nhật</Link>
             </button>
           </form>
         </div>
