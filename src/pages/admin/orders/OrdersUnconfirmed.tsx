@@ -4,19 +4,18 @@ import { CgDetailsMore } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useGetOrderQuery } from "@/api/orderApi";
-import { useGetUsersQuery } from "@/api/authApi";
-import { IUser } from "@/interfaces/auth";
+// import { useGetUsersQuery } from "@/api/authApi";
+// import { IUser } from "@/interfaces/auth";
 
 const OrdersUnconfirmed = () => {
     const { data: orders, isLoading: loadingSucces }: any = useGetOrderQuery()
-    const { data: users }: any = useGetUsersQuery();
+    // const { data: users }: any = useGetUsersQuery();
+    const filteredOrders =loadingSucces?[]: orders?.order?.filter((order:any) => order.status._id === '64e8a93da63d2db5e8d8562a');
 
     
-    const data = (orders?.order || []).map((order: any) => {
+    const data = filteredOrders.map((order:any) => {
       const number = order.total;
       const formattedNumber = number.toFixed(2);
-      const user = users?.user?.find((user: IUser) => user._id === order.userId);
-      console.log('User:', user);
      
       
       return {
@@ -30,10 +29,7 @@ const OrdersUnconfirmed = () => {
       };
       
   });
-  console.log(orders?.userId);
 
-    console.log('Orders data:', orders);
-    console.log('Users data:', users);
 
     const columns: ColumnsType<any> = [
         {
