@@ -58,6 +58,7 @@ import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProdu
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
 import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDetail";
 import Listcomments from "./pages/admin/comment/Listcomments";
+import Commentdetail from "./pages/admin/comment/commentdetail";
 
 export const router = createBrowserRouter([
     {
@@ -179,6 +180,7 @@ export const router = createBrowserRouter([
             {
                 path: 'comments', children: [
                     { index: true, element: <Listcomments /> },
+                    { path :':id', element: <Commentdetail /> }
                  
                 ],
             },

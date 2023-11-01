@@ -1,31 +1,33 @@
 
-import { useGetUsersQuery } from '@/api/authApi';
+
 import { useGetCommentsQuery } from '@/api/commentApi';
-import { useGetProductsQuery } from '@/api/productApi';
+
 import { Table, Button, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import { BiDetail} from "react-icons/bi";
+import { useGetProductsQuery } from '@/api/productApi';
 
 
 const Listcomments = () => {
     const {data : comment} = useGetCommentsQuery()
-    const { data:user }: any = useGetUsersQuery()
     const {data:product}:any = useGetProductsQuery()
-    const comments = comment?.comments
-    const users = user?.data
+   
+    
+   
+    const comments = comment?.products
     const products = product?.product.docs;
-     
+    console.log(comments);
+    
 
-    const data1 = comments?.map((comment:any,index:number)=>{
-            return{
-                STT: index+1,
-                user :comment.userId,
-                product: comment.productId,
-                description:comment.description,
-                rating:comment.rating
-
-            }
+    const data1 = comments?.map((comment: any, index: number) => {
+      return {
+        key:comment._id,
+        STT: index + 1,
+        product: comment.product_name,
+        comments_count:comment.comments_count
+      }
     });
+
     const columns = [
         {
           title: 'STT',
@@ -34,55 +36,32 @@ const Listcomments = () => {
           render: (index: any) => <a>{index}</a>,
         },
         {
-            title: 'Tên khách hàng',
-            dataIndex: 'user',
-            key: 'user',
-            render: (record: any) => {
-              const name = users?.find((use: any) => use._id == record._id);
-              return name?.last_name;
-            }
-          }
-          ,
-        {
           title: 'Sản Phẩm',
           dataIndex: 'product',
           key: 'product',
-          render: (record: any) => {
-            const name = products?.find((product: any) => product._id == record._id );
-            return name?.product_name;
-          }
-        }
-      
-        
-        ,
-        {
-          title: 'Bình luận',
-          dataIndex: 'description',
-          key: 'description',
          
         },
         {
-          title: 'Sao',
-          dataIndex: 'rating',
-          key: 'rating',
+          title: 'Số lượng đánh giá',
+          dataIndex: 'comments_count',
+          key: 'comments_count',
         },
         {
             title: 'Chức năng',
             render: ({ key: _id }: any) => (
               <div>
-                <Button className='mr-5 text-blue-500' ><Link to={`/`}><BiDetail /></Link></Button>
+                <Button className='mr-5 text-blue-500' ><Link to={`/admin/comments/${_id}`}><BiDetail /></Link></Button>
               </div>
             ),
       
           }
-      
-        
-        
-    
       ];
   return (
     <div>
-        <Table dataSource={data1}  columns={columns} />
+      <div className="container">
+      <h3 className="font-semibold py-3">Danh sách sản phẩm có đánh giá </h3>
+      <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
+    </div>
     </div>
   )
 }
