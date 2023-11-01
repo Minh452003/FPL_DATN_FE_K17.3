@@ -11,7 +11,6 @@ import "./OrdersDetail.css"
 const OrdersDetail = () => {
     const { id }: any = useParams()
     const { data: orderDetail }: any = useGetOrderByIdQuery(id);
-    console.log(orderDetail);
 
     const navigate = useNavigate();
     const [updateStatus, { isLoading: isAddingStatus }] = useUpdateStatusMutation();
@@ -33,7 +32,6 @@ const OrdersDetail = () => {
             id: orderDetail?._id,
         });
     };
-    console.log(orderDetail);
 
 
     const onFinish = async (values: any) => {

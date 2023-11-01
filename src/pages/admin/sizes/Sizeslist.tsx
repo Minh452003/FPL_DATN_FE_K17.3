@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 const Sizeslist = () => {
   const { data, error, isLoading }: any = useGetSizeQuery();
-  const [removeSize, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveSizeMutation();
+  const [removeSize, { isLoading: isRemoveLoading }] = useRemoveSizeMutation();
   const size = data?.size
   const dataSource = size?.map(({_id, size_name, size_price, size_height, size_length, size_weight, size_width}: ISize) => {
     return {
@@ -47,7 +47,7 @@ const Sizeslist = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Thất bại',
-          'Kích cỡ xoá thất bại :)',
+          'Kích cỡ xoá thất bại.',
           'error'
         )
       }
@@ -85,22 +85,21 @@ const Sizeslist = () => {
       key: 'size_width',
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: 'Chức năng',
       render: ({ key: _id }: any) => {
         return (
-          <>
-            <Button onClick={() => deleteSize(_id)}>
+          <div style={{ width: '150px' }}>
+            <Button className='mr-1 text-red-500' onClick={() => deleteSize(_id)}>
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                <FaTrashCan style={{ fontSize: '20', display: 'block' }} />
+                <FaTrashCan />
               )}
             </Button>
-            <Button type="primary" danger className="ml-2">
+            <Button className='mr-1 text-blue-500'>
               <Link to={`/admin/size/edit/${_id}`}><FaWrench /></Link>
             </Button>
-          </>
+          </div>
         )
       }
     },
@@ -119,11 +118,10 @@ const Sizeslist = () => {
     <div className="container">
       <h3 className="font-semibold">Danh sách Kích cỡ</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-        {isRemoveSuccess && <Alert message="Xoa thanh cong" type="success" />}
         <Button className='text-blue-500'>
           <Link to="/admin/size/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>
     </div>
   );

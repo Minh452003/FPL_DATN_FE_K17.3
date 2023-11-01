@@ -1,26 +1,55 @@
 import React from 'react';
-import { useGetCustomizedproductsByUserIdQuery, useRemoveCustomProductMutation } from "@/api/CustomizedProductAPI";
+import { useGetCustomizedproductsByUserIdQuery, useGetCustomizedproductsDeleteQuery, useRemoveCustomProductMutation, useRemoveForceCustomProductMutation, useRestoreCustomProductMutation } from "@/api/CustomizedProductAPI";
 import { getDecodedAccessToken } from "@/decoder";
 import Swal from 'sweetalert2';
 import { Pagination } from "@mui/material";
-import { Button, Skeleton } from "antd";
+import { Skeleton } from "antd";
 import { Link } from "react-router-dom";
 import { useQueryClient } from 'react-query'; 
-import { FaTrash } from 'react-icons/fa';
-const ListCustomizedProduct = () => {
+const ListCustomizedProductTrash = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
   const {
     data: customProduct,
     error,
     isLoading: isLoadingFetching,
-  } = useGetCustomizedproductsByUserIdQuery<any>(id);
-  const [removeCustomizedProduct] = useRemoveCustomProductMutation();
-  const CustomizedProduct = customProduct?.products;
+  } = useGetCustomizedproductsDeleteQuery<any>(id);
+  const [removeCustomizedProduct] = useRemoveForceCustomProductMutation();
+  const [restoreCustomizedProduct] = useRestoreCustomProductMutation();
+  const CustomizedProduct = customProduct?.product;
+  
+  const restoreProduct = (id: any) => {
+    Swal.fire({
+      title: 'Bạn chắc chứ?',
+      text: 'Bạn có chắc muốn khôi phục lại!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Vâng, tôi chắc chắn!',
+      cancelButtonText: 'Huỷ',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        restoreCustomizedProduct(id).unwrap().then(() => {
+          Swal.fire(
+            'khôi phục thành công!',
+            'Sản phẩm của bạn đã được khôi phục.',
+            'success'
+          );
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Thất bại',
+          'Sản phẩm khôi phục thất bại.',
+          'error'
+        );
+      }
+    });
+  };
   const deleteProduct = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
-      text: 'Khi có thể vào thùng rác để khôi phục lại!',
+      text: 'Khi xóa bạn không thể khôi phục lại!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -80,7 +109,6 @@ const ListCustomizedProduct = () => {
             <a href="/">Sản phẩm thiết kế </a>
           </h4>
         </div>
-        <Button className='m-2 ml-10  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }}  /></Link></Button>
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
           {CustomizedProduct.length > 0 ? (
             CustomizedProduct.map((product: any, index: any) => (
@@ -166,7 +194,16 @@ const ListCustomizedProduct = () => {
                             tabIndex={0}
                             onClick={() => deleteProduct(product._id)}
                           >
-                            <Link to={"/customizedProducts/trash"}>xóa sản phẩm</Link>
+                            <Link to={""}>xóa sản phẩm</Link>
+                          </button>
+                          <button
+                            className="button btn-cart"
+                            title="khôi phục sản phẩm"
+                            type="button"
+                            tabIndex={0}
+                            onClick={() => restoreProduct(product._id)}
+                          >
+                            <Link to={"/customizedProducts"}>khôi phục</Link>
                           </button>
                         </form>
                       </div>
@@ -187,4 +224,4 @@ const ListCustomizedProduct = () => {
   );
 };
 
-export default ListCustomizedProduct;
+export default ListCustomizedProductTrash;

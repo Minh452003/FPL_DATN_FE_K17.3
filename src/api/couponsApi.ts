@@ -35,7 +35,7 @@ const couponApi = createApi({
         }),
         updateCoupon: builder.mutation({
             query: (coupon: ICoupon) => ({
-                url: `/coupons/${coupon.id}`,
+                url: `/coupons/${coupon._id}`,
                 method: "PATCH",
                 body: coupon
             }),

@@ -35,7 +35,7 @@ const MaterialList = () => {
         removeMaterial(id).then(() => {
           Swal.fire(
             'Xoá thành công!',
-            'Chất liệu của bạn đã được xoá.',
+            'Vật liệu của bạn đã được xoá.',
             'success'
           )
         })
@@ -43,7 +43,7 @@ const MaterialList = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Đã huỷ',
-          'Chất liệu xoá thất bại :)',
+          'Vật liệu xoá thất bại.',
           'error'
         )
       }
@@ -63,15 +63,15 @@ const MaterialList = () => {
     {
       title: 'Chức năng',
       render: ({ key: _id }: { key: number | string }) => (
-        <div>
-          <Button onClick={() => deleteMaterial(_id)}>
+        <div style={{ width: '150px' }}>
+          <Button className='mr-1 text-red-500' onClick={() => deleteMaterial(_id)}>
             {isRemoveLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />
             ) : (
               <FaTrashCan />
             )}
           </Button>
-          <Button type="primary" danger className="ml-2">
+          <Button className='mr-1 text-blue-500'>
             <Link to={`/admin/material/edit/${_id}`}><FaWrench /></Link>
           </Button>
         </div>
@@ -81,7 +81,7 @@ const MaterialList = () => {
   if (isLoading) return <Skeleton />
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách chất liệu</h3>
+      <h3 className="font-semibold">Danh sách vật liệu</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='text-blue-500'>
           <Link to="/admin/material/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>

@@ -198,7 +198,7 @@ const LayoutAdmin = () => {
           <li>
             <Link to={'material'} className="a">
               <span className="icon"><FaAccusoft /></span>
-              <span className="text1">Nguyên vật liệu</span>
+              <span className="text1">Vật liệu</span>
             </Link>
           </li>
           <li>
