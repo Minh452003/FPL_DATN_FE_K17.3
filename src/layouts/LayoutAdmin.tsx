@@ -120,83 +120,39 @@ const LayoutAdmin = () => {
             </Link>
           </li>
           <li>
-            <Link to={'brand'} className="a">
+            <Link to={'brands'} className="a">
               <span className="icon"><AiOutlineBranches /></span>
               <span className="text1">Thương hiệu</span>
             </Link>
           </li>
           <li>
-            <Link to={'color'} className="a">
+            <Link to={'colors'} className="a">
               <span className="icon"><AiOutlineFontColors /></span>
               <span className="text1">Màu sắc</span>
             </Link>
           </li>
           <li>
-            <Link to={'size'} className="a">
+            <Link to={'sizes'} className="a">
               <span className="icon"><AiOutlineFontSize /></span>
               <span className="text1">Kích cỡ</span>
             </Link>
           </li>
           <li>
-            <Link to={'coupon'} className="a">
+            <Link to={'coupons'} className="a">
               <span className="icon"><BiSolidCoupon /></span>
               <span className="text1">Phiếu giảm giá</span>
             </Link>
           </li>
 
-          <div className='ml-0'>
-            <details className="">
-              <summary className="flex cursor-pointer items-center rounded-lg">
-                <li>
-                  <Link to={'order/unconfirmed'} className="a">
-                    <span className="icon"><AiOutlineShoppingCart /></span>
-                    <span className="text1">Đơn hàng</span>
-                  </Link>
-                </li>
-
-                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
-              </summary>
-
-              <ul className="mt-2 space-y-1 px-4">
-                <li>
-                  <Link to={'order/unconfirmed'} className="a" onClick={() => setCurrentList('unconfirmed')}>
-
-                    <span className="text4">Đơn hàng chưa xác nhận</span>
-                  </Link>
-                </li>
-
-                <li>
-                  <Link to={'order/confirmed'} className="a" onClick={() => setCurrentList('confirmed')}>
-
-                    <span className="text4">Đơn hàng đã xác nhận</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to={'order/completed'} className="a" onClick={() => setCurrentList('completed')}>
-
-                    <span className="text4">Đơn hàng đã hoàn thành</span>
-                  </Link>
-                </li>
-
-              </ul>
-            </details>
-          </div>
+          <li>
+            <Link to={'orders'} className="a">
+              <span className="icon"><AiOutlineShoppingCart /></span>
+              <span className="text1">Đơn hàng</span>
+            </Link>
+          </li>
 
           <li>
-            <Link to={'material'} className="a">
+            <Link to={'materials'} className="a">
               <span className="icon"><FaAccusoft /></span>
               <span className="text1">Vật liệu</span>
             </Link>

@@ -1,11 +1,9 @@
-import React from 'react';
-import { useGetCustomizedproductsByUserIdQuery, useGetCustomizedproductsDeleteQuery, useRemoveCustomProductMutation, useRemoveForceCustomProductMutation, useRestoreCustomProductMutation } from "@/api/CustomizedProductAPI";
+import { useGetAllCustomProductDeleteQuery, useRemoveForceCustomProductMutation, useRestoreCustomProductMutation } from "@/api/CustomizedProductAPI";
 import { getDecodedAccessToken } from "@/decoder";
 import Swal from 'sweetalert2';
 import { Pagination } from "@mui/material";
 import { Skeleton } from "antd";
 import { Link } from "react-router-dom";
-import { useQueryClient } from 'react-query'; 
 const ListCustomizedProductTrash = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -13,11 +11,11 @@ const ListCustomizedProductTrash = () => {
     data: customProduct,
     error,
     isLoading: isLoadingFetching,
-  } = useGetCustomizedproductsDeleteQuery<any>(id);
+  } = useGetAllCustomProductDeleteQuery<any>(id);
   const [removeCustomizedProduct] = useRemoveForceCustomProductMutation();
   const [restoreCustomizedProduct] = useRestoreCustomProductMutation();
   const CustomizedProduct = customProduct?.product;
-  
+
   const restoreProduct = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
