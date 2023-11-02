@@ -1,7 +1,6 @@
 import { useGetUserByIdQuery } from "@/api/authApi";
 
 import { getDecodedAccessToken } from "@/decoder";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Profile.css"
@@ -12,7 +11,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { data: user } = useGetUserByIdQuery(id);
   if (!user) {
-    return <div>Loading...</div>; // Hiển thị thông báo loading khi đang lấy thông tin người dùng từ máy chủ
+    return <div>Loading...</div>; 
   }
 
 
@@ -112,14 +111,6 @@ const Profile = () => {
             </button>
           </form>
         </div>
-        {/* <div className="right ml-5 pt-16 pl-14">
-          <span className="w-24 h-24 bg-slate-800 ">
-            <PiUserBold style={{ fontSize: "7rem", opacity: 0.2 }} />
-          </span>
-          <input type="file" accept=".jpg,jpeg" />
-          <div>Dụng lượng file tối đa 1 MB</div>
-          <div>Định dạng:.JPEG, .PNG</div>
-        </div> */}
       </div>
     </div>
   );

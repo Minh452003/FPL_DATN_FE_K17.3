@@ -61,6 +61,7 @@ import Listcomments from "./pages/admin/comment/Listcomments";
 import Commentdetail from "./pages/admin/comment/commentdetail";
 
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
+import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
 
 
 export const router = createBrowserRouter([
@@ -81,7 +82,10 @@ export const router = createBrowserRouter([
             { path: 'contact', element: <ContactPage /> },
             {
                 path: 'user', element: <UserPage />, children: [
-                    { index: true, element: <Profile /> },
+                    { path: 'profile',children: [
+                        {index:true,element:<Profile/>},
+                        {path:'edit',element:<ProfileUpdate/>}
+                    ] },
                     { path: 'purchase', element: <Purchase /> },
                     { path: 'voucher', element: <Voucher /> },
                     {
