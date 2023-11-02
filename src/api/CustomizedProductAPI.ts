@@ -19,7 +19,12 @@ const customizedProductApi= createApi({
             return headers;
         },
     }),
-    endpoints: (builder) => ({  
+    endpoints: (builder) => ({
+        getCustomProducts: builder.query<ICustomizedProduct[], void>({
+            query: () => `/customized-products-list`,
+            providesTags: ['customized-products']
+        }),
+        
         getCustomizedproductsById: builder.query<any, number | string>({
             query: (id) => `/customized-products/id/${id}`,
             providesTags: ['customized-products']
@@ -28,10 +33,15 @@ const customizedProductApi= createApi({
             query: (userId) => `/customized-products/${userId}`,
             providesTags: ['customized-products']
         }),
-        getCustomizedproductsDelete: builder.query<any, number | string>({
-            query: (userId) => `/customized-products/delete/${userId}`,
+
+        getAllCustomProductDelete: builder.query<ICustomizedProduct[], void>({
+            query: () => '/CustomProducts/delete',
             providesTags: ['customized-products']
         }),
+
+
+        
+
         addCustomProduct: builder.mutation({
             query: (customizedProduct: ICustomizedProduct) => ({
                 url: '/customized-products',
@@ -54,6 +64,15 @@ const customizedProductApi= createApi({
             }),
             invalidatesTags: ['customized-products']
         }),
+
+        RestoreCustomProduct: builder.mutation({
+            query: (id) => ({
+                url: `/customized-products/restore/${id}`,
+                method: 'PATCH'
+            }),
+            invalidatesTags: ['customized-products']
+        }),
+
         updateCustomProduct: builder.mutation({
             query: (customizedProduct: ICustomizedProduct) => ({
                 url: `/customized-products/${customizedProduct.id}`,
@@ -79,9 +98,15 @@ export const {
    useGetCustomizedproductsDeleteQuery,
    useAddCustomProductMutation,
    useUpdateCustomProductMutation,
-   useRestoreCustomProductMutation,
+
+   useUpdateRestoreCustomProductMutation,
+   useRemoveForceCustomProductMutation,
    useRemoveCustomProductMutation,
-   useRemoveForceCustomProductMutation
+   useRestoreCustomProductMutation,
+   useGetAllCustomProductDeleteQuery,
+   useGetCustomProductsQuery
+
+
 } = customizedProductApi;
 export const CustomizedproductsReducer = customizedProductApi.reducer;
 export default customizedProductApi
