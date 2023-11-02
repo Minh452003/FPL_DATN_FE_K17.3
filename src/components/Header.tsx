@@ -18,7 +18,7 @@ const Header = () => {
               <div className="flex md:p-0 pl-3">
                 <img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/logo.png?1693834920118" width={100} alt="" />
               </div>
-             <Search/>
+              <Search />
             </div>
 
             <div className="header-tell pt-2">
@@ -47,7 +47,7 @@ const Header = () => {
             <div className="flex">
               {/* User Icons */}
               <div className="items-center flex">
-                <Link to={'/user/profile'}><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/user.png?1693834920118" width="30px" alt="" /></Link>
+                <Link to={'/user'}><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/user.png?1693834920118" width="30px" alt="" /></Link>
               </div>
               <div className="ml-2">
                 <div>

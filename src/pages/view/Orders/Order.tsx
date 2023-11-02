@@ -18,7 +18,7 @@ const Order = () => {
     isLoading: isLoadingFetching,
   } = useGetOrderByUserIdQuery<any>(id);
   const orders = data?.order;
-  const { data: status, isLoading: isLoadingStatus } = useGetStatusQuery();
+  const { data: status, isLoading: isLoadingStatus }: any = useGetStatusQuery();
   const Status = isLoadingStatus ? [] : status?.status;
 
   const handleFilterOrders = (status: string) => {
@@ -57,9 +57,8 @@ const Order = () => {
             <li>
               <a
                 href=""
-                className={`no-underline text-gray-700 ${
-                  currentStatus === "all" ? "font-medium" : ""
-                }`}
+                className={`no-underline text-gray-700 ${currentStatus === "all" ? "font-medium" : ""
+                  }`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleFilterOrders("all");
@@ -73,9 +72,8 @@ const Order = () => {
               <li key={statusItem._id}>
                 <a
                   href=""
-                  className={`no-underline text-gray-700 ${
-                    currentStatus === statusItem._id ? "font-medium" : ""
-                  }`}
+                  className={`no-underline text-gray-700 ${currentStatus === statusItem._id ? "font-medium" : ""
+                    }`}
                   onClick={(e) => {
                     e.preventDefault();
                     handleFilterOrders(statusItem._id);

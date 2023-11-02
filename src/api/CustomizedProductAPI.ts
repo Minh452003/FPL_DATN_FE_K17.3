@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ICustomizedProduct } from '@/interfaces/customizedproducts';
 
 
-const customizedProductApi= createApi({
+const customizedProductApi = createApi({
     reducerPath: 'customizedproducts',
     tagTypes: ['customized-products'],
     baseQuery: fetchBaseQuery({
@@ -24,7 +24,7 @@ const customizedProductApi= createApi({
             query: () => `/customized-products-list`,
             providesTags: ['customized-products']
         }),
-        
+
         getCustomizedproductsById: builder.query<any, number | string>({
             query: (id) => `/customized-products/id/${id}`,
             providesTags: ['customized-products']
@@ -35,12 +35,10 @@ const customizedProductApi= createApi({
         }),
 
         getAllCustomProductDelete: builder.query<ICustomizedProduct[], void>({
-            query: () => '/CustomProducts/delete',
+            query: (userId) => `/CustomProducts/delete/${userId}`,
             providesTags: ['customized-products']
         }),
 
-
-        
 
         addCustomProduct: builder.mutation({
             query: (customizedProduct: ICustomizedProduct) => ({
@@ -80,31 +78,22 @@ const customizedProductApi= createApi({
                 body: customizedProduct
             }),
             invalidatesTags: ['customized-products']
-        }),
-        RestoreCustomProduct: builder.mutation({
-            query: (id) => ({
-                url: `/customized-products/restore/${id}`,
-                method: 'PATCH'
-            }),
-            invalidatesTags: ['customized-products']
         })
- 
+
     })
 });
 
 export const {
-   useGetCustomizedproductsByIdQuery,
-   useGetCustomizedproductsByUserIdQuery,
-   useGetCustomizedproductsDeleteQuery,
-   useAddCustomProductMutation,
-   useUpdateCustomProductMutation,
+    useGetCustomizedproductsByIdQuery,
+    useGetCustomizedproductsByUserIdQuery,
+    useAddCustomProductMutation,
+    useUpdateCustomProductMutation,
 
-   useUpdateRestoreCustomProductMutation,
-   useRemoveForceCustomProductMutation,
-   useRemoveCustomProductMutation,
-   useRestoreCustomProductMutation,
-   useGetAllCustomProductDeleteQuery,
-   useGetCustomProductsQuery
+    useRemoveForceCustomProductMutation,
+    useRemoveCustomProductMutation,
+    useRestoreCustomProductMutation,
+    useGetAllCustomProductDeleteQuery,
+    useGetCustomProductsQuery
 
 
 } = customizedProductApi;
