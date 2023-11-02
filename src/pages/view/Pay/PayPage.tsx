@@ -22,10 +22,9 @@ const PayPage = () => {
     const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
     const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
     const { data: Materials, isLoading: isLoadingMaterials }: any = useGetMaterialQuery();
-    const { data: dataCoupons } = useGetCouponQuery();
+    const { data: dataCoupons }: any = useGetCouponQuery();
     const coupons = dataCoupons?.coupon;
-    console.log(coupons);
-    
+
     const { data: city }: any = useGetCityQuery();
     const [addDistrict] = useGetDistrictMutation();
     const [addWard] = useGetWardMutation();
@@ -492,21 +491,21 @@ const PayPage = () => {
                     }) : <p>Chưa có sản phẩm</p>}
                     <hr />
                     <div className="Coupons mt-5 mb-5">
-        <select className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10">
-          <option value="">Chọn mã giảm giá</option>
-          {coupons?.map((coupon: any) => (
-            <option key={coupon._id} value={coupon._id}>
-              {coupon.coupon_content}
-            </option>
-          ))}
-        </select>
-        <button
-          className="rounded-md ml-2 w-28 h-10"
-          style={{ background: '#316595', color: 'white' }}
-        >
-          Áp Dụng
-        </button>
-      </div>
+                        <select className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10">
+                            <option value="">Chọn mã giảm giá</option>
+                            {coupons?.map((coupon: any) => (
+                                <option key={coupon._id} value={coupon._id}>
+                                    {coupon.coupon_content}
+                                </option>
+                            ))}
+                        </select>
+                        <button
+                            className="rounded-md ml-2 w-28 h-10"
+                            style={{ background: '#316595', color: 'white' }}
+                        >
+                            Áp Dụng
+                        </button>
+                    </div>
                     <hr />
                     <div className="provisional ml-4 mr-6 h-2">
                         <div >Tạm tính :<p className="price float-right text-gray-500 text-xl">{formatCurrency(carts.data.total)}₫</p></div>

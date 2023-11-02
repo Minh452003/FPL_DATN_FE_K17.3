@@ -1,25 +1,24 @@
 import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2";
-import { Button, Form, Input, Select, Image } from 'antd';
-import { useGetStatusQuery, useUpdateStatusMutation } from "@/api/statusApi";
+import { Button, Form, Select, Image, Skeleton, Input } from 'antd';
+import { useGetStatusQuery } from "@/api/statusApi";
 import { useEffect } from "react";
-import { useGetOrderByIdQuery } from "@/api/orderApi";
+import { useGetOrderByIdQuery, useUpdateOrderMutation } from "@/api/orderApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
 import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
-import "./OrdersDetail.css"
+import "./OrdersDetail.css";
+import { format } from "date-fns";
+
 const OrdersDetail = () => {
     const { id }: any = useParams()
-    const { data: orderDetail }: any = useGetOrderByIdQuery(id);
-
+    const { data: orderDetail } = useGetOrderByIdQuery<any>(id);
+    const { data: status } = useGetStatusQuery<any>()
+    const { data: Colors, isLoading: isLoadingColors } = useGetColorsQuery<any>();
+    const { data: Sizes, isLoading: isLoadingSizes } = useGetSizeQuery<any>();
+    const { data: Materials, isLoading: isLoadingMaterials } = useGetMaterialQuery<any>();
+    const [updateOrder] = useUpdateOrderMutation();
     const navigate = useNavigate();
-    const [updateStatus, { isLoading: isAddingStatus }] = useUpdateStatusMutation();
-    const { data: status } = useGetStatusQuery()
-
-
-    const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
-    const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
-    const { data: Materials, isLoading: isLoadingMaterials }: any = useGetMaterialQuery();
 
     useEffect(() => {
         if (orderDetail) {
@@ -29,45 +28,82 @@ const OrdersDetail = () => {
     const [form] = Form.useForm();
     const setFields = () => {
         form.setFieldsValue({
-            id: orderDetail?._id,
+            _id: orderDetail?.order?._id,
+            userId: orderDetail?.order?.userId?._id,
+            products: orderDetail?.order?.products,
+            total: orderDetail?.order?.total,
+            address: orderDetail?.order?.address,
+            phone: orderDetail?.order?.phone,
+            status: orderDetail?.order?.status?._id,
         });
     };
 
 
     const onFinish = async (values: any) => {
         try {
-            updateStatus(values).then(() => {
+            updateOrder(values).then(() => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Status has been added successfully!',
-                    showConfirmButton: false,
+                    title: 'Cập nhật trạng thái thành công!',
+                    showConfirmButton: true,
                     timer: 1500
                 });
-                navigate("/admin/order/unconfirmed");
+                navigate("/admin/orders");
             })
 
         } catch (error) {
-            console.error('Error uploading image:', error);
+            console.error('Lỗi:', error);
         }
 
+    };
+    const formatCurrency = (number: number) => {
+        if (typeof number !== 'number') {
+            // Xử lý khi number không phải là số
+            return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+        }
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
+    if (isLoadingColors) return <Skeleton />;
+    if (isLoadingSizes) return <Skeleton />;
+    if (isLoadingMaterials) return <Skeleton />;
 
 
 
     return (
-
-        <div className="container order1">
-            <div style={{ borderRadius: '10px' }}>
+        <div className="flex flex-row">
+            <div className="basis-1/2 or">
                 <div>
-                    <h5 style={{ marginLeft: "76px", marginTop: "20px", fontSize: "30px" }}>Thông tin đơn hàng <span style={{ color: '#a8729a' }}></span></h5>
+                    <h5 className="ttdh">Thông tin đơn hàng <span style={{ color: '#a8729a' }}></span></h5>
                 </div>
-                <div>
+                <div className="qw">
+                    <div>
+                        <p>Họ và tên : {orderDetail?.order.userId?.first_name} {orderDetail?.order.userId?.last_name}</p>
+                    </div>
+                    <div>
+                        <p>Phiếu giảm giá: {orderDetail?.order.couponId ? orderDetail?.order.couponId.coupon_name : "không sử dụng phiếu giảm giá"}</p>
+                    </div>
+                    <div>
+                        <p>Số điện thoại : {orderDetail?.order.phone}</p>
+                    </div>
+                    <div>
+                        <p>Địa chỉ : {orderDetail?.order.address}</p>
+                    </div>
+                    {orderDetail?.order.shipping ? <div>
+                        <p>Phí vận chuyển : <strong>{formatCurrency(orderDetail?.order.shipping)}₫</strong></p>
+                    </div> : ""}
 
+                    <div className="d-flex justify-content-between">
+                        <p>Ngày đặt hàng : {orderDetail?.order.createdAt ? format(new Date(orderDetail.order.createdAt), "HH:mm a dd/MM/yyyy") : "Không có thời gian"}</p>
+                    </div>
+                    <div
+                        style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px', marginLeft: "-10px" }}>
+                        <h6 className="h2 mb-0 ms-2" >Tổng tiền: <span className="h2 mb-0 ms-2">{formatCurrency(orderDetail?.order.total)}₫</span></h6>
+                    </div>
                     <Form
                         form={form}
                         layout="vertical"
@@ -78,102 +114,84 @@ const OrdersDetail = () => {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-
-
+                        <Form.Item label="" name="_id" style={{ display: 'none' }}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="" name="userId" style={{ display: 'none' }}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="" name="products" style={{ display: 'none' }}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="" name="total" style={{ display: 'none' }}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="" name="address" style={{ display: 'none' }}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="" name="phone" style={{ display: 'none' }}>
+                            <Input />
+                        </Form.Item>
+                        <div style={{ display: "flex", marginTop: "30px" }}>
+                            <Form.Item
+                                className="small text-primary fw-bold mb-0 float-left w-2/5"
+                                name="status"
+                                rules={[{ required: true, message: 'Trạng thái không được để trống!' }]}
+                            >
+                                <Select >
+                                    {status?.status?.map((stt: any) => {
+                                        return (
+                                            <Select.Option style={{ width: '150px' }} key={stt?._id} value={stt._id} className="text-primary">
+                                                {stt.status_name}
+                                            </Select.Option>
+                                        );
+                                    })}
+                                </Select>
+                            </Form.Item>
+                        </div>
+                        <div>
+                            <Form.Item >
+                                <Button htmlType="submit" style={{ background: "#000080", color: "#fff", marginTop: "20px", width: "180px", height: "40px" }}>Cập nhật trạng thái</Button>
+                            </Form.Item>
+                        </div>
                     </Form>
+                </div>
+            </div>
+            <div className="basis-1/2 or">
+                <div style={{ borderRadius: '10px' }}>
+                    <div>
+                        {orderDetail ? orderDetail?.order?.products.map((order: any) => {
+                            const colorname = Colors?.color?.find((colors: any) => colors._id == order.colorId);
+                            const sizesname = Sizes?.size?.find((sizes: any) => sizes._id == order.sizeId);
+                            const materialsname = Materials?.material?.find((materials: any) => materials._id == order.materialId);
+                            return (
+                                <div className="" key={order._id}>
+                                    <div className="mp">
+                                        <div className="row">
+                                            <div className="ord-img shadow-lg">
+                                                <Image
+                                                    src={order?.image}
+                                                    className="order-image"
+                                                />
+                                                <div className="ord">
+                                                    <div className="order-products"><strong>{order?.product_name}</strong></div>
+                                                    <div className="order-products">Giá sản phẩm: {formatCurrency(order?.product_price)}₫</div>
+                                                    <div className="order-products">Số lượng: {order?.stock_quantity}</div>
+                                                    <div className="order-products">Màu: {colorname?.colors_name}</div>
+                                                    <div className="order-products">Kích cỡ: {sizesname?.size_name}</div>
+                                                    <div className="order-products">Chất liệu: {materialsname?.material_name}</div>
+                                                </div>
+                                            </div>
 
-                    {orderDetail?.order?.products.map((order: any) => {
-                        const colorname = Colors?.color?.find((colors: any) => colors._id == order.colorId);
-                        const sizesname = Sizes?.size?.find((sizes: any) => sizes._id == order.sizeId);
-                        const materialsname = Materials?.material?.find((materials: any) => materials._id == order.materialId);
-
-
-                        return (
-                            <div className="" key={order._id}>
-                                <div className="mp">
-                                    <div className="row">
-                                        <div className="">
-                                            <Image
-                                                src={order?.image}
-                                                style={{ width: "285px", height: "235px", marginLeft: "19px", marginTop: "10px" }} alt="image"
-                                            />
-                                        </div>
-
-                                        <div style={{ marginLeft: "360px", marginTop: "-239px" }}>
-                                            <p>Tên sản phẩm: {order?.product_name}</p>
-                                        </div>
-                                        <div style={{ marginLeft: "360px", marginTop: "-207px" }}>
-                                            <p>Giá sản phẩm: {order?.product_price}</p>
-                                        </div>
-
-                                        <div style={{ marginLeft: "360px", marginTop: "-175px" }}>
-                                            <p>Số lượng: {order?.stock_quantity}</p>
-                                        </div>
-                                        <div style={{ marginLeft: "360px", marginTop: "-140px" }}>
-                                            <p>Màu: {colorname?.colors_name}</p>
-                                        </div>
-                                        <div style={{ marginLeft: "360px", marginTop: "-102px" }}>
-                                            <p>Kích cỡ: {sizesname?.size_name}</p>
-                                        </div>
-                                        <div style={{ marginLeft: "360px", marginTop: "-65px" }}>
-                                            <p>Nguyên vật liệu: {materialsname?.material_name}</p>
-                                        </div>
-                                        <div style={{ marginLeft: "360px", marginTop: "-27px" }}>
-                                            <p>Total: ${order?.product_price * order?.stock_quantity}</p>
                                         </div>
                                     </div>
-
-
                                 </div>
-                            </div>
-                        )
-                    })}
-
-
-                </div>
-            </div>
-
-
-            <div className="qw">
-                <div>
-                    <p>Họ và tên: {orderDetail?.order.userId?.first_name} {orderDetail?.order.userId?.last_name}</p>
-                </div>
-                <div>
-                    <p>Phiếu giảm giá: {orderDetail?.order.couponId?.coupon_name}</p>
-                </div>
-
-                <div>
-                    <p>Số điện thoại : {orderDetail?.order.phone}</p>
-                </div>
-
-                <div>
-                    <p>Địa chỉ : {orderDetail?.order.address}</p>
-                </div>
-
-                <div className="d-flex justify-content-between">
-                    <p>Ngày đặt hàng : {orderDetail?.order.createdAt}</p>
-
-                </div>
-
-                <div
-                    style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px', marginLeft: "-10px" }}>
-                    <h5 className="h2 mb-0 ms-2" >Total paid: <span className="h2 mb-0 ms-2">$ {orderDetail?.order.total}</span></h5>
-                </div>
-                <div style={{ display: "flex", marginTop: "30px" }}>
-                    <div>
-                        <Button style={{ background: "#008000", color: "#fff", width: "140px", height: "40px" }}>{orderDetail?.order.status?.status_name}</Button>
-                    </div>
-                    <div>
-                        <Button style={{ border: "1px solid green", color: "#008000", marginLeft: "20px", width: "140px", height: "40px" }}>Xác nhận đơn</Button>
+                            )
+                        }) : 'Lỗi'}
                     </div>
                 </div>
-                <div>
-                    <Button style={{ background: "#000080", color: "#fff", marginTop: "20px", width: "180px", height: "40px" }}>Cập nhật trạng thái</Button>
-                </div>
             </div>
-
-
-        </div >
+        </div>
     )
 }
 

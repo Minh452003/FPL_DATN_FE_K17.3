@@ -48,20 +48,17 @@ import ListproductChill from "./pages/admin/productchill/ListproductChill";
 import AddChildProduct from "./pages/admin/productchill/AddChildProduct";
 import UpdateChildProduct from "./pages/admin/productchill/UpdateChildProduct";
 import VerifyOTP from "./pages/view/Auth/VerifyOTP";
-import OrdersUnconfirmed from "./pages/admin/orders/OrdersUnconfirmed";
-import OrdersConfirmed from "./pages/admin/orders/OrdersConfirmed";
-import OrdersCompleted from "./pages/admin/orders/OrdersCompleted";
 import ProductTrash from "./pages/admin/products/ProductTrash";
 import OrdersDetail from "./pages/admin/orders/OrdersDetail";
 import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProductAdd";
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
 import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDetail";
-import Listcomments from "./pages/admin/comment/Listcomments";
 
-import Commentdetail from "./pages/admin/comment/commentdetail";
-
+import CustomProductslist from "./pages/admin/customProducts/CustomProductslist";
+import CustomProductsTrash from "./pages/admin/customProducts/CustomProductsTrash";
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
 import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
+import OrdersManager from "./pages/admin/orders/OrdersManager";
 
 
 export const router = createBrowserRouter([
@@ -142,56 +139,51 @@ export const router = createBrowserRouter([
                 ],
             },
             {
-                path: 'brand', children: [
+                path: 'brands', children: [
                     { index: true, element: <BrandsList /> },
                     { path: 'add', element: <BrandAdd /> },
                     { path: 'edit/:idBrand', element: <BrandUpdate /> },
                 ],
             },
             {
-                path: 'color', children: [
+                path: 'colors', children: [
                     { index: true, element: <Colorslist /> },
                     { path: 'add', element: <ColorsAdd /> },
                     { path: 'edit/:idColor', element: <ColorsUpdate /> },
                 ],
             },
             {
-                path: 'size', children: [
+                path: 'sizes', children: [
                     { index: true, element: <SizesList /> },
                     { path: 'add', element: <Sizesadd /> },
                     { path: 'edit/:idSize', element: <SizesUpdate /> },
                 ],
             },
             {
-                path: 'coupon', children: [
+                path: 'coupons', children: [
                     { index: true, element: <CouponsList /> },
                     { path: 'add', element: <CouponsAdd /> },
                     { path: 'edit/:idCoupon', element: <CouponsUpdate /> },
                 ],
             },
             {
-                path: 'order', children: [
-                    { path: 'unconfirmed', element: <OrdersUnconfirmed /> },
+                path: 'orders', children: [
+                    { index: true, element: <OrdersManager /> },
                     { path: ':id/detail', element: <OrdersDetail /> },
-                    { path: 'confirmed', element: <OrdersConfirmed /> },
-                    { path: 'completed', element: <OrdersCompleted /> },
                 ],
             },
             {
-                path: 'material', children: [
+                path: 'materials', children: [
                     { index: true, element: <MaterialList /> },
                     { path: 'add', element: <MaterialAdd /> },
                     { path: 'edit/:id', element: <MaterialUpdate /> },
                 ],
             },
             {
-                path: 'comments', children: [
-                    { index: true, element: <Listcomments /> },
 
-                    { path :':id', element: <Commentdetail /> }
-                 
-
-
+                path: 'customized-products-list', children: [
+                    { index: true, element: <CustomProductslist /> },
+                    { path: 'trash', element: <CustomProductsTrash /> },
 
                 ],
             },

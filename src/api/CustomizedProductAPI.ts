@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ICustomizedProduct } from '@/interfaces/customizedproducts';
 
 
-const customizedProductApi= createApi({
+const customizedProductApi = createApi({
     reducerPath: 'customizedproducts',
     tagTypes: ['customized-products'],
     baseQuery: fetchBaseQuery({
@@ -19,7 +19,12 @@ const customizedProductApi= createApi({
             return headers;
         },
     }),
-    endpoints: (builder) => ({  
+    endpoints: (builder) => ({
+        getCustomProducts: builder.query<ICustomizedProduct[], void>({
+            query: () => `/customized-products-list`,
+            providesTags: ['customized-products']
+        }),
+
         getCustomizedproductsById: builder.query<any, number | string>({
             query: (id) => `/customized-products/id/${id}`,
             providesTags: ['customized-products']
@@ -28,10 +33,13 @@ const customizedProductApi= createApi({
             query: (userId) => `/customized-products/${userId}`,
             providesTags: ['customized-products']
         }),
-        getCustomizedproductsDelete: builder.query<any, number | string>({
-            query: (userId) => `/customized-products/delete/${userId}`,
+
+        getAllCustomProductDelete: builder.query<ICustomizedProduct[], void>({
+            query: (userId) => `/CustomProducts/delete/${userId}`,
             providesTags: ['customized-products']
         }),
+
+
         addCustomProduct: builder.mutation({
             query: (customizedProduct: ICustomizedProduct) => ({
                 url: '/customized-products',
@@ -54,6 +62,15 @@ const customizedProductApi= createApi({
             }),
             invalidatesTags: ['customized-products']
         }),
+
+        RestoreCustomProduct: builder.mutation({
+            query: (id) => ({
+                url: `/customized-products/restore/${id}`,
+                method: 'PATCH'
+            }),
+            invalidatesTags: ['customized-products']
+        }),
+
         updateCustomProduct: builder.mutation({
             query: (customizedProduct: ICustomizedProduct) => ({
                 url: `/customized-products/${customizedProduct.id}`,
@@ -61,27 +78,24 @@ const customizedProductApi= createApi({
                 body: customizedProduct
             }),
             invalidatesTags: ['customized-products']
-        }),
-        RestoreCustomProduct: builder.mutation({
-            query: (id) => ({
-                url: `/customized-products/restore/${id}`,
-                method: 'PATCH'
-            }),
-            invalidatesTags: ['customized-products']
         })
- 
+
     })
 });
 
 export const {
-   useGetCustomizedproductsByIdQuery,
-   useGetCustomizedproductsByUserIdQuery,
-   useGetCustomizedproductsDeleteQuery,
-   useAddCustomProductMutation,
-   useUpdateCustomProductMutation,
-   useRestoreCustomProductMutation,
-   useRemoveCustomProductMutation,
-   useRemoveForceCustomProductMutation
+    useGetCustomizedproductsByIdQuery,
+    useGetCustomizedproductsByUserIdQuery,
+    useAddCustomProductMutation,
+    useUpdateCustomProductMutation,
+
+    useRemoveForceCustomProductMutation,
+    useRemoveCustomProductMutation,
+    useRestoreCustomProductMutation,
+    useGetAllCustomProductDeleteQuery,
+    useGetCustomProductsQuery
+
+
 } = customizedProductApi;
 export const CustomizedproductsReducer = customizedProductApi.reducer;
 export default customizedProductApi

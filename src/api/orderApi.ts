@@ -49,7 +49,7 @@ const orderApi = createApi({
         }),
         updateOrder: builder.mutation({
             query: (order: IOrder) => ({
-                url: `/order/${order.id}`,
+                url: `/order/${order._id}`,
                 method: 'PATCH',
                 body: order
             }),

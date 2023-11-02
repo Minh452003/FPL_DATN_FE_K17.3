@@ -84,7 +84,8 @@ const CustomizedProductAdd = () => {
 
             } else {
               Swal.fire(
-                'Thêm sản phẩm tự thiết kế thành công',
+                'Thành công!',
+                'Thêm sản phẩm tự thiết kế thành công.',
                 'success'
               )
               navigate('/customizedProducts');
