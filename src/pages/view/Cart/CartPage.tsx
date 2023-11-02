@@ -163,7 +163,7 @@ const CartPage = () => {
                 <div className="pl-2">Giỏ hàng</div>
             </div> */}
             <h1 className='pt-10 pb-10'>Giỏ hàng của bạn</h1>
-            <Table dataSource={productsInCart} columns={columns} className='custom-table' rowKey={(record) => record.productId} />
+            <Table dataSource={productsInCart} columns={columns} className='custom-table' />
             <div className='pt-20 pb-10'>
                 <button className="w-60 h-12  bg-slate-600 text-white font-bold ">TIẾP TỤC MUA HÀNG</button>
                 <span className='float-right font-bold'>Tổng tiền : <Link to={'/'} className='pl-4  ' style={{ textDecoration: 'none', color: '#FF0606' }}>{formatCurrency(carts.data.total)}₫</Link></span>

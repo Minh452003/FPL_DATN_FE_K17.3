@@ -51,7 +51,7 @@ const BrandUpdate = () => {
     <div className="container-fluid">
       <div className="row">
         <div className="card-body">
-          <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm thương hiệu</h5>
+          <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Cập nhật thương hiệu</h5>
           <div className="flex items-center ">
           </div>
           <Form
@@ -72,7 +72,7 @@ const BrandUpdate = () => {
               label="Tên thương hiệu"
               name="brand_name"
               rules={[{ required: true, message: 'Tên thương hiệu không được để trống!' },
-              { min: 3, message: "Nhập ít nhất 3 ký tự" }]}
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}

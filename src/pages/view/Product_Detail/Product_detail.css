@@ -467,15 +467,17 @@ div .btn-g {
     text-decoration: none;
     color: #444;
     cursor: pointer;
-    margin-right: 10px; 
+    margin-right: 10px;
 }
+
 .cm-name1 {
     font-size: 12px !important;
     text-decoration: none;
     color: #444;
     cursor: pointer;
-    margin-right: 10px; 
+    margin-right: 10px;
 }
+
 .avatar {
     height: 50px !important;
     width: 50px !important;
@@ -1655,27 +1657,30 @@ p {
 .swiper-container {
     width: 100%;
 }
+
 .stars {
     display: flex;
     align-items: center;
-  }
-  
-  .star-rating {
+}
+
+.star-rating {
     display: flex;
     align-items: center;
-  }
-  
-  .button-wrapper {
-    margin-left: auto; /* Để đẩy nút xóa ra bên phải */
-  }
-  footer {
+}
+
+.button-wrapper {
+    margin-left: auto;
+    /* Để đẩy nút xóa ra bên phải */
+}
+
+.footer1 {
     display: flex;
     align-items: center;
-  }
-  
-  .evaluate {
+}
+
+.evaluate {
     display: flex;
-    flex-direction: row; /* Đảm bảo các phần tử nằm trên cùng một hàng */
+    flex-direction: row;
+    /* Đảm bảo các phần tử nằm trên cùng một hàng */
     align-items: center;
-  }
-  
+}

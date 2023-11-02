@@ -28,7 +28,7 @@ const CategoryTrash = () => {
         removeCategory(id).unwrap().then(() => {
           Swal.fire(
             'Xoá thành công!',
-            'danh mục của bạn đã được xoá.',
+            'Danh mục của bạn đã được xoá.',
             'success'
           )
         })
@@ -36,7 +36,7 @@ const CategoryTrash = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Thất bại',
-          'danh mục xoá thất bại :)',
+          'Danh mục xoá thất bại.',
           'error'
         )
       }
@@ -45,7 +45,7 @@ const CategoryTrash = () => {
   const restoreCategory1 = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
-      text: "bạn có muốn khôi phục lại!",
+      text: "Bạn có muốn khôi phục lại!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -56,8 +56,8 @@ const CategoryTrash = () => {
       if (result.isConfirmed) {
         restoreCategory(id).unwrap().then(() => {
           Swal.fire(
-            'khôi thành công!',
-            'danh mục của bạn đã được khôi.',
+            'Khôi phục thành công!',
+            'Danh mục của bạn đã được khôi phục.',
             'success'
           )
         })
@@ -65,7 +65,7 @@ const CategoryTrash = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Thất bại',
-          'danh mục xoá thất bại :)',
+          'Danh mục của bạn khôi phục thất bại.',
           'error'
         )
       }

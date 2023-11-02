@@ -5,14 +5,16 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { format } from 'date-fns';
 
 
 const CouponsList = () => {
   const { data, error, isLoading }: any = useGetCouponQuery();
-  const [removeCoupon, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] = useRemoveCouponMutation();
+  const [removeCoupon, { isLoading: isRemoveLoading }] = useRemoveCouponMutation();
   const coupon = data?.coupon
   const dataSource = coupon?.map(({_id, coupon_name, coupon_code, coupon_content, 
     coupon_quantity, discount_amount, expiration_date, min_purchase_amount}: ICoupon) => {
+      const formattedExpirationDate = expiration_date ? format(new Date(expiration_date), 'dd/MM/yyyy') : '';
     return {
       key: _id,
       coupon_name,
@@ -20,7 +22,7 @@ const CouponsList = () => {
       coupon_content,
       coupon_quantity,
       discount_amount,
-      expiration_date,
+      expiration_date: formattedExpirationDate,
       min_purchase_amount
     }
   })
@@ -48,7 +50,7 @@ const CouponsList = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Thất bại',
-          'Phiếu giảm giá xoá thất bại :)',
+          'Phiếu giảm giá xoá thất bại.',
           'error'
         )
       }
@@ -91,23 +93,20 @@ const CouponsList = () => {
         key: 'min_purchase_amount',
       },
     {
-      title: 'Action',
-      key: 'action',
+      title: 'Chức năng',
       render: ({ key: _id }: any) => {
         return (
-            <div className='flex w-40'>
-                <>
-                <Button onClick={() => deleteCoupon(_id)}>
+            <div style={{ width: '150px' }}>
+                <Button className='mr-1 text-red-500' onClick={() => deleteCoupon(_id)}>
                 {isRemoveLoading ? (
                     <AiOutlineLoading3Quarters className="animate-spin" />
                 ) : (
-                    <FaTrashCan style={{ fontSize: '20', display: 'block' }} />
+                    <FaTrashCan />
                 )}
                 </Button>
-                <Button type="primary" danger className="ml-2">
+                <Button className='mr-1 text-blue-500'>
                 <Link to={`/admin/coupon/edit/${_id}`}><FaWrench /></Link>
                 </Button>
-                </>
             </div>
           
         )
@@ -126,13 +125,12 @@ const CouponsList = () => {
   }
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách Phiếu giảm giá</h3>
+      <h3 className="font-semibold">Danh sách phiếu giảm giá</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-        {isRemoveSuccess && <Alert message="Xoa thanh cong" type="success" />}
         <Button className='text-blue-500'>
           <Link to="/admin/coupon/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>
     </div>
   );

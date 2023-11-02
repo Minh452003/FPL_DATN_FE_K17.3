@@ -1,12 +1,12 @@
 import { useGetCouponByIdQuery, useUpdateCouponMutation } from '@/api/couponsApi';
-import { pause } from '@/utils/pause';
-import { Alert, Button, Form, Input } from 'antd';
+import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useEffect } from 'react';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 type FieldType = {
+    _id?: string;
     coupon_name?: string,
     coupon_code?: string,
     coupon_content?: string,
@@ -18,7 +18,7 @@ type FieldType = {
 const CouponsUpdate = () => {
   const { idCoupon }: any = useParams();
   const { data: coupons, isLoading }: any = useGetCouponByIdQuery(idCoupon || "");
-  const [updateCoupon, {isLoading: isUpdateLoading, isSuccess: isUpdateSuccess}] = useUpdateCouponMutation();
+  const [updateCoupon,resultAdd] = useUpdateCouponMutation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
 useEffect(() => {
@@ -41,120 +41,143 @@ const setFields = () => {
 };
 
   const onFinish = (values: any) => {
-    updateCoupon({...values, _id: idCoupon})
-    .unwrap()
-    .then(async () => {
-      await pause(1000);
-      navigate("/admin/coupon");
-    })
+    updateCoupon(values).then(() => {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Cập nhật phiếu giảm giá thành công!',
+        showConfirmButton: true,
+        timer: 1500,
+      });
+      navigate('/admin/coupon');
+    });
   };
   
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-
+  if (isLoading) return <Skeleton />;
   const validatePositiveNumber = (_: any, value: any) => {
     if(parseFloat(value) <= 0) {
-      return Promise.reject("phai luon la so duong");
+      return Promise.reject("Phải luôn là số dương");
     }
     return Promise.resolve();
   }
   return (
     <div className='max-w-4xl mx-auto'>
-      {isUpdateSuccess && <Alert message="Sua thanh cong" type="success" />}
-    <Form
-    form={form}
-    name="basic"
-    labelCol={{ span: 8 }}
-    wrapperCol={{ span: 16 }}
-    style={{ maxWidth: 1000 }}
-    initialValues={{ remember: true }}
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
-    autoComplete="off"
-  >
-    <Form.Item<FieldType>
-      label="Tên phiếu giảm giá"
-      name="coupon_name"
-      rules={[{ required: true, message: 'Please input your coupon_name!' },
-      {min: 3, message: "It nhat 3 ky tu"}]}
       
-    >
-      <Input />
-  </Form.Item>
+      <Form
+            form={form}
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 1000 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item label="" name="_id" style={{ display: 'none' }}>
+              <Input />
+            </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Mã phiếu giảm giá"
-      name="coupon_code"
-      rules={[{ required: true, message: 'Please input your coupon_code!' },
-      {min: 3, message: "It nhat 3 ky tu"}]}
-      
-    >
-      <Input />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Tên phiếu giảm giá"
+              name="coupon_name"
+              rules={[{ required: true, message: 'Tên phiếu giảm giá không được để trống!' },
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Input />
+            </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Nội dung phiếu giảm giá"
-      name="coupon_content"
-      rules={[{ required: true, message: 'Please input your coupon_content!' },
-      {min: 3, message: "It nhat 3 ky tu"}]}
-      
-    >
-      <TextArea />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Mã phiếu giảm giá"
+              name="coupon_code"
+              rules={[{ required: true, message: 'Mã phiếu giảm giá không được để trống!' },
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Input />
+            </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Số lượng phiếu giảm giá"
-      name="coupon_quantity"
-      rules={[{ required: true, message: 'Please input your coupon_quantity!' },
-      {validator: validatePositiveNumber}]}
-      
-    >
-      <Input type='number' />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Nội dung phiếu giảm giá"
+              name="coupon_content"
+              rules={[{ required: true, message: 'Nội dung phiếu giảm giá không được để trống!' },
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+             <TextArea />
+            </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Số tiền chiết khấu"
-      name="discount_amount"
-      rules={[{ required: true, message: 'Please input your discount_amount!' },
-      {validator: validatePositiveNumber}]}
-      
-    >
-      <Input type='number' />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Số lượng phiếu giảm giá"
+              name="coupon_quantity"
+              rules={[{ required: true, message: 'Số lượng phiếu giảm giá không được để trống!' },
+              {validator: validatePositiveNumber}
+            ]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
 
- <Form.Item<FieldType>
-      label="Ngày hết hạn"
-      name="expiration_date"
-      rules={[{ required: true, message: 'Please input your expiration_date!' },
-      ]}
-      
-    >
-      <Input type='Date' />
-  </Form.Item> 
-    
-  <Form.Item<FieldType>
-      label="Số tiền mua tối thiểu"
-      name="min_purchase_amount"
-      rules={[{ required: true, message: 'Please input your min_purchase_amount!' },
-      {validator: validatePositiveNumber}]}
-      
-    >
-      <Input type='number' />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Số tiền chiết khấu"
+              name="discount_amount"
+              rules={[{ required: true, message: 'Số tiền chiết khấu không được để trống!' },
+              {validator: validatePositiveNumber}
+            ]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <InputNumber style={{ width: '100%' }}  />
+            </Form.Item>
 
-  <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" danger htmlType="submit">
-          {isUpdateLoading ? (
-            <AiOutlineLoading3Quarters className="animate-spin" />
-          ): (
-            "Cập nhật phiếu giảm giá"
-          )}
-        </Button>
-        <Button type='primary' danger className='ml-2' onClick={() => navigate("/admin/coupon")}>
-        Danh sách Phiếu giảm giá
-        </Button>
-      </Form.Item>
+
+            <Form.Item<FieldType>
+              label="Ngày hết hạn"
+              name="expiration_date"
+              rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Input type='Date' />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              label="Số tiền mua tối thiểu"
+              name="min_purchase_amount"
+              rules={[{ required: true, message: 'Số tiền mua tối thiểu không được để trống!' },
+              {validator: validatePositiveNumber}
+            ]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
+
+            <Form.Item wrapperCol={{ span: 16 }}>
+              <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+                {resultAdd.isLoading ? <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div> : " Cập nhật phiếu giảm giá"}
+              </Button>
+              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/coupon")} htmlType="submit">
+                Danh sách phiếu giảm giá
+              </Button>
+            </Form.Item>
 
   </Form>
        </div>
@@ -162,4 +185,9 @@ const setFields = () => {
 }
 
 export default CouponsUpdate
+
+
+
+
+
 

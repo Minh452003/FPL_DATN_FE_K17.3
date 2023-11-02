@@ -1,8 +1,8 @@
 import { useAddCouponMutation } from '@/api/couponsApi';
-import { pause } from '@/utils/pause';
-import { Alert, Button, Form, Input } from 'antd';
+import { Button, Form, Input, InputNumber } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 type FieldType = {
@@ -16,13 +16,17 @@ type FieldType = {
 
 };
 const CouponsAdd = () => {
-  const [addCoupon, {isLoading, isSuccess: isAddSuccess}] = useAddCouponMutation();
+  const [addCoupon, resultAdd] = useAddCouponMutation();
   const navigate = useNavigate();
   const onFinish = (values: any) => {
-    addCoupon(values)
-    .unwrap()
-    .then(async () => {
-      await pause(1000);
+    addCoupon(values).then(() => {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Thêm phiếu giảm giá thành công!',
+        showConfirmButton: true,
+        timer: 1500
+      });
       navigate("/admin/coupon");
     })
   };
@@ -31,106 +35,126 @@ const CouponsAdd = () => {
   };
   const validatePositiveNumber = (_: any, value: any) => {
     if(parseFloat(value) <= 0) {
-      return Promise.reject("phai luon la so duong");
+      return Promise.reject("Phải luôn là số dương");
     }
     return Promise.resolve();
   }
   return ( 
-    <div className='max-w-4xl mx-auto'>
-      <h2 className='font-bold text-2xl mb-4'>Thêm mới phiếu giảm giá</h2>
-      {isAddSuccess && <Alert message="Them thanh cong" type="success" />}
-    <Form
-    name="basic"
-    labelCol={{ span: 8 }}
-    wrapperCol={{ span: 16 }}
-    style={{ maxWidth: 1000 }}
-    initialValues={{ remember: true }}
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
-    autoComplete="off"
-  >
-    <Form.Item<FieldType>
-      label="Tên phiếu giảm giá"
-      name="coupon_name"
-      rules={[{ required: true, message: 'Please input your coupon_name!' },
-      {min: 3, message: "It nhat 3 ky tu"}]}
-      
-    >
-      <Input />
-  </Form.Item>
+    <div className="container-fluid">
+      <div className="row">
+        <div className="card-body">
+          <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm phiếu giảm giá</h5>
+          <div className="flex items-center ">
+          </div>
+            <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 1000 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
 
-  <Form.Item<FieldType>
-      label="Mã phiếu giảm giá"
-      name="coupon_code"
-      rules={[{ required: true, message: 'Please input your coupon_code!' },
-      {min: 3, message: "It nhat 3 ky tu"}]}
-      
-    >
-      <Input />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Tên phiếu giảm giá"
+              name="coupon_name"
+              rules={[{ required: true, message: 'Tên phiếu giảm giá không được để trống!' },
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Input />
+            </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Nội dung phiếu giảm giá"
-      name="coupon_content"
-      rules={[{ required: true, message: 'Please input your coupon_content!' },
-      {min: 3, message: "It nhat 3 ky tu"}]}
-      
-    >
-      <TextArea />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Mã phiếu giảm giá"
+              name="coupon_code"
+              rules={[{ required: true, message: 'Mã phiếu giảm giá không được để trống!' },
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Input />
+            </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Số lượng phiếu giảm giá"
-      name="coupon_quantity"
-      rules={[{ required: true, message: 'Please input your coupon_quantity!' },
-      {validator: validatePositiveNumber}]}
-      
-    >
-      <Input type='number' />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Nội dung phiếu giảm giá"
+              name="coupon_content"
+              rules={[{ required: true, message: 'Nội dung phiếu giảm giá không được để trống!' },
+              { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <TextArea />
+            </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Số tiền chiết khấu"
-      name="discount_amount"
-      rules={[{ required: true, message: 'Please input your discount_amount!' },
-      {validator: validatePositiveNumber}]}
-      
-    >
-      <Input type='number' />
-  </Form.Item>
 
-  <Form.Item<FieldType>
-      label="Ngày hết hạn"
-      name="expiration_date"
-      rules={[{ required: true, message: 'Please input your expiration_date!' },
-      ]}
-      
-    >
-      <Input type='Date' />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Số lượng phiếu giảm giá"
+              name="coupon_quantity"
+              rules={[{ required: true, message: 'Số lượng phiếu giảm giá không được để trống!' },
+              {validator: validatePositiveNumber}]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
 
-    
-  <Form.Item<FieldType>
-      label="Số tiền mua tối thiểu"
-      name="min_purchase_amount"
-      rules={[{ required: true, message: 'Please input your min_purchase_amount!' },
-      {validator: validatePositiveNumber}]}
-      
-    >
-      <Input type='number' />
-  </Form.Item>
+            <Form.Item<FieldType>
+              label="Số tiền chiết khấu"
+              name="discount_amount"
+              rules={[{ required: true, message: 'Số tiền chiết khấu không được để trống!' },
+              {validator: validatePositiveNumber}]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
 
-    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-      <Button type="primary" htmlType="submit" danger>
-      Thêm mới
-    </Button>
-  
-    <Button type='primary' onClick={() => navigate("/admin/coupon")} className='ml-2' htmlType="submit" danger>
-      Danh sách phiếu giảm giá
-    </Button>
-    </Form.Item>
-  </Form>
-       </div>
+            <Form.Item<FieldType>
+              label="Ngày hết hạn"
+              name="expiration_date"
+              rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Input type='Date' />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              label="Số tiền mua tối thiểu"
+              name="min_purchase_amount"
+              rules={[{ required: true, message: 'Số tiền mua tối thiểu không được để trống!' },
+              {validator: validatePositiveNumber}]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
+
+            <Form.Item wrapperCol={{ span: 16 }}>
+              <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+                {resultAdd.isLoading ? <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div> : " Thêm phiếu giảm giá"}
+              </Button>
+              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/coupon")} htmlType="submit">
+                Danh sách phiếu giảm giá
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
+    </div>
   )
 }
 

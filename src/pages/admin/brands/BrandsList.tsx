@@ -43,7 +43,7 @@ const BrandsList = () => {
         // Hiển thị thông báo hủy xóa sản phẩm
         Swal.fire(
           'Đã huỷ',
-          'Thương hiệu xoá thất bại :)',
+          'Thương hiệu xoá thất bại.',
           'error'
         )
       }
@@ -56,19 +56,18 @@ const BrandsList = () => {
       key: 'name',
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: 'Chức năng',
       render: ({ key: _id }: any) => {
         return (
-          <div>
-            <Button onClick={() => deleteBrand(_id)}>
+          <div style={{ width: '150px' }}>
+            <Button className='mr-1 text-red-500' onClick={() => deleteBrand(_id)}>
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
                 <FaTrashCan />
               )}
             </Button>
-            <Button type="primary" danger className="ml-2">
+            <Button className='mr-1 text-blue-500'>
               <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
             </Button>
           </div>

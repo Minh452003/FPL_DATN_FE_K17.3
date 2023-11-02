@@ -37,8 +37,6 @@ const Product_Detail = () => {
   const { idProduct }: any = useParams();
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
-  console.log(id);
-
   const {
     data,
     isLoading: isLoadingFetching,
@@ -60,8 +58,6 @@ const Product_Detail = () => {
   const [removeComment, { isLoading: isRemoveLoading }] =
     useRemoveCommentMutation();
   const commentProductDetail = isLoadingComment ? [] : comment?.comments;
-  console.log(commentProductDetail);
-
   const totalRating =
     commentProductDetail?.reduce(
       (total: number, item: any) => total + item.rating,
@@ -348,11 +344,10 @@ const Product_Detail = () => {
                   <li role="presentation" key={img.publicId}>
                     <Link
                       to={`#image-tab-${index}`}
-                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${
-                        selectedIndex === index
+                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
                           ? "bg-primary-100 text-primary-700"
                           : "bg-neutral-700 text-white"
-                      } md:mr-4 `}
+                        } md:mr-4 `}
                       id={`image-tab-${index}`}
                       data-te-toggle="tab"
                       key={`tab-${index}`}
@@ -405,9 +400,8 @@ const Product_Detail = () => {
                           key={color.colorId}
                           aria-label="M"
                           aria-disabled="false"
-                          className={`btn2 btn-solid-primary2 btn-b ${
-                            isActive ? "active1" : ""
-                          }`}
+                          className={`btn2 btn-solid-primary2 btn-b ${isActive ? "active1" : ""
+                            }`}
                           onClick={() => handleClickColor(color.colorId)}
                         >
                           {colorname.colors_name}
@@ -433,9 +427,8 @@ const Product_Detail = () => {
                           key={size.sizeId}
                           aria-label="M"
                           aria-disabled="false"
-                          className={`btn2 btn-solid-primary2 btn-b ${
-                            isActive ? "active1" : ""
-                          }`}
+                          className={`btn2 btn-solid-primary2 btn-b ${isActive ? "active1" : ""
+                            }`}
                           onClick={() => handleClickSize(size.sizeId)}
                           type="submit"
                         >
@@ -558,9 +551,9 @@ const Product_Detail = () => {
                       {roundedAverageRating}
                     </span>
                     trên 5
-                      {commentProductDetail
-                        ? ` (${commentProductDetail.length} lượt đánh giá)`
-                        : " (0)"} 
+                    {commentProductDetail
+                      ? ` (${commentProductDetail.length} lượt đánh giá)`
+                      : " (0)"}
                   </div>
                   <div className="max-w-4xl mx-auto px-4 flex mb-6">
                     {Array.from(
@@ -571,7 +564,7 @@ const Product_Detail = () => {
                     )}
                   </div>
                 </div>
-                <hr className="w-72"/>
+                <hr className="w-72" />
                 <div className="max-w-4xl mx-auto px-4">
                   {comment ? (
                     commentProductDetail.map((comment: any) => (
@@ -579,12 +572,12 @@ const Product_Detail = () => {
                         key={comment._id}
                         className="p-6 text-base bg-white rounded-lg dark:bg-gray-900"
                       >
-                        <footer className="flex items-center">
+                        <footer className="flex items-center footer1">
                           <div className="evaluate">
                             <div className="inline-flex items-center mr-3 text-xs text-gray-900 dark:text-white font-semibold">
                               <Image
                                 className="mr-2 w-8 h-8 rounded-full avatar"
-                                // src={comment?.userId.avatar?.url}
+                              // src={comment?.userId.avatar?.url}
                               />
                               <a className="cm-name">
                                 {comment.userId?.last_name}
@@ -693,106 +686,105 @@ const Product_Detail = () => {
                         >
                           {similarProducts
                             ? similarProducts.map(
-                                (similar: any, index: any) => (
-                                  <SwiperSlide
-                                    style={{
-                                      width: "285px",
-                                      marginLeft: "27px",
-                                    }}
-                                    key={similar._id}
-                                  >
-                                    <div
-                                      className="items slick-slides slick-currents slick-actives"
-                                      tabIndex={-1}
-                                      role="option"
-                                      aria-describedby={`slick-slide${
-                                        index + 10
+                              (similar: any, index: any) => (
+                                <SwiperSlide
+                                  style={{
+                                    width: "285px",
+                                    marginLeft: "27px",
+                                  }}
+                                  key={similar._id}
+                                >
+                                  <div
+                                    className="items slick-slides slick-currents slick-actives"
+                                    tabIndex={-1}
+                                    role="option"
+                                    aria-describedby={`slick-slide${index + 10
                                       }`}
-                                      style={{
-                                        width: "235px",
-                                        marginLeft: "-18px",
-                                        // marginRight: "37px",
-                                      }}
-                                      data-slick-index={`${index}`}
-                                      aria-hidden="false"
-                                    >
-                                      <div className="col-item5s">
-                                        <div className="item-inners">
-                                          <div className="product-wrappers">
-                                            <div className="thumb-wrappers">
-                                              <Link
-                                                to={""}
-                                                className="thumbs flips"
-                                                title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                                tabIndex={0}
-                                              >
-                                                <img
-                                                  className="lazyloads loadeds"
-                                                  src={similar.image[0].url}
-                                                />
-                                              </Link>
-                                            </div>
+                                    style={{
+                                      width: "235px",
+                                      marginLeft: "-18px",
+                                      // marginRight: "37px",
+                                    }}
+                                    data-slick-index={`${index}`}
+                                    aria-hidden="false"
+                                  >
+                                    <div className="col-item5s">
+                                      <div className="item-inners">
+                                        <div className="product-wrappers">
+                                          <div className="thumb-wrappers">
+                                            <Link
+                                              to={""}
+                                              className="thumbs flips"
+                                              title="Bàn trà gỗ tự nhiên 5CBT-136"
+                                              tabIndex={0}
+                                            >
+                                              <img
+                                                className="lazyloads loadeds"
+                                                src={similar.image[0].url}
+                                              />
+                                            </Link>
                                           </div>
-                                          <div className="item-infos">
-                                            <div className="info-inners">
-                                              <h3 className="item-titles">
-                                                {" "}
-                                                <Link to={""} tabIndex={0}>
-                                                  {similar.product_name}{" "}
-                                                </Link>{" "}
-                                              </h3>
-                                              <div className="item-contents">
-                                                <div className="item-prices">
-                                                  <div className="price-boxs">
-                                                    <p className="special-prices">
-                                                      <span className="prices">
-                                                        {formatCurrency(
-                                                          similar?.product_price
-                                                        )}
-                                                        ₫
-                                                      </span>
-                                                    </p>
-                                                  </div>
+                                        </div>
+                                        <div className="item-infos">
+                                          <div className="info-inners">
+                                            <h3 className="item-titles">
+                                              {" "}
+                                              <Link to={""} tabIndex={0}>
+                                                {similar.product_name}{" "}
+                                              </Link>{" "}
+                                            </h3>
+                                            <div className="item-contents">
+                                              <div className="item-prices">
+                                                <div className="price-boxs">
+                                                  <p className="special-prices">
+                                                    <span className="prices">
+                                                      {formatCurrency(
+                                                        similar?.product_price
+                                                      )}
+                                                      ₫
+                                                    </span>
+                                                  </p>
                                                 </div>
                                               </div>
                                             </div>
+                                          </div>
 
-                                            <div className="actionss hidden-xs hidden-sm remove_html">
-                                              <form>
-                                                <input
-                                                  type="hidden"
-                                                  tabIndex={0}
-                                                />
-                                                <button
-                                                  className="buttons btn-carts"
-                                                  title="Mua hàng"
-                                                  type="button"
-                                                  tabIndex={0}
+                                          <div className="actionss hidden-xs hidden-sm remove_html">
+                                            <form>
+                                              <input
+                                                type="hidden"
+                                                tabIndex={0}
+                                              />
+                                              <button
+                                                className="buttons btn-carts"
+                                                title="Mua hàng"
+                                                type="button"
+                                                tabIndex={0}
+                                              >
+                                                <Link
+                                                  onClick={scrollToTop}
+                                                  to={`/products/${similar._id}`}
                                                 >
-                                                  <Link
-                                                    onClick={scrollToTop}
-                                                    to={`/products/${similar._id}`}
-                                                  >
-                                                    Chi tiết
-                                                  </Link>
-                                                </button>
-                                                <button
-                                                  className="buttons btn-carts"
-                                                  title="Mua hàng"
-                                                  type="button"
-                                                  tabIndex={0}
-                                                >
-                                                  <Link to={""}>Mua hàng</Link>
-                                                </button>
-                                              </form>
-                                            </div>
+                                                  Chi tiết
+                                                </Link>
+                                              </button>
+                                              <button
+                                                className="buttons btn-carts"
+                                                title="Mua hàng"
+                                                type="button"
+                                                tabIndex={0}
+                                              >
+                                                <Link to={""}>Mua hàng</Link>
+                                              </button>
+                                            </form>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
-                                  </SwiperSlide>
-                                )
+                                  </div>
+                                </SwiperSlide>
                               )
+                            )
                             : "Không có sản phẩm liên quan"}
                         </div>
                       </div>
