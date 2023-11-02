@@ -66,7 +66,7 @@ const ProfileUpdate = () => {
             showConfirmButton: true,
             timer: 1500,
           });
-          // navigate('/user/profile');
+          navigate('/user/profile');
         });
       } else {
         updateUser(values).then(() => {
@@ -77,7 +77,7 @@ const ProfileUpdate = () => {
             showConfirmButton: true,
             timer: 1500,
           });
-          // navigate('/user/profile');
+          navigate('/user/profile');
         });
         console.log(values);
       }
