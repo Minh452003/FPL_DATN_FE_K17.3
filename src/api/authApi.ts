@@ -6,6 +6,16 @@ const userApi = createApi({
     tagTypes: ['User'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
+        prepareHeaders: (headers) => {
+            const storedData = localStorage.getItem('accessToken');
+            if (storedData) {
+                const { accessToken } = JSON.parse(storedData);
+                if (accessToken) {
+                    headers.set('Authorization', `Bearer ${accessToken}`);
+                }
+            }
+            return headers;
+        },
     }),
     endpoints: (builder) => ({
         getUsers: builder.query<IUser[], void>({
@@ -59,7 +69,7 @@ const userApi = createApi({
         }),
         updateUser: builder.mutation({
             query: (user: IUser) => ({
-                url: `/users/${user.id}`,
+                url: `/users/${user._id}`,
                 method: 'PATCH',
                 body: user
             }),

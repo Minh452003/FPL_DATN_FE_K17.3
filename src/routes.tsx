@@ -57,6 +57,7 @@ import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDe
 import CustomProductslist from "./pages/admin/customProducts/CustomProductslist";
 import CustomProductsTrash from "./pages/admin/customProducts/CustomProductsTrash";
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
+import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
 import OrdersManager from "./pages/admin/orders/OrdersManager";
 
 
@@ -78,7 +79,10 @@ export const router = createBrowserRouter([
             { path: 'contact', element: <ContactPage /> },
             {
                 path: 'user', element: <UserPage />, children: [
-                    { index: true, element: <Profile /> },
+                    { path: 'profile',children: [
+                        {index:true,element:<Profile/>},
+                        {path:'edit',element:<ProfileUpdate/>}
+                    ] },
                     { path: 'purchase', element: <Purchase /> },
                     { path: 'voucher', element: <Voucher /> },
                     {

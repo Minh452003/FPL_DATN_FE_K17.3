@@ -1,7 +1,6 @@
 import { useGetUserByIdQuery } from "@/api/authApi";
 
 import { getDecodedAccessToken } from "@/decoder";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Profile.css"
@@ -12,7 +11,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { data: user } = useGetUserByIdQuery(id);
   if (!user) {
-    return <div>Loading...</div>; // Hiển thị thông báo loading khi đang lấy thông tin người dùng từ máy chủ
+    return <div>Loading...</div>; 
   }
 
 
@@ -97,7 +96,7 @@ const Profile = () => {
                 <td className="flex  ">
                   <div className="py-4">
                     <input
-                      type="text py-4"
+                      type="text"
                       placeholder={user.address}
                       className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
                       disabled
@@ -108,18 +107,10 @@ const Profile = () => {
 
             </table>
             <button className=" bg-green-500 rounded py-2 px-4 ml-4 mt-4">
-              <Link to={""} style={{ textDecoration: "none", color: "black" }}>Cập Nhật</Link>
+              <Link to={"edit"} style={{ textDecoration: "none", color: "black" }}>Cập Nhật</Link>
             </button>
           </form>
         </div>
-        {/* <div className="right ml-5 pt-16 pl-14">
-          <span className="w-24 h-24 bg-slate-800 ">
-            <PiUserBold style={{ fontSize: "7rem", opacity: 0.2 }} />
-          </span>
-          <input type="file" accept=".jpg,jpeg" />
-          <div>Dụng lượng file tối đa 1 MB</div>
-          <div>Định dạng:.JPEG, .PNG</div>
-        </div> */}
       </div>
     </div>
   );
