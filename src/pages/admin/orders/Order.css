@@ -1,0 +1,7 @@
+ul li a.font-medium {
+  font-weight: bold;
+}
+
+ul li a.active {
+  color: #3c91e6;
+}
