@@ -1,3 +1,4 @@
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -11,36 +12,37 @@ import { useEffect, useState } from 'react';
 const ProductList = () => {
   const { data: categories }: any = useGetCategoryQuery();
   const { data: products, error, isLoading: isLoadingFetching }: any = useGetProductsQuery();
-  const [slidesPerView, setSlidesPerView] = useState(1); // Mặc định là 1
+  const [slidesPerView, setSlidesPerView] = useState(1);
+
   useEffect(() => {
-    // Xác định kích thước màn hình và cài đặt slidesPerView dựa trên kích thước
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
-        setSlidesPerView(4); // Đối với laptop và màn hình lớn hơn
+        setSlidesPerView(4);
       } else if (window.innerWidth >= 768) {
-        setSlidesPerView(2); // Đối với iPad
+        setSlidesPerView(2);
       } else {
-        setSlidesPerView(1); // Đối với màn hình nhỏ hơn, ví dụ điện thoại
+        setSlidesPerView(1);
       }
     };
     window.addEventListener('resize', handleResize);
-    handleResize(); // Gọi lần đầu khi tải trang
+    handleResize();
 
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
-
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+  };
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // Cuộn mượt
+      behavior: "smooth",
     });
   };
+
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
     if ("data" in error && "status" in error) {
@@ -54,6 +56,7 @@ const ProductList = () => {
   if (!categories || !categories.category || categories.category.docs.length === 0) {
     return <p>Không có danh mục nào.</p>;
   }
+
   return (
     <div>
       {categories && categories.category.docs.map((category: any) => {
@@ -61,6 +64,12 @@ const ProductList = () => {
           return <p key={category._id}>Không có sản phẩm nào.</p>;
         }
         const categoryProducts = products.product.docs.filter((product: any) => product.categoryId === category._id);
+
+        if (categoryProducts.length === 0) {
+          // Skip rendering the category if it has no products
+          return null;
+        }
+
         return (
           <div key={category._id} className="main-col2 bg_menu lazyload" data-was-processed="true">
             <div className="container">
@@ -94,7 +103,7 @@ const ProductList = () => {
                                 transform: "translate3d(0px, 0px, 0px)",
                               }}
                             >
-                              {categoryProducts && categoryProducts.map((product: any, index: number) => (
+                              {categoryProducts.map((product: any, index: number) => (
                                 <SwiperSlide key={product._id}>
                                   <div
                                     className="item slick-slide slick-current slick-active"
@@ -188,11 +197,10 @@ const ProductList = () => {
               </div>
             </div>
           </div>
-        )
-
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default ProductList
+export default ProductList;
