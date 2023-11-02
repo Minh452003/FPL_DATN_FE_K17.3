@@ -19,7 +19,12 @@ const  customizedProductApi= createApi({
             return headers;
         },
     }),
-    endpoints: (builder) => ({  
+    endpoints: (builder) => ({
+        getCustomProducts: builder.query<ICustomizedProduct[], void>({
+            query: () => `/customized-products-list`,
+            providesTags: ['customized-products']
+        }),
+        
         getCustomizedproductsById: builder.query<any, number | string>({
             query: (id) => `/customized-products/id/${id}`,
             providesTags: ['customized-products']
@@ -28,11 +33,37 @@ const  customizedProductApi= createApi({
             query: (userId) => `/customized-products/${userId}`,
             providesTags: ['customized-products']
         }),
+        getAllCustomProductDelete: builder.query<ICustomizedProduct[], void>({
+            query: () => '/CustomProducts/delete',
+            providesTags: ['customized-products']
+        }),
+
         addCustomProduct: builder.mutation({
             query: (customizedProduct: ICustomizedProduct) => ({
                 url: '/customized-products',
                 method: 'POST',
                 body: customizedProduct
+            }),
+            invalidatesTags: ['customized-products']
+        }),
+        removeCustomProduct: builder.mutation<ICustomizedProduct, number>({
+            query: (id) => ({
+                url: `/customized-products/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['customized-products']
+        }),
+        removeForceCustomProduct: builder.mutation<ICustomizedProduct, number>({
+            query: (id) => ({
+                url: `/customized-products/force/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['customized-products']
+        }),
+        RestoreCustomProduct: builder.mutation({
+            query: (id) => ({
+                url: `/customized-products/restore/${id}`,
+                method: 'PATCH'
             }),
             invalidatesTags: ['customized-products']
         }),
@@ -61,7 +92,12 @@ export const {
    useGetCustomizedproductsByUserIdQuery,
    useAddCustomProductMutation,
    useUpdateCustomProductMutation,
-   useUpdateRestoreCustomProductMutation
+   useUpdateRestoreCustomProductMutation,
+   useRemoveForceCustomProductMutation,
+   useRemoveCustomProductMutation,
+   useRestoreCustomProductMutation,
+   useGetAllCustomProductDeleteQuery,
+   useGetCustomProductsQuery
 } = customizedProductApi;
 export const CustomizedproductsReducer = customizedProductApi.reducer;
 export default customizedProductApi
