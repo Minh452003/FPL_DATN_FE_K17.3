@@ -18,7 +18,6 @@ const CartPage = () => {
     const { data: materials } = useGetMaterialQuery<any>();
     const { data: carts, isLoading, error } = useGetCartsQuery(id);
     const [removeProductInCart, resultRemove] = useRemoveProductInCartMutation();
-
     const color = colors?.color;
     const size = sizes?.size;
     const material = materials?.material
@@ -55,9 +54,13 @@ const CartPage = () => {
         })
 
     }
-    const formatCurrency = (number: number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
+    const formatCurrency = (number: number | undefined) => {
+        if (number !== undefined) {
+          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        } else {
+          return "0"; // Giá trị mặc định hoặc xử lý khác
+        }
+      }
 
     const columns = [
         {
