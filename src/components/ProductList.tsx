@@ -8,6 +8,7 @@ import { useGetCategoryQuery } from '@/api/categoryApi';
 import { Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Model from './Model';
 
 const ProductList = () => {
   const { data: categories }: any = useGetCategoryQuery();
@@ -171,14 +172,7 @@ const ProductList = () => {
                                                 </Link>
                                               </button>
                                               <input type="hidden" tabIndex={0} />
-                                              <button
-                                                className="button btn-cart"
-                                                title="Mua hàng"
-                                                type="button"
-                                                tabIndex={0}
-                                              >
-                                                <Link to={''}>Mua hàng</Link>
-                                              </button>
+                                              <Model/>
                                             </form>
                                           </div>
                                         </div>
