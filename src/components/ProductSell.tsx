@@ -6,6 +6,7 @@ import { useGetProductSellQuery } from '@/api/productApi';
 import { Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Model from './Model';
 
 const ProductSell = () => {
     const [slidesPerView, setSlidesPerView] = useState(1); // Mặc định là 1
@@ -155,14 +156,8 @@ const ProductSell = () => {
                                                                             </Link>
                                                                         </button>
                                                                         <input type="hidden" tabIndex={0} />
-                                                                        <button
-                                                                            className="button btn-cart"
-                                                                            title="Mua hàng"
-                                                                            type="button"
-                                                                            tabIndex={0}
-                                                                        >
-                                                                            <Link to={''}>Mua hàng</Link>
-                                                                        </button>
+                                                                       
+                                                                        <Model/>
                                                                     </form>
                                                                 </div>
                                                             </div>
