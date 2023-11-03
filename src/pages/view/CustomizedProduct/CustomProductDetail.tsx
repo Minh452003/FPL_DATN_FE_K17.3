@@ -8,10 +8,15 @@ import "./CustomizedProductAdd.css";
 import "./Responsive_CustomizedProductAdd.css";
 import { Button, Tooltip } from "antd";
 import { useState } from "react";
+import { useAddCartMutation } from "@/api/cartApi";
+import Swal from "sweetalert2";
+import { getDecodedAccessToken } from "@/decoder";
 
 
 const Custom_ProductDetail = () => {
-  const { id } = useParams();
+  const { id  } = useParams();
+  const decodedToken: any = getDecodedAccessToken();
+  const idUser = decodedToken ? decodedToken.id : null;
   const { data }: any = useGetCustomizedproductsByIdQuery(id || "");
   const customProducts = data?.product;
   const [selectedIndex, setSelectedIndex] = useState(false);
@@ -45,6 +50,61 @@ const Custom_ProductDetail = () => {
       return "0"; // Giá trị mặc định hoặc xử lý khác
     }
   }
+  const [addCart, resultAdd] = useAddCartMutation();
+  
+
+  // ADD to cart custom-Product
+  const handleAddToCart = () => {
+    if (customProducts  && idUser) {
+      const sizeId = customProducts.sizeId;
+      const colorId = customProducts.colorId; 
+      const materialId = customProducts.materialId;
+      const cartData : any  = {
+        productId: customProducts._id,
+        product_name: customProducts.product_name,
+        product_price: customProducts?.product_price,
+        image: customProducts.image[0]?.url,
+        stock_quantity: customProducts.stock_quantity,
+        colorId: colorId,
+        sizeId: sizeId,
+        materialId: materialId,
+      };
+      Swal.fire({
+        title: "Bạn chắc chứ?",
+        text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Vâng,tôi chắc chắn!",
+        cancelButtonText: "Huỷ",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Xóa sản phẩm
+          addCart({ data: cartData, userId: idUser }).then((response: any) => {
+            if (response.error) {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: response.error.data.message,
+                showConfirmButton: true,
+                timer: 1500,
+              });
+            } else {
+              Swal.fire(
+                "Sản phẩm đã được thêm vào giỏ hàng",
+                "Bạn có thể vào giỏ hàng để xem.",
+                "success"
+              );
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // Hiển thị thông báo hủy xóa sản phẩm
+          Swal.fire("Huỷ", "Sản phẩm không được thêm vào giỏ hàng:)", "error");
+        }
+      });
+    }
+  };
 
   return (
     <div>
@@ -140,10 +200,23 @@ const Custom_ProductDetail = () => {
                 <Button
                   aria-disabled={!id}
                   className="btn6s btn-solid-primary6s btn-fs hls"
+                  onClick={() => {
+
+                  }}
                 >
                   Thêm sản phẩm
                 </Button>
+
+
               </Tooltip>
+
+              <Button
+
+                className="btn6 btn-solid-primary6 btn-f hl"
+                onClick={handleAddToCart}
+              >
+                MUA HÀNG
+              </Button>
             </div>
           </div>
         </div>
