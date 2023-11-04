@@ -172,7 +172,7 @@ const ProductList = () => {
                                                 </Link>
                                               </button>
                                               <input type="hidden" tabIndex={0} />
-                                              <Model/>
+                                              <Model products={product} />
                                             </form>
                                           </div>
                                         </div>
