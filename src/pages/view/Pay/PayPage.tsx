@@ -18,12 +18,13 @@ const PayPage = () => {
     const id = decodedToken ? decodedToken.id : null;
     const navigate = useNavigate()
     const { data: carts, isLoading } = useGetCartsQuery(id);
+    console.log('carts data:', carts);
     const productsInCart = carts?.data.products;
     const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
     const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
     const { data: Materials, isLoading: isLoadingMaterials }: any = useGetMaterialQuery();
     const { data: dataCoupons }: any = useGetCouponQuery();
-    const coupons = dataCoupons?.coupon;
+    const coupons = dataCoupons?.coupon || [];
 
     const { data: city }: any = useGetCityQuery();
     const [addDistrict] = useGetDistrictMutation();
@@ -315,6 +316,17 @@ const PayPage = () => {
 
 
     };
+
+    // Check đơn hàng có total lớn hơn min_purchase_amount trong coupons
+    // Thực hiện check đơn hàng nào quá hạn 
+    const currentDate = new Date(); 
+    console.log(currentDate.toString());
+    // Lấy ngày hiện tại
+    const validCoupons = coupons.filter((coupon: any) => {
+        // Kiểm tra xem ngày hiện tại có trước ngày hết hạn trong phiếu giảm giá không
+        return carts.data.total >= coupon.min_purchase_amount && currentDate <= new Date(coupon.expiration_date);
+    });
+
     if (isLoading) return <Skeleton />;
     if (isLoadingColors) return <Skeleton />;
     if (isLoadingSizes) return <Skeleton />;
@@ -491,21 +503,31 @@ const PayPage = () => {
                     }) : <p>Chưa có sản phẩm</p>}
                     <hr />
                     <div className="Coupons mt-5 mb-5">
-                        <select className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10">
-                            <option value="">Chọn mã giảm giá</option>
-                            {coupons?.map((coupon: any) => (
-                                <option key={coupon._id} value={coupon._id}>
-                                    {coupon.coupon_content}
-                                </option>
-                            ))}
-                        </select>
-                        <button
-                            className="rounded-md ml-2 w-28 h-10"
-                            style={{ background: '#316595', color: 'white' }}
-                        >
-                            Áp Dụng
-                        </button>
+                        <div>
+                            {validCoupons.length > 0 ? (
+                                <div>
+                                    <select className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10">
+                                        {validCoupons.map((coupon: any) => (
+                                            <option key={coupon._id} value={coupon._id}>
+                                                {coupon.coupon_name} - {formatCurrency(coupon.coupon_code)}₫
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <button
+                                        className="rounded-md ml-2 w-28 h-10"
+                                        style={{ background: '#316595', color: 'white' }}
+                                    >
+                                        Áp Dụng
+                                    </button>
+                                </div>
+                            ) : (
+                                <p className="text-red-600 font-bold ml-4 ">
+                                    không có phiếu giảm giá nào có thể áp dụng cho đơn hàng của bạn !
+                                </p>
+                            )}
+                        </div>
                     </div>
+
                     <hr />
                     <div className="provisional ml-4 mr-6 h-2">
                         <div >Tạm tính :<p className="price float-right text-gray-500 text-xl">{formatCurrency(carts.data.total)}₫</p></div>
