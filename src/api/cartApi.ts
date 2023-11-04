@@ -38,13 +38,14 @@ const cartApi = createApi({
         }),
 
         changeQuantity: builder.mutation({
-            query: ({ data, userId, productId }: { data: InputCart; userId: string, productId: string }) => ({
-                url: `/carts/${userId}?idProduct=${productId}/change`,
+            query: ({ data, userId, productId, sizeId, colorId, materialId }: { data: InputCart; userId: string, productId: string, sizeId: string, colorId: string, materialId: string }) => ({
+                url: `/carts/${userId}/change?productId=${productId}&sizeId=${sizeId}&colorId=${colorId}&materialId=${materialId}`,
                 method: 'PUT',
                 body: data
             }),
             invalidatesTags: ['Carts']
         }),
+
         removeAllCart: builder.mutation<any, string | number>({
             query: (userId) => ({
                 url: `/carts/${userId}/clears`,

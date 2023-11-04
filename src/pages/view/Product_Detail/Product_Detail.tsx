@@ -345,8 +345,8 @@ const Product_Detail = () => {
                     <Link
                       to={`#image-tab-${index}`}
                       className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
-                          ? "bg-primary-100 text-primary-700"
-                          : "bg-neutral-700 text-white"
+                        ? "bg-primary-100 text-primary-700"
+                        : "bg-neutral-700 text-white"
                         } md:mr-4 `}
                       id={`image-tab-${index}`}
                       data-te-toggle="tab"
@@ -474,7 +474,7 @@ const Product_Detail = () => {
                   title={
                     id && activeColor && activeSize
                       ? ""
-                      : "Bạn phải chọn màu và kích thước"
+                      : "Bạn phải đăng nhập, chọn màu và kích thước"
                   }
                 >
                   {resultAdd.isLoading ? (

@@ -276,6 +276,13 @@ div .btn-f {
     margin-left: 10px;
 }
 
+div .btn-x {
+    font-size: 10px;
+    padding: 0 15px;
+    max-width: 200px;
+    height: 35px;
+}
+
 div .btn10 {
     border-radius: 2px;
     display: flex;

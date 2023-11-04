@@ -1,23 +1,23 @@
 import "../Home/Homepage.css";
 import "../Home/Responsive_homepage.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetProductSellQuery } from "@/api/productApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
 import { Pagination } from "@mui/material";
 import { Skeleton } from "antd";
 import { FaArrowRight } from "react-icons/fa6";
-import { IProduct } from "@/interfaces/product";
 import { useGetBrandQuery } from "@/api/brandApi";
+import Model from "@/components/Model";
 
 const ProductPage = () => {
   const {
     data: products,
     error,
     isLoading: isLoadingFetching,
-  } = useGetProductSellQuery();
-  const { data: categories } = useGetCategoryQuery();
-  const { data: brands } = useGetBrandQuery();
+  } = useGetProductSellQuery<any>();
+  const { data: categories } = useGetCategoryQuery<any>();
+  const { data: brands } = useGetBrandQuery<any>();
 
   const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -72,7 +72,7 @@ const ProductPage = () => {
       );
     }
   });
-  
+
 
   return (
     <div className="px-6 lg:px-0 m-28">
@@ -99,7 +99,7 @@ const ProductPage = () => {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
           className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          //...
+        //...
         >
           <option value="all">Tất cả danh mục</option>
           {categories?.category?.docs.map((category: any) => (
@@ -113,7 +113,7 @@ const ProductPage = () => {
           value={selectedBrand}
           onChange={(e) => setSelectedBrand(e.target.value)}
           className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          //...
+        //...
         >
           <option value="all">Tất cả thương hiệu</option>
           {brands?.brand?.map((brand: any) => (
@@ -127,7 +127,7 @@ const ProductPage = () => {
           value={selectedPriceFilter}
           onChange={(e) => setSelectedPriceFilter(e.target.value)}
           className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          //...
+        //...
         >
           <option value="all">Tất cả giá</option>
           <option value="100000-1000000">100.000-1.000.000</option>
@@ -138,9 +138,9 @@ const ProductPage = () => {
       </div>
       <div>
         <div className="new_title lt clear_pd " style={{ width: "1255px" }}><h4><a href="/">Tất cả sản phẩm</a></h4></div>
-       
+
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
-          
+
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product: any, index: any) => (
 
@@ -214,14 +214,7 @@ const ProductPage = () => {
                             </Link>
                           </button>
                           <input type="hidden" tabIndex={0} />
-                          <button
-                            className="button btn-cart"
-                            title="Mua hàng"
-                            type="button"
-                            tabIndex={0}
-                          >
-                            <Link to={''}>Mua hàng</Link>
-                          </button>
+                          <Model products={product} />
                         </form>
                       </div>
                     </div>
@@ -235,7 +228,7 @@ const ProductPage = () => {
         </div>
 
       </div>
-    
+
       <div className="flex w-full py-4 justify-center ">
         <Pagination count={4} variant="outlined" shape="rounded" />
       </div>
