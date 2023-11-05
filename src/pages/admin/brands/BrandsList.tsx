@@ -68,7 +68,7 @@ const BrandsList = () => {
               )}
             </Button>
             <Button className='mr-1 text-blue-500'>
-              <Link to={`/admin/brand/edit/${_id}`}><FaWrench /></Link>
+              <Link to={`/admin/brands/edit/${_id}`}><FaWrench /></Link>
             </Button>
           </div>
         )
@@ -90,7 +90,7 @@ const BrandsList = () => {
       <h3 className="font-semibold">Danh sách thương hiệu </h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='text-blue-500'>
-          <Link to="/admin/brand/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
+          <Link to="/admin/brands/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
         <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>

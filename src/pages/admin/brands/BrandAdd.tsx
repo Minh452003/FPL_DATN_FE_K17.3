@@ -21,7 +21,7 @@ const BrandAdd = () => {
         showConfirmButton: true,
         timer: 1500
       });
-      navigate("/admin/brand");
+      navigate("/admin/brands");
     })
   };
   const onFinishFailed = (errorInfo: any) => {
@@ -48,7 +48,19 @@ const BrandAdd = () => {
               label="Tên thương hiệu"
               name="brand_name"
               rules={[{ required: true, message: 'Tên thương hiệu không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -62,7 +74,7 @@ const BrandAdd = () => {
                   <span className="visually-hidden">Loading...</span>
                 </div> : " Thêm thương hiệu"}
               </Button>
-              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/brand")} htmlType="submit">
+              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/brands")} htmlType="submit">
                 Danh sách thương hiệu
               </Button>
             </Form.Item>

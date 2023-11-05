@@ -143,6 +143,12 @@ const Productupdate = () => {
         setpublicId(selectedImage.publicId);
     }
 
+    const validatePositiveNumber = (_: any, value: any) => {
+        if(parseFloat(value) < 0) {
+          return Promise.reject("Giá trị phải là số dương");
+        }
+        return Promise.resolve();
+      }
     return (
         <div className="container-fluid mb-7">
             <div className="row">
@@ -168,7 +174,21 @@ const Productupdate = () => {
                             name="product_name"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Tên sản phẩm không được để trống!' }]}
+                            rules={[{ required: true, message: 'Tên sản phẩm không được để trống!' },
+                            {
+                                validator: (_, value) => {
+                                  if (!value) {
+                                    return Promise.resolve();
+                                  }
+                                  if (/ {2,}/.test(value)) {
+                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                  }
+                                  return Promise.resolve();
+                                },
+                              },
+                            { min: 2, message: "Nhập ít nhất 2 ký tự" }
+                        ]}
+                        hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <Input placeholder='Tên sản phẩm' />
@@ -178,7 +198,10 @@ const Productupdate = () => {
                             name="product_price"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Trường giá không được để trống!' }]}
+                            rules={[{ required: true, message: 'Trường giá không được để trống!' },
+                            {validator: validatePositiveNumber},
+                            { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+                            hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <InputNumber style={{ width: '100%' }} />
@@ -187,7 +210,9 @@ const Productupdate = () => {
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
-                            label="Ảnh" rules={[{ required: true, message: 'Ảnh không được để trống' }]}>
+                            label="Ảnh" rules={[{ required: true, message: 'Ảnh không được để trống' }]}
+                            hasFeedback
+                            >
                             {imageUrl && imageUrl?.map((img: any, index: any) => (
                                 <Upload
                                     {...props}
@@ -207,6 +232,7 @@ const Productupdate = () => {
                             label="Danh mục"
                             name="categoryId"
                             rules={[{ required: true, message: 'Danh mục không được để trống!' }]}
+                            hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
@@ -221,6 +247,7 @@ const Productupdate = () => {
                             label="Thương hiệu"
                             name="brandId"
                             rules={[{ required: true, message: 'Thương hiệu không được để trống!' }]}
+                            hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
@@ -235,6 +262,7 @@ const Productupdate = () => {
                             label="Chất liệu"
                             name="materialId"
                             rules={[{ required: true, message: 'Chất liệu không được để trống!' }]}
+                            hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
@@ -252,6 +280,7 @@ const Productupdate = () => {
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             rules={[{ required: true, message: 'Mô tả không được để trống!' }]}
+                            hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <CKEditor

@@ -57,7 +57,12 @@ const AddChildProduct = () => {
     productId?: string;
     sizeId?: string;
   };
-
+  const validatePositiveNumber = (_: any, value: any) => {
+    if(parseFloat(value) < 0) {
+      return Promise.reject("Giá trị phải là số dương");
+    }
+    return Promise.resolve();
+  }
   return (
     <div className="container-fluid mb-7">
       <div className="row">
@@ -85,7 +90,10 @@ const AddChildProduct = () => {
                 name="product_price"
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                rules={[{ required: true, message: "Giá sản phẩm không được để trống!" }]}
+                rules={[{ required: true, message: "Giá sản phẩm không được để trống!" },
+                {validator: validatePositiveNumber},
+                { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+                hasFeedback
                 style={{ marginLeft: "20px" }}
               >
                 <InputNumber style={{ width: '100%' }} />
@@ -96,7 +104,10 @@ const AddChildProduct = () => {
                 name="stock_quantity"
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                rules={[{ required: true, message: "Số lượng sản phẩm không được để trống!" }]}
+                rules={[{ required: true, message: "Số lượng sản phẩm không được để trống!" },
+                {validator: validatePositiveNumber},
+                { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+                hasFeedback
                 style={{ marginLeft: "20px" }}
               >
                 <InputNumber style={{ width: '100%' }} />
@@ -108,8 +119,9 @@ const AddChildProduct = () => {
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                 rules={[
-                  { required: true, message: "Please input your select!" },
+                  { required: true, message: "Danh sách màu không được để trống!" },
                 ]}
+                hasFeedback
                 style={{ marginLeft: "20px" }}
               >
                 <Select>
@@ -127,8 +139,9 @@ const AddChildProduct = () => {
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                 rules={[
-                  { required: true, message: "Please input your select!" },
+                  { required: true, message: "Danh sách kích cỡ không được để trống!" },
                 ]}
+                hasFeedback
                 style={{ marginLeft: "20px" }}
               >
                 <Select>

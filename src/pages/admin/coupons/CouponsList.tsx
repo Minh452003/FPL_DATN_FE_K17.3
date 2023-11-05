@@ -105,7 +105,7 @@ const CouponsList = () => {
                 )}
                 </Button>
                 <Button className='mr-1 text-blue-500'>
-                <Link to={`/admin/coupon/edit/${_id}`}><FaWrench /></Link>
+                <Link to={`/admin/coupons/edit/${_id}`}><FaWrench /></Link>
                 </Button>
             </div>
           
@@ -128,7 +128,7 @@ const CouponsList = () => {
       <h3 className="font-semibold">Danh sách phiếu giảm giá</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='text-blue-500'>
-          <Link to="/admin/coupon/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
+          <Link to="/admin/coupons/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
         <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>

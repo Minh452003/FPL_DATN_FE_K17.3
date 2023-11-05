@@ -83,6 +83,12 @@ const Categoryadd = () => {
             }
         },
     };
+    const validatePositiveNumber = (_: any, value: any) => {
+        if(parseFloat(value) < 0) {
+          return Promise.reject("Giá trị phải là số dương");
+        }
+        return Promise.resolve();
+      }
     return (
         <div className="container-fluid">
             <div className="row">
@@ -101,11 +107,27 @@ const Categoryadd = () => {
                         autoComplete="off"
                     >
                         <Form.Item<FieldType>
-                            label="Danh mục"
+                            label="Tên danh mục"
                             name="category_name"
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Danh mục bắt buộc nhập!' }]}
+                            rules={[{ required: true, message: 'Tên danh mục bắt buộc nhập!' },
+                            { min: 2, message: "Nhập ít nhất 2 ký tự" },
+                            {
+                                validator: (_, value) => {
+                                  if (!value) {
+                                    return Promise.resolve();
+                                  }
+                                  if (/ {2,}/.test(value)) {
+                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                  }
+                                  return Promise.resolve();
+                                },
+                              },
+                            
+                           ]}
+                          
+                            hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <Input />
@@ -115,7 +137,11 @@ const Categoryadd = () => {
                             name="price_increase_percent"
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Tiền đặt cọc bắt buộc nhập!' }]}
+                            rules={[{ required: true, message: 'Tiền đặt cọc bắt buộc nhập!' },
+                            {validator: validatePositiveNumber},
+                            { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+                            hasFeedback
+                            
                             style={{ marginLeft: '20px' }}
                         >
                             <InputNumber style={{ width: '100%' }} />
@@ -124,7 +150,9 @@ const Categoryadd = () => {
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
-                            id="images" name="category_image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}>
+                            id="images" name="category_image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
+                            hasFeedback
+                            >
                             <Upload {...props} maxCount={1} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {

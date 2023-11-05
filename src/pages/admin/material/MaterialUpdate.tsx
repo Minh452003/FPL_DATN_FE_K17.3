@@ -41,7 +41,7 @@ const MaterialUpdate = () => {
         showConfirmButton: true,
         timer: 1500,
       });
-      navigate('/admin/material');
+      navigate('/admin/materials');
     });
   };
   const onFinishFailed = (errorInfo: any) => {
@@ -50,8 +50,8 @@ const MaterialUpdate = () => {
   if (isLoading) return <Skeleton />;
 
   const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) <= 0) {
-      return Promise.reject("Phải luôn là số dương");
+    if(parseFloat(value) < 0) {
+      return Promise.reject("Giá trị phải là số dương");
     }
     return Promise.resolve();
   }
@@ -80,7 +80,19 @@ const MaterialUpdate = () => {
               label="Tên vật liệu"
               name="material_name"
               rules={[{ required: true, message: 'Tên vật liệu không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -91,7 +103,10 @@ const MaterialUpdate = () => {
               label="Giá vật liệu"
               name="material_price"
               rules={[{ required: true, message: 'Giá vật liệu không được để trống!' },
-              {validator: validatePositiveNumber}]}
+              {validator: validatePositiveNumber},
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              hasFeedback
+              
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -104,7 +119,7 @@ const MaterialUpdate = () => {
                   <span className="visually-hidden">Loading...</span>
                 </div> : " Cập nhật vật liệu"}
               </Button>
-              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/material")} htmlType="submit">
+              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/materials")} htmlType="submit">
                 Danh sách vật liệu
               </Button>
             </Form.Item>

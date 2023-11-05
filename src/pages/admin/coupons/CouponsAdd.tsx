@@ -1,8 +1,10 @@
 import { useAddCouponMutation } from '@/api/couponsApi';
-import { Button, Form, Input, InputNumber } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import localeData from 'dayjs/plugin/localeData';
+import dayjs from 'dayjs';
 
 
 type FieldType = {
@@ -18,6 +20,12 @@ type FieldType = {
 const CouponsAdd = () => {
   const [addCoupon, resultAdd] = useAddCouponMutation();
   const navigate = useNavigate();
+  dayjs.extend(localeData);
+  const dateFormat = "DD-MM-YYYY";
+
+  const init = {
+    expiration_date: dayjs(),
+    };
   const onFinish = (values: any) => {
     addCoupon(values).then(() => {
       Swal.fire({
@@ -27,15 +35,15 @@ const CouponsAdd = () => {
         showConfirmButton: true,
         timer: 1500
       });
-      navigate("/admin/coupon");
+      navigate("/admin/coupons");
     })
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
   const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) <= 0) {
-      return Promise.reject("Phải luôn là số dương");
+    if(parseFloat(value) < 0) {
+      return Promise.reject("Giá trị phải là số dương");
     }
     return Promise.resolve();
   }
@@ -51,7 +59,7 @@ const CouponsAdd = () => {
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             style={{ maxWidth: 1000 }}
-            initialValues={{ remember: true }}
+            initialValues={{ ...init, remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -61,7 +69,19 @@ const CouponsAdd = () => {
               label="Tên phiếu giảm giá"
               name="coupon_name"
               rules={[{ required: true, message: 'Tên phiếu giảm giá không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -73,7 +93,19 @@ const CouponsAdd = () => {
               label="Mã phiếu giảm giá"
               name="coupon_code"
               rules={[{ required: true, message: 'Mã phiếu giảm giá không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -85,7 +117,19 @@ const CouponsAdd = () => {
               label="Nội dung phiếu giảm giá"
               name="coupon_content"
               rules={[{ required: true, message: 'Nội dung phiếu giảm giá không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -98,7 +142,10 @@ const CouponsAdd = () => {
               label="Số lượng phiếu giảm giá"
               name="coupon_quantity"
               rules={[{ required: true, message: 'Số lượng phiếu giảm giá không được để trống!' },
-              {validator: validatePositiveNumber}]}
+              {validator: validatePositiveNumber},
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              hasFeedback
+             
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -110,7 +157,10 @@ const CouponsAdd = () => {
               label="Số tiền chiết khấu"
               name="discount_amount"
               rules={[{ required: true, message: 'Số tiền chiết khấu không được để trống!' },
-              {validator: validatePositiveNumber}]}
+              {validator: validatePositiveNumber},
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              hasFeedback
+             
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -122,18 +172,22 @@ const CouponsAdd = () => {
               label="Ngày hết hạn"
               name="expiration_date"
               rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
             >
-              <Input type='Date' />
+              <DatePicker style={{width: "100%"}} format={dateFormat} />
             </Form.Item>
 
             <Form.Item<FieldType>
               label="Số tiền mua tối thiểu"
               name="min_purchase_amount"
               rules={[{ required: true, message: 'Số tiền mua tối thiểu không được để trống!' },
-              {validator: validatePositiveNumber}]}
+              {validator: validatePositiveNumber},
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              hasFeedback
+             
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -147,7 +201,7 @@ const CouponsAdd = () => {
                   <span className="visually-hidden">Loading...</span>
                 </div> : " Thêm phiếu giảm giá"}
               </Button>
-              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/coupon")} htmlType="submit">
+              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/coupons")} htmlType="submit">
                 Danh sách phiếu giảm giá
               </Button>
             </Form.Item>
