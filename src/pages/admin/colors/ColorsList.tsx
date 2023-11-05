@@ -67,7 +67,7 @@ const Colorslist = () => {
               )}
             </Button>
             <Button className='mr-1 text-blue-500'>
-              <Link to={`/admin/color/edit/${_id}`}><FaWrench /></Link>
+              <Link to={`/admin/colors/edit/${_id}`}><FaWrench /></Link>
             </Button>
           </div>
         )
@@ -89,7 +89,7 @@ const Colorslist = () => {
       <h3 className="font-semibold">Danh sách màu</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='text-blue-500'>
-          <Link to="/admin/color/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
+          <Link to="/admin/colors/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
         <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>

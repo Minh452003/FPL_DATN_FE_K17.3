@@ -40,7 +40,7 @@ const onFinish = (values: any) => {
       showConfirmButton: true,
       timer: 1500,
     });
-    navigate('/admin/color');
+    navigate('/admin/colors');
   });
 };
 
@@ -73,7 +73,19 @@ if (isLoading) return <Skeleton />;
               label="Tên màu"
               name="colors_name"
               rules={[{ required: true, message: 'Tên màu không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -87,7 +99,7 @@ if (isLoading) return <Skeleton />;
                   <span className="visually-hidden">Loading...</span>
                 </div> : " Cập nhật màu"}
               </Button>
-              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/color")} htmlType="submit">
+              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/colors")} htmlType="submit">
                 Danh sách màu
               </Button>
             </Form.Item>

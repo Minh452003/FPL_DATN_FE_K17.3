@@ -72,7 +72,7 @@ const MaterialList = () => {
             )}
           </Button>
           <Button className='mr-1 text-blue-500'>
-            <Link to={`/admin/material/edit/${_id}`}><FaWrench /></Link>
+            <Link to={`/admin/materials/edit/${_id}`}><FaWrench /></Link>
           </Button>
         </div>
       ),
@@ -84,7 +84,7 @@ const MaterialList = () => {
       <h3 className="font-semibold">Danh sách vật liệu</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='text-blue-500'>
-          <Link to="/admin/material/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
+          <Link to="/admin/materials/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
         <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>

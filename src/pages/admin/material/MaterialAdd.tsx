@@ -20,7 +20,7 @@ const MaterialAdd = () => {
                 showConfirmButton: true,
                 timer: 1500
             });
-            navigate("/admin/material");
+            navigate("/admin/materials");
         })
     };
 
@@ -28,8 +28,8 @@ const MaterialAdd = () => {
         console.log('Failed:', errorInfo);
     };
     const validatePositiveNumber = (_: any, value: any) => {
-        if(parseFloat(value) <= 0) {
-          return Promise.reject("Phải luôn là số dương");
+        if(parseFloat(value) < 0) {
+          return Promise.reject("Giá trị phải là số dương");
         }
         return Promise.resolve();
       }
@@ -55,9 +55,21 @@ const MaterialAdd = () => {
                             name="material_name"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Tên vật liệu bắt buộc nhập!' },
+                            rules={[{ required: true, message: 'Tên vật liệu không được để trống!' },
+                            {
+                                validator: (_, value) => {
+                                  if (!value) {
+                                    return Promise.resolve();
+                                  }
+                                  if (/ {2,}/.test(value)) {
+                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                  }
+                                  return Promise.resolve();
+                                },
+                              },
                             { min: 2, message: "Nhập ít nhất 2 ký tự" }
                         ]}
+                        hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <Input />
@@ -68,13 +80,18 @@ const MaterialAdd = () => {
                             name="material_price"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Giá vật liệu bắt buộc nhập!' },
-                            {validator: validatePositiveNumber}
-                        ]}
+                            rules={[{ required: true, message: 'Giá vật liệu không được để trống!' },
+                            {validator: validatePositiveNumber},
+                            { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+                            hasFeedback
+                            
                             style={{ marginLeft: '20px' }}
+                            
                         >
                             <InputNumber style={{ width: '100%' }} />
-                        </Form.Item>
+                        </Form.Item> 
+
+                        
 
                         <Form.Item wrapperCol={{ span: 16 }}>
 
@@ -83,7 +100,7 @@ const MaterialAdd = () => {
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Thêm vật liệu"}
                             </Button>
-                            <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/material")} htmlType="submit">
+                            <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/materials")} htmlType="submit">
                                 Danh sách vật liệu
                             </Button>
                         </Form.Item>

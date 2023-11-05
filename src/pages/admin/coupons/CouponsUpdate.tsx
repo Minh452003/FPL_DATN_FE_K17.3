@@ -1,46 +1,64 @@
-import { useGetCouponByIdQuery, useUpdateCouponMutation } from '@/api/couponsApi';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { DatePicker } from 'antd';
 import Swal from 'sweetalert2';
+import {
+  useGetCouponByIdQuery,
+  useUpdateCouponMutation,
+} from '@/api/couponsApi';
+import localeData from 'dayjs/plugin/localeData';
+import dayjs from 'dayjs';
+
 
 type FieldType = {
-    _id?: string;
-    coupon_name?: string,
-    coupon_code?: string,
-    coupon_content?: string,
-    coupon_quantity?: number,
-    discount_amount?: number,
-    expiration_date?: Date,
-    min_purchase_amount?: number
+  _id?: string;
+  coupon_name?: string;
+  coupon_code?: string;
+  coupon_content?: string;
+  coupon_quantity?: number;
+  discount_amount?: number;
+  expiration_date?: Date;
+  min_purchase_amount?: number;
 };
+
 const CouponsUpdate = () => {
   const { idCoupon }: any = useParams();
-  const { data: coupons, isLoading }: any = useGetCouponByIdQuery(idCoupon || "");
-  const [updateCoupon,resultAdd] = useUpdateCouponMutation();
+  const { data: coupons, isLoading }: any = useGetCouponByIdQuery(idCoupon || '');
+  const [updateCoupon, resultAdd] = useUpdateCouponMutation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-useEffect(() => {
-  if (coupons) {
-      setFields();
-  }
-}, [coupons]);
+  dayjs.extend(localeData);
+  const dateFormat = "DD-MM-YYYY";
 
-const setFields = () => {
-  form.setFieldsValue({
+  const init = {
+    expiration_date: dayjs(),
+    };
+
+  useEffect(() => {
+    if (coupons) {
+      setFields();
+    }
+  }, [coupons]);
+
+  const setFields = () => {
+    form.setFieldsValue({
       _id: coupons.coupon?._id,
       coupon_name: coupons.coupon?.coupon_name,
       coupon_code: coupons.coupon?.coupon_code,
       coupon_content: coupons.coupon?.coupon_content,
       coupon_quantity: coupons.coupon?.coupon_quantity,
       discount_amount: coupons.coupon?.discount_amount,
-      expiration_date: coupons.coupon?.expiration_date,
-      min_purchase_amount: coupons.coupon?.min_purchase_amount
-  });
-};
+      expiration_date: coupons.coupon?.expiration_date
+        ? dayjs(coupons.coupon?.expiration_date) 
+        : null,
+      min_purchase_amount: coupons.coupon?.min_purchase_amount,
+    });
+  };
 
   const onFinish = (values: any) => {
+    values.expiration_date = values.expiration_date ? values.expiration_date.toDate() : null;
     updateCoupon(values).then(() => {
       Swal.fire({
         position: 'center',
@@ -49,8 +67,9 @@ const setFields = () => {
         showConfirmButton: true,
         timer: 1500,
       });
-      navigate('/admin/coupon');
+      navigate('/admin/coupons');
     });
+    
   };
   
   const onFinishFailed = (errorInfo: any) => {
@@ -58,13 +77,18 @@ const setFields = () => {
   };
   if (isLoading) return <Skeleton />;
   const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) <= 0) {
-      return Promise.reject("Phải luôn là số dương");
+    if(parseFloat(value) < 0) {
+      return Promise.reject("Giá trị phải là số dương");
     }
     return Promise.resolve();
   }
   return (
-    <div className='max-w-4xl mx-auto'>
+    <div className="container-fluid">
+    <div className="row">
+      <div className="card-body">
+        <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Cập nhật phiếu giảm giá</h5>
+        <div className="flex items-center ">
+        </div>
       
       <Form
             form={form}
@@ -72,7 +96,7 @@ const setFields = () => {
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             style={{ maxWidth: 1000 }}
-            initialValues={{ remember: true }}
+            initialValues={{ ...init, remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -85,7 +109,19 @@ const setFields = () => {
               label="Tên phiếu giảm giá"
               name="coupon_name"
               rules={[{ required: true, message: 'Tên phiếu giảm giá không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -97,7 +133,19 @@ const setFields = () => {
               label="Mã phiếu giảm giá"
               name="coupon_code"
               rules={[{ required: true, message: 'Mã phiếu giảm giá không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -109,7 +157,19 @@ const setFields = () => {
               label="Nội dung phiếu giảm giá"
               name="coupon_content"
               rules={[{ required: true, message: 'Nội dung phiếu giảm giá không được để trống!' },
+              {
+                validator: (_, value) => {
+                  if (!value) {
+                    return Promise.resolve();
+                  }
+                  if (/ {2,}/.test(value)) {
+                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                  }
+                  return Promise.resolve();
+                },
+              },
               { min: 2, message: "Nhập ít nhất 2 ký tự" }]}
+              hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -121,8 +181,10 @@ const setFields = () => {
               label="Số lượng phiếu giảm giá"
               name="coupon_quantity"
               rules={[{ required: true, message: 'Số lượng phiếu giảm giá không được để trống!' },
-              {validator: validatePositiveNumber}
-            ]}
+              {validator: validatePositiveNumber},
+            { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              hasFeedback
+              
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -134,8 +196,10 @@ const setFields = () => {
               label="Số tiền chiết khấu"
               name="discount_amount"
               rules={[{ required: true, message: 'Số tiền chiết khấu không được để trống!' },
-              {validator: validatePositiveNumber}
-            ]}
+              {validator: validatePositiveNumber},
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              hasFeedback
+              
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -145,22 +209,25 @@ const setFields = () => {
 
 
             <Form.Item<FieldType>
-              label="Ngày hết hạn"
-              name="expiration_date"
-              rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
-              labelCol={{ span: 24 }}
-              wrapperCol={{ span: 24 }}
-              style={{ marginLeft: '20px' }}
-            >
-              <Input type='Date' />
-            </Form.Item>
+          label="Ngày hết hạn"
+          name="expiration_date"
+          rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+          hasFeedback
+          labelCol={{ span: 24 }}
+          wrapperCol={{ span: 24 }}
+          style={{ marginLeft: '20px' }}
+        >
+          <DatePicker style={{width: "100%"}} format={dateFormat} />
+        </Form.Item>
 
             <Form.Item<FieldType>
               label="Số tiền mua tối thiểu"
               name="min_purchase_amount"
               rules={[{ required: true, message: 'Số tiền mua tối thiểu không được để trống!' },
-              {validator: validatePositiveNumber}
-            ]}
+              {validator: validatePositiveNumber},
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              hasFeedback
+              
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -174,13 +241,15 @@ const setFields = () => {
                   <span className="visually-hidden">Loading...</span>
                 </div> : " Cập nhật phiếu giảm giá"}
               </Button>
-              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/coupon")} htmlType="submit">
+              <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/coupons")} htmlType="submit">
                 Danh sách phiếu giảm giá
               </Button>
             </Form.Item>
 
   </Form>
-       </div>
+  </div>
+      </div>
+    </div>
   )
 }
 

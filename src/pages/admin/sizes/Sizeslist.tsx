@@ -97,7 +97,7 @@ const Sizeslist = () => {
               )}
             </Button>
             <Button className='mr-1 text-blue-500'>
-              <Link to={`/admin/size/edit/${_id}`}><FaWrench /></Link>
+              <Link to={`/admin/sizes/edit/${_id}`}><FaWrench /></Link>
             </Button>
           </div>
         )
@@ -119,7 +119,7 @@ const Sizeslist = () => {
       <h3 className="font-semibold">Danh sách Kích cỡ</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='text-blue-500'>
-          <Link to="/admin/size/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
+          <Link to="/admin/sizes/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
         </Button>
         <Table dataSource={dataSource} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
       </div>
