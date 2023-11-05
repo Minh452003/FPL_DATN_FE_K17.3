@@ -4,18 +4,23 @@ import { Table, Button } from 'antd';
 import { FaCirclePlus, FaTrash, FaTrashCan, FaWrench } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useState } from 'react';
 
 
 const Categorylist = () => {
   const { data }: any = useGetCategoryQuery();
   const categories = data?.category.docs;
   const [removeCategory, { isLoading: isRemoveLoading }] = useRemoveCategoryMutation()
+  const [sortedInfo, setSortedInfo] = useState({} as any);
+  const handleChange = (pagination, filters, sorter) => {
+    setSortedInfo(sorter);
+  };
 
 
-
-  const data1 = categories?.map((category: any) => {
+  const data1 = categories?.map((category: any,index: number) => {
     return {
       key: category._id,
+      STT: index + 1,
       category_name: category.category_name,
       price_increase_percent: category.price_increase_percent,
       category_image: <img width={50} src={category.category_image?.url} alt="" />
@@ -52,6 +57,15 @@ const Categorylist = () => {
   }
   const columns = [
     {
+      title: "STT",
+      dataIndex: "STT",
+      key: "STT",
+      render: (index: any) => <a>{index}</a>,
+      sorter: (a:any, b:any) => a.STT - b.STT, // Sắp xếp theo STT
+      sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
+      ellipsis: true,
+    },
+    {
       title: 'Ảnh ',
       dataIndex: 'category_image',
       key: 'category_image',
@@ -60,11 +74,17 @@ const Categorylist = () => {
       title: 'Danh Mục',
       dataIndex: 'category_name',
       key: 'category_name',
+      sorter: (a:any, b:any) => a.category_name.localeCompare(b.category_name), 
+      sortOrder: sortedInfo.columnKey === 'category_name' && sortedInfo.order,
+      ellipsis: true,
     },
     {
       title: 'Tiền đặt cọc (%)',
       dataIndex: 'price_increase_percent',
       key: 'price_increase_percent',
+      sorter: (a:any, b:any) => a.price_increase_percent - b.price_increase_percent, // Sắp xếp theo giá
+      sortOrder: sortedInfo.columnKey === "price_increase_percent" && sortedInfo.order,
+      ellipsis: true,
     },
     {
       title: 'Chức năng',
@@ -93,7 +113,7 @@ const Categorylist = () => {
         <Link to="/admin/categories/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
       </Button>
       <Button className='m-2  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
-      <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
+      <Table onChange={handleChange} dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
     </div>
 
   )
