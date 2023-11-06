@@ -61,6 +61,7 @@ import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
 import OrdersManager from "./pages/admin/orders/OrdersManager";
 import Listcomments from "./pages/admin/comment/Listcomments";
 import Commentdetail from "./pages/admin/comment/Commentdetail";
+import Category_Detail from "./pages/view/Category_Detail/Category_Detail";
 
 
 export const router = createBrowserRouter([
@@ -71,6 +72,7 @@ export const router = createBrowserRouter([
             { index: true, element: <HomePage /> },
             { path: 'carts', element: <CartPage /> },
             { path: 'pay', element: <PayPage /> },
+            { path: 'category/:id', element: <Category_Detail /> },
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
             { path: '/customized-products/:id', element: <Custom_ProductDetail /> },
