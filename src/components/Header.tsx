@@ -47,7 +47,7 @@ const Header = () => {
             <div className="flex">
               {/* User Icons */}
               <div className="items-center flex">
-                <Link to={'/user'}><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/user.png?1693834920118" width="30px" alt="" /></Link>
+                <Link to={'/user/profile'}><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/user.png?1693834920118" width="30px" alt="" /></Link>
               </div>
               <div className="ml-2">
                 <div>
@@ -59,7 +59,7 @@ const Header = () => {
               </div>
               {/* Cart Icon */}
               <div className="ml-2 items-center flex">
-                <Link to={'/cart'}><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/cart.png?1693834920118" width="41px" alt="" /></Link>
+                <Link to={'/carts'}><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/cart.png?1693834920118" width="41px" alt="" /></Link>
               </div>
             </div>
           </div>

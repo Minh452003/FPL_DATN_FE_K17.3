@@ -2,7 +2,7 @@ import { FaArrowRight, FaMoneyBill1, FaChevronLeft } from "react-icons/fa6"
 import { Button, Form, Input, Select, Skeleton, Tooltip } from 'antd';
 import { Link, useNavigate } from "react-router-dom";
 import { getDecodedAccessToken } from "@/decoder";
-import { useGetCartsQuery, useRemoveAllCartMutation } from "@/api/cartApi";
+import { useApplyCouponMutation, useGetCartsQuery, useRemoveAllCartMutation, useRemoveCouponMutation } from "@/api/cartApi";
 import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
@@ -13,12 +13,16 @@ import Swal from "sweetalert2";
 import { useAddOrderMutation } from "@/api/orderApi";
 import { usePayMomoMutation, usePayPaypalMutation } from "@/api/paymentApi";
 import { useGetCouponQuery } from "@/api/couponsApi";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type TypeInputs = {
+    couponId?: string,
+}
 const PayPage = () => {
     const decodedToken: any = getDecodedAccessToken();
     const id = decodedToken ? decodedToken.id : null;
     const navigate = useNavigate()
     const { data: carts, isLoading } = useGetCartsQuery(id);
-    console.log('carts data:', carts);
     const productsInCart = carts?.data.products;
     const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
     const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
@@ -27,14 +31,16 @@ const PayPage = () => {
     const coupons = dataCoupons?.coupon || [];
 
     const { data: city }: any = useGetCityQuery();
-    const [addDistrict] = useGetDistrictMutation();
-    const [addWard] = useGetWardMutation();
+    const [addDistrict] = useGetDistrictMutation<any>();
+    const [addWard] = useGetWardMutation<any>();
     const [addAvailable] = useGetAvailableMutation();
     const [addShipping] = useGetShippingMutation();
     const [addOrder] = useAddOrderMutation();
     const [removeAllCart] = useRemoveAllCartMutation();
     const [addMomo] = usePayMomoMutation();
     const [addPaypal] = usePayPaypalMutation();
+    const [applyCoupon] = useApplyCouponMutation();
+    const [removeCoupon] = useRemoveCouponMutation();
 
     const { data: user } = useGetUserByIdQuery(id);
     const [district, setDistrict] = useState([]);
@@ -50,6 +56,7 @@ const PayPage = () => {
     const [pay, setPay] = useState<any>('');
     const [type, setType] = useState<any>('');
     const [total, setTotal] = useState<number>(0);
+    const { register, handleSubmit } = useForm<TypeInputs>();
 
     const sizeTotal = () => {
         if (productsInCart) {
@@ -142,7 +149,7 @@ const PayPage = () => {
         delete cartDataWithoutId.updatedAt;
         address = `${address.ward}, ${address.district}, ${address.street}`
         if (pay && pay == 'cod') {
-            if (cartDataWithoutId.total > 5000000) {
+            if (Number(cartDataWithoutId.total + ship.total) > 5000000) {
                 if (type && type == 'momo') {
                     try {
                         Swal.fire({
@@ -319,13 +326,58 @@ const PayPage = () => {
 
     // Check đơn hàng có total lớn hơn min_purchase_amount trong coupons
     // Thực hiện check đơn hàng nào quá hạn 
-    const currentDate = new Date(); 
-    console.log(currentDate.toString());
+    const currentDate = new Date();
     // Lấy ngày hiện tại
     const validCoupons = coupons.filter((coupon: any) => {
         // Kiểm tra xem ngày hiện tại có trước ngày hết hạn trong phiếu giảm giá không
-        return carts.data.total >= coupon.min_purchase_amount && currentDate <= new Date(coupon.expiration_date);
+        return carts && carts.data.total >= coupon.min_purchase_amount && currentDate <= new Date(coupon.expiration_date);
     });
+    const cartCouponId = carts && carts.data.couponId;
+
+    const matchingCoupon = validCoupons.find((coupon: any) => coupon._id === cartCouponId);
+    // Lấy coupon_name từ matchingCoupon (nếu tìm thấy)
+    const cartCouponName = matchingCoupon ? matchingCoupon.coupon_name : null;
+
+    const onSubmit: SubmitHandler<TypeInputs> = async (data: any) => {
+        const response: any = await applyCoupon({ userId: id, data: data });
+        if (response.error) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: response.error.data.message,
+                showConfirmButton: true,
+                timer: 800
+            });
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Sử dụng phiếu giảm giá thành công!',
+                showConfirmButton: true,
+                timer: 800
+            });
+        }
+    }
+    const removeCoupons: SubmitHandler<any> = async () => {
+        const response: any = await removeCoupon({ userId: id, data: {} })
+        if (response.error) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: response.error.data.message,
+                showConfirmButton: true,
+                timer: 800
+            });
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Huỷ phiếu giảm giá thành công!',
+                showConfirmButton: true,
+                timer: 700
+            });
+        }
+    }
 
     if (isLoading) return <Skeleton />;
     if (isLoadingColors) return <Skeleton />;
@@ -432,7 +484,7 @@ const PayPage = () => {
                         >
                             <Input.TextArea showCount maxLength={100} style={{ width: 330 }} placeholder="Ghi chú" />
                         </Form.Item>
-                        <div className="ml-4 mt-2 pt-4"><FaChevronLeft className="float-left mt-1" /><Link className="text-blue-900 float-left text-sm" style={{ textDecoration: 'none' }} to={"/cart"}>Quay về giỏ hàng</Link></div>
+                        <div className="ml-4 mt-2 pt-4"><FaChevronLeft className="float-left mt-1" /><Link className="text-blue-900 float-left text-sm" style={{ textDecoration: 'none' }} to={"/carts"}>Quay về giỏ hàng</Link></div>
                         <Form.Item >
                             <div className="submit h-20">
                                 {pay == 'cod' && total > 5000000 ? <Tooltip title={type ? '' : 'Bạn phải chọn phương thức cọc'}>
@@ -461,7 +513,7 @@ const PayPage = () => {
                         <input type="radio" name="paymentMethod" value={'paypal'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng ví paypal
                         <img className="w-5 h-5 float-right mr-5 " src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw" />
                     </div>
-                    {pay == 'cod' && total > 5000000 ? <div>
+                    {pay == 'cod' && Number(total + ship.total) > 5000000 ? <div>
                         <h3 className="pl-4 font-semibold pb-3 pt-10">Cọc tiền</h3>
                         <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 mb-10">
                             <input type="radio" name="deposite" value={'momo'} onChange={(e: any) => setType(e.target.value)} /> Thanh toán bằng momo
@@ -504,27 +556,48 @@ const PayPage = () => {
                     <hr />
                     <div className="Coupons mt-5 mb-5">
                         <div>
-                            {validCoupons.length > 0 ? (
+                            {carts && carts.data.couponId ? (
                                 <div>
-                                    <select className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10">
-                                        {validCoupons.map((coupon: any) => (
-                                            <option key={coupon._id} value={coupon._id}>
-                                                {coupon.coupon_name} - {formatCurrency(coupon.coupon_code)}₫
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <button
-                                        className="rounded-md ml-2 w-28 h-10"
-                                        style={{ background: '#316595', color: 'white' }}
-                                    >
-                                        Áp Dụng
-                                    </button>
+                                    <form onSubmit={handleSubmit(removeCoupons)}>
+                                        <input type="text" className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10" disabled placeholder={cartCouponName} />
+                                        <button
+                                            className="rounded-md ml-2 w-28 h-10"
+                                            style={{ background: '#31AC57', color: 'white', cursor: 'pointer' }}
+                                        >
+                                            Huỷ
+                                        </button>
+                                    </form>
+                                </div>
+                            ) : validCoupons && validCoupons.length > 0 ? (
+                                <div>
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <select
+                                            {...register('couponId')}
+                                            className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10"
+                                            defaultValue=""
+                                        >
+                                            <option value="" disabled>Chọn phiếu giảm giá</option>
+                                            {validCoupons && validCoupons.map((coupon: any) => (
+                                                <option key={coupon._id} value={coupon._id}>
+                                                    {coupon.coupon_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <button
+                                            className="rounded-md ml-2 w-28 h-10"
+                                            style={{ background: '#316595', color: 'white', cursor: 'pointer' }}
+                                        >
+                                            Áp Dụng
+                                        </button>
+                                    </form>
                                 </div>
                             ) : (
                                 <p className="text-red-600 font-bold ml-4 ">
                                     không có phiếu giảm giá nào có thể áp dụng cho đơn hàng của bạn !
                                 </p>
                             )}
+
+
                         </div>
                     </div>
 
