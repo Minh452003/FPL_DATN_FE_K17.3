@@ -7,6 +7,7 @@ import { Skeleton } from "antd";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useGetStatusQuery } from "@/api/statusApi";
+import { Pagination } from "@mui/material";
 const Order = () => {
   const [currentStatus, setCurrentStatus] = useState("all"); // Mặc định hiển thị tất cả
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -20,7 +21,19 @@ const Order = () => {
   const orders = data?.order;
   const { data: status, isLoading: isLoadingStatus }: any = useGetStatusQuery();
   const Status = isLoadingStatus ? [] : status?.status;
+  // -------Phân trang--------
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; 
 
+  const handlePageChange = (event: any, page: any) => {
+    setCurrentPage(page);
+  };
+  const pageCount = Math.ceil(filteredOrders.length / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedOrders = filteredOrders.slice(startIndex, endIndex);
+  // ---------------
   const handleFilterOrders = (status: string) => {
     setCurrentStatus(status);
     if (status === "all") {
@@ -98,7 +111,9 @@ const Order = () => {
           </ul>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
+          {displayedOrders.map((order: any) => {
           {filteredOrders && filteredOrders.map((order: any) => {
+
             return (
               <div
                 className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-lg "
@@ -141,10 +156,22 @@ const Order = () => {
                     </Link>
                   </button>
                 </div>
+
               </div>
+
             );
           })}
         </div>
+
+      </div>
+      <div className="flex w-full py-4 justify-center">
+        <Pagination
+          count={pageCount}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
       </div>
     </div>
   );
