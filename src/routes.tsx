@@ -59,6 +59,8 @@ import CustomProductsTrash from "./pages/admin/customProducts/CustomProductsTras
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
 import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
 import OrdersManager from "./pages/admin/orders/OrdersManager";
+import Listcomments from "./pages/admin/comment/Listcomments";
+import Commentdetail from "./pages/admin/comment/Commentdetail";
 
 
 export const router = createBrowserRouter([
@@ -67,7 +69,7 @@ export const router = createBrowserRouter([
         element: < LayoutWebsite />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: 'cart', element: <CartPage /> },
+            { path: 'carts', element: <CartPage /> },
             { path: 'pay', element: <PayPage /> },
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
@@ -79,10 +81,12 @@ export const router = createBrowserRouter([
             { path: 'contact', element: <ContactPage /> },
             {
                 path: 'user', element: <UserPage />, children: [
-                    { path: 'profile',children: [
-                        {index:true,element:<Profile/>},
-                        {path:'edit',element:<ProfileUpdate/>}
-                    ] },
+                    {
+                        path: 'profile', children: [
+                            { index: true, element: <Profile /> },
+                            { path: 'edit', element: <ProfileUpdate /> }
+                        ]
+                    },
                     { path: 'purchase', element: <Purchase /> },
                     { path: 'voucher', element: <Voucher /> },
                     {
@@ -150,6 +154,12 @@ export const router = createBrowserRouter([
                     { index: true, element: <Colorslist /> },
                     { path: 'add', element: <ColorsAdd /> },
                     { path: 'edit/:idColor', element: <ColorsUpdate /> },
+                ],
+            },
+            {
+                path: 'comments', children: [
+                    { index: true, element: <Listcomments /> },
+                    { path: ':id', element: <Commentdetail /> },
                 ],
             },
             {

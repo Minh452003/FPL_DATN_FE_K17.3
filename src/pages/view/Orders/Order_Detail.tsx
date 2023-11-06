@@ -48,12 +48,12 @@ const OrderDetail = () => {
       <div className="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-3 ml-4" key={orders._id}>
         {/* --------------------Col 1 --------------------------- */}
         <div className="rounded-lg ml-20">
-          <div className="name font-sans pt-10">Họ và tên : <a href="" style={{ textDecoration: "none", color: "black", }}>{dataUser?.first_name} {dataUser?.last_name} </a></div>
-          <div className='font-sans mt-1'>Số điện thoại : <a href="" style={{ textDecoration: "none", color: "black", }}>{orders?.phone}</a></div>
-          <div className='font-sans mt-1'>Địa chỉ : <a href="" style={{ textDecoration: "none", color: "black", }}>{orders?.address}</a></div>
-          <div className='font-sans mt-1'>Ngày đặt hàng : <a href="" style={{ textDecoration: "none", color: "black", }}>{format(new Date(orders?.createdAt), "HH:mm a dd/MM/yyyy")}</a></div>
-          <div className='font-sans mt-1'>Ghi chú : <a href="" style={{ textDecoration: "none", color: "black", }}>{orders?.notes}</a></div>
-          <div className='font-sans mt-3'>Phí vận chuyển: <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.shipping)}₫</a></div>
+          <div className="name font-sans pt-10">Họ và tên : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{dataUser?.first_name} {dataUser?.last_name} </a></div>
+          <div className='font-sans mt-1'>Số điện thoại : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.phone}</a></div>
+          <div className='font-sans mt-1'>Địa chỉ : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.address}</a></div>
+          <div className='font-sans mt-1'>Ngày đặt hàng : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{format(new Date(orders?.createdAt), "HH:mm a dd/MM/yyyy")}</a></div>
+          <div className='font-sans mt-1'>Ghi chú : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.notes}</a></div>
+          <div className='font-sans mt-3'>Phí vận chuyển: <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.shipping)}₫ {orders.deposit ? '(đã trừ tiền cọc)' : ''}</a></div>
           {orders.deposit ? <div className='font-semibold'>Đã cọc: <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.deposit)}₫</a></div> : ''}
           <div className='font-semibold mt-1 mb-10'>{orders.deposit ? 'Tổng tiền còn lại: ' : 'Tổng đơn hàng: '} <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.total)}₫</a></div>
           <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white"><Link to={"/"} style={{ textDecoration: "none", color: "white" }}>{orders.status.status_name}</Link></button>
@@ -68,9 +68,9 @@ const OrderDetail = () => {
             return (
               <div key={index} className='mb-3' style={{ background: '#FAFAFA', height: "150px", width: "700px", borderRadius: "10px" }}>
                 <div className="container pt-4">
-                  <img className="ml-2 mr-2 rounded float-left" style={{ width: 150, height: 100 }} src={product?.image} alt="" />
+                  <img className="ml-2 mr-2 rounded float-left" style={{ width: 150, height: 120 }} src={product?.image} alt="" />
                   <div className="font-sans"><strong style={{ textDecoration: "none", color: "black" }}>{product?.product_name}</strong></div>
-                  <div className="font-sans" style={{ fontSize: '14px' }}>Số lượng: <a href='' style={{ textDecoration: "none", color: "black" }}>{product?.stock_quantity}</a> </div>
+                  <div className="font-sans" style={{ fontSize: '14px' }}>Giá: <a href='' style={{ textDecoration: "none", color: "red", fontWeight: 'bold', fontSize: '12px' }}>{formatCurrency(product?.product_price)}₫</a> , số lượng: <a href='' style={{ textDecoration: "none", color: "black", fontSize: '12px' }}>{product?.stock_quantity}</a> </div>
                   <div className="font-sans" style={{ fontSize: '14px' }}>Màu sắc: <a href="" style={{ textDecoration: "none", color: "black" }}>{colorname?.colors_name}</a> </div>
                   <div className="font-sans" style={{ fontSize: '14px' }}>Size: <a href="" style={{ textDecoration: "none", color: "black", }}>{sizename?.size_name}</a> </div>
                   <div className="font-sans" style={{ fontSize: '14px' }}>Chất liệu: <a href="" style={{ textDecoration: "none", color: "black", }}>{materialname?.material_name}</a> </div>

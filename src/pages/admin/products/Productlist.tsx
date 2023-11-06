@@ -17,6 +17,7 @@ import { useGetMaterialQuery } from "@/api/materialApi";
 import Swal from "sweetalert2";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState } from "react";
+import './productAdmin.css'
 const Productlist = () => {
   const { data } = useGetProductsQuery();
   const { data: categories } = useGetCategoryQuery<any>();
@@ -29,7 +30,7 @@ const Productlist = () => {
   const brand = brands?.brand;
   const material = materials?.material;
   const [sortedInfo, setSortedInfo] = useState({} as any);
-  const handleChange = (pagination, filters, sorter) => {
+  const handleChange = (pagination: any, filters: any, sorter: any) => {
     setSortedInfo(sorter);
   };
   const data1 = products?.map((product: any, index: number) => {
@@ -83,18 +84,22 @@ const Productlist = () => {
       dataIndex: "STT",
       key: "STT",
       render: (index: any) => <a>{index}</a>,
-      sorter: (a:any, b:any) => a.STT - b.STT, // Sắp xếp theo STT
+      sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
       sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
       ellipsis: true,
+      width: 100, // Điều chỉnh chiều rộng của cột "STT"
+
     },
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
       render: (text: any) => <a>{text}</a>,
-      sorter: (a:any, b:any) => a.name.localeCompare(b.name), // Sắp xếp theo Name
+      sorter: (a: any, b: any) => a.name.localeCompare(b.name), // Sắp xếp theo Name
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       ellipsis: true,
+      width: 250, // Điều chỉnh chiều rộng của cột "STT"
+
     },
     {
       title: "Ảnh",
@@ -105,10 +110,12 @@ const Productlist = () => {
       title: "Giá",
       dataIndex: "price",
       key: "price",
+      width: 100, // Điều chỉnh chiều rộng của cột "STT"
+
       render: (price: any) => (
         <p className="text-red-700">{formatCurrency(price)}₫</p>
       ),
-      sorter: (a:any, b:any) => a.price - b.price, // Sắp xếp theo giá
+      sorter: (a: any, b: any) => a.price - b.price, // Sắp xếp theo giá
       sortOrder: sortedInfo.columnKey === "price" && sortedInfo.order,
       ellipsis: true,
     },
@@ -116,8 +123,10 @@ const Productlist = () => {
       title: "Đã bán",
       dataIndex: "quantity",
       key: "quantity",
+      width: 100, // Điều chỉnh chiều rộng của cột "STT"
+
       render: (text: any) => <a>{text}</a>,
-      sorter: (a:any, b:any) => a.quantity - b.quantity, // Sắp xếp theo số lượng đã bán
+      sorter: (a: any, b: any) => a.quantity - b.quantity, // Sắp xếp theo số lượng đã bán
       sortOrder: sortedInfo.columnKey === "quantity" && sortedInfo.order,
       ellipsis: true,
     },
@@ -125,6 +134,8 @@ const Productlist = () => {
       title: "Danh Mục",
       dataIndex: "category",
       key: "category",
+      width: 100, // Điều chỉnh chiều rộng của cột "STT"
+
       render: (record: any) => {
         const catename = category?.find((cate: any) => cate._id === record);
         return catename?.category_name;
@@ -134,6 +145,8 @@ const Productlist = () => {
       title: "Chất liệu",
       dataIndex: "materials",
       key: "materials",
+      width: 100, // Điều chỉnh chiều rộng của cột "STT"
+
       render: (record: string) => {
         const materialname = material?.find(
           (materials: any) => materials._id === record
@@ -145,6 +158,8 @@ const Productlist = () => {
       title: "Thương hiệu",
       dataIndex: "brand",
       key: "brand",
+      width: 100, // Điều chỉnh chiều rộng của cột "STT"
+
       render: (record: string) => {
         const brandname = brand?.find((bra: any) => bra._id === record);
         return brandname?.brand_name;
@@ -152,6 +167,7 @@ const Productlist = () => {
     },
     {
       title: "Chức năng",
+      width: 200, // Điều chỉnh chiều rộng của cột "STT"
       render: ({ key: _id }: any) => (
         <div style={{ width: "150px" }}>
           <Button
@@ -179,7 +195,7 @@ const Productlist = () => {
     },
   ];
   return (
-    <div className="container">
+    <div className="table-container">
       <h3 className="font-semibold">Danh sách sản phẩm </h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className="m-2 text-3xl text-blue-500">
