@@ -220,7 +220,7 @@ const Model = ({ products }: any) => {
                   return (
                     <button
                       key={size.sizeId}
-                      className={`hover:bg-red-500 bg-gray-300 p-1 mr-2 mt-2 w-10 text-[12px] ${isActive ? "active1" : ""
+                      className={`hover:bg-red-500 bg-gray-300 p-1 mr-2 mt-2 text-[12px] ${isActive ? "active1" : ""
                         }`}
                       aria-label="M"
                       aria-disabled="false"

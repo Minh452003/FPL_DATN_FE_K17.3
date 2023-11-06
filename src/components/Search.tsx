@@ -24,10 +24,10 @@ const Search = () => {
 
   return (
     <div>
-      <div className="pr-3">
-        <form className="pt-2 pl-4 flex justify-items-center mr-auto">
+      <div className="pr-3 items-center flex ">
+        <form className="pt-2 pl-8 flex items-center    justify-end mr-auto relative">
           <input
-            className="block w-full h-10 px-5 py-2 outline-none hover:border-secondary border hover:border duration-200 rounded-s-lg"
+            className="block w-full h-10 px-2 py-2 w-10 outline-none hover:border-secondary border  duration-200 rounded-lg"
             type="text"
             placeholder="Tim kiếm sản phẩm ..."
             value={searchKeyword}
@@ -36,10 +36,12 @@ const Search = () => {
           <button
             id="clickShowProduct"
             type="submit"
-            className="px-5 py-2  rounded d-r-lg bg-secondary"
+            className=" absolute  rounded px-2   block"
             aria-label="Justify"
           >
-            <HiSearch />
+            <div className="text-zinc-500 text-xl">
+            <HiSearch  />
+            </div>
           </button>
         </form>
 

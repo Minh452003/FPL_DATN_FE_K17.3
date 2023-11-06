@@ -70,7 +70,7 @@ const Categories = () => {
                                             data-slick-index={`${index}`}
                                             aria-hidden="false"
                                         >
-                                            <Link to={''} className="tl" title={category?.category_name}>
+                                            <Link to={`/category/${category._id}`} className="tl" title={category?.category_name}>
                                                 <p className="ttt">
                                                     {category?.category_name}
                                                     <span>Xem sản phẩm</span>

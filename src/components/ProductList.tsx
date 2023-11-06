@@ -82,7 +82,7 @@ const ProductList = () => {
                   <div className="slider-items-products">
                     <div className="new_title lt clear_pd">
                       <h4>
-                        <Link to={''} title={category.category_name}>
+                        <Link to={`/category/${category._id}`} title={category.category_name}>
                           {category.category_name}
                         </Link>
                       </h4>

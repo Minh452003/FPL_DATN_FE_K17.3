@@ -7,11 +7,10 @@ import "./Profile.css"
 const Profile = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
-
   const navigate = useNavigate();
   const { data: user } = useGetUserByIdQuery(id);
   if (!user) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
 
