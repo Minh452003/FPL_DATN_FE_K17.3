@@ -1,21 +1,18 @@
-import React from 'react';
 import { useGetUserByIdQuery } from "@/api/authApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { Link, Outlet } from "react-router-dom";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
-import { FaAddressCard, FaCcVisa, FaCartPlus, FaBell } from "react-icons/fa";
-import { FaScrewdriverWrench } from "react-icons/fa6";
+import { FaCartPlus, FaBell } from "react-icons/fa";
 import { BiSolidCoupon } from "react-icons/bi";
+import { Skeleton } from "antd";
 
 const UserPage = () => {
-  const decodedToken = getDecodedAccessToken();
+  const decodedToken: any = getDecodedAccessToken();
   const iduser = decodedToken ? decodedToken.id : null;
   const { data: user, isLoading, isError } = useGetUserByIdQuery(iduser);
 
-  if (isLoading) {
-    return <div>Đang tải...</div>;
-  }
+  if (isLoading) return <Skeleton />;
 
   if (isError) {
     return <div>Có lỗi khi tải dữ liệu người dùng.</div>;
@@ -26,11 +23,16 @@ const UserPage = () => {
       <div className="w-full lg:w-[350px] flex flex-col border-e bg-white">
         <div className="grid grid-row-2 pt-2">
           <div className="flex justify-center">
-            <img
+            {user && user.avatar ? <img
               alt="avatar"
               src={user?.avatar?.url}
               className="w-28 h-28 rounded-full"
-            />
+            /> : <img
+              alt="avatar"
+              src='https://static.thenounproject.com/png/363640-200.png'
+              className="w-28 h-28 rounded-full"
+            />}
+
           </div>
           <div className="mt-2 flex justify-center text-3xl">
             {user?.first_name} {user?.last_name}

@@ -1,6 +1,6 @@
 import "../Home/Homepage.css";
 import "../Home/Responsive_homepage.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetProductSellQuery } from "@/api/productApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
@@ -26,6 +26,11 @@ const ProductPage = () => {
   const formatCurrency = (number: any) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+
 
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
@@ -72,8 +77,14 @@ const ProductPage = () => {
       );
     }
   });
-
-
+  //  Phân trang........................
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedProducts = filteredProducts.slice(startIndex, endIndex);
+  const handlePageChange = (event: any, page: any) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
   return (
     <div className="px-6 lg:px-0 m-28">
       <div className="flex items-center pb-10">
@@ -141,8 +152,8 @@ const ProductPage = () => {
 
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
 
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product: any, index: any) => (
+          {displayedProducts.length > 0 ? (
+            displayedProducts.map((product: any, index: any) => (
 
               <div
                 key={product._id}
@@ -230,7 +241,13 @@ const ProductPage = () => {
       </div>
 
       <div className="flex w-full py-4 justify-center ">
-        <Pagination count={4} variant="outlined" shape="rounded" />
+        <Pagination
+          count={Math.ceil(filteredProducts.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
       </div>
     </div>
   );

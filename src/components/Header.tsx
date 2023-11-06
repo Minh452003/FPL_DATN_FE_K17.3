@@ -168,6 +168,7 @@ const Header = () => {
               </div>
 
               {/* Cart Icon */}
+
               <div className="ml-3 items-center flex">
                 <Link to={'/cart'}>
                   <img
@@ -176,6 +177,7 @@ const Header = () => {
                     alt=""
                   />
                 </Link>
+
               </div>
             </div>
         </div>

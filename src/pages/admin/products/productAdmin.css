@@ -1,0 +1,14 @@
+.table-container {
+    overflow-x: auto;
+}
+
+@media (max-width: 739px) {
+    .table-container {
+        overflow-x: auto !important;
+        overflow: hidden !important;
+    }
+
+    .ant-table-content {
+        overflow-x: auto !important;
+    }
+}
