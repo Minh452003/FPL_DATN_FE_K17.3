@@ -112,8 +112,6 @@ const Order = () => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
           {displayedOrders.map((order: any) => {
-          {filteredOrders && filteredOrders.map((order: any) => {
-
             return (
               <div
                 className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-lg "
