@@ -59,6 +59,10 @@ import CustomProductsTrash from "./pages/admin/customProducts/CustomProductsTras
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
 import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
 import OrdersManager from "./pages/admin/orders/OrdersManager";
+import Newslist from "./pages/admin/news/newsList";
+import NewsAdd from "./pages/admin/news/newsAdd";
+import NewsTrash from "./pages/admin/news/newsTrash";
+import NewsUpdate from "./pages/admin/news/newsUpdate";
 
 
 export const router = createBrowserRouter([
@@ -132,6 +136,16 @@ export const router = createBrowserRouter([
                     { path: ':id/edit', element: <Categoryupdate /> },
                 ],
             },
+
+            {
+                path: 'news', children: [
+                    { index: true, element: <Newslist /> },
+                    { path: 'add', element: <NewsAdd /> },
+                    { path: 'trash', element: <NewsTrash /> },
+                    { path: ':id/edit', element: <NewsUpdate /> },
+                ],
+            },
+
             {
                 path: 'users', children: [
                     { index: true, element: <Userlist /> },
