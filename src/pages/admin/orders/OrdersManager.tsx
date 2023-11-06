@@ -2,9 +2,9 @@ import { Button, Skeleton, Space } from "antd";
 import Table, { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import {  useGetOrderQuery } from "@/api/orderApi";
+import { useGetOrderQuery } from "@/api/orderApi";
 import { BiDetail } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getDecodedAccessToken } from "@/decoder";
 import { useGetStatusQuery } from "@/api/statusApi";
 import "./Order.css";
@@ -27,7 +27,6 @@ const OrdersManager = () => {
 
   const handleFilterOrders = (status: string) => {
     setCurrentStatus(status);
-
     if (status === "all") {
       setFilteredOrders(orders);
     } else {
@@ -37,6 +36,20 @@ const OrdersManager = () => {
       setFilteredOrders(filtered);
     }
   };
+
+  useEffect(() => {
+    if (isLoadingFetching) return;
+
+    if (currentStatus === "all") {
+      setFilteredOrders(orders);
+    } else {
+      const filtered = orders.filter(
+        (order: any) => order.status._id === currentStatus
+      );
+      setFilteredOrders(filtered);
+    }
+  }, [isLoadingFetching, currentStatus, orders]);
+
 
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -116,9 +129,8 @@ const OrdersManager = () => {
           <li>
             <a
               href=""
-              className={`no-underline text-gray-700 ${
-                currentStatus === "all" ? "font-medium active" : ""
-              }`}
+              className={`no-underline text-gray-700 ${currentStatus === "all" ? "font-medium active" : ""
+                }`}
               onClick={(e) => {
                 e.preventDefault();
                 handleFilterOrders("all");
@@ -132,9 +144,8 @@ const OrdersManager = () => {
             <li key={statusItem._id}>
               <a
                 href=""
-                className={`no-underline text-gray-700 ${
-                  currentStatus === statusItem._id ? "font-medium active" : ""
-                }`}
+                className={`no-underline text-gray-700 ${currentStatus === statusItem._id ? "font-medium active" : ""
+                  }`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleFilterOrders(statusItem._id);
