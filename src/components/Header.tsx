@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import Search from './Search';
 import { getDecodedAccessToken } from '@/decoder';
 import { useGetUserByIdQuery } from '@/api/authApi';
-import {FiUsers} from 'react-icons/fi'
+import { FiUsers } from 'react-icons/fi'
 
 const Header = () => {
   const [isMenuHidden, setIsMenuHidden] = useState(true);
-  const decodedToken = getDecodedAccessToken();
+  const decodedToken: any = getDecodedAccessToken();
   const iduser = decodedToken ? decodedToken.id : null;
   const { data: user, isLoading, isError } = useGetUserByIdQuery(iduser);
 
@@ -32,74 +32,72 @@ const Header = () => {
             </div>
 
             <div
-            className={`mx-auto max-w-7xl md:p-0 pl-3  md:flex justify-between justify-items-center ${
-              isMenuHidden ? 'hidden' : ''
-            } `}
-          >
-            <ul className="md:flex font-bold sm:mx-3 text-base p-0 m-0 items-center">
-              <li>
-                <Link
-                  className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
-                  to={'/'}
-                >
-                  Trang chủ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
-                  to={'/products'}
-                >
-                  Sản phẩm
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
-                  to={'/news'}
-                >
-                  Tin tức
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
-                  to={'/review'}
-                >
-                  Giới thiệu
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
-                  to={'/contact'}
-                >
-                  Liên hệ
-                </Link>
-              </li>
-            </ul>
-           
-          </div>
-          <div className="flex justify-end">
+              className={`mx-auto max-w-7xl md:p-0 pl-3  md:flex justify-between justify-items-center ${isMenuHidden ? 'hidden' : ''
+                } `}
+            >
+              <ul className="md:flex font-bold sm:mx-3 text-base p-0 m-0 items-center">
+                <li>
+                  <Link
+                    className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
+                    to={'/'}
+                  >
+                    Trang chủ
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
+                    to={'/products'}
+                  >
+                    Sản phẩm
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
+                    to={'/news'}
+                  >
+                    Tin tức
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
+                    to={'/review'}
+                  >
+                    Giới thiệu
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="no-underline text-gray-900 hover:text-[#ff7600] mr-4"
+                    to={'/contact'}
+                  >
+                    Liên hệ
+                  </Link>
+                </li>
+              </ul>
+
+            </div>
+            <div className="flex justify-end">
               {/* User Icons */}
               <div
-                className={`nav-user flex items-center menu-item text-[20px] cursor-pointer relative ${
-                  user ? 'hover-trigger' : ''
-                }`}
+                className={`nav-user flex items-center menu-item text-[20px] cursor-pointer relative ${user ? 'hover-trigger' : ''
+                  }`}
                 onMouseEnter={() => setIsMenuHidden(false)}
                 onMouseLeave={() => setIsMenuHidden(true)}
               >
                 {user ? (
                   <div className='relative mr-5'>
-                    
-                   <img
+
+                    <img
                       className="w-8 h-8 rounded-full"
                       src={user.avatar?.url || `https://res.cloudinary.com/dndyxqosg/image/upload/v1699260603/hhegkbrro5wwaxpjkuwx.png`}
                       alt=""
                     />
-                    <ul className={`submenu ${isMenuHidden ? 'hidden' : ''}  absolute z-50 w-[180px] bg-white right-[-50px] top-[10px] mt-4 ` }>
-                   
-                      {user.role === 'Admin' || user.role === 'Member' ? (
+                    <ul className={`submenu ${isMenuHidden ? 'hidden' : ''}  absolute z-50 w-[180px] bg-white right-[-50px] top-[10px] mt-4 `}>
+
+                      {user.role === 'admin' ? (
                         <li>
                           <Link
                             to="/admin"
@@ -147,30 +145,30 @@ const Header = () => {
                   </div>
                 ) : (
                   <div className="mr-5 relative">
-                  <div className='text-2xl'>
-                    <FiUsers/>
-                  </div>
-                  <div className={`submenu ${isMenuHidden ? 'hidden' : ''}  absolute z-50 w-[150px] bg-white right-[-30px] top-[10px] mt-4 px-3 py-1` } onMouseEnter={() => setIsMenuHidden(false)} onMouseLeave={() => setIsMenuHidden(true)}>
-                    <div>
-                      <Link to={'/signup'} className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]">
-                        Đăng kí
-                      </Link>
+                    <div className='text-2xl'>
+                      <FiUsers />
                     </div>
-                    <div>
-                      <Link to={'/signin'} className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]">
-                        Đăng Nhập
-                      </Link>
+                    <div className={`submenu ${isMenuHidden ? 'hidden' : ''}  absolute z-50 w-[150px] bg-white right-[-30px] top-[10px] mt-4 px-3 py-1`} onMouseEnter={() => setIsMenuHidden(false)} onMouseLeave={() => setIsMenuHidden(true)}>
+                      <div>
+                        <Link to={'/signup'} className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]">
+                          Đăng kí
+                        </Link>
+                      </div>
+                      <div>
+                        <Link to={'/signin'} className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]">
+                          Đăng Nhập
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
                 )}
-        
+
               </div>
 
               {/* Cart Icon */}
 
               <div className="ml-3 items-center flex">
-                <Link to={'/cart'}>
+                <Link to={'/carts'}>
                   <img
                     src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/cart.png?1693834920118"
                     width="30px"
@@ -180,7 +178,7 @@ const Header = () => {
 
               </div>
             </div>
-        </div>
+          </div>
           <div className="flex justify-end pt-2">
             {/* Button to toggle menu */}
             <button onClick={toggleMenu} className="md:hidden">
@@ -200,7 +198,7 @@ const Header = () => {
             </button>
           </div>
           {/* Menu */}
-       
+
         </section>
       </header>
     </div>
