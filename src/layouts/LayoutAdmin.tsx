@@ -4,7 +4,7 @@ import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
 import { TbBrandProducthunt } from 'react-icons/tb';
 import { MdCategory } from 'react-icons/md';
 import { FaAccusoft } from "react-icons/fa";
-import { AiFillMessage, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
+import { AiFillMessage, AiOutlineAntDesign, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
 import { BiSolidCoupon } from 'react-icons/bi';
@@ -155,6 +155,12 @@ const LayoutAdmin = () => {
             <Link to={'materials'} className="a">
               <span className="icon"><FaAccusoft /></span>
               <span className="text1">Vật liệu</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'customized-products-list'} className="a">
+              <span className="icon"><AiOutlineAntDesign /></span>
+              <span className="text1">Sản phẩm thiết kế</span>
             </Link>
           </li>
           <li>

@@ -1,4 +1,4 @@
-import { useGetAllCustomProductDeleteQuery, useRemoveForceCustomProductMutation, useRestoreCustomProductMutation } from "@/api/CustomizedProductAPI"
+import { useGetAllDeleteQuery, useRemoveForceCustomProductMutation, useRestoreCustomProductMutation } from "@/api/CustomizedProductAPI"
 import { useGetUsersQuery } from '@/api/authApi';
 import { useGetBrandQuery } from '@/api/brandApi';
 import { useGetCategoryQuery } from '@/api/categoryApi';
@@ -6,18 +6,14 @@ import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
 import { useGetSizeQuery } from '@/api/sizeApi';
 import { Table, Button } from 'antd';
-import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash, FaProductHunt } from "react-icons/fa6";
+import { FaTrashCan, FaCirclePlus, FaTrash } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import { FaWindowRestore } from "react-icons/fa";
 const CustomProductsTrash =()=>{
-    const {data}:any=useGetAllCustomProductDeleteQuery();
-    console.log(data);
-    const CustomProducts =data?.customProduct
-    console.log(CustomProducts);
-    
-    
+    const {data}:any=useGetAllDeleteQuery();
+    const CustomProducts =data?.product
     const {data:colors} = useGetColorsQuery<any>()
     const {data :brands} = useGetBrandQuery<any>()
     const {data:materials} = useGetMaterialQuery<any>()
@@ -116,8 +112,6 @@ const CustomProductsTrash =()=>{
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   } 
 
-    console.log(data1);
-    
     const columns = [
         {
           title: 'STT',
@@ -239,7 +233,7 @@ const CustomProductsTrash =()=>{
     
  return(
     <div className="container">
-    <h3 className="font-semibold">Danh sách sản phẩm Thiết kế</h3>
+    <h3 className="font-semibold">Sản phẩm thiết kế đã xóa</h3>
     <div className="overflow-x-auto drop-shadow-xl rounded-lg">
       <Button className='m-2 text-3xl text-blue-500'><Link to={'add'}><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link></Button>
       <Button className='m-2  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
