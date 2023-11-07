@@ -24,10 +24,10 @@ const Search = () => {
 
   return (
     <div>
-      <div className="pr-3 items-center flex ">
-        <form className="pt-2 pl-8 flex items-center    justify-end mr-auto relative">
+      <div className="pr-3 ">
+        <form className="pt-2 pl-8 flex items-center justify-end mr-auto relative">
           <input
-            className="block w-full h-10 px-2 py-2 w-10 outline-none hover:border-secondary border  duration-200 rounded-lg"
+            className="block w-full h-10 px-2 py-2 w-[280px] outline-none hover:border-secondary border  duration-200 rounded-lg"
             type="text"
             placeholder="Tim kiếm sản phẩm ..."
             value={searchKeyword}
@@ -44,10 +44,9 @@ const Search = () => {
             </div>
           </button>
         </form>
-
         <div className="keyword">
           {searchKeyword && (
-            <div className="rounded-md z-50 absolute w-[530px] mt-5" id="listProduct">
+            <div className="rounded-md pl-3 z-50 absolute w-[530px] mt-4" id="listProduct">
               <div className="container">
                 <div className="p-2 bg-white rounded-md">
                   {searchResults.length === 0 ? (
