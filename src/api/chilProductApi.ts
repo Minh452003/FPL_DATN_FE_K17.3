@@ -21,7 +21,14 @@ const childProductApi = createApi({
     }),
     endpoints: (builder) => ({
         getChildProductPrice: builder.query({
-            query: (query) => `/get-child-product?${query.productId ? `productId=${query.productId}` : ''}${query.sizeId ? `&sizeId=${query.sizeId}` : ''}${query.colorId ? `&colorId=${query.colorId}` : ''}`,
+            query: (query) => {
+                if (query.productId && query.sizeId && query.colorId) {
+                    return `/get-child-product?productId=${query.productId}&sizeId=${query.sizeId}&colorId=${query.colorId}`;
+                } else {
+                    // Trường hợp không đủ tham số, trả về một giá trị mặc định hoặc null
+                    return '';
+                }
+            },
             providesTags: ['child-products']
         }),
         getChildProductById: builder.query<IChildProduct, number | string>({
@@ -42,7 +49,7 @@ const childProductApi = createApi({
             }),
             invalidatesTags: ['child-products']
         }),
-        removecChildProduct: builder.mutation<IChildProduct, number|string>({
+        removecChildProduct: builder.mutation<IChildProduct, number | string>({
             query: (id) => ({
                 url: `/child-products/${id}`,
                 method: 'DELETE',
