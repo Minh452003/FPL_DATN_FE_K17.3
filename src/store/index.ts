@@ -61,7 +61,7 @@ const rootReducer = combineReducers({
     customizedproducts: CustomizedproductsReducer,
     ships: shipReducer,
     payments: paymentReducer,
-    news: newsReducer
+    news: newsReducer,
     statistical: statisticalReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -85,7 +85,7 @@ const additionalMiddlewares: any = [
     customizedProductApi.middleware,
     shipApi.middleware,
     paymentApi.middleware,
-    newsApi.middleware
+    newsApi.middleware,
     statisticalApi.middleware
 ];
 
