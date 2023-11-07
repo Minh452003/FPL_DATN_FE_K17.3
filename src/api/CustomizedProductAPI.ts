@@ -38,8 +38,10 @@ const customizedProductApi = createApi({
             query: (userId) => `/CustomProducts/delete/${userId}`,
             providesTags: ['customized-products']
         }),
-
-
+        getAllDelete: builder.query<ICustomizedProduct[], void>({
+            query: () => `/CustomProducts/delete`,
+            providesTags: ['customized-products']
+        }),
         addCustomProduct: builder.mutation({
             query: (customizedProduct: ICustomizedProduct) => ({
                 url: '/customized-products',
@@ -88,14 +90,12 @@ export const {
     useGetCustomizedproductsByUserIdQuery,
     useAddCustomProductMutation,
     useUpdateCustomProductMutation,
-
     useRemoveForceCustomProductMutation,
     useRemoveCustomProductMutation,
     useRestoreCustomProductMutation,
     useGetAllCustomProductDeleteQuery,
-    useGetCustomProductsQuery
-
-
+    useGetCustomProductsQuery,
+    useGetAllDeleteQuery
 } = customizedProductApi;
 export const CustomizedproductsReducer = customizedProductApi.reducer;
 export default customizedProductApi

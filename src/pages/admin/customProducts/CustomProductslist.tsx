@@ -14,7 +14,6 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Swal from 'sweetalert2';
 const CustomProductslist = () => {
     const {data: listcustomProducts} = useGetCustomProductsQuery<any>()
-    console.log(listcustomProducts);
     const {data:colors} = useGetColorsQuery<any>()
     const {data :brands} = useGetBrandQuery<any>()
     const {data:materials} = useGetMaterialQuery<any>()
@@ -53,36 +52,6 @@ const CustomProductslist = () => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
-    // const deleteProduct = (id: any) => {
-    //   Swal.fire({
-    //     title: 'Bạn chắc chứ?',
-    //     text: "Khi có thể vào thùng rác để khôi phục lại!",
-    //     icon: 'warning',
-    //     showCancelButton: true,
-    //     confirmButtonColor: '#3085d6',
-    //     cancelButtonColor: '#d33',
-    //     confirmButtonText: 'Vâng, tôi chắc chắn!',
-    //     cancelButtonText: 'Huỷ'
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       removeProduct(id).unwrap().then(() => {
-    //         Swal.fire(
-    //           'Xoá thành công!',
-    //           'Sản phẩm của bạn đã được xoá.',
-    //           'success'
-    //         )
-    //       })
-    //     } else if (result.dismiss === Swal.DismissReason.cancel) {
-    //       // Hiển thị thông báo hủy xóa sản phẩm
-    //       Swal.fire(
-    //         'Thất bại',
-    //         'Sản phẩm xoá thất bại.',
-    //         'error'
-    //       )
-    //     }
-    //   })
-    // }
-
     const deleteProduct = (id: any) => {
       Swal.fire({
         title: 'Bạn chắc chứ?',
@@ -112,8 +81,6 @@ const CustomProductslist = () => {
         }
       })
     }
-
-    console.log(data1);
     
     const columns = [
         {
