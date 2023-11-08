@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Search from './Search';
 import { getDecodedAccessToken } from '@/decoder';
 import { useGetUserByIdQuery } from '@/api/authApi';
@@ -10,10 +10,16 @@ const Header = () => {
   const decodedToken = getDecodedAccessToken();
   const iduser = decodedToken ? decodedToken.id : null;
   const { data: user, isLoading, isError } = useGetUserByIdQuery(iduser);
+  const navigator = useNavigate();
+
 
   const toggleMenu = () => {
     setIsMenuHidden(!isMenuHidden);
   };
+  const logout = () => {
+    localStorage.removeItem('accessToken');
+    window.location.href='/signin';
+  }
 
   return (
     <div>
@@ -138,6 +144,7 @@ const Header = () => {
                       <li>
                         <Link
                           to=""
+                          onClick={logout}
                           className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
                         >
                           Đăng xuất
