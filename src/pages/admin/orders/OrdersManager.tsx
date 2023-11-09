@@ -9,7 +9,6 @@ import { getDecodedAccessToken } from "@/decoder";
 import { useGetStatusQuery } from "@/api/statusApi";
 import "./Order.css";
 
-
 const OrdersManager = () => {
   const [currentStatus, setCurrentStatus] = useState("all");
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -20,11 +19,13 @@ const OrdersManager = () => {
     error,
     isLoading: isLoadingFetching,
   } = useGetOrderQuery<any>(id);
-  const orders = order?.order;
-
+  const orders = isLoadingFetching ? [] : order?.order;
   const { data: status, isLoading: isLoadingStatus }: any = useGetStatusQuery();
   const Status = isLoadingStatus ? [] : status?.status;
-
+  const [sortedInfo, setSortedInfo] = useState({} as any);
+  const handleChange = (pagination: any, filters: any, sorter: any) => {
+    setSortedInfo(sorter);
+  };
   const handleFilterOrders = (status: string) => {
     setCurrentStatus(status);
     if (status === "all") {
@@ -50,28 +51,36 @@ const OrdersManager = () => {
     }
   }, [isLoadingFetching, currentStatus, orders]);
 
-
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  const data = filteredOrders.map((order: any) => {
+  const data = filteredOrders.map((order: any, index: number) => {
+    const createdAtTimestamp = Date.parse(order.createdAt);
     return {
       key: order._id,
+      STT: index + 1,
       address: order.address,
       phone: order.phone,
-      total: (
-        <span className="fw-bold text-red-800">
-          {formatCurrency(order.total)}₫
-        </span>
-      ),
+      total: order.total,
       createAt: format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy"),
+      createdAtTimestamp: createdAtTimestamp,
       image: <img width={50} src={order.products[0]?.image} alt="" />,
       userId: `${order.userId?.first_name} ${order.userId?.last_name}`,
     };
   });
 
   const columns: ColumnsType<any> = [
+    {
+      title: "STT",
+      dataIndex: "STT",
+      key: "STT",
+      render: (index: any) => <a>{index}</a>,
+      sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
+      sortOrder: sortedInfo.columnKey === "STT" && sortedInfo.order,
+      ellipsis: true,
+      width: 90, // Điều chỉnh chiều rộng của cột "STT"
+    },
     {
       title: "Ảnh",
       dataIndex: "image",
@@ -96,11 +105,19 @@ const OrdersManager = () => {
       title: "Tổng đơn hàng",
       dataIndex: "total",
       key: "total",
+      render: (total: any) => (
+        <span className="text-red-700">{formatCurrency(total)}₫</span>
+      ),
+      sorter: (a: any, b: any) => a.total - b.total,
+      sortOrder: sortedInfo.columnKey === "total" && sortedInfo.order,
+      ellipsis: true,
     },
     {
       title: "Thời gian mua",
       dataIndex: "createAt",
       key: "createAt",
+      sorter: (a: any, b: any) => a.createdAtTimestamp - b.createdAtTimestamp,
+      sortOrder: sortedInfo.columnKey === "createAt" && sortedInfo.order,
     },
     {
       title: "Hành động",
@@ -129,8 +146,9 @@ const OrdersManager = () => {
           <li>
             <a
               href=""
-              className={`no-underline text-gray-700 ${currentStatus === "all" ? "font-medium active" : ""
-                }`}
+              className={`no-underline text-gray-700 ${
+                currentStatus === "all" ? "font-medium active" : ""
+              }`}
               onClick={(e) => {
                 e.preventDefault();
                 handleFilterOrders("all");
@@ -144,8 +162,9 @@ const OrdersManager = () => {
             <li key={statusItem._id}>
               <a
                 href=""
-                className={`no-underline text-gray-700 ${currentStatus === statusItem._id ? "font-medium active" : ""
-                  }`}
+                className={`no-underline text-gray-700 ${
+                  currentStatus === statusItem._id ? "font-medium active" : ""
+                }`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleFilterOrders(statusItem._id);
@@ -158,6 +177,7 @@ const OrdersManager = () => {
         </ul>
       </div>
       <Table
+        onChange={handleChange}
         columns={columns}
         dataSource={data}
         pagination={{ defaultPageSize: 6 }}
