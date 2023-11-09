@@ -59,7 +59,7 @@ const ProductList = () => {
   }
 
   return (
-    <div>
+    <div >
       {categories && categories.category.docs.map((category: any) => {
         if (!products || !products.product || !products.product.docs) {
           return <p key={category._id}>Không có sản phẩm nào.</p>;
@@ -72,15 +72,15 @@ const ProductList = () => {
         }
 
         return (
-          <div key={category._id} className="main-col2 bg_menu lazyload" data-was-processed="true">
-            <div className="container">
+          <div key={category._id} className="main-col2 bg_menu lazyload " data-was-processed="true">
+            <div className="container ">
               <div className="std">
                 <div
                   className="best-seller-pro menu"
                   style={{ visibility: "visible" }}
                 >
-                  <div className="slider-items-products">
-                    <div className="new_title lt clear_pd">
+                  <div className="slider-items-products bg-none">
+                    <div className="new_title  lt clear_pd" style={{ background: "none" }}>
                       <h4>
                         <Link to={`/category/${category._id}`} title={category.category_name}>
                           {category.category_name}

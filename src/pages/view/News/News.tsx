@@ -8,14 +8,12 @@ const News = () => {
   console.log(newList);
 
   return (
-    <div className="w-full">
-      <h1 className="text-4xl font-bold mb-8">Tin Tức Nội Thất</h1>
-
-      {/* <!-- Các tin tức nội thất --> */}
+    <div className="max-w-7xl mx-auto ">
+  
+      <h1 className="text-2xl font-bold  py-4">Tin Tức Nội Thất</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
-        {/* <!-- Mỗi tin tức sẽ là một thẻ div có className là "bg-white p-4 rounded shadow" --> */}
         {newList &&
-          newList.map((newsItem, index) => (
+          newList.map((newsItem:any, index:number) => (
             <div key={index} className="bg-white p-4 rounded shadow">
               <div className="flex gap-3">
                 <a href="#" className=" group flex basis-1/3">

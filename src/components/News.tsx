@@ -3,7 +3,7 @@ const NewsComponent = () => {
         <div className="main-col5">
             <section className="latest-blog">
                 <div className="container">
-                    <div className="blog-title new_title lt">
+                    <div className="blog-title  new_title lt" style={{ background: "none" }}>
                         <h1>
                             <a href="tin-tuc" title="Kiến thức Phong Thủy">
                                 <span>Kiến thức Phong Thủy</span>
@@ -28,7 +28,8 @@ const NewsComponent = () => {
                                         />
                                     </a>
                                 </div>
-                                <h3>
+                             <div className="px-3">
+                             <h3>
                                     <a
                                         href="/thiet-ke-phong-bep-hien-dai-2020"
                                         title="Thiết kế phòng bếp hiện đại 2020"
@@ -41,6 +42,7 @@ const NewsComponent = () => {
                                     thăng tiến, tài lộc cũng như sức khỏe của các thành viên
                                     trong gia đình. Vì vậy...
                                 </p>
+                             </div>
                             </div>
                         </div>
 
@@ -60,7 +62,8 @@ const NewsComponent = () => {
                                         />
                                     </a>
                                 </div>
-                                <h3>
+                               <div className="px-3">
+                               <h3>
                                     <a
                                         href="/noi-that-phong-khach-nhap-khau-duoc-ua-chuong-trong-2019"
                                         title="Nội thất phòng khách nhập khẩu được ưa chuộng trong 2019"
@@ -73,6 +76,7 @@ const NewsComponent = () => {
                                     khách chính là vẻ bề ngoài còn nội thất của phòng khách thể
                                     hiện phần nào...
                                 </p>
+                               </div>
                             </div>
                         </div>
 
@@ -84,15 +88,17 @@ const NewsComponent = () => {
                                         title="Thiết kế phòng khách tinh tế và sang trọng"
                                     >
                                         <img
-                                            className="lazyload loaded"
+                                            className="lazyload loaded w-[100%]"
                                             src="//bizweb.dktcdn.net/thumb/large/100/368/970/articles/picture7-650x339.png?v=1574743108017"
                                             data-src="//bizweb.dktcdn.net/thumb/large/100/368/970/articles/picture7-650x339.png?v=1574743108017"
                                             alt="Thiết kế phòng khách tinh tế và sang trọng"
                                             data-was-processed="true"
+                                           
                                         />
                                     </a>
                                 </div>
-                                <h3>
+                             <div className="px-3">
+                             <h3>
                                     <a
                                         href="/thiet-ke-phong-khach-tinh-te-va-sang-trong"
                                         title="Thiết kế phòng khách tinh tế và sang trọng"
@@ -105,6 +111,7 @@ const NewsComponent = () => {
                                     GIA CHỦ &nbsp; Các giải pháp thiết kế phòng khách: Với bề
                                     dày kinh nghiệm từ việc thiết kế,...
                                 </p>
+                             </div>
                             </div>
                         </div>
 
@@ -124,7 +131,8 @@ const NewsComponent = () => {
                                         />
                                     </a>
                                 </div>
-                                <h3>
+                              <div className="px-3">
+                              <h3>
                                     <a
                                         href="/phong-thay-do-closet-trong-nha-khong-gian-song-nen-co-cua-phu-nu-hien-dai"
                                         title="Phòng thay đồ (Closet) trong nhà – Không gian sống nên có của phụ nữ hiện đại"
@@ -138,6 +146,7 @@ const NewsComponent = () => {
                                     như một nữ thần, là bà hoàng của cuộc đời mình, kiêu hãnh và
                                     tỏa hương”. Vì...
                                 </p>
+                              </div>
                             </div>
                         </div>
 
@@ -157,7 +166,8 @@ const NewsComponent = () => {
                                         />
                                     </a>
                                 </div>
-                                <h3>
+                              <div className="px-3">
+                              <h3>
                                     <a
                                         href="/tan-trang-phong-ngu-dep-voi-noi-that-cao-cap-dip-cuoi-nam"
                                         title="Tân trang phòng ngủ đẹp với nội thất cao cấp dịp cuối năm"
@@ -170,6 +180,7 @@ const NewsComponent = () => {
                                     chính là lúc mọi người quan tâm đến&nbsp;nội thất&nbsp;và
                                     mọi đồ vật xung quanh gia đình mình....
                                 </p>
+                              </div>
                             </div>
                         </div>
 
@@ -189,7 +200,8 @@ const NewsComponent = () => {
                                         />
                                     </a>
                                 </div>
-                                <h3>
+                              <div className="px-3">
+                              <h3>
                                     <a
                                         href="/khong-gian-noi-that-dep-voi-chat-lieu-go-cao-cap"
                                         title="Không gian nội thất đẹp với chất liệu gỗ cao cấp"
@@ -202,6 +214,7 @@ const NewsComponent = () => {
                                     người Việt từ xưa đến nay. Vì thế, trang trí không gian nội
                                     thất đẹp với chất...
                                 </p>
+                              </div>
                             </div>
                         </div>
                     </div>

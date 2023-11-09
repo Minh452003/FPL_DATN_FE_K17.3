@@ -22,7 +22,7 @@ const LayoutWebsite = () => {
       <Header />
       {/* Outlet */}
       <section >
-        <main className="max-w mx-auto ">
+        <main className="max-w mx-auto  ">
           <Outlet />
         </main>
       </section>
