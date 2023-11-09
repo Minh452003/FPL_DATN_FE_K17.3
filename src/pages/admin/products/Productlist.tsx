@@ -19,13 +19,16 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState } from "react";
 import './productAdmin.css'
 const Productlist = () => {
-  const { data } = useGetProductsQuery();
+  const { data,isLoading:isLoadingProducts } = useGetProductsQuery();
   const { data: categories } = useGetCategoryQuery<any>();
   const { data: brands } = useGetBrandQuery<any>();
   const { data: materials } = useGetMaterialQuery<any>();
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedBrand, setSelectedBrand] = useState("all");
   const [removeProduct, { isLoading: isRemoveLoading }] =
     useRemoveProductMutation();
-  const products = data?.product.docs;
+  const products =isLoadingProducts ? []: data?.product.docs;
   const category = categories?.category?.docs;
   const brand = brands?.brand;
   const material = materials?.material;
@@ -33,7 +36,41 @@ const Productlist = () => {
   const handleChange = (pagination: any, filters: any, sorter: any) => {
     setSortedInfo(sorter);
   };
-  const data1 = products?.map((product: any, index: number) => {
+  const filteredProducts = products.filter((product: any) => {
+    const categoryMatches =
+      selectedCategory === "all" || product.categoryId === selectedCategory;
+    const brandMatches =
+      selectedBrand === "all" || product.brandId === selectedBrand;
+    if (selectedPriceFilter === "all") {
+      return categoryMatches && brandMatches;
+    } else if (selectedPriceFilter === "100000-1000000") {
+      return (
+        categoryMatches &&
+        brandMatches &&
+        product.product_price >= 100000 &&
+        product.product_price <= 1000000
+      );
+    } else if (selectedPriceFilter === "1000000-5000000") {
+      return (
+        categoryMatches &&
+        brandMatches &&
+        product.product_price >= 1000000 &&
+        product.product_price <= 5000000
+      );
+    } else if (selectedPriceFilter === "5000000-10000000") {
+      return (
+        categoryMatches &&
+        brandMatches &&
+        product.product_price >= 5000000 &&
+        product.product_price <= 10000000
+      );
+    } else if (selectedPriceFilter === "10000000+") {
+      return (
+        categoryMatches && brandMatches && product.product_price >= 10000000
+      );
+    }
+  });
+  const data1 = filteredProducts?.map((product: any, index: number) => {
     return {
       key: product._id,
       STT: index + 1,
@@ -87,7 +124,7 @@ const Productlist = () => {
       sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
       sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
       ellipsis: true,
-      width: 100, // Điều chỉnh chiều rộng của cột "STT"
+      width: 90, // Điều chỉnh chiều rộng của cột "STT"
 
     },
     {
@@ -98,7 +135,7 @@ const Productlist = () => {
       sorter: (a: any, b: any) => a.name.localeCompare(b.name), // Sắp xếp theo Name
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       ellipsis: true,
-      width: 250, // Điều chỉnh chiều rộng của cột "STT"
+      width: 200, // Điều chỉnh chiều rộng của cột "STT"
 
     },
     {
@@ -197,6 +234,49 @@ const Productlist = () => {
   return (
     <div className="table-container">
       <h3 className="font-semibold">Danh sách sản phẩm </h3>
+      <div className="mt-2 p-2 flex ">
+        <select
+          id="small"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        //...
+        >
+          <option value="all">Tất cả danh mục</option>
+          {categories?.category?.docs.map((category: any) => (
+            <option key={category._id} value={category._id}>
+              {category.category_name}
+            </option>
+          ))}
+        </select>
+        <select
+          id="small"
+          value={selectedBrand}
+          onChange={(e) => setSelectedBrand(e.target.value)}
+          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        //...
+        >
+          <option value="all">Tất cả thương hiệu</option>
+          {brands?.brand?.map((brand: any) => (
+            <option key={brand._id} value={brand._id}>
+              {brand.brand_name}
+            </option>
+          ))}
+        </select>
+        <select
+          id="small"
+          value={selectedPriceFilter}
+          onChange={(e) => setSelectedPriceFilter(e.target.value)}
+          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        //...
+        >
+          <option value="all">Tất cả giá</option>
+          <option value="100000-1000000">100.000-1.000.000</option>
+          <option value="1000000-5000000">1.000.0000-5.000.000</option>
+          <option value="5000000-10000000">5.000.000-10.000.000</option>
+          <option value="10000000+">10.000.000+</option>
+        </select>
+      </div>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className="m-2 text-3xl text-blue-500">
           <Link to={"add"}>
