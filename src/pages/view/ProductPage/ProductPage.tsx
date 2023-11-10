@@ -86,25 +86,26 @@ const ProductPage = () => {
     window.scrollTo(0, 0);
   };
   return (
-    <div className="px-6 lg:px-0 m-28">
-      <div className="flex items-center pb-10">
-        <div className="float-left">
+    <div className="px-6 lg:px-0 ml-28">
+         <div className="flex items-center ">
+        <div className="float-left py-2">
           <Link
             to="/"
-            className="font-bold"
+            className="font-bold text-black "
             style={{ textDecoration: "none", color: "orange" }}
           >
             Trang Chủ
           </Link>
         </div>
-        <FaArrowRight className="ml-2" />
-        <div className="pl-2">Sản Phẩm</div>
+        <div className="px-2">
+        <FaArrowRight className="" />
+        </div>
+        <div className="py-3">Sản Phẩm</div>
       </div>
-      <div className="mt-2 p-2 text-sm">Bộ lọc sản phẩm</div>
-      <div className="mt-2 p-2 text-xs font-bold">
+      <div className=" py-3 text-xl font-bold">
         giúp bạn tìm sản phẩm nhanh hơn
       </div>
-      <div className="mt-2 p-2 flex ">
+      <div className="mt-2 py-3 flex ">
         <select
           id="small"
           value={selectedCategory}
