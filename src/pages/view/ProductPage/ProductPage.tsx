@@ -87,7 +87,7 @@ const ProductPage = () => {
   };
   return (
     <div className="px-6 lg:px-0 ml-28">
-         <div className="flex items-center ">
+      <div className="flex items-center ">
         <div className="float-left py-2">
           <Link
             to="/"
@@ -98,7 +98,7 @@ const ProductPage = () => {
           </Link>
         </div>
         <div className="px-2">
-        <FaArrowRight className="" />
+          <FaArrowRight className="" />
         </div>
         <div className="py-3">Sản Phẩm</div>
       </div>

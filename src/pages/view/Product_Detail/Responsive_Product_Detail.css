@@ -364,12 +364,13 @@
         margin-right: 92px;
         font-size: 10px;
         margin-top: -15px;
+        width: 350px;
     }
 
     .price {
         margin-top: -12px;
         font-size: 11px;
-        margin-left: -365px;
+        margin-left: -170px;
     }
 
     .flex {
@@ -407,6 +408,10 @@
     .pill-img {
         width: 60px;
         height: 100%;
+    }
+
+    .ima {
+        width: 50px;
     }
 
     .text1 {
@@ -451,7 +456,7 @@
 
     .color p {
         font-size: 12px;
-        margin-top: 15px;
+        margin-top: 25px;
     }
 
     .image1 {
@@ -479,7 +484,6 @@
     button.btn-b {
         width: 27%;
         height: 42px;
-        margin-left: 16px;
     }
 
     .quantity p {

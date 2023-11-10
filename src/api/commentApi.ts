@@ -21,10 +21,13 @@ const commentApi = createApi({
     }),
     endpoints: (builder) => ({
         getComments: builder.query<IComment[], void>({
-            query: () => '/comment',
+            query: () => `/comment`,
             providesTags: ['Comment']
         }),
-
+        getCommentByUser: builder.query<IComment[], void>({
+            query: (userId) => `/comment?userId=${userId}`,
+            providesTags: ['Comment']
+        }),
         getCommentById: builder.query<IComment, number | string>({
             query: (id) => `/comment/${id}/detail`,
             providesTags: ['Comment']
@@ -41,14 +44,14 @@ const commentApi = createApi({
             }),
             invalidatesTags: ['Comment']
         }),
-        removeComment: builder.mutation<IComment,any>({
-            query: ({id,userId}) => ({
+        removeComment: builder.mutation<IComment, any>({
+            query: ({ id, userId }) => ({
                 url: `/comment/${id}/remove?userId=${userId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Comment']
         }),
-        removeCommentAdmin: builder.mutation<any,any>({
+        removeCommentAdmin: builder.mutation<any, any>({
             query: (id) => ({
                 url: `/comments/${id}/admin`,
                 method: 'DELETE',
@@ -82,7 +85,8 @@ export const {
     useRemoveCommentAdminMutation,
     useRemoveCommentMutation,
     useUpdateCommentAdminMutation,
-    useUpdateCommentMutation
+    useUpdateCommentMutation,
+    useGetCommentByUserQuery
 } = commentApi;
 export const commentReducer = commentApi.reducer;
 export default commentApi

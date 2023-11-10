@@ -5,4 +5,9 @@ export interface IComment {
     productId?: string
     description?: string
     rating?: number
+    image?: any
+    colorId?: string
+    sizeId?: string
+    materialId?: string
+    orderId?: string
 }

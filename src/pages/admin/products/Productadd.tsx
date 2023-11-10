@@ -4,13 +4,13 @@ import { useGetMaterialQuery } from '@/api/materialApi';
 import { useAddProductMutation } from '@/api/productApi';
 import { useAddImageMutation, useDeleteImageMutation } from '@/api/uploadApi';
 import { Button, Form, Input, Upload, Select, message, InputNumber } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 type FieldType = {
     product_name?: string;
@@ -32,8 +32,10 @@ const Productadd = () => {
     const [fileList, setFileList] = useState<RcFile[]>([]);
     const [imageUrl, setImageUrl] = useState<any>([]);
     const navigate = useNavigate();
+    const [productDescription, setProductDescription] = useState('');
 
     const onFinish = (values: any) => {
+        values.description = productDescription
         if (imageUrl.length > 0) {
             values.image = imageUrl;
             addProduct(values).then(() => {
@@ -59,6 +61,9 @@ const Productadd = () => {
     const props: UploadProps = {
         name: 'image',
         fileList: fileList, // Sử dụng state fileList
+        customRequest: async ({ file }: any) => {
+            console.log(file);
+        },
         onChange(info: any) {
             if (info.file) {
                 const formData = new FormData();
@@ -79,7 +84,7 @@ const Productadd = () => {
                     console.error(error);
                 }
                 if (info.file.status === 'error') {
-                    message.error(`${info.file.name} upload thất bại.`);
+                    message.error(`${info.file.name} upload ảnh thất bại.`);
                 } else if (info.file.status === 'removed') {
                     const publicId = info.file.uid;
                     (async () => {
@@ -96,11 +101,11 @@ const Productadd = () => {
     };
 
     const validatePositiveNumber = (_: any, value: any) => {
-        if(parseFloat(value) < 0) {
-          return Promise.reject("Giá trị phải là số dương");
+        if (parseFloat(value) < 0) {
+            return Promise.reject("Giá trị phải là số dương");
         }
         return Promise.resolve();
-      }
+    }
     return (
         <div className="container-fluid mb-7">
             <div className="row">
@@ -124,18 +129,18 @@ const Productadd = () => {
                             rules={[{ required: true, message: 'Tên sản phẩm không được để trống!' },
                             {
                                 validator: (_, value) => {
-                                  if (!value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
                                     return Promise.resolve();
-                                  }
-                                  if (/ {2,}/.test(value)) {
-                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                  }
-                                  return Promise.resolve();
                                 },
-                              },
+                            },
                             { min: 2, message: "Nhập ít nhất 2 ký tự" }
-                        ]}
-                        hasFeedback
+                            ]}
+                            hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <Input placeholder='Tên sản phẩm' />
@@ -146,10 +151,10 @@ const Productadd = () => {
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             rules={[{ required: true, message: 'Trường giá không được để trống!' },
-                            {validator: validatePositiveNumber},
+                            { validator: validatePositiveNumber },
                             { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                             hasFeedback
-                            
+
                             style={{ marginLeft: '20px' }}
                         >
                             <InputNumber style={{ width: '100%' }} />
@@ -159,13 +164,13 @@ const Productadd = () => {
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
                             id="images" name="image" label="Ảnh" rules={[{ required: true, message: 'Ảnh không được để trống' }]}
-                            >
+                        >
                             <Upload {...props} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
                                     setFileList([...fileList, file]);
                                 }}
-                                
+
                             >
                                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
                             </Upload>
@@ -225,7 +230,18 @@ const Productadd = () => {
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
-                            <TextArea rows={4} />
+                            <CKEditor
+                                editor={ClassicEditor}
+                                config={{
+                                    mediaEmbed: {
+                                        previewsInData: true
+                                    }
+                                }}
+                                onChange={(event, editor) => {
+                                    const data = editor.getData();
+                                    setProductDescription(data);
+                                }}
+                            />
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
                             <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">

@@ -4,26 +4,31 @@ import { useGetOrderByUserIdQuery } from "@/api/orderApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { format } from "date-fns";
 import { Skeleton } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useGetStatusQuery } from "@/api/statusApi";
 import { Pagination } from "@mui/material";
+import Comment from "@/components/Comment";
 const Order = () => {
   const [currentStatus, setCurrentStatus] = useState("all"); // Mặc định hiển thị tất cả
   const [filteredOrders, setFilteredOrders] = useState([]);
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const commentAdded = searchParams.get("commentAdded");
   const {
     data,
     error,
     isLoading: isLoadingFetching,
+    refetch
   } = useGetOrderByUserIdQuery<any>(id);
   const orders = data?.order;
   const { data: status, isLoading: isLoadingStatus }: any = useGetStatusQuery();
   const Status = isLoadingStatus ? [] : status?.status;
   // -------Phân trang--------
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; 
+  const itemsPerPage = 4;
 
   const handlePageChange = (event: any, page: any) => {
     setCurrentPage(page);
@@ -47,7 +52,10 @@ const Order = () => {
   };
   useEffect(() => {
     if (isLoadingFetching) return;
-
+    if (commentAdded === "true") {
+      // Thực hiện refetch danh sách đơn hàng
+      refetch();
+    }
     if (currentStatus === "all") {
       setFilteredOrders(orders);
     } else {
@@ -56,7 +64,7 @@ const Order = () => {
       );
       setFilteredOrders(filtered);
     }
-  }, [isLoadingFetching, currentStatus, orders]);
+  }, [isLoadingFetching, currentStatus, orders, commentAdded]);
 
 
   const formatCurrency = (number: number) => {
@@ -118,6 +126,9 @@ const Order = () => {
                 key={order._id}
               >
                 <div className="flex justify-start items-center mx-5">
+                  {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-white p-2 rounded-sm">
+                    Đã đánh giá
+                  </div> : ''}
                   <img
                     width="100"
                     height="100"
@@ -146,13 +157,14 @@ const Order = () => {
                   </p>
                   <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white">
                     <Link
-                      className="ctorder"
+                      className="ctorder text-white"
                       to={`/user/orders/${order._id}/orderdetail`}
                       style={{ textDecoration: "none", color: "black" }}
                     >
                       Chi tiết
                     </Link>
                   </button>
+                  {order && order.hasReviewed === false && order.status._id == '64e8a93da63d2db5e8d8562d' ? <Comment order={order} /> : ''}
                 </div>
 
               </div>

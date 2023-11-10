@@ -14,7 +14,7 @@ import {
 import { useGetBrandQuery } from "@/api/brandApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
-import { Button, Image, Skeleton, Tooltip } from "antd";
+import { Button, Skeleton, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import {
   useGetChildProductByProductIdQuery,
@@ -83,7 +83,13 @@ const Product_Detail = () => {
         removeComment({ id, userId })
           .unwrap()
           .then(() => {
-            Swal.fire("Xoá thành công!", "success");
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Đánh giá thành công thành công!',
+              showConfirmButton: true,
+              timer: 700
+            });
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Hiển thị thông báo hủy xóa sản phẩm
@@ -280,12 +286,12 @@ const Product_Detail = () => {
   return (
     <div className="container_swap">
       <div className="container">
-        <div className="flex items-center ml-16">
+        <div className="flex items-center ml-16 mt-2">
           <div className="float-left font-bold">Trang Chủ</div>
           <FaArrowRight className="ml-2" />
-          <div className="pl-2 font-bold">{categoryLishOne}</div>
+          <div className="pl-2">{categoryLishOne}</div>
           <FaArrowRight className="ml-2" />
-          <div className="pl-2 font-bold">{listOneData?.product_name}</div>
+          <div className="pl-2">{listOneData?.product_name}</div>
         </div>
         <div className="content">
           <div className="flex">
@@ -293,11 +299,11 @@ const Product_Detail = () => {
               {listOneData?.product_name}
             </h3>
             {childProduct ? (
-              <p className="price">
+              <p className="price3">
                 {formatCurrency(childProduct?.product?.product_price)}₫
               </p>
             ) : (
-              <p className="price">
+              <p className="price3">
                 {formatCurrency(listOneData?.product_price)}₫
               </p>
             )}
@@ -335,13 +341,13 @@ const Product_Detail = () => {
                 })}
               </div>
               <ul
-                className="mb-5 flex list-none flex-col flex-wrap pl-0 md:flex-row"
+                className="mb-5 flex list-none flex-wrap pl-0 md:flex-row"
                 id="pills-tab"
                 role="tablist"
                 data-te-nav-ref
               >
                 {listOneData?.image?.map((img: any, index: any) => (
-                  <li role="presentation" key={img.publicId}>
+                  <li className="ima" role="presentation" key={index}>
                     <Link
                       to={`#image-tab-${index}`}
                       className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
@@ -575,16 +581,39 @@ const Product_Detail = () => {
                         <footer className="flex items-center footer1">
                           <div className="evaluate">
                             <div className="inline-flex items-center mr-3 text-xs text-gray-900 dark:text-white font-semibold">
-                              <Image
+                              {comment && comment.userId.avatar ? <img
+                                src={comment?.userId.avatar?.url}
                                 className="mr-2 w-8 h-8 rounded-full avatar"
-                              // src={comment?.userId.avatar?.url}
-                              />
+                              /> : <img
+                                src='https://static.thenounproject.com/png/363640-200.png'
+                                className="mr-2 w-8 h-8 rounded-full avatar"
+                              />}
                               <a className="cm-name">
-                                {comment.userId?.last_name}
+                                {comment.userId?.first_name} {comment.userId?.last_name}
                               </a>
                               <a className="cm-name1 font-normal ">
                                 {comment.formattedCreatedAt}
                               </a>
+                              {comment && comment.userId._id == id ? (
+                                <div className="button-wrapper float-right">
+                                  <Button
+                                    className="text-red-500 "
+                                    size="small"
+                                    onClick={() =>
+                                      deleteComment({
+                                        id: comment._id,
+                                        userId: comment.userId._id,
+                                      })
+                                    }
+                                  >
+                                    {isRemoveLoading ? (
+                                      <AiOutlineLoading3Quarters className="animate-spin" />
+                                    ) : (
+                                      <FaTrashCan style={{ width: "10px" }} />
+                                    )}
+                                  </Button>
+                                </div>
+                              ) : null}
                             </div>
                           </div>
                         </footer>
@@ -602,42 +631,22 @@ const Product_Detail = () => {
                             )}
                           </div>
 
-                          {comment.userId ? (
-                            <div className="button-wrapper">
-                              <Button
-                                className="text-red-500"
-                                size="small"
-                                onClick={() =>
-                                  deleteComment({
-                                    id: comment._id,
-                                    userId: comment.userId._id,
-                                  })
-                                }
-                              >
-                                {isRemoveLoading ? (
-                                  <AiOutlineLoading3Quarters className="animate-spin" />
-                                ) : (
-                                  <FaTrashCan style={{ width: "10px" }} />
-                                )}
-                              </Button>
-                            </div>
-                          ) : null}
+
                         </div>
 
                         <p className="ml-16 text-gray-500 dark:text-gray-400">
                           {comment.description}
                         </p>
                         <div className="product-small">
-                          <img
-                            className="image5"
-                            src="https://bizweb.dktcdn.net/100/368/970/products/ban-tra-go-tu-nhien-bt136-600x600.jpg?v=1577206353823"
-                            alt=""
-                          />
-                          <img
-                            className="image6"
-                            src="https://bizweb.dktcdn.net/100/368/970/products/ke-ti-vi-phong-khach-doc-dao-600x600.jpg?v=1577206265990"
-                            alt=""
-                          />
+                          {comment && comment?.image.map((img: any) => {
+                            return (
+                              <img key={img?.publicId}
+                                className="image5"
+                                src={img?.url}
+                              />
+                            )
+                          })}
+
                         </div>
                       </article>
                     ))

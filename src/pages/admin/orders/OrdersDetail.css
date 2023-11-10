@@ -1,9 +1,10 @@
 .order-image {
     width: 150px !important;
     height: 150px !important;
-    margin-top: 35px;
-    margin-left: 25px;
+    margin-top: 30px;
+    margin-right: 25px;
     margin-bottom: 25px;
+    float: left;
 }
 
 .ttdh {
@@ -14,8 +15,7 @@
 }
 
 .ord {
-    float: right;
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 .ord-img {
@@ -24,8 +24,7 @@
 
 .order-products {
     font-size: 13px;
-    margin-right: 200px;
-    margin-top: 10px !important;
+    margin-top: 7px !important;
 }
 
 .mp {

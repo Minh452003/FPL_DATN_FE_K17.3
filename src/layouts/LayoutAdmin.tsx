@@ -7,7 +7,7 @@ import { FaAccusoft } from "react-icons/fa";
 import { AiFillMessage, AiOutlineAntDesign, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
-import { BiSolidCoupon } from 'react-icons/bi';
+import { BiNews, BiSolidCoupon } from 'react-icons/bi';
 import { useGetProductsQuery } from '@/api/productApi';
 
 
@@ -155,6 +155,12 @@ const LayoutAdmin = () => {
             <Link to={'materials'} className="a">
               <span className="icon"><FaAccusoft /></span>
               <span className="text1">Vật liệu</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'news'} className="a">
+              <span className="icon"><BiNews /></span>
+              <span className="text1">Tin tức</span>
             </Link>
           </li>
           <li>

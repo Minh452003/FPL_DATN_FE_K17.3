@@ -330,7 +330,7 @@ const PayPage = () => {
     // Lấy ngày hiện tại
     const validCoupons = coupons.filter((coupon: any) => {
         // Kiểm tra xem ngày hiện tại có trước ngày hết hạn trong phiếu giảm giá không
-        return carts && carts.data.total >= coupon.min_purchase_amount && currentDate <= new Date(coupon.expiration_date);
+        return carts && coupon.coupon_quantity > 0 && carts.data.total >= coupon.min_purchase_amount && currentDate <= new Date(coupon.expiration_date);
     });
     const cartCouponId = carts && carts.data.couponId;
 
