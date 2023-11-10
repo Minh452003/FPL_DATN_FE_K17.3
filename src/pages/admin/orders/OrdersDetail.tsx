@@ -169,7 +169,7 @@ const OrdersDetail = () => {
                                     <div className="mp">
                                         <div className="row">
                                             <div className="ord-img shadow-lg">
-                                                <Image
+                                                <img
                                                     src={order?.image}
                                                     className="order-image"
                                                 />
@@ -187,7 +187,7 @@ const OrdersDetail = () => {
                                     </div>
                                 </div>
                             )
-                        }) : 'Lỗi'}
+                        }) : <Skeleton />}
                     </div>
                 </div>
             </div>

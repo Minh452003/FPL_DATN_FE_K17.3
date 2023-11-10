@@ -18,7 +18,7 @@ const Header = () => {
   };
   const logout = () => {
     localStorage.removeItem('accessToken');
-    window.location.href='/signin';
+    window.location.href = '/signin';
   }
 
   return (
@@ -117,7 +117,7 @@ const Header = () => {
                       )}
                       <li>
                         <Link
-                          to="account"
+                          to="/user/profile"
                           className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
                         >
                           Thông tin tài khoản
@@ -125,7 +125,7 @@ const Header = () => {
                       </li>
                       <li>
                         <Link
-                          to=""
+                          to="/signup"
                           className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
                         >
                           Đăng ký

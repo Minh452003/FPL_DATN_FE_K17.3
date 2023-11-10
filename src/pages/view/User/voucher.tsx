@@ -31,7 +31,7 @@ const Voucher = () => {
               </div>
               <div>Giảm tối đa {couponItem.discount_amount}k</div>
               <div className="mt-3 text-xs font-light">HSD: {format(new Date(couponItem.expiration_date), "dd/MM/yyyy")}</div>
-              <Link to={'/carts'} className="text-red-400 cursor-pointer no-underline hover:font-semibold">Dùng ngay </Link>
+              <Link to={'/pay'} className="text-red-400 cursor-pointer no-underline hover:font-semibold">Dùng ngay </Link>
             </div>
           </div>
         ))}

@@ -13,8 +13,8 @@ const Commentdetail = () => {
       name: comment.userId,
       email: comment.userId,
       description: comment.description,
-      rating:comment.rating,
-      formattedCreatedAt:comment.formattedCreatedAt
+      rating: comment.rating,
+      formattedCreatedAt: comment.formattedCreatedAt
     };
   });
 
@@ -23,7 +23,7 @@ const Commentdetail = () => {
       title: 'Tên khách hàng',
       dataIndex: 'name',
       key: 'name',
-      render: (record: any) => <div>{record?.first_name}</div>
+      render: (record: any) => <div>{record?.first_name} {record?.last_name}</div>
     },
     {
       title: 'Gmail',
@@ -36,7 +36,7 @@ const Commentdetail = () => {
       key: 'description',
     },
     {
-      title: 'Sao',
+      title: 'Đánh giá(*)',
       dataIndex: 'rating',
       key: 'rating',
     },
@@ -50,9 +50,9 @@ const Commentdetail = () => {
   return (
     <div>
       <div className="container">
-      <h3 className="font-semibold py-3">Danh sách đánh giá của sản phẩm</h3>
-      <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
-    </div>
+        <h3 className="font-semibold py-3">Danh sách đánh giá của sản phẩm</h3>
+        <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
+      </div>
     </div>
   );
 };

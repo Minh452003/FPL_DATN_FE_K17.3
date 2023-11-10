@@ -60,14 +60,13 @@ import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCusto
 import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
 import OrdersManager from "./pages/admin/orders/OrdersManager";
 
-import Newslist from "./pages/admin/news/newsList";
-import NewsAdd from "./pages/admin/news/newsAdd";
-import NewsTrash from "./pages/admin/news/newsTrash";
-import NewsUpdate from "./pages/admin/news/newsUpdate";
-
 import Listcomments from "./pages/admin/comment/Listcomments";
 import Commentdetail from "./pages/admin/comment/Commentdetail";
 import Category_Detail from "./pages/view/Category_Detail/Category_Detail";
+import Newslist from "./pages/admin/news/NewsList";
+import NewsAdd from "./pages/admin/news/NewsAdd";
+import NewsTrash from "./pages/admin/news/NewsTrash";
+import NewsUpdate from "./pages/admin/news/NewsUpdate";
 
 
 

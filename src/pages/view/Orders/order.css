@@ -1,4 +1,238 @@
+:root {
+    --text-light-color: #fffffe;
+    --text-dark-color: #27272a;
+    --card-bg-color: #eff0f3;
+    --primary-color: #ff8e3c;
+    --secondary-color: #d9376e;
+    --header-xl-py-6: 4rem;
+}
+
+
 .ctorder {
     color: #FFF !important;
     width: 30px !important;
+}
+
+/* Bình luận */
+.rating {
+    display: inline-flex;
+    margin-top: -10px;
+    flex-direction: row-reverse;
+}
+
+.rating>input {
+    display: none;
+}
+
+.review_rating {
+    font-size: 10px;
+    color: #f4ca16;
+    cursor: pointer;
+}
+
+.review_rating1 {
+    font-size: 20px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.rating>label {
+    position: relative;
+    width: 28px;
+    font-size: 35px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.rating>label::before {
+    content: '\2605';
+    position: absolute;
+    opacity: 0;
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before {
+    opacity: 1 !important;
+}
+
+.rating>input:checked~label:before {
+    opacity: 1;
+}
+
+.rating:hover>input:checked~label:before {
+    opacity: 0.4;
+}
+
+.comment-box {
+    padding: 5px;
+}
+
+.comment-area textarea {
+    resize: none;
+    border: none;
+}
+
+.send {
+    width: 20%;
+    color: #fff;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send:hover {
+    color: #fff;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.send:disabled {
+    cursor: not-allowed !important;
+}
+
+.cmt-input {
+    background-color: white !important;
+    border-bottom: 1px solid gray !important;
+    border-radius: none !important;
+    outline: none !important;
+    padding-left: 1.2rem;
+}
+
+/* css binh luan */
+.container-comment {
+    width: 100%;
+    height: 100%;
+    /* margin: 20px;
+    padding: 20px; */
+    /* border: solid gray; */
+    /* box-shadow: 0px 0 10px 3px lightgrey; */
+}
+
+.dg {
+    font-family: Oswald, sans-serif;
+}
+
+.container-star {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.swip-left {
+    position: absolute;
+    left: -1000px;
+    transition: 3s;
+}
+
+.star {
+    margin: 30px 30px 30px 30px;
+    float: left;
+}
+
+.text-redline {
+    color: var(--secondary-color);
+}
+
+.s {
+    font-family: Oswald, sans-serif;
+    border: 2px solid #00c1e4;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 3px 30px 5px;
+    color: #01d9ff;
+    transition: 0.3s;
+    font-weight: bold;
+    background-color: white;
+}
+
+.s:hover {
+    background-color: #00c1e4;
+    color: white;
+}
+
+.s-select {
+    background-color: #00c1e4;
+    color: white;
+}
+
+.ad {
+    font-family: Oswald, sans-serif;
+    font-size: 20px;
+    float: left;
+}
+
+.back-btn {
+    color: var(--secondary-color);
+    transition: 0.5s;
+    cursor: pointer;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-btn:hover {
+    box-shadow: 0px 0px 10px #ffb4c2;
+}
+
+.comment {
+    margin: 0;
+}
+
+.img2 {
+    width: 5%;
+    border-radius: 50%;
+    float: left;
+    max-height: 50px;
+    object-fit: cover;
+
+}
+
+.comment-left {
+    width: 100%;
+    height: 100%;
+
+}
+
+.comment-right {
+    padding-left: 6%;
+
+
+}
+
+.name {
+    font-size: 15px;
+    font-family: "Helvetica Neue", Helvetica, Arial, 文泉驛正黑, "WenQuanYi Zen Hei", "Hiragino Sans GB", "儷黑 Pro", "LiHei Pro", "Heiti TC", 微軟正黑體, "Microsoft JhengHei UI", "Microsoft JhengHei", sans-serif;
+    ;
+    font-weight: normal;
+    line-height: 14px;
+
+}
+
+.star2 {
+    font-size: 10px;
+
+}
+
+.date {
+    margin-top: 15px;
+}
+
+.comment-user {
+    font-size: 17px;
+    font-family: "Helvetica Neue", Helvetica, Arial, 文泉驛正黑, "WenQuanYi Zen Hei", "Hiragino Sans GB", "儷黑 Pro", "LiHei Pro", "Heiti TC", 微軟正黑體, "Microsoft JhengHei UI", "Microsoft JhengHei", sans-serif;
+    ;
+    font-weight: normal;
+    line-height: 14px;
+    margin: 8px 0 15px 0;
+}
+
+.img3 {
+    width: 20%;
+    height: 15%;
 }

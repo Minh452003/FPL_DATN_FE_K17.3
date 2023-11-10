@@ -2,18 +2,17 @@ import { useGetNewsQuery } from "@/api/newsApi";
 import { GrNext, GrPrevious } from "react-icons/gr";
 
 const News = () => {
-  const { data } = useGetNewsQuery();
-  console.log(data);
+  const { data } = useGetNewsQuery<any>();
   const newList = data?.news?.docs;
   console.log(newList);
 
   return (
     <div className="max-w-7xl mx-auto ">
-  
+
       <h1 className="text-2xl font-bold  py-4">Tin Tức Nội Thất</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
         {newList &&
-          newList.map((newsItem:any, index:number) => (
+          newList.map((newsItem: any, index: number) => (
             <div key={index} className="bg-white p-4 rounded shadow">
               <div className="flex gap-3">
                 <a href="#" className=" group flex basis-1/3">

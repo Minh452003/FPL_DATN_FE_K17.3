@@ -19,7 +19,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState } from "react";
 import './productAdmin.css'
 const Productlist = () => {
-  const { data,isLoading:isLoadingProducts } = useGetProductsQuery();
+  const { data, isLoading: isLoadingProducts } = useGetProductsQuery();
   const { data: categories } = useGetCategoryQuery<any>();
   const { data: brands } = useGetBrandQuery<any>();
   const { data: materials } = useGetMaterialQuery<any>();
@@ -28,7 +28,7 @@ const Productlist = () => {
   const [selectedBrand, setSelectedBrand] = useState("all");
   const [removeProduct, { isLoading: isRemoveLoading }] =
     useRemoveProductMutation();
-  const products =isLoadingProducts ? []: data?.product.docs;
+  const products = isLoadingProducts ? [] : data?.product.docs;
   const category = categories?.category?.docs;
   const brand = brands?.brand;
   const material = materials?.material;
@@ -142,6 +142,7 @@ const Productlist = () => {
       title: "Ảnh",
       dataIndex: "image",
       key: "image",
+      width: 100, // Điều chỉnh chiều rộng của cột "STT"
     },
     {
       title: "Giá",

@@ -69,11 +69,10 @@ const UserPage = () => {
                   <li>
                     <Link
                       to="/user/profile"
-                      className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      <a href="" className="text-black float-left mt-1 mr-1">
+                      className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      <p className="text-black float-left mt-1 mr-1">
                         <ImProfile />
-                      </a>{" "}
+                      </p>{" "}
                       Hồ sơ
                     </Link>
                   </li>
@@ -84,7 +83,7 @@ const UserPage = () => {
             <li>
               <Link
                 to="/user/orders"
-                className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover.bg-gray-100 hover.text-gray-700"
+                className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               >
                 <div className="text-black float-left mt-1 mr-1">
                   <FaCartPlus />
@@ -95,22 +94,22 @@ const UserPage = () => {
             <li>
               <Link
                 to=""
-                className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover.bg-gray-100 hover.text-gray-700"
+                className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               >
-                <a href="" className="text-black float-left mt-1 mr-1">
+                <p className="text-black float-left mt-1 mr-1">
                   <FaBell />
-                </a>{" "}
+                </p>{" "}
                 Thông báo
               </Link>
             </li>
             <li>
               <Link
                 to="/user/voucher"
-                className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover.bg-gray-100 hover.text-gray-700"
+                className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               >
-                <a href="" className="text-black float-left mt-1 mr-1">
+                <p className="text-black float-left mt-1 mr-1">
                   <BiSolidCoupon />
-                </a>{" "}
+                </p>{" "}
                 Kho voucher
               </Link>
             </li>

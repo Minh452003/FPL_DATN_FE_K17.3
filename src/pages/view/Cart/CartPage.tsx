@@ -56,11 +56,11 @@ const CartPage = () => {
     }
     const formatCurrency = (number: number | undefined) => {
         if (number !== undefined) {
-          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         } else {
-          return "0"; // Giá trị mặc định hoặc xử lý khác
+            return "0"; // Giá trị mặc định hoặc xử lý khác
         }
-      }
+    }
 
     const columns = [
         {
@@ -168,11 +168,11 @@ const CartPage = () => {
             <h1 className='pt-10 pb-10'>Giỏ hàng của bạn</h1>
             <Table dataSource={productsInCart} columns={columns} className='custom-table' />
             <div className='pt-20 pb-10'>
-                <button className="w-60 h-12  bg-slate-600 text-white font-bold ">TIẾP TỤC MUA HÀNG</button>
-                <span className='float-right font-bold'>Tổng tiền : <Link to={'/'} className='pl-4  ' style={{ textDecoration: 'none', color: '#FF0606' }}>{formatCurrency(carts.data.total)}₫</Link></span>
+                <button className="w-60 h-12 bg-slate-600 text-white font-bold "><Link style={{ textDecoration: "none", color: "white", cursor: 'pointer' }} to={'/'}>TIẾP TỤC MUA HÀNG</Link></button>
+                <span className='float-right font-bold'>Tổng tiền : <Link to={''} className='pl-4  ' style={{ textDecoration: 'none', color: '#FF0606' }}>{formatCurrency(carts.data.total)}₫</Link></span>
             </div>
             <div className='pb-20'>
-                <button className="w-60 h-12   bg-slate-600 text-white font-bold float-right "><Link style={{ textDecoration: "none", color: "white", cursor: 'pointer' }} to={'/pay'}>TIẾN HÀNH THANH TOÁN</Link></button>
+                <button className="w-60 h-12 bg-slate-600 text-white font-bold float-right "><Link style={{ textDecoration: "none", color: "white", cursor: 'pointer' }} to={'/pay'}>TIẾN HÀNH THANH TOÁN</Link></button>
             </div>
 
         </div>

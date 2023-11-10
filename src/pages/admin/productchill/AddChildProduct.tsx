@@ -1,28 +1,19 @@
 import {
-  useAddChildProductMutation,
-  useGetChildProductByProductIdQuery,
+  useAddChildProductMutation
 } from "@/api/chilProductApi";
 import { useGetColorsQuery } from "@/api/colorApi";
-import { useGetProductsQuery } from "@/api/productApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
-import { IChildProduct } from "@/interfaces/childProduct";
-import { Button, Form, Input, InputNumber, Select, Spin } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Form, InputNumber, Select, Spin } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 const AddChildProduct = () => {
-  // const { data: Products, isLoading: isLoadingProducts }: any =useGetProductsQuery();
   const { productId }: any = useParams<string>();
-  console.log(productId);
-  
-  const { data, isLoading: isLoadingChildProducts }: any =useGetChildProductByProductIdQuery<IChildProduct>(productId);
   const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
   const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
-  const [addChildProduct] = useAddChildProductMutation();
+  const [addChildProduct, resultAdd] = useAddChildProductMutation();
   const colors = isLoadingColors ? [] : Colors?.color;
   const sizes = isLoadingSizes ? [] : Sizes?.size;
-  const childProducts = isLoadingChildProducts ? [] : data;
- 
+
 
   const navigate = useNavigate();
 
@@ -37,8 +28,6 @@ const AddChildProduct = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-      console.log(dataToSend);
-      
         navigate(`/admin/products/childProduct/${productId}`);
       });
     } catch (error) {
@@ -58,7 +47,7 @@ const AddChildProduct = () => {
     sizeId?: string;
   };
   const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) < 0) {
+    if (parseFloat(value) < 0) {
       return Promise.reject("Giá trị phải là số dương");
     }
     return Promise.resolve();
@@ -70,7 +59,7 @@ const AddChildProduct = () => {
           <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">
             Thêm Sản Phẩm Con
           </h5>
-          {isLoadingChildProducts && isLoadingColors && isLoadingSizes ? (
+          {resultAdd.isLoading && isLoadingColors && isLoadingSizes ? (
             <Spin className="pt-5" tip="Loading" size="large">
               <div></div>
             </Spin>
@@ -91,7 +80,7 @@ const AddChildProduct = () => {
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                 rules={[{ required: true, message: "Giá sản phẩm không được để trống!" },
-                {validator: validatePositiveNumber},
+                { validator: validatePositiveNumber },
                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                 hasFeedback
                 style={{ marginLeft: "20px" }}
@@ -105,7 +94,7 @@ const AddChildProduct = () => {
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                 rules={[{ required: true, message: "Số lượng sản phẩm không được để trống!" },
-                {validator: validatePositiveNumber},
+                { validator: validatePositiveNumber },
                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                 hasFeedback
                 style={{ marginLeft: "20px" }}

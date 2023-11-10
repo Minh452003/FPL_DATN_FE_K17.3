@@ -12,9 +12,9 @@ const CouponsList = () => {
   const { data, error, isLoading }: any = useGetCouponQuery();
   const [removeCoupon, { isLoading: isRemoveLoading }] = useRemoveCouponMutation();
   const coupon = data?.coupon
-  const dataSource = coupon?.map(({_id, coupon_name, coupon_code, coupon_content, 
-    coupon_quantity, discount_amount, expiration_date, min_purchase_amount}: ICoupon) => {
-      const formattedExpirationDate = expiration_date ? format(new Date(expiration_date), 'dd/MM/yyyy') : '';
+  const dataSource = coupon?.map(({ _id, coupon_name, coupon_code, coupon_content,
+    coupon_quantity, discount_amount, expiration_date, min_purchase_amount }: ICoupon) => {
+    const formattedExpirationDate = expiration_date ? format(new Date(expiration_date), 'dd/MM/yyyy') : '';
     return {
       key: _id,
       coupon_name,
@@ -58,12 +58,12 @@ const CouponsList = () => {
   }
   const columns = [
     {
-      title: 'Tên phiếu giảm giá',
+      title: 'Phiếu giảm giá',
       dataIndex: 'coupon_name',
       key: 'coupon_name',
     },
     {
-      title: 'Mã phiếu giảm giá',
+      title: 'Mã giảm giá',
       dataIndex: 'coupon_code',
       key: 'coupon_code',
     },
@@ -73,12 +73,12 @@ const CouponsList = () => {
       key: 'coupon_content',
     },
     {
-      title: 'Số lượng phiếu giảm giá',
+      title: 'Số lượng',
       dataIndex: 'coupon_quantity',
       key: 'coupon_quantity',
     },
     {
-      title: 'Số tiền chiết khấu',
+      title: '% giảm giá (1-100%)',
       dataIndex: 'discount_amount',
       key: 'discount_amount',
     },
@@ -88,27 +88,27 @@ const CouponsList = () => {
       key: 'expiration_date',
     },
     {
-        title: 'Số tiền mua tối thiểu',
-        dataIndex: 'min_purchase_amount',
-        key: 'min_purchase_amount',
-      },
+      title: 'Số tiền mua tối thiểu',
+      dataIndex: 'min_purchase_amount',
+      key: 'min_purchase_amount',
+    },
     {
       title: 'Chức năng',
       render: ({ key: _id }: any) => {
         return (
-            <div style={{ width: '150px' }}>
-                <Button className='mr-1 text-red-500' onClick={() => deleteCoupon(_id)}>
-                {isRemoveLoading ? (
-                    <AiOutlineLoading3Quarters className="animate-spin" />
-                ) : (
-                    <FaTrashCan />
-                )}
-                </Button>
-                <Button className='mr-1 text-blue-500'>
-                <Link to={`/admin/coupons/edit/${_id}`}><FaWrench /></Link>
-                </Button>
-            </div>
-          
+          <div style={{ width: '150px' }}>
+            <Button className='mr-1 text-red-500' onClick={() => deleteCoupon(_id)}>
+              {isRemoveLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <FaTrashCan />
+              )}
+            </Button>
+            <Button className='mr-1 text-blue-500'>
+              <Link to={`/admin/coupons/edit/${_id}`}><FaWrench /></Link>
+            </Button>
+          </div>
+
         )
       }
     },
