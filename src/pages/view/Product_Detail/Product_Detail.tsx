@@ -50,10 +50,15 @@ const Product_Detail = () => {
   const { data: comment, isLoading: isLoadingComment }: any =
     useGetCommentByProductIdQuery(idProduct || "");
   const [addCart, resultAdd] = useAddCartMutation();
-  const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
+  const [quantity, setQuantity] = useState(1);
   const [activeColor, setActiveColor] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(false);
+  const [selectedRating, setSelectedRating] = useState("Tất cả");
+
+  const handleRatingFilter = (rating: any) => {
+    setSelectedRating(rating);
+  };
 
   //comment
   const [removeComment, { isLoading: isRemoveLoading }] =
@@ -69,6 +74,13 @@ const Product_Detail = () => {
     // Kiểm tra xem commentProductDetail tồn tại và có ít nhất một phần tử
     averageRating = totalRating / commentProductDetail.length;
   }
+  const filteredComments = commentProductDetail.filter((comment: any) => {
+    if (selectedRating === "Tất cả") {
+      return true; // Show all comments
+    } else {
+      return comment.rating === selectedRating; // Show comments with the selected rating
+    }
+  });
   const roundedAverageRating: number = Number(averageRating.toFixed(1));
   const deleteComment = ({ id, userId }: any): any => {
     Swal.fire({
@@ -85,11 +97,11 @@ const Product_Detail = () => {
           .unwrap()
           .then(() => {
             Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Đánh giá thành công thành công!',
+              position: "center",
+              icon: "success",
+              title: "Đánh giá thành công thành công!",
               showConfirmButton: true,
-              timer: 700
+              timer: 700,
             });
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -351,10 +363,11 @@ const Product_Detail = () => {
                   <li className="ima" role="presentation" key={index}>
                     <Link
                       to={`#image-tab-${index}`}
-                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
-                        ? "bg-primary-100 text-primary-700"
-                        : "bg-neutral-700 text-white"
-                        } md:mr-4 `}
+                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${
+                        selectedIndex === index
+                          ? "bg-primary-100 text-primary-700"
+                          : "bg-neutral-700 text-white"
+                      } md:mr-4 `}
                       id={`image-tab-${index}`}
                       data-te-toggle="tab"
                       key={`tab-${index}`}
@@ -407,8 +420,9 @@ const Product_Detail = () => {
                           key={color.colorId}
                           aria-label="M"
                           aria-disabled="false"
-                          className={`btn2 btn-solid-primary2 btn-b ${isActive ? "active1" : ""
-                            }`}
+                          className={`btn2 btn-solid-primary2 btn-b ${
+                            isActive ? "active1" : ""
+                          }`}
                           onClick={() => handleClickColor(color.colorId)}
                         >
                           {colorname.colors_name}
@@ -434,8 +448,9 @@ const Product_Detail = () => {
                           key={size.sizeId}
                           aria-label="M"
                           aria-disabled="false"
-                          className={`btn2 btn-solid-primary2 btn-b ${isActive ? "active1" : ""
-                            }`}
+                          className={`btn2 btn-solid-primary2 btn-b ${
+                            isActive ? "active1" : ""
+                          }`}
                           onClick={() => handleClickSize(size.sizeId)}
                           type="submit"
                         >
@@ -544,37 +559,55 @@ const Product_Detail = () => {
             <div id="chi-tiet-content">
               <br />
               <div className="max-w-4xl mx-auto px-4">
-                <div className="text-gray-500 dark:text-gray-400" dangerouslySetInnerHTML={{ __html: listOneData?.description }}></div>
+                <div
+                  className="text-gray-500 dark:text-gray-400"
+                  dangerouslySetInnerHTML={{ __html: listOneData?.description }}
+                ></div>
               </div>
             </div>
             <div id="binh-luan-content">
               <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
                 <div>
                   <div className="font-semibold text-2xl mb-4">
-                    Đánh giá sản phẩm{" "}
+                    Đánh giá sản phẩm
                   </div>
-                  <div className="max-w-4xl mx-auto px-4">
-                    <span style={{ fontSize: "1.5em" }}>
-                      {roundedAverageRating}
-                    </span>
-                    trên 5
-                    {commentProductDetail
-                      ? ` (${commentProductDetail.length} lượt đánh giá)`
-                      : " (0)"}
-                  </div>
-                  <div className="max-w-4xl mx-auto px-4 flex mb-6">
-                    {Array.from(
-                      { length: Math.round(roundedAverageRating) },
-                      (_, index) => (
-                        <AiFillStar key={index} style={{ color: "orange" }} />
-                      )
-                    )}
+                  <div className="flex">
+                    <div className=" max-w-4xl mx-auto px-4">
+                      <span style={{ fontSize: "1.5em" }}>
+                        {roundedAverageRating}{" "}
+                      </span>
+                      trên 5
+                      {commentProductDetail
+                        ? ` (${commentProductDetail.length} đánh giá)`
+                        : " (0)"}
+                         <div className=" mx-auto flex">
+                      {Array.from(
+                        { length: Math.round(roundedAverageRating) },
+                        (_, index) => (
+                          <AiFillStar key={index} style={{ color: "orange" }} />
+                        )
+                      )}
+                    </div>
+                    </div>
+                    <div className="rating-buttons">
+                      {[1, 2, 3, 4, 5, "Tất cả"].map((rating) => (
+                        <button
+                          key={rating}
+                          onClick={() => handleRatingFilter(rating)}
+                          className={`rating-button ${
+                            selectedRating === rating ? "selected" : ""
+                          }`}
+                        >
+                          {rating === "Tất cả" ? "Tất cả" : `${rating} sao`}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <hr className="w-72" />
                 <div className="max-w-4xl mx-auto px-4">
-                  {comment ? (
-                    commentProductDetail.map((comment: any) => (
+                  {filteredComments.length > 0 ? (
+                    filteredComments.map((comment: any) => (
                       <article
                         key={comment._id}
                         className="p-6 text-base bg-white rounded-lg dark:bg-gray-900"
@@ -582,15 +615,20 @@ const Product_Detail = () => {
                         <footer className="flex items-center footer1">
                           <div className="evaluate">
                             <div className="inline-flex items-center mr-3 text-xs text-gray-900 dark:text-white font-semibold">
-                              {comment && comment.userId.avatar ? <img
-                                src={comment?.userId.avatar?.url}
-                                className="mr-2 w-8 h-8 rounded-full avatar"
-                              /> : <img
-                                src='https://static.thenounproject.com/png/363640-200.png'
-                                className="mr-2 w-8 h-8 rounded-full avatar"
-                              />}
+                              {comment && comment.userId.avatar ? (
+                                <img
+                                  src={comment?.userId.avatar?.url}
+                                  className="mr-2 w-8 h-8 rounded-full avatar"
+                                />
+                              ) : (
+                                <img
+                                  src="https://static.thenounproject.com/png/363640-200.png"
+                                  className="mr-2 w-8 h-8 rounded-full avatar"
+                                />
+                              )}
                               <a className="cm-name">
-                                {comment.userId?.first_name} {comment.userId?.last_name}
+                                {comment.userId?.first_name}{" "}
+                                {comment.userId?.last_name}
                               </a>
                               <a className="cm-name1 font-normal ">
                                 {comment.formattedCreatedAt}
@@ -631,23 +669,22 @@ const Product_Detail = () => {
                               )
                             )}
                           </div>
-
-
                         </div>
 
                         <p className="ml-16 text-gray-500 dark:text-gray-400">
                           {comment.description}
                         </p>
                         <div className="product-small">
-                          {comment && comment?.image.map((img: any) => {
-                            return (
-                              <img key={img?.publicId}
-                                className="image5"
-                                src={img?.url}
-                              />
-                            )
-                          })}
-
+                          {comment &&
+                            comment?.image.map((img: any) => {
+                              return (
+                                <img
+                                  key={img?.publicId}
+                                  className="image5"
+                                  src={img?.url}
+                                />
+                              );
+                            })}
                         </div>
                       </article>
                     ))
@@ -696,98 +733,99 @@ const Product_Detail = () => {
                         >
                           {similarProducts
                             ? similarProducts.map(
-                              (similar: any, index: any) => (
-                                <SwiperSlide
-                                  style={{
-                                    width: "285px",
-                                    marginLeft: "27px",
-                                  }}
-                                  key={similar._id}
-                                >
-                                  <div
-                                    className="items slick-slides slick-currents slick-actives"
-                                    tabIndex={-1}
-                                    role="option"
-                                    aria-describedby={`slick-slide${index + 10
-                                      }`}
+                                (similar: any, index: any) => (
+                                  <SwiperSlide
                                     style={{
-                                      width: "235px",
-                                      marginLeft: "-18px",
-                                      // marginRight: "37px",
+                                      width: "285px",
+                                      marginLeft: "27px",
                                     }}
-                                    data-slick-index={`${index}`}
-                                    aria-hidden="false"
+                                    key={similar._id}
                                   >
-                                    <div className="col-item5s">
-                                      <div className="item-inners">
-                                        <div className="product-wrappers">
-                                          <div className="thumb-wrappers">
-                                            <Link
-                                              to={""}
-                                              className="thumbs flips"
-                                              title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                              tabIndex={0}
-                                            >
-                                              <img
-                                                className="lazyloads loadeds"
-                                                src={similar.image[0].url}
-                                              />
-                                            </Link>
+                                    <div
+                                      className="items slick-slides slick-currents slick-actives"
+                                      tabIndex={-1}
+                                      role="option"
+                                      aria-describedby={`slick-slide${
+                                        index + 10
+                                      }`}
+                                      style={{
+                                        width: "235px",
+                                        marginLeft: "-18px",
+                                        // marginRight: "37px",
+                                      }}
+                                      data-slick-index={`${index}`}
+                                      aria-hidden="false"
+                                    >
+                                      <div className="col-item5s">
+                                        <div className="item-inners">
+                                          <div className="product-wrappers">
+                                            <div className="thumb-wrappers">
+                                              <Link
+                                                to={""}
+                                                className="thumbs flips"
+                                                title="Bàn trà gỗ tự nhiên 5CBT-136"
+                                                tabIndex={0}
+                                              >
+                                                <img
+                                                  className="lazyloads loadeds"
+                                                  src={similar.image[0].url}
+                                                />
+                                              </Link>
+                                            </div>
                                           </div>
-                                        </div>
-                                        <div className="item-infos">
-                                          <div className="info-inners">
-                                            <h3 className="item-titles">
-                                              {" "}
-                                              <Link to={""} tabIndex={0}>
-                                                {similar.product_name}{" "}
-                                              </Link>{" "}
-                                            </h3>
-                                            <div className="item-contents">
-                                              <div className="item-prices">
-                                                <div className="price-boxs">
-                                                  <p className="special-prices">
-                                                    <span className="prices">
-                                                      {formatCurrency(
-                                                        similar?.product_price
-                                                      )}
-                                                      ₫
-                                                    </span>
-                                                  </p>
+                                          <div className="item-infos">
+                                            <div className="info-inners">
+                                              <h3 className="item-titles">
+                                                {" "}
+                                                <Link to={""} tabIndex={0}>
+                                                  {similar.product_name}{" "}
+                                                </Link>{" "}
+                                              </h3>
+                                              <div className="item-contents">
+                                                <div className="item-prices">
+                                                  <div className="price-boxs">
+                                                    <p className="special-prices">
+                                                      <span className="prices">
+                                                        {formatCurrency(
+                                                          similar?.product_price
+                                                        )}
+                                                        ₫
+                                                      </span>
+                                                    </p>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
-                                          </div>
 
-                                          <div className="actionss hidden-xs hidden-sm remove_html">
-                                            <form>
-                                              <input
-                                                type="hidden"
-                                                tabIndex={0}
-                                              />
-                                              <button
-                                                className="buttons btn-carts"
-                                                title="Mua hàng"
-                                                type="button"
-                                                tabIndex={0}
-                                              >
-                                                <Link
-                                                  onClick={scrollToTop}
-                                                  to={`/products/${similar._id}`}
+                                            <div className="actionss hidden-xs hidden-sm remove_html">
+                                              <form>
+                                                <input
+                                                  type="hidden"
+                                                  tabIndex={0}
+                                                />
+                                                <button
+                                                  className="buttons btn-carts"
+                                                  title="Mua hàng"
+                                                  type="button"
+                                                  tabIndex={0}
                                                 >
-                                                  Chi tiết
-                                                </Link>
-                                              </button>
-                                              <Model products={similar} />
-                                            </form>
+                                                  <Link
+                                                    onClick={scrollToTop}
+                                                    to={`/products/${similar._id}`}
+                                                  >
+                                                    Chi tiết
+                                                  </Link>
+                                                </button>
+                                                <Model products={similar} />
+                                              </form>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </SwiperSlide>
+                                  </SwiperSlide>
+                                )
                               )
-                            )
                             : "Không có sản phẩm liên quan"}
                         </div>
                       </div>
