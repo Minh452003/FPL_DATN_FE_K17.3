@@ -236,3 +236,83 @@
     width: 20%;
     height: 15%;
 }
+
+.remove:hover {
+    opacity: 100 !important;
+    background-color: #ff7600 !important;
+    color: #FFF !important;
+    padding: 7px 7px 7px 7px;
+}
+
+/*  */
+.icon-container {
+    font-size: 10px !important;
+    background-color: #ff7600;
+    opacity: 0.9;
+}
+
+.animated-icon {
+    animation: drive 2s linear infinite;
+    font-size: 24px;
+}
+
+@keyframes drive {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/*  */
+.slider-itemss .actionss button.buttons.btn-carts.btn-more {
+    margin-right: 2px;
+    transition: all 0.5s;
+}
+
+.slider-itemss .actionss button.buttons.btn-carts {
+    padding: 0 !important;
+    width: 0;
+    opacity: 0;
+    font-size: 0;
+    transition: all 0.3s;
+    display: inline-block;
+    margin-left: 2px;
+}
+
+.slider-itemss .col-item1s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item2s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item3s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item4s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item5s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item6s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item7s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item8s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item9s:hover .actionss button.buttons.btn-carts,
+.slider-itemss .col-item10s:hover .actionss button.buttons.btn-carts {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.col-item1s:hover .actionss button.buttons.btn-carts,
+.col-item2s:hover .actionss button.buttons.btn-carts,
+.col-item3s:hover .actionss button.buttons.btn-carts,
+.col-item4s:hover .actionss button.buttons.btn-carts,
+.col-item5s:hover .actionss button.buttons.btn-carts,
+.col-item6s:hover .actionss button.buttons.btn-carts,
+.col-item7s:hover .actionss button.buttons.btn-carts,
+.col-item8s:hover .actionss button.buttons.btn-carts,
+.col-item9s:hover .actionss button.buttons.btn-carts,
+.col-item10s:hover .actionss button.buttons.btn-carts {
+    border: 1px solid #ff7600;
+    height: 40px;
+}
+
+.actionss button.buttons.btn-carts {
+
+    line-height: 14px;
+}

@@ -1,6 +1,6 @@
 import "swiper/css";
 import "swiper/css/navigation";
-import { useGetOrderByUserIdQuery } from "@/api/orderApi";
+import { useGetOrderByUserIdQuery, useRemoveOrderMutation } from "@/api/orderApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { format } from "date-fns";
 import { Skeleton } from "antd";
@@ -9,10 +9,13 @@ import { useEffect, useState } from "react";
 import { useGetStatusQuery } from "@/api/statusApi";
 import { Pagination } from "@mui/material";
 import Comment from "@/components/Comment";
+import Swal from "sweetalert2";
+import { LiaCarSideSolid } from 'react-icons/lia'
 const Order = () => {
   const [currentStatus, setCurrentStatus] = useState("all"); // Mặc định hiển thị tất cả
   const [filteredOrders, setFilteredOrders] = useState([]);
   const decodedToken: any = getDecodedAccessToken();
+  const [removeOrder] = useRemoveOrderMutation()
   const id = decodedToken ? decodedToken.id : null;
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -29,16 +32,14 @@ const Order = () => {
   // -------Phân trang--------
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-
   const handlePageChange = (event: any, page: any) => {
     setCurrentPage(page);
   };
   const pageCount = Math.ceil(filteredOrders.length / itemsPerPage);
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedOrders = filteredOrders.slice(startIndex, endIndex);
-  // ---------------
+  // -------------------------------------------
   const handleFilterOrders = (status: string) => {
     setCurrentStatus(status);
     if (status === "all") {
@@ -65,8 +66,38 @@ const Order = () => {
       setFilteredOrders(filtered);
     }
   }, [isLoadingFetching, currentStatus, orders, commentAdded]);
-
-
+  // -------------------------------------------
+  const deleteOrder = (id: any) => {
+    Swal.fire({
+      title: 'Bạn chắc chứ?',
+      text: "Nếu cọc rồi thì sẽ mất tiền cọc!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Vâng, tôi chắc chắn!',
+      cancelButtonText: 'Huỷ'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Xóa sản phẩm
+        removeOrder(id).then(() => {
+          Swal.fire(
+            'Huỷ thành công!',
+            'Đơn hàng của bạn đã được huỷ.',
+            'success'
+          )
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Hiển thị thông báo hủy xóa sản phẩm
+        Swal.fire(
+          'Không huỷ',
+          'Đơn hàng vẫn tồn tại.',
+          'error'
+        )
+      }
+    })
+  }
+  // -------------------------------------------
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -125,10 +156,17 @@ const Order = () => {
                 className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-lg "
                 key={order._id}
               >
+                {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? <div className="absolute text-white p-2 rounded-sm icon-container">
+                  <LiaCarSideSolid className="animated-icon" />Đang giao
+                </div> : ''}
                 <div className="flex justify-start items-center mx-5">
-                  {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-white p-2 rounded-sm">
+                  {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-white p-2 rounded-sm text-sm">
                     Đã đánh giá
                   </div> : ''}
+                  {order && order.status._id == '64e8a93da63d2db5e8d8562a' ? <button className="absolute rounded-sm opacity-0 remove" onClick={() => deleteOrder(order._id)}>
+                    Huỷ đơn hàng
+                  </button> : ''}
+
                   <img
                     width="100"
                     height="100"

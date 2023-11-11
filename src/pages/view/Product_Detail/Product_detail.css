@@ -844,6 +844,137 @@ div .btn-g {
     height: 40px;
 }
 
+/*  */
+.slider-itemss .col-item1s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item2s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item3s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item4s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item5s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item6s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item7s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item8s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item9s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.slider-itemss .col-item10s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.col-item1s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #ff7600;
+    height: 40px;
+}
+
+.col-item2s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
+.col-item3s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
+.col-item4s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
+.col-item5s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
+.col-item6s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
+.col-item7s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
+.col-item8s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
+.col-item9s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
+.col-item10s:hover .actionss button.button.btn-cart {
+    background: #ff7600;
+    color: #fff;
+    height: 40px;
+}
+
 input {
     font-family: inherit;
     font-size: inherit;
@@ -1269,6 +1400,58 @@ button {
     line-height: 14px;
 }
 
+/*  */
+.slider-itemss .actionss button.button.btn-cart.btn-more {
+    margin-right: 2px;
+    transition: all 0.5s;
+}
+
+.slider-itemss .actionss button.button.btn-cart {
+    padding: 0 !important;
+    width: 0;
+    opacity: 0;
+    font-size: 0;
+    transition: all 0.3s;
+    display: inline-block;
+    margin-left: 2px;
+}
+
+.slider-itemss .col-item1s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item2s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item3s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item4s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item5s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item6s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item7s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item8s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item9s:hover .actionss button.button.btn-cart,
+.slider-itemss .col-item10s:hover .actionss button.button.btn-cart {
+    width: 45%;
+    opacity: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.col-item1s:hover .actionss button.button.btn-cart,
+.col-item2s:hover .actionss button.button.btn-cart,
+.col-item3s:hover .actionss button.button.btn-cart,
+.col-item4s:hover .actionss button.button.btn-cart,
+.col-item5s:hover .actionss button.button.btn-cart,
+.col-item6s:hover .actionss button.button.btn-cart,
+.col-item7s:hover .actionss button.button.btn-cart,
+.col-item8s:hover .actionss button.button.btn-cart,
+.col-item9s:hover .actionss button.button.btn-cart,
+.col-item10s:hover .actionss button.button.btn-cart {
+    border: 1px solid #ff7600;
+    height: 40px;
+}
+
+.actionss button.button.btn-cart {
+
+    line-height: 14px;
+}
+
+/*  */
 form {
     display: block;
     margin-top: 0em;

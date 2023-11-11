@@ -67,6 +67,7 @@ import Newslist from "./pages/admin/news/NewsList";
 import NewsAdd from "./pages/admin/news/NewsAdd";
 import NewsTrash from "./pages/admin/news/NewsTrash";
 import NewsUpdate from "./pages/admin/news/NewsUpdate";
+import PrivateRouter from "./PrivateRouter";
 
 
 
@@ -121,7 +122,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/admin',
-        element: < LayoutAdmin />,
+        element: <PrivateRouter>< LayoutAdmin /></PrivateRouter>,
         children: [
             { index: true, element: <Navigate to='dashboard' /> },
             { path: 'dashboard', element: <DashBoardPage /> },

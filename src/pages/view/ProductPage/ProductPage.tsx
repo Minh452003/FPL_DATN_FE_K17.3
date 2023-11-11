@@ -221,7 +221,7 @@ const ProductPage = () => {
                             type="button"
                             tabIndex={0}
                           >
-                            <Link to={''}>
+                            <Link to={`/products/${product?._id}`}>
                               Chi tiết
                             </Link>
                           </button>
