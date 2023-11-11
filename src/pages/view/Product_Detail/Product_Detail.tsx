@@ -32,6 +32,7 @@ import { getDecodedAccessToken } from "@/decoder";
 import Swal from "sweetalert2";
 import { AiFillStar, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaTrashCan } from "react-icons/fa6";
+import Model from "@/components/Model";
 
 const Product_Detail = () => {
   const { idProduct }: any = useParams();
@@ -269,7 +270,7 @@ const Product_Detail = () => {
     });
   };
   if (isLoadingFetching) return <Skeleton />;
-  if (isLoadingChild) return <Skeleton />;
+  // if (isLoadingChild) return <Skeleton />;
   if (isLoadingColor) return <Skeleton />;
   if (isLoadingSize) return <Skeleton />;
   if (isLoadingProduct) return <Skeleton />;
@@ -777,14 +778,7 @@ const Product_Detail = () => {
                                                   Chi tiết
                                                 </Link>
                                               </button>
-                                              <button
-                                                className="buttons btn-carts"
-                                                title="Mua hàng"
-                                                type="button"
-                                                tabIndex={0}
-                                              >
-                                                <Link to={""}>Mua hàng</Link>
-                                              </button>
+                                              <Model products={similar} />
                                             </form>
                                           </div>
                                         </div>

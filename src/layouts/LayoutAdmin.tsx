@@ -9,6 +9,7 @@ import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
 import { BiNews, BiSolidCoupon } from 'react-icons/bi';
 import { useGetProductsQuery } from '@/api/productApi';
+import { checkAndRemoveExpiredData } from '@/checkAndRemoveExpiredData';
 
 
 const LayoutAdmin = () => {
@@ -31,7 +32,9 @@ const LayoutAdmin = () => {
     )
     setSearchResults(results)
   }
-
+  useEffect(() => {
+    checkAndRemoveExpiredData();
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarHidden(prevState => !prevState);
