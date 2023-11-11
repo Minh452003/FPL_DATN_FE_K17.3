@@ -1881,3 +1881,29 @@ p {
     /* Đảm bảo các phần tử nằm trên cùng một hàng */
     align-items: center;
 }
+/* CSS cho nút xếp hạng sao */
+.rating-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2.5rem;
+  }
+  
+  .rating-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 10px; /* Khoảng cách giữa các nút */
+  
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  
+    &.selected {
+      background-color: orange;
+      border: 1px solid orange;
+      color: #fff;
+    }
+  }
