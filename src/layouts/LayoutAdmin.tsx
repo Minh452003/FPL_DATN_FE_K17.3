@@ -8,30 +8,32 @@ import { AiFillMessage, AiOutlineAntDesign, AiOutlineBranches, AiOutlineComment,
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
 import { BiNews, BiSolidCoupon } from 'react-icons/bi';
-import { useGetProductsQuery } from '@/api/productApi';
+import { useGetProductsQuery, useSearchProductsQuery } from '@/api/productApi';
 import { checkAndRemoveExpiredData } from '@/checkAndRemoveExpiredData';
 
 
 const LayoutAdmin = () => {
   const [isSidebarHidden, setSidebarHidden] = useState<boolean>(false);
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [currentList, setCurrentList] = useState('all');
-  const { data } = useGetProductsQuery();
-  const listdata = data?.product.docs;
-  const [searchKeyword, setSearchKeyWord] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const handleSearchChange = (event: any) => {
+    event.preventDefault();
+    setSearchKeyword(event.target.value);
+};
+const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
 
-  const onHandleSearch = (e: any) => {
-    const keyword = e.target.value.toLowerCase();
-    setSearchKeyWord(keyword);
-    searchProduct(keyword);
-  };
+  // const onHandleSearch = (e: any) => {
+  //   const keyword = e.target.value.toLowerCase();
+  //   setSearchKeyWord(keyword);
+  //   searchProduct(keyword);
+  // };
 
-  const searchProduct = (keyword: any) => {
-    const results = listdata.filter(
-      (item: any) => item.product_name.toLowerCase().includes(keyword)
-    )
-    setSearchResults(results)
-  }
+  // const searchProduct = (keyword: any) => {
+  //   const results = listdata.filter(
+  //     (item: any) => item.product_name.toLowerCase().includes(keyword)
+  //   )
+  //   setSearchResults(results)
+  // }
   useEffect(() => {
     checkAndRemoveExpiredData();
   }, []);
@@ -84,6 +86,9 @@ const LayoutAdmin = () => {
     })
   }, [])
 
+  const formatCurrency = (number: number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
   return (
     <div>
       <section id="sidebar" className={isSidebarHidden ? 'hide' : ''}>
@@ -190,7 +195,7 @@ const LayoutAdmin = () => {
               <input type="text"
                 placeholder="Tìm kiếm sản phẩm..."
                 value={searchKeyword}
-                onChange={onHandleSearch}
+                onChange={handleSearchChange}
               />
               <button type="submit" className="search-btn"><BsSearch /></button>
             </div>
@@ -198,36 +203,41 @@ const LayoutAdmin = () => {
 
           <div className='keyword' >
             {searchKeyword && (
-              <div className="rounded-md z-50 absolute mt-5" id="listProduct" style={{ top: '20%', left: '22%', transform: 'translateX(-50%)', width: "31%" }}>
+              <div className="rounded-md z-50 absolute mt-5" id="listProduct" style={{ top: '20%', left: '22%', transform: 'translateX(-50%)', width: "31%", maxHeight: "400px", overflowY: "scroll" }}>
                 <div className='container'>
-                  <div className="p-2 bg-white rounded-md">
-                    {searchResults.length === 0 ? (
-                      <div className="text-center">Không tìm thấy sản phẩm nào</div>
-                    ) : (
-                      searchResults.map((product: any, index) => (
-                        <div key={index}>
-                          <div className="grid grid-cols-[80px,auto] h-full p-2 border rounded-md border-slate-200 gap-y-5 focus:visible">
-                            <div><Link to={`/products/${product?._id}`}>
+                <div className="p-2 bg-white rounded-md">
+                {searchKeyword && searchProducts && searchProducts.product.docs && searchProducts.product.docs.length > 0 ? (
+                    searchProducts.product.docs.map((product: any, index: any) => (
+                      
+                      <div key={index}>
+                        <div className="grid grid-cols-[50px,auto] h-full p-1 rounded-md gap-y-5 focus:visible bg-gray-100 mt-1">
+                          <div>
+                            <Link to={`/products/${product._id}`}>
                               <img
-                                src={product?.image.url}
+                                src={product.image[0].url}
                                 alt="ảnh"
-                                className="transition duration-200 ease-in-out hover:scale-105 md:h-[30px] md:w-[30px]"
+                                className="transition duration-200 ease-in-out hover:scale-105 md:h-[50px] md:w-[50px] ml-2 mt-1"
                               />
                             </Link>
-                            </div>
-                            <div className="gap-y-3">
-                              <Link
-                                to={`/products/${product?._id}`}
-                                className="hover:text-yellow-500 transition duration-200"
-                              >
-                                {product?.product_name}
-                              </Link>
-                            </div>
+                          </div>
+                          <div className="gap-y-3">
+                            <Link
+                              to={`/products/${product._id}`}
+                              className="text-black hover:text-yellow-500 transition duration-200 no-underline ml-4 mt-1 font-semibold"
+                            >
+                              {product.product_name}
+                            </Link>
+                            <p className="text-red-500 ml-4 font-semibold">
+                              {formatCurrency(product.product_price)}₫
+                            </p>
                           </div>
                         </div>
-                      ))
-                    )}
-                  </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center">Không tìm thấy sản phẩm nào</div>
+                  )}
+                </div>
                 </div>
               </div>
             )}

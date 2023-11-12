@@ -34,6 +34,11 @@ const productApi = createApi({
             query: (id) => `/products/views/${id}`,
             providesTags: ['Products']
         }),
+        // api search 
+        searchProducts: builder.query<IProduct[], string>({
+            query: (searchKeyword) => `/products/?q=${searchKeyword}`,
+            providesTags: ['Products'],
+        }),
         addProduct: builder.mutation({
             query: (product: IProduct) => ({
                 url: '/products',
@@ -92,6 +97,7 @@ export const {
     useGetProductByIdQuery,
     useGetProductsDeleteQuery,
     useGetViewProductIdQuery,
+    useSearchProductsQuery,
     useAddProductMutation,
     useRemoveProductMutation,
     useUpdateProductMutation,
