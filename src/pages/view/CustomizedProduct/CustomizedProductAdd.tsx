@@ -32,9 +32,12 @@ const CustomizedProductAdd = () => {
   const [activeSize, setActiveSize] = useState(null);
   const [activeMaterial, setActiveMaterial] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(false);
-  const listOneData = data?.product;;
+  const listOneData = data?.product;
   const navigate = useNavigate();
 
+const [showAllColors, setShowAllColors] = useState(false);
+const [showAllSizes, setShowAllSizes] = useState(false);
+const [showAllMaterials, setShowAllMaterials] = useState(false);
   const { data: catgory }: any = useGetCategoryQuery();
   const categoryLish = catgory?.category.docs;
   const categoryLishOne = categoryLish?.find(
@@ -150,6 +153,7 @@ const CustomizedProductAdd = () => {
       );
     }
   }
+  
   return (
     <div className="container_swap">
       <div className="container1">
@@ -239,7 +243,101 @@ const CustomizedProductAdd = () => {
                 <div className="text2s kjs lps">{categoryLishOne}</div>
               </div>
 
+
               <div className="colors">
+      <p>Màu sắc</p>
+      <div className="flex flex-wrap">
+        {colors ? (
+          colors.color.slice(0, showAllColors ? colors.color.length : 3).map((color: any, index: number) => {
+            const isActive = color._id === activeColor;
+            return (
+              <div key={color._id} className="flex-row mb-2">
+                <button
+                  aria-label="M"
+                  aria-disabled="false"
+                  className={`btn2s btn-solid-primary2s btn-bs ${isActive ? 'active1' : ''}`}
+                  onClick={() => handleClickColor(color._id)}
+                  style={{ height: '50px', width: '120px', fontSize: '12px' }}
+                >
+                  {color.colors_name}
+                </button>
+              </div>
+            );
+          })
+        ) : (
+          <p className="sp2s">Không có màu</p>
+        )}
+        {colors && colors.color.length > 3 && (
+          <button onClick={() => setShowAllColors(!showAllColors)} className={`btn-show-more ${showAllColors ? 'collapses' : 'expand'}`}>
+            {showAllColors ? "Thu gọn" : "Xem thêm"}
+          </button>
+        )}
+      </div>
+    </div>
+
+          <div className="sizes">
+            <p>Kích thước</p>
+            <div className="flex flex-wrap">
+              {sizes ? (
+                sizes.size.slice(0, showAllSizes ? sizes.size.length : 3).map((size: any, index: number) => {
+                  const isActive = size._id === activeSize;
+                  return (
+                    <div key={size._id} className="flex-row mb-2">
+                      <button
+                        aria-label="M"
+                        aria-disabled="false"
+                        className={`btn2s btn-solid-primary2s btn-bs ${isActive ? 'active1' : ''}`}
+                        onClick={() => handleClickSize(size._id)}
+                        style={{ height: "50px", width: "120px", fontSize: "12px" }}
+                      >
+                        {size.size_name}
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="sp2s">Không có kích thước</p>
+              )}
+              {sizes && sizes.size.length > 3 && (
+                <button onClick={() => setShowAllSizes(!showAllSizes)} className="btn-show-more">
+                  {showAllSizes ? "Thu gọn" : "Xem thêm"}
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="materials" >
+            <p>Nguyên vật liệu</p>
+            <div className="flex flex-wrap">
+              {materials ? (
+                materials.material.slice(0, showAllMaterials ? materials.material.length : 3).map((material: any, index: number) => {
+                  const isActive = material._id === activeMaterial;
+                  return (
+                    <div key={material._id} className="flex-row mb-2">
+                      <button
+                        aria-label="M"
+                        aria-disabled="false"
+                        className={`btn2s btn-solid-primary2s btn-bs ${isActive ? 'active1' : ''}`}
+                        onClick={() => handleClickMaterial(material._id)}
+                        style={{ height: "50px", width: "120px", fontSize: "12px" }}
+                      >
+                        {material.material_name}
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="sp2s">Không có nguyên vật liệu</p>
+              )}
+              {materials && materials.material.length > 3 && (
+                <button onClick={() => setShowAllMaterials(!showAllMaterials)} className="btn-show-more1">
+                  {showAllMaterials ? "Thu gọn" : "Xem thêm"}
+                </button>
+              )}
+            </div>
+          </div>
+
+              {/* <div className="colors">
                 <p>Màu sắc</p>
                 <div className="flex">
                   {colors ? colors?.color?.map((color: any) => {
@@ -295,7 +393,7 @@ const CustomizedProductAdd = () => {
                     )
                   }) : <p className="sp2s">Không có nguyên vật liệu</p>}
                 </div>
-              </div>
+              </div> */} 
 
               <div className="flex button1">
                 <button
