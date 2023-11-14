@@ -5,8 +5,6 @@ import { useSignInMutation } from '@/api/authApi';
 import Swal from 'sweetalert2';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IUser } from '@/interfaces/auth';
-import { useLoginGoogleQuery } from '@/api/passportApi';
-
 
 type TypeInputs = {
     email: string,
@@ -17,15 +15,11 @@ const Login = () => {
     const [signIn] = useSignInMutation();
     const { register, handleSubmit, formState: { errors } } = useForm<TypeInputs>()
     const navigate = useNavigate();
-    const loginGoogleQuery = useLoginGoogleQuery();
 
-    
-   
-     const handleGoogleLogin = () => {
+    const handleGoogleLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/google";
-    }   
+    }
     const onSubmit: SubmitHandler<TypeInputs> = async (data: IUser) => {
-        
         const response: any = await signIn(data)
         if (response.error) {
             Swal.fire({
@@ -35,6 +29,7 @@ const Login = () => {
                 showConfirmButton: false,
                 timer: 3000
             })
+            navigate(`/signup/verifyOTP/${response?.error?.data?.otpResponse?.data?.userId}`);
         } else {
             const accessToken: any = response.data.accessToken;
             const expirationTime = new Date().getTime() + 2 * 60 * 60 * 1000; // 2 giờ
@@ -48,9 +43,9 @@ const Login = () => {
                 timer: 2000
             })
             navigate("/")
-        }   
+        }
     }
-   
+
 
     return (
         <div className="system-ui bg-gray-300">
@@ -116,7 +111,7 @@ const Login = () => {
                                     </div>
                                 </div>
                                 <div className="mb-4 flex justify-between">
-                                    <button 
+                                    <button
                                         type='button'
                                         className="flex-1 px-3 py-2 text-sm leading-tight text-white bg-red-500 border rounded shadow appearance-none focus:outline-none focus:shadow-outline flex items-center justify-center"
                                         onClick={handleGoogleLogin}
