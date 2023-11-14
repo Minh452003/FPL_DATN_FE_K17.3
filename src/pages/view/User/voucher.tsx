@@ -27,9 +27,9 @@ const Voucher = () => {
             <img className="w-[100px] h-[100px] mt-3 rounded-md" src="https://cf.shopee.vn/file/vn-11134004-7r98o-llyheem4gvz306" alt="" />
             <div className="py-2 px-2 text-sm font-family ">
               <div className="flex py-1">
-                <div className="">{couponItem.coupon_name}</div>
+                <div><strong>{couponItem.coupon_name}</strong></div>
               </div>
-              <div>Giảm tối đa {couponItem.discount_amount}k</div>
+              <div className=""><i>{couponItem.coupon_content}</i></div>
               <div className="mt-3 text-xs font-light">HSD: {format(new Date(couponItem.expiration_date), "dd/MM/yyyy")}</div>
               <Link to={'/pay'} className="text-red-400 cursor-pointer no-underline hover:font-semibold">Dùng ngay </Link>
             </div>

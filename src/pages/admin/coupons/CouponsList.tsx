@@ -26,6 +26,9 @@ const CouponsList = () => {
       min_purchase_amount
     }
   })
+  const formatCurrency = (number: number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
   const deleteCoupon = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
@@ -68,7 +71,7 @@ const CouponsList = () => {
       key: 'coupon_code',
     },
     {
-      title: 'Nội dung phiếu giảm giá',
+      title: 'Nội dung',
       dataIndex: 'coupon_content',
       key: 'coupon_content',
     },
@@ -78,9 +81,10 @@ const CouponsList = () => {
       key: 'coupon_quantity',
     },
     {
-      title: '% giảm giá (1-100%)',
+      title: 'Chiết khấu',
       dataIndex: 'discount_amount',
       key: 'discount_amount',
+      render: (index: any) => <a>{index}%</a>,
     },
     {
       title: 'Ngày hết hạn',
@@ -91,6 +95,8 @@ const CouponsList = () => {
       title: 'Số tiền mua tối thiểu',
       dataIndex: 'min_purchase_amount',
       key: 'min_purchase_amount',
+      render: (index: any) => <a>{formatCurrency(index)}đ</a>,
+
     },
     {
       title: 'Chức năng',

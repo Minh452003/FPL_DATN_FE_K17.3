@@ -1,10 +1,9 @@
 import { useGetNewsQuery } from "@/api/newsApi";
+import { Link } from "react-router-dom";
 
 const NewsComponent = () => {
-  const { data } = useGetNewsQuery();
-  console.log(data);
+  const { data }: any = useGetNewsQuery();
   const newList = data?.news?.docs;
-  console.log(newList);
 
   return (
     <div className="main-col5">
@@ -30,25 +29,23 @@ const NewsComponent = () => {
                 >
                   <div className="blog_inner border rounded-lg">
                     <div className="blog-img blog-l">
-                      <a
-                        href="/thiet-ke-phong-bep-hien-dai-2020"
-                        title="Thiết kế phòng bếp hiện đại 2020"
+                      <Link
+                        to={''}
                       >
                         <img
                           className="lazyload loaded object-fill h-48 w-96"
                           src={newItems.new_image.url}
                           alt="Thiết kế phòng bếp hiện đại 2020"
                         />
-                      </a>
+                      </Link>
                     </div>
                     <div className="px-3">
                       <h3>
-                        <a
-                          href="/thiet-ke-phong-bep-hien-dai-2020"
-                          title="Thiết kế phòng bếp hiện đại 2020"
+                        <Link
+                          to={''}
                         >
                           {newItems.new_name}
-                        </a>{" "}
+                        </Link>{" "}
                       </h3>
                       <p className="justify">
                         {newItems.new_description}
@@ -59,9 +56,9 @@ const NewsComponent = () => {
               ))}
           </div>
           <div className="view_more">
-            <a href="tin-tuc" title="Xem tất cả">
+            <Link to={''} title="Xem tất cả">
               Xem tất cả
-            </a>
+            </Link>
           </div>
         </div>
       </section>
