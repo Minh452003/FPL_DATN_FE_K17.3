@@ -17,13 +17,13 @@ const Profile = () => {
   return (
     <div className="container-xl ">
       <div className="header ">
-        <h3 className="text-lg font-semibold mt-4 ml-4">Quản Lý Thông Tin Hồ Sơ</h3>
+        <h3 className="text-lg font-semibold md:mt-4 mt-2 md:ml-4">Quản Lý Thông Tin Hồ Sơ</h3>
         <hr />
       </div>
       <div className="bottom flex">
         <div className="left">
           <form action="">
-            <table className="w-[602px] border-collapse border-spacing-0 justify-center">
+            <table className="md:w-[602px] border-collapse border-spacing-0 justify-center">
               <tr className="">
                 <td className="w-20">
                   <label className="pl-4 pb-3 py-3 ">Họ :</label>

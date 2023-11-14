@@ -39,7 +39,7 @@ const UserPage = () => {
           </div>
         </div>
 
-        <div className="mt-10 flex h-screen flex-col justify-between border-e bg-white">
+        <div className="md:mt-10 mt-2 flex md:h-screen flex-col justify-between border-e bg-white">
           <ul>
             <li>
               <details className="group [&_summary::-webkit-details-marker]:hidden">
