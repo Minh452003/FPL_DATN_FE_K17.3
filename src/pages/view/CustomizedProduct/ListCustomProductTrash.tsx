@@ -4,6 +4,9 @@ import Swal from 'sweetalert2';
 import { Pagination } from "@mui/material";
 import { Skeleton } from "antd";
 import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa6";
+import { useState } from "react";
+
 const ListCustomizedProductTrash = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -14,7 +17,8 @@ const ListCustomizedProductTrash = () => {
   } = useGetAllCustomProductDeleteQuery<any>(id);
   const [removeCustomizedProduct] = useRemoveForceCustomProductMutation();
   const [restoreCustomizedProduct] = useRestoreCustomProductMutation();
-  const CustomizedProduct = customProduct?.product;
+  const CustomizedProduct = customProduct?.product || []; 
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
 
   const restoreProduct = (id: any) => {
     Swal.fire({
@@ -74,6 +78,33 @@ const ListCustomizedProductTrash = () => {
       }
     });
   };
+
+  const filteredProducts = CustomizedProduct.filter((product: any) => {
+    if (selectedPriceFilter === "all") {
+      return true; // Trả về tất cả sản phẩm nếu không có bộ lọc giá được chọn
+    } else if (selectedPriceFilter === "100000-1000000") {
+      return product.product_price >= 100000 && product.product_price <= 1000000;
+    } else if (selectedPriceFilter === "1000000-5000000") {
+      return product.product_price >= 1000000 && product.product_price <= 5000000;
+    } else if (selectedPriceFilter === "5000000-10000000") {
+      return product.product_price >= 5000000 && product.product_price <= 10000000;
+    } else if (selectedPriceFilter === "10000000+") {
+      return product.product_price >= 10000000;
+    }
+  });
+  console.log(CustomizedProduct);
+  console.log(selectedPriceFilter);
+  
+  //  Phân trang........................
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedProducts = filteredProducts.slice(startIndex, endIndex);
+  const handlePageChange = (event: any, page: any) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -100,16 +131,49 @@ const ListCustomizedProductTrash = () => {
   }
 
   return (
-    <div className="px-6 lg:px-0 m-28 pt-20">
+    <div className="px-6 lg:px-0 ml-28 ">
+      <div className="flex items-center mb-20">
+        <div className="float-left py-2">
+          <Link
+            to="/"
+            className="font-bold text-black no-underline"
+           
+          >
+            Trang Chủ
+          </Link>
+        </div>
+        <div className="px-2">
+          <FaArrowRight className="" />
+        </div>
+        <div className="py-3 font-semibold"><Link className="no-underline text-black" to={"/customizedProducts"}>Sản phẩm tự thiết kế</Link></div>
+        <div className="px-2">
+          <FaArrowRight className="" />
+        </div>
+        <div className="py-3 font-semibold ">Kho lưu trữ</div>
+      </div>
+      
+      <select
+          id="small"
+          value={selectedPriceFilter}
+          onChange={(e) => setSelectedPriceFilter(e.target.value)}
+          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        //...
+        >
+          <option value="all">Tất cả giá</option>
+          <option value="100000-1000000">100.000-1.000.000</option>
+          <option value="1000000-5000000">1.000.0000-5.000.000</option>
+          <option value="5000000-10000000">5.000.000-10.000.000</option>
+          <option value="10000000+">10.000.000+</option>
+        </select>
       <div>
         <div className="new_title lt clear_pd " style={{ width: "1255px" }}>
           <h4>
-            <a href="/">Sản phẩm thiết kế </a>
+            <a href="/">Kho lữu trữ</a>
           </h4>
         </div>
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
-          {CustomizedProduct.length > 0 ? (
-            CustomizedProduct.map((product: any, index: any) => (
+          {displayedProducts.length > 0 ? (
+            displayedProducts.map((product: any, index: any) => (
               <div
                 key={product?._id}
                 className="item slick-slide slick-current slick-active mt-10"
@@ -216,7 +280,13 @@ const ListCustomizedProductTrash = () => {
         </div>
       </div>
       <div className="flex w-full py-4 justify-center ">
-        <Pagination count={4} variant="outlined" shape="rounded" />
+      <Pagination
+          count={Math.ceil(filteredProducts.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
       </div>
     </div>
   );
