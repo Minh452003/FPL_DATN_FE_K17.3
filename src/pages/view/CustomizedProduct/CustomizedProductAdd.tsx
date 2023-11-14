@@ -337,64 +337,6 @@ const [showAllMaterials, setShowAllMaterials] = useState(false);
             </div>
           </div>
 
-              {/* <div className="colors">
-                <p>Màu sắc</p>
-                <div className="flex">
-                  {colors ? colors?.color?.map((color: any) => {
-                    const isActive = color._id === activeColor; return (
-                      <button
-                        key={color._id}
-                        aria-label="M"
-                        aria-disabled="false"
-                        className={`btn2s btn-solid-primary2s btn-bs ${isActive ? 'active1' : ''}`}
-                        onClick={() => handleClickColor(color._id)}
-                      >
-                        {color.colors_name}
-                      </button>
-                    )
-                  }) : <p className="sp2s">Không có màu</p>}
-                </div>
-              </div>
-              <div className="sizes">
-                <p>Kích thước</p>
-                <div className="flex">
-                  {sizes ? sizes?.size?.map((size: any) => {
-
-                    const isActive = size._id === activeSize;
-                    return (
-                      <button
-                        key={size._id}
-                        aria-label="M"
-                        aria-disabled="false"
-                        className={`btn2s btn-solid-primary2s btn-bs ${isActive ? 'active1' : ''}`}
-                        onClick={() => handleClickSize(size._id)}
-                        type="submit"
-                      >
-                        {size.size_name}
-                      </button>
-                    )
-                  }) : <p className="sp2s">Không có kích thước</p>}
-                </div>
-              </div>
-              <div className="materials">
-                <p>Nguyên vật liệu</p>
-                <div className="flex">
-                  {materials ? materials?.material.map((material: any) => {
-                    const isActive = material._id === activeMaterial; return (
-                      <button
-                        key={material._id}
-                        aria-label="M"
-                        aria-disabled="false"
-                        className={`btn2s btn-solid-primary2s btn-bs ${isActive ? 'active1' : ''}`}
-                        onClick={() => handleClickMaterial(material._id)}
-                      >
-                        {material.material_name}
-                      </button>
-                    )
-                  }) : <p className="sp2s">Không có nguyên vật liệu</p>}
-                </div>
-              </div> */} 
-
               <div className="flex button1">
                 <button
                   aria-label="Decrease"
