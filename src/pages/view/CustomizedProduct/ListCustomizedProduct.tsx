@@ -1,12 +1,13 @@
-import React from 'react';
 import { useGetCustomizedproductsByUserIdQuery, useRemoveCustomProductMutation } from "@/api/CustomizedProductAPI";
 import { getDecodedAccessToken } from "@/decoder";
 import Swal from 'sweetalert2';
 import { Pagination } from "@mui/material";
 import { Button, Skeleton } from "antd";
 import { Link } from "react-router-dom";
-import { useQueryClient } from 'react-query'; 
 import { FaTrash } from 'react-icons/fa';
+import { useState } from "react";
+import { FaArrowRight } from "react-icons/fa6";
+import "./ListCustomizedProduct.css"
 const ListCustomizedProduct = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -16,7 +17,10 @@ const ListCustomizedProduct = () => {
     isLoading: isLoadingFetching,
   } = useGetCustomizedproductsByUserIdQuery<any>(id);
   const [removeCustomizedProduct] = useRemoveCustomProductMutation();
-  const CustomizedProduct = customProduct?.products;
+  const CustomizedProduct = customProduct?.products || [];
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
+  
+  
   const deleteProduct = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
@@ -47,6 +51,33 @@ const ListCustomizedProduct = () => {
       }
     });
   };
+  const filteredProducts = CustomizedProduct.filter((product: any) => {
+    if (selectedPriceFilter === "all") {
+      return true; // Trả về tất cả sản phẩm nếu không có bộ lọc giá được chọn
+    } else if (selectedPriceFilter === "100000-1000000") {
+      return product.product_price >= 100000 && product.product_price <= 1000000;
+    } else if (selectedPriceFilter === "1000000-5000000") {
+      return product.product_price >= 1000000 && product.product_price <= 5000000;
+    } else if (selectedPriceFilter === "5000000-10000000") {
+      return product.product_price >= 5000000 && product.product_price <= 10000000;
+    } else if (selectedPriceFilter === "10000000+") {
+      return product.product_price >= 10000000;
+    }
+  });
+  console.log(CustomizedProduct);
+  console.log(selectedPriceFilter);
+  
+  //  Phân trang........................
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedProducts = filteredProducts.slice(startIndex, endIndex);
+  const handlePageChange = (event: any, page: any) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -73,17 +104,46 @@ const ListCustomizedProduct = () => {
   }
 
   return (
-    <div className="px-6 lg:px-0 m-28 pt-20">
+    <div className="px-6 lg:px-0 ml-28 ">
+    <div className="flex items-center mb-20">
+        <div className="float-left py-2">
+          <Link
+            to="/"
+            className="font-bold text-black "
+            style={{ textDecoration: "none", color: "orange" }}
+          >
+            Trang Chủ
+          </Link>
+        </div>
+        <div className="px-2">
+          <FaArrowRight className="" />
+        </div>
+        <div className="py-3">Sản phẩm tự thiết kế</div>
+      </div>
       <div>
+      <select
+          id="small"
+          value={selectedPriceFilter}
+          onChange={(e) => setSelectedPriceFilter(e.target.value)}
+          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        //...
+        >
+          <option value="all">Tất cả giá</option>
+          <option value="100000-1000000">100.000-1.000.000</option>
+          <option value="1000000-5000000">1.000.0000-5.000.000</option>
+          <option value="5000000-10000000">5.000.000-10.000.000</option>
+          <option value="10000000+">10.000.000+</option>
+        </select>
         <div className="new_title lt clear_pd " style={{ width: "1255px" }}>
           <h4>
             <a href="/">Sản phẩm thiết kế </a>
           </h4>
+          <Button className='m-2 ml-10  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }}  /></Link></Button>
         </div>
-        <Button className='m-2 ml-10  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }}  /></Link></Button>
+        
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
-          {CustomizedProduct.length > 0 ? (
-            CustomizedProduct.map((product: any, index: any) => (
+          {displayedProducts.length > 0 ? (
+            displayedProducts.map((product: any, index: any) => (
               <div
                 key={product?._id}
                 className="item slick-slide slick-current slick-active mt-10"
@@ -181,7 +241,13 @@ const ListCustomizedProduct = () => {
         </div>
       </div>
       <div className="flex w-full py-4 justify-center ">
-        <Pagination count={4} variant="outlined" shape="rounded" />
+      <Pagination
+          count={Math.ceil(filteredProducts.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
       </div>
     </div>
   );
