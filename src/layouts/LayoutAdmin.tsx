@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
 import { TbBrandProducthunt } from 'react-icons/tb';
 import { MdCategory } from 'react-icons/md';
@@ -10,18 +10,36 @@ import '@/layouts/LayoutAdmin.css'
 import { BiNews, BiSolidCoupon } from 'react-icons/bi';
 import { useGetProductsQuery, useSearchProductsQuery } from '@/api/productApi';
 import { checkAndRemoveExpiredData } from '@/checkAndRemoveExpiredData';
+import { getDecodedAccessToken } from '@/decoder';
+import { useGetUserByIdQuery } from '@/api/authApi';
 
 
 const LayoutAdmin = () => {
   const [isSidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [currentList, setCurrentList] = useState('all');
+  const [isLogout, setLogout] = useState(false);
+  const { data } = useGetProductsQuery();
+  const listdata = data?.product.docs;
+  const decodedToken: any = getDecodedAccessToken();
+  const iduser = decodedToken ? decodedToken.id : null;
+  const { data: user, isLoading, isError } = useGetUserByIdQuery(iduser);
+  const [searchKeyword, setSearchKeyWord] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const navigate = useNavigate()
+  const logout = () => {
+    localStorage.removeItem("status");
+    localStorage.removeItem("accessToken")
+      navigate("/");
+      setLogout(true);
+    
+  };
   const handleSearchChange = (event: any) => {
     event.preventDefault();
     setSearchKeyword(event.target.value);
 };
 const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
-
+  
   // const onHandleSearch = (e: any) => {
   //   const keyword = e.target.value.toLowerCase();
   //   setSearchKeyWord(keyword);
@@ -251,7 +269,45 @@ const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
             <span className="num">8</span>
           </Link>
           <Link to="#" className="profile">
-            <img src="https://i.pinimg.com/170x/6b/62/20/6b6220e809e48ee2226f725edfcbc957.jpg" alt="" />
+          {user && (
+             <div className="relative mr-5 group">
+              <div className="py-2">
+                 <img
+                className=" block rounded-full"
+                width={5}
+               src={
+                 user.avatar?.url ||
+                 `https://res.cloudinary.com/dndyxqosg/image/upload/v1699260603/hhegkbrro5wwaxpjkuwx.png`
+               }
+               alt=""
+             />
+              </div>
+              
+               <ul
+               className={`hidden group-hover:block absolute  absolute z-50 w-[150px] bg-white right-[25px] top-[10px] mt-[30px] `}
+             >
+               <li>
+                 <Link
+                   to="/user/profile"
+                   className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
+                 >
+                   Thông tin tài khoản
+                 </Link>
+               </li>
+               <li>
+                 <Link
+                   to=""
+                   onClick={logout}
+                   className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
+                 >
+                   Đăng xuất
+                 </Link>
+               </li>
+             </ul>
+           
+             
+           </div>
+          )}
           </Link>
         </nav >
         <main>
