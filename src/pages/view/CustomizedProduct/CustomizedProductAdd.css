@@ -4,7 +4,61 @@
     margin-left: 4px;
     margin-top: 10px;
     max-width: 1000%;
-    height: 1358px;
+    height: 1062px; 
+    transition: height 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .container_swap.expanded .content1 {
+    height: 1380px;
+    
+  }
+
+  .colors,
+.sizes,
+.materials {
+  margin-top: 10px; 
+  transition: height 0.3s ease; 
+  flex: 1;
+}
+
+.btn-show-more,
+.btn-show-more1 {
+  width: 100px;
+  font-size: 14px;
+  cursor: pointer;
+  color: blue;
+  font-weight: bold;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-show-more::before,
+.btn-show-more1::before {
+  content: '\00bb';
+  font-size: 16px;
+  margin-left: -6px;
+}
+
+.collapses {
+  visibility: inherit;
+}
+
+.collapses:not(.show) {
+  display: block;
+}
+
+.collapses {
+  margin-top: 10px; 
+}
+
+
+.collapses .btn-show-more,
+.collapses .btn-show-more1 {
+  margin-top: 0;
 }
 
 .ml-16s {
@@ -294,74 +348,3 @@ div .btn-ps {
     height: 40px;
     margin-left: 10px;
 }
-
-
-
-.btn-show-more {
-    
-    height: 30px;
-    width: 100px;
-    font-size: 14px;
-    cursor: pointer;
-    color: blue;
-    font-weight: bold;
-    transition: color 0.3s ease;
-    
-  
-    &.expand {
-        content: '\00bb';
-        font-size: 16px;
-        color: blue;
-        margin-left: -6px;
-    }
-    
-    &.collapses {
-        content: '\00bb';
-        font-size: 16px;
-        margin-left: -274px;
-        color: blue;
-        margin-top: 57px;
-    }
-  }
-  .btn-show-more::before {
-    content: '\00bb'; 
-    font-size: 16px;
-  }
-  .collapses {
-    visibility: inherit;
-    }
-    .collapses:not(.show) {
-        display: block;
-    }
-.btn-show-more1 {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 56px;
-    color: blue;
-    margin-left: -388px;
-    font-weight: bold;
-    transition: color 0.3s ease;
-  }
-  
-  .btn-show-more1::before {
-    content: '\00bb'; 
-    font-size: 16px;
-  }
-  
-  .btn-show-less1::before {
-    content: '\00ab'; 
-    font-size: 16px;
-  }
-  
-  .btn-show-more1,
-  .btn-show-less1 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  
-
-  

@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 
 type FieldType = {
   size_name?: string;
-  size_price?: number;
   size_height?: number;
   size_length?: number;
   size_weight?: number;
@@ -80,19 +79,7 @@ const SizesAdd = () => {
               <Input />
             </Form.Item>
 
-            <Form.Item<FieldType>
-              label="Giá kích cỡ"
-              name="size_price"
-              labelCol={{ span: 24 }}
-              wrapperCol={{ span: 24 }}
-              rules={[{ required: true, message: 'Giá kích cỡ không được để trống!' },
-              {validator: validatePositiveNumber},
-              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
-              style={{ marginLeft: '20px' }}
-          >
-              <InputNumber style={{ width: '100%' }} />
-          </Form.Item>
+            
 
           <Form.Item<FieldType>
               label="Chiều cao kích cỡ"
