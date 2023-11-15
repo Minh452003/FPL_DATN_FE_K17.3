@@ -71,6 +71,7 @@ import PrivateRouter from "./PrivateRouter";
 import Banneradd from "./pages/admin/banners/Banneradd";
 import Bannerupdate from "./pages/admin/banners/Bannerupdate";
 import Bannerlist from "./pages/admin/banners/Bannerlist";
+import UserUpdate from "./pages/admin/user/UserUpdate";
 
 
 
@@ -169,7 +170,7 @@ export const router = createBrowserRouter([
             {
                 path: 'users', children: [
                     { index: true, element: <Userlist /> },
-
+                    { path:"edit/:id", element: <UserUpdate /> },
                 ],
             },
             {
