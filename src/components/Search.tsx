@@ -1,4 +1,4 @@
-import { useGetProductsQuery, useSearchProductsQuery } from "@/api/productApi";
+import {  useSearchProductsQuery } from "@/api/productApi";
 import { useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import { Link } from 'react-router-dom';

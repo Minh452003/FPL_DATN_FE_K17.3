@@ -1,13 +1,13 @@
 
-import { Table, Image } from 'antd';
+import { Table, Image, Input } from 'antd';
 import { useGetUsersQuery } from '@/api/authApi';
-
+import { useState } from 'react';
+import { IoSearchSharp } from "react-icons/io5";
 
 const Userlist = () => {
   const { data }: any = useGetUsersQuery();
   const user = data?.data;
-  console.log(user);
-
+  const [searchText, setSearchText] = useState('');
   const data1 = user?.map((user: any, index: number) => {
     return {
       key: user._id,
@@ -73,11 +73,22 @@ const Userlist = () => {
     },
   ];
 
+  // Xử lý filter..............
+  const filteredData = data1?.filter((item: any) => {
+    return item.email.toLowerCase().includes(searchText.toLowerCase());
+  });
   return (
     <div className="container">
       <h3 className="font-semibold">Danh sách khách hàng </h3>
+      <Input
+        prefix={<IoSearchSharp style={{ opacity: 0.5 }} /> }
+        placeholder="Tìm kiếm email người dùng..."
+        onChange={(e) => setSearchText(e.target.value)}
+        style={{ marginBottom: '16px', borderRadius: "5px", width:"400px" }}
+        
+      />
       <br />
-      <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
+      <Table dataSource={filteredData} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
     </div>
   );
 }
