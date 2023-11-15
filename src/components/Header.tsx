@@ -33,9 +33,9 @@ const Header = () => {
             <div className="md:flex items-center ">
               <div className="flex md:p-0 pl-3">
                 <img
-                  src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/logo.png?1693834920118"
-                  width={100}
-                  alt=""
+                  src="https://res.cloudinary.com/dkvghcobl/image/upload/v1700052990/hby7nyozorvpib8k7z9h.png"
+                 
+                  alt="Logo Casa"
                 />
               </div>
               <Search />

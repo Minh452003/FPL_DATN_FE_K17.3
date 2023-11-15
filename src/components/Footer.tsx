@@ -55,8 +55,8 @@ const Footer = () => {
  <section>
     <div className="text-center max-w-7xl mx-auto my-5 ">
           <div className="flex justify-center my-5" >
-           <img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/logo.png?1693834920118" alt=""
-           width="200px"/>
+            <img src="https://res.cloudinary.com/dkvghcobl/image/upload/v1700053906/rw3dfdxjaknl7jlvnafj.png" alt="Logo Casa"
+           />
           </div>
         <p className="text-sm px-2">Công ty Cổ phần Đầu tư MewMew là nhà bán lẻ số 1 Việt Nam về doanh thu và lợi nhuận, với mạng lưới hơn 2200 cửa hàng trên toàn quốc. MewMew vận hành các chuỗi cửa hàng - nhà hàng MewFurniture, MewNature, MewINT , MewCoffee . Ngoài ra, MewMew đã mở rộng ra thị trường nước ngoài chuỗi nội thất Mew Furniture tại Các nước khu vực Đông Nam Á.</p>
         
@@ -78,9 +78,6 @@ const Footer = () => {
        </div>
    </div> 
  </div>
-</section>
-<section className="bg-slate-950  ">
-   <div className="max-w-7xl mx-auto mt-5 m-0 p-0 "><p className="text-slate-600 py-3 mb-0">Website bán đồ nội thất <span className="text-white">Casa</span></p></div>
 </section>
 </footer>
   )
