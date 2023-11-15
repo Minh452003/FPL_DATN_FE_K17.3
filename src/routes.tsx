@@ -68,6 +68,9 @@ import NewsAdd from "./pages/admin/news/NewsAdd";
 import NewsTrash from "./pages/admin/news/NewsTrash";
 import NewsUpdate from "./pages/admin/news/NewsUpdate";
 import PrivateRouter from "./PrivateRouter";
+import Banneradd from "./pages/admin/banners/Banneradd";
+import Bannerupdate from "./pages/admin/banners/Bannerupdate";
+import Bannerlist from "./pages/admin/banners/Bannerlist";
 
 
 
@@ -152,6 +155,14 @@ export const router = createBrowserRouter([
                     { path: 'add', element: <NewsAdd /> },
                     { path: 'trash', element: <NewsTrash /> },
                     { path: ':id/edit', element: <NewsUpdate /> },
+                ],
+            },
+
+            {
+                path: 'banners', children: [
+                    { index: true, element: <Bannerlist /> },
+                    { path: 'add', element: <Banneradd /> },
+                    { path: ':id/edit', element: <Bannerupdate /> },
                 ],
             },
 

@@ -14,7 +14,7 @@ import { useAddOrderMutation } from "@/api/orderApi";
 import { usePayMomoMutation, usePayPaypalMutation } from "@/api/paymentApi";
 import { useGetCouponQuery } from "@/api/couponsApi";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import "./PayPage.css"
 type TypeInputs = {
     couponId?: string,
 }
@@ -57,7 +57,12 @@ const PayPage = () => {
     const [type, setType] = useState<any>('');
     const [total, setTotal] = useState<number>(0);
     const { register, handleSubmit } = useForm<TypeInputs>();
+    // css active
+    const [selectedPayment, setSelectedPayment] = useState('');
 
+    const handlePaymentSelection = (paymentMethod: any) => {
+        setSelectedPayment(paymentMethod);
+    };
     const sizeTotal = () => {
         if (productsInCart) {
             const sizesArray = productsInCart.map((product: any) => {
@@ -484,14 +489,17 @@ const PayPage = () => {
                         >
                             <Input.TextArea showCount maxLength={100} style={{ width: 330 }} placeholder="Ghi chú" />
                         </Form.Item>
-                        <div className="ml-4 mt-2 pt-4"><FaChevronLeft className="float-left mt-1" /><Link className="text-blue-900 float-left text-sm" style={{ textDecoration: 'none' }} to={"/carts"}>Quay về giỏ hàng</Link></div>
+                        <div className="ml-2 pt-4 ">
+                            <FaChevronLeft className="float-left mt-2" />
+                            <Link className="text-blue-900 float-left mt-1 font-semibold" style={{ textDecoration: 'none', fontSize: "14px" }} to={"/carts"}>Quay về giỏ hàng</Link>
+                        </div>
                         <Form.Item >
                             <div className="submit h-20">
                                 {pay == 'cod' && total > 5000000 ? <Tooltip title={type ? '' : 'Bạn phải chọn phương thức cọc'}>
-                                    <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: 'rgb(74, 74, 170)', color: 'white' }} >Cọc tiền</Button>
+                                    <Button className="rounded-md  w-36 h-12  float-right font-semibold" htmlType="submit" style={{ background: 'rgb(74, 74, 170)', color: 'white' }} >Cọc tiền</Button>
                                 </Tooltip>
                                     : <Tooltip title={pay ? '' : 'Bạn phải chọn phương thức thanh toán'}>
-                                        <Button className="rounded-md  ml-2 w-36 h-12 mr-2  float-right" htmlType="submit" style={{ background: '#316595', color: 'white' }} >Đặt hàng</Button>
+                                        <Button className="rounded-md  w-36 h-12   float-right font-semibold" htmlType="submit" style={{ background: '#316595', color: 'white' }} >Đặt hàng</Button>
                                     </Tooltip>
                                 }
                             </div>
@@ -501,33 +509,122 @@ const PayPage = () => {
                 {/* --------------------Col 2 --------------------------- */}
                 <div className="rounded-lg">
                     <h3 className="pl-4 font-semibold pb-3">Thanh Toán</h3>
-                    <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 mb-10">
-                        <input type="radio" name="paymentMethod" value={'cod'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán khi giao hàng(COD)
-                        <p className="float-right mr-6 mt-1" style={{ color: '#1990C6' }}><FaMoneyBill1 /></p>
+
+                    <div
+                        className={`border-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5 ${pay === 'cod' ? 'active' : ''
+                            }`}
+                        onClick={() => setPay('cod')}
+                    >
+                        <label className="ml-3 mt-1">
+                            Thanh toán khi giao hàng(COD)
+                            <p className="float-right ml-8 mt-1" style={{ color: '#1990C6' }}>
+                                <FaMoneyBill1 />
+                            </p>
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="cod"
+                                style={{ display: 'none' }}
+                            />
+                        </label>
                     </div>
-                    <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 mb-10">
-                        <input type="radio" name="paymentMethod" value={'momo'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng momo
-                        <img className="w-6 h-6 float-right mr-5 " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnV4cUM7jBauINof35Yn_unOz976Iz5okV8A&usqp=CAU" />
+
+                    <div
+                        className={`border-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5  ${pay === 'momo' ? 'active' : ''
+                            }`}
+                        onClick={() => setPay('momo')}
+                    >
+                        <label className="ml-3 mt-1">
+                            Thanh toán bằng ví momo
+                            <img
+                                className="w-6 h-6 float-right ml-16 mt-1"
+                                style={{ borderRadius: "5px", height: "20px", width: "20px" }}
+                                src="data:image/png;base64,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"
+                            />
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="momo"
+                                style={{ display: 'none' }}
+                            />
+                        </label>
                     </div>
-                    <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5">
-                        <input type="radio" name="paymentMethod" value={'paypal'} onChange={(e: any) => setPay(e.target.value)} /> Thanh toán bằng ví paypal
-                        <img className="w-5 h-5 float-right mr-5 " src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw" />
+
+                    <div
+                        className={`border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5 ${pay === 'paypal' ? 'active' : ''
+                            }`}
+                        onClick={() => setPay('paypal')}
+                    >
+                        <label className="ml-3 mt-1">
+                            Thanh toán bằng ví paypal
+                            <img
+                                className="w-5 h-5 float-right ml-16 mt-1"
+                                style={{ borderRadius: "5px", height: "20px", width: "20px" }}
+                                src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw"
+                            />
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="paypal"
+                                style={{ display: 'none' }}
+                            />
+                        </label>
                     </div>
-                    {pay == 'cod' && Number(total + ship.total) > 5000000 ? <div>
-                        <h3 className="pl-4 font-semibold pb-3 pt-10">Cọc tiền</h3>
-                        <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 mb-10">
-                            <input type="radio" name="deposite" value={'momo'} onChange={(e: any) => setType(e.target.value)} /> Thanh toán bằng momo
-                            <img className="w-6 h-6 float-right mr-5 " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnV4cUM7jBauINof35Yn_unOz976Iz5okV8A&usqp=CAU" />
+
+                    {pay === 'cod' && Number(total + ship.total) > 5000000 ? (
+                        <div>
+                            <h3 className="pl-4 font-semibold pb-3 pt-10">Cọc tiền</h3>
+
+                            <div
+                                className={`order-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5 ${type === 'momo' ? 'active' : ''
+                                    }`}
+                                onClick={() => setType('momo')}
+                            >
+                                <label className="ml-3 mt-1">
+                                    Thanh toán bằng momo
+                                    <img
+                                        className="w-6 h-6 float-right ml-20 mt-1"
+                                        style={{ borderRadius: "5px", height: "20px", width: "20px" }}
+                                        src="data:image/png;base64,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"
+
+                                    />
+                                    <input
+                                        type="radio"
+                                        name="deposite"
+                                        value="momo"
+                                        style={{ display: 'none' }}
+                                    />
+                                </label>
+                            </div>
+
+                            <div
+                                className={`border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5 ${type === 'paypal' ? 'active' : ''
+                                    }`}
+                                onClick={() => setType('paypal')}
+                            >
+                                <label className="ml-3 mt-1">
+                                    Thanh toán bằng ví paypal
+                                    <img
+                                        className="w-5 h-5 float-right ml-16 mt-1"
+                                        style={{ borderRadius: "5px", height: "20px", width: "20px" }}
+                                        src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw"
+                                    />
+                                    <input
+                                        type="radio"
+                                        name="deposite"
+                                        value="paypal"
+                                        style={{ display: 'none' }}
+                                    />
+                                </label>
+                            </div>
                         </div>
-                        <div className="border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5">
-                            <input type="radio" name="deposite" value={'paypal'} onChange={(e: any) => setType(e.target.value)} /> Thanh toán bằng ví paypal
-                            <img className="w-5 h-5 float-right mr-5 " src="https://play-lh.googleusercontent.com/bDCkDV64ZPT38q44KBEWgicFt2gDHdYPgCHbA3knlieeYpNqbliEqBI90Wr6Tu8YOw" />
-                        </div>
-                    </div> : ''}
+                    ) : ''
+                    }
                 </div>
+
                 {/* --------------------Col 3 --------------------------- */}
                 <div className="rounded-lg" style={{ background: '#FAFAFA' }}>
-                    <h3 className="pl-4 font-semibold bt-1">Đơn hàng ({productsInCart.length})</h3>
+                    <h3 className="pl-4 font-semibold bt-1">Đơn hàng ({productsInCart.length} sản phẩm)</h3>
                     <hr />
                     {productsInCart ? productsInCart?.map((product: any) => {
                         const colorname = Colors?.color?.find((colors: any) => colors._id == product.colorId);
@@ -538,8 +635,8 @@ const PayPage = () => {
                                 <img className="w-16 h-16 ml-2 mr-2 rounded float-left" src={product.image} width={50} />
                                 <div className="container-2">
                                     <div className="text-xs float-left w-52 font-semibold">{product.product_name}</div>
-                                    <div className="text-sm float-left mt-1 ml-6 text-gray-500">{formatCurrency(product.product_price)}đ</div>
-                                    <p className="float-right text-xs ml-20 mr-4">x{product.stock_quantity}</p>
+                                    <div className="text-sm float-left ml-10   font-semibold" style={{ fontFamily: "Lato, sans-serif", color: "#f30c28" }}>{formatCurrency(product.product_price)}₫</div>
+                                    <p className="float-right text-xs ml-10 mr-1">x{product.stock_quantity}</p>
                                 </div>
                                 <div className="col-span-2 flex ef">
                                     <div className="text-xs">màu sắc:  {colorname.colors_name}</div>
@@ -559,9 +656,9 @@ const PayPage = () => {
                             {carts && carts.data.couponId ? (
                                 <div>
                                     <form onSubmit={handleSubmit(removeCoupons)}>
-                                        <input type="text" className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10" disabled placeholder={cartCouponName} />
+                                        <input type="text" className="border border-x-gray-950 rounded-md float-left ml-2 w-64 h-10" disabled placeholder={cartCouponName} />
                                         <button
-                                            className="rounded-md ml-2 w-28 h-10"
+                                            className="rounded-md ml-4 w-32 h-10"
                                             style={{ background: '#31AC57', color: 'white', cursor: 'pointer' }}
                                         >
                                             Huỷ
@@ -573,7 +670,7 @@ const PayPage = () => {
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <select
                                             {...register('couponId')}
-                                            className="border border-x-gray-950 rounded-md float-left ml-2 w-72 h-10"
+                                            className="border border-x-gray-950 rounded-md float-left ml-4 w-64 h-10"
                                             defaultValue=""
                                         >
                                             <option value="" disabled>Chọn phiếu giảm giá</option>
@@ -584,7 +681,7 @@ const PayPage = () => {
                                             ))}
                                         </select>
                                         <button
-                                            className="rounded-md ml-2 w-28 h-10"
+                                            className="rounded-md ml-2 w-32 h-10 font-semibold"
                                             style={{ background: '#316595', color: 'white', cursor: 'pointer' }}
                                         >
                                             Áp Dụng
@@ -602,18 +699,26 @@ const PayPage = () => {
                     </div>
 
                     <hr />
-                    <div className="provisional ml-4 mr-6 h-2">
-                        <div >Tạm tính :<p className="price float-right text-gray-500 text-xl">{formatCurrency(carts.data.total)}₫</p></div>
+                    <div className=" mt-4 ml-4 mr-6 h-16">
+                        <div className="float-left font-semibold">Tạm tính:</div>
+                        <p className="text-xl float-right  font-semibold" style={{ fontFamily: "Lato, sans-serif", color: "#f30c28" }} >
+                            {formatCurrency(carts.data.total)}₫</p>
                     </div>
-                    <div className="shipp ml-4 mr-6 h-16">
-                        <div className="float-left">Phí vận chuyển :<p className="price float-right text-gray-500 text-xl">{ship && ship.total ? formatCurrency(ship.total) + '₫' : ''}</p></div>
+                    <div className=" ml-4 mr-6 h-14 mt-2" >
+                        <div className="float-left font-semibold">Phí vận chuyển:</div>
+                        <p className=" float-right  text-xl font-semibold" style={{ fontFamily: "sans-serif", color: "#f30c28" }}>
+                            {ship && ship.total ? formatCurrency(ship.total) + '₫' : ''}
+                        </p>
                     </div>
                     <hr />
-                    <div className="total ml-4 mr-6 h-12">
-                        <p className="float-left">Tổng cộng :</p>  <div className="price float-right text-gray-500 text-xl">{ship && ship.total ? formatCurrency(carts.data.total + ship.total) + '₫' : <p className="sp2">Vui lòng chọn địa chỉ</p>}</div>
-                        <br />
+                    <div className=" mt-5 ml-4 mr-6 h-16" >
+                        <p className="float-left font-semibold">Tổng cộng:</p>
+                        <div className=" float-right  text-xl font-semibold" style={{ fontFamily: "sans-serif", color: "#f30c28" }}>
+                            {ship && ship.total ? formatCurrency(carts.data.total + ship.total) + '₫' : <p className="sp2 font-semibold" style={{ fontFamily: "sans-serif", color: "#f30c28" }}>Vui lòng chọn địa chỉ !</p>}
+                        </div>
                     </div>
-                    <hr />
+
+
                 </div>
             </div>
         </div>

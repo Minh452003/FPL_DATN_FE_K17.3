@@ -12,12 +12,12 @@ const Categorylist = () => {
   const categories = data?.category.docs;
   const [removeCategory, { isLoading: isRemoveLoading }] = useRemoveCategoryMutation()
   const [sortedInfo, setSortedInfo] = useState({} as any);
-  const handleChange = (pagination, filters, sorter) => {
+  const handleChange = (pagination: any, filters: any, sorter: any) => {
     setSortedInfo(sorter);
   };
 
 
-  const data1 = categories?.map((category: any,index: number) => {
+  const data1 = categories?.map((category: any, index: number) => {
     return {
       key: category._id,
       STT: index + 1,
@@ -61,7 +61,7 @@ const Categorylist = () => {
       dataIndex: "STT",
       key: "STT",
       render: (index: any) => <a>{index}</a>,
-      sorter: (a:any, b:any) => a.STT - b.STT, // Sắp xếp theo STT
+      sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
       sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
       ellipsis: true,
     },
@@ -74,7 +74,7 @@ const Categorylist = () => {
       title: 'Danh Mục',
       dataIndex: 'category_name',
       key: 'category_name',
-      sorter: (a:any, b:any) => a.category_name.localeCompare(b.category_name), 
+      sorter: (a: any, b: any) => a.category_name.localeCompare(b.category_name),
       sortOrder: sortedInfo.columnKey === 'category_name' && sortedInfo.order,
       ellipsis: true,
     },
@@ -82,7 +82,8 @@ const Categorylist = () => {
       title: 'Tiền đặt cọc (%)',
       dataIndex: 'price_increase_percent',
       key: 'price_increase_percent',
-      sorter: (a:any, b:any) => a.price_increase_percent - b.price_increase_percent, // Sắp xếp theo giá
+      render: (index: any) => <a>{index}%</a>,
+      sorter: (a: any, b: any) => a.price_increase_percent - b.price_increase_percent, // Sắp xếp theo giá
       sortOrder: sortedInfo.columnKey === "price_increase_percent" && sortedInfo.order,
       ellipsis: true,
     },

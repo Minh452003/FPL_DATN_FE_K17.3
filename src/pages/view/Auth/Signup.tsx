@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '@/api/authApi';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Swal from 'sweetalert2';
-import { IUser } from '@/interfaces/auth';
 
 
 type TypeInputs = {
@@ -21,7 +20,9 @@ const Signup = () => {
     const [signUp] = useSignUpMutation()
     const { register, handleSubmit } = useForm<TypeInputs>();
     const navigate = useNavigate();
-
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:8088/api/auth/google";
+    }
     const onSubmit: SubmitHandler<TypeInputs> = async data => {
 
         const response: any = await signUp(data)
@@ -149,7 +150,7 @@ const Signup = () => {
                                     <button
                                         className="flex-1 px-3 py-2 text-sm leading-tight text-white bg-red-500 border rounded shadow appearance-none focus:outline-none focus:shadow-outline flex items-center justify-center"
                                     >
-                                        <AiOutlineGoogle style={{ marginRight: '4px' }} />    Google
+                                        <AiOutlineGoogle style={{ marginRight: '4px' }} onClick={handleGoogleLogin} />    Google
                                     </button>
                                     <div className="mx-2"></div>
                                     <button

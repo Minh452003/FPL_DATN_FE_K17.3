@@ -61,6 +61,7 @@ const Categories = () => {
                             >
                                 {categories && categories.category.docs.map((category: any, index: any) => (
                                     <SwiperSlide key={category._id} className="col-lg-4 col-md-4 col-sm-4 col-xs-6 a">
+                                    {category && (
                                         <div
                                             className="item slick-slide slick-current slick-active"
                                             tabIndex={-1}
@@ -84,7 +85,8 @@ const Categories = () => {
                                                 </picture>
                                             </Link>
                                         </div>
-                                    </SwiperSlide>
+                                    )}
+                                </SwiperSlide>
                                 ))}
                             </div>
                         </div>

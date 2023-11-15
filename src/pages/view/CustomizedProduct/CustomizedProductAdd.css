@@ -4,7 +4,7 @@
     margin-left: 4px;
     margin-top: 10px;
     max-width: 1000%;
-    height: 700px;
+    height: 1358px;
 }
 
 .ml-16s {
@@ -294,3 +294,74 @@ div .btn-ps {
     height: 40px;
     margin-left: 10px;
 }
+
+
+
+.btn-show-more {
+    
+    height: 30px;
+    width: 100px;
+    font-size: 14px;
+    cursor: pointer;
+    color: blue;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    
+  
+    &.expand {
+        content: '\00bb';
+        font-size: 16px;
+        color: blue;
+        margin-left: -6px;
+    }
+    
+    &.collapses {
+        content: '\00bb';
+        font-size: 16px;
+        margin-left: -274px;
+        color: blue;
+        margin-top: 57px;
+    }
+  }
+  .btn-show-more::before {
+    content: '\00bb'; 
+    font-size: 16px;
+  }
+  .collapses {
+    visibility: inherit;
+    }
+    .collapses:not(.show) {
+        display: block;
+    }
+.btn-show-more1 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 56px;
+    color: blue;
+    margin-left: -388px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .btn-show-more1::before {
+    content: '\00bb'; 
+    font-size: 16px;
+  }
+  
+  .btn-show-less1::before {
+    content: '\00ab'; 
+    font-size: 16px;
+  }
+  
+  .btn-show-more1,
+  .btn-show-less1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+
+  

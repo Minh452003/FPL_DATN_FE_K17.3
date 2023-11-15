@@ -74,7 +74,7 @@ const Product_Detail = () => {
     // Kiểm tra xem commentProductDetail tồn tại và có ít nhất một phần tử
     averageRating = totalRating / commentProductDetail.length;
   }
-  const filteredComments = commentProductDetail.filter((comment: any) => {
+  const filteredComments = commentProductDetail?.filter((comment: any) => {
     if (selectedRating === "Tất cả") {
       return true; // Show all comments
     } else {
@@ -606,7 +606,7 @@ const Product_Detail = () => {
                 </div>
                 <hr className="w-72" />
                 <div className="max-w-4xl mx-auto px-4">
-                  {filteredComments.length > 0 ? (
+                  {filteredComments?.length > 0 ? (
                     filteredComments.map((comment: any) => (
                       <article
                         key={comment._id}
