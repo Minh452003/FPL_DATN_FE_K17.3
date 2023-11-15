@@ -149,17 +149,17 @@ const Order = () => {
             ))}
           </ul>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
+        <div className="md:grid  md:grid-cols-2 gap-3">
           {displayedOrders.map((order: any) => {
             return (
               <div
-                className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-lg "
+                className="md:flex md:flex-row gap-5 border-solid boder-2 border-slate-400 bg-white shadow-lg "
                 key={order._id}
               >
                 {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? <div className="absolute text-white p-2 rounded-sm icon-container">
                   <LiaCarSideSolid className="animated-icon" />Đang giao
                 </div> : ''}
-                <div className="flex justify-start items-center mx-5">
+                <div className="flex justify-start md:top-0 py-2 pt-2 justify-center items-center mx-5">
                   {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-white p-2 rounded-sm text-sm">
                     Đã đánh giá
                   </div> : ''}
@@ -168,13 +168,12 @@ const Order = () => {
                   </button> : ''}
 
                   <img
-                    width="100"
-                    height="100"
-                    src={order.products[0].image}
+                    width="130"
+                    src="https://res.cloudinary.com/dkvghcobl/image/upload/v1686320794/dlu8imwhjnbunqlnvqgq.png"
                     alt="external-free-sales-flaticons-lineal-color-flat-icons"
                   />
                 </div>
-                <div className="flex flex-col font-medium justify-center px-10 py-4 ">
+                <div className="flex flex-col font-medium justify-center px-3 py-3 ">
                   <p>
                     Ngày mua:{" "}
                     <span className="text-[#FF1493]">
