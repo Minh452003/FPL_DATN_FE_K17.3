@@ -1,14 +1,15 @@
-
 import { Table, Image, Input } from 'antd';
 import { useGetUsersQuery } from '@/api/authApi';
 import { useState } from 'react';
 import { IoSearchSharp } from "react-icons/io5";
 
 const Userlist = () => {
-  const { data }: any = useGetUsersQuery();
+  const { data,isloading }: any = useGetUsersQuery();
   const user = data?.data;
+  
   const [searchText, setSearchText] = useState('');
-  const data1 = user?.map((user: any, index: number) => {
+  
+  const data1 =isloading ? []: user?.map((user: any, index: number) => {
     return {
       key: user._id,
       STT: index + 1,
@@ -22,7 +23,8 @@ const Userlist = () => {
           height={80}
           src={user.avatar.url}
         />
-        : "Chưa có ảnh"
+        : "Chưa có ảnh",
+      role:user.role
     }
   });
   const columns = [
@@ -70,6 +72,23 @@ const Userlist = () => {
       dataIndex: 'address',
       key: 'address',
       render: (address: any) => <a>{address}</a>,
+    },
+    {
+      title: 'Chức vụ',
+      dataIndex: 'role',
+      key: 'role',
+    },
+    {
+      title: 'Chức năng',
+      render: ({ key: _id }: any) => {
+        return (
+          <div style={{ width: '150px' }}>
+            <Button className='mr-1 text-blue-500'>
+              <Link to={`/admin/users/edit/${_id}`}><FaWrench /></Link>
+            </Button>
+          </div>
+        )
+      }
     },
   ];
 
