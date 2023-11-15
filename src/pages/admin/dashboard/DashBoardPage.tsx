@@ -489,21 +489,11 @@ const DashBoardPage = () => {
                         <div className="basis-1/2">
                             <div className="p-6 bg-orange-500 text-white rounded-lg shadow-md flex items-center justify-between mt-28 ml-20">
                                 <div>
-                                    <h3 className="text-xl font-semibold mb-2">Tổng đánh giá</h3>
+                                    <h3 className="text-xl font-semibold mb-2">Tổng đánh giá:</h3>
                                     <p className="text-3xl font-bold">{commentSta ? <span>
-                                        <span className="mr-1">{commentSta?.tongdanhgia}</span>
-                                        {Array.from(
-                                            { length: commentSta?.tongdanhgia },
-                                            (_, index) => (
-                                                <AiFillStar
-                                                    key={index}
-                                                    style={{ color: "white" }}
-                                                    className="inline"
-                                                />
-                                            )
-                                        )}
+                                        <span className="mr-1 text-xl">{commentSta?.tongdanhgia} đánh giá</span>
                                     </span> : 0}</p>
-                                    <h3 className="text-lg font-semibold mb-2">Trung bình</h3>
+                                    <h3 className="text-lg font-semibold mb-2">Trung bình:</h3>
                                     <p className="text-xl font-bold">{commentSta ? <span>
                                         <span className="mr-1">{commentSta.trungbinh}</span>
                                         {Array.from(
@@ -517,13 +507,13 @@ const DashBoardPage = () => {
                                             )
                                         )}
                                     </span> : 0}</p>
-                                    <h3 className="text-base font-semibold mb-2">Bình luận tích cực</h3>
+                                    <h3 className="text-base font-semibold mb-2">Đánh giá tích cực:</h3>
                                     <p className="text-base font-bold">{commentSta ? <span>
-                                        <span className="mr-1">{commentSta.tichcuc}</span>
+                                        <span className="mr-1">{commentSta.tichcuc} đánh giá</span>
                                     </span> : 0}</p>
-                                    <h3 className="text-base font-semibold mb-2">Bình luận tiêu cực</h3>
+                                    <h3 className="text-base font-semibold mb-2">Đánh giá tiêu cực:</h3>
                                     <p className="text-base font-bold">{commentSta ? <span>
-                                        <span className="mr-1">{commentSta.tieucuc}</span>
+                                        <span className="mr-1">{commentSta.tieucuc} đánh giá</span>
                                     </span> : 0}</p>
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 50 50" stroke="currentColor"
