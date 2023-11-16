@@ -160,11 +160,7 @@ const CartPage = () => {
     return (
 
         <div className='bg-gray-100 container mx-auto'>
-            {/* <div className="flex items-center ">
-                <div className="float-left">Trang Chủ</div>
-                <FaArrowRight className="ml-2" />
-                <div className="pl-2">Giỏ hàng</div>
-            </div> */}
+            
             <h1 className='pt-10 pb-10'>Giỏ hàng của bạn</h1>
             <Table dataSource={productsInCart} columns={columns} className='custom-table' />
             <div className='pt-20 pb-10'>
