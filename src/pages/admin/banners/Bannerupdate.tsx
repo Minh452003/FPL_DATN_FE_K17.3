@@ -1,19 +1,22 @@
+
 import { useGetBannerByIdQuery, useUpdateBannerMutation } from '@/api/bannerApi';
 
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
-import { Button, Form, Skeleton, Upload, message } from 'antd';
+import { Button, Form, Input, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-type FieldType = {
-    image?: object;
-};
+
+
+
 const Bannerupdate = () => {
     const { id }: any = useParams();
     const { data: banners, isLoading, isError }: any = useGetBannerByIdQuery(id);
+   
+    
     const [updateBanner, resultUpdate] = useUpdateBannerMutation();
     const [updateImage] = useUpdateImageMutation();
     const [deleteImage] = useDeleteImageMutation();
@@ -31,8 +34,9 @@ const Bannerupdate = () => {
 
     const setFields = () => {
         form.setFieldsValue({
-            _id: banners?._id,
-            image: banners?.image ? banners.image : {}, // Nếu có ảnh, thêm vào mảng để hiển thị
+            _id: banners.banner?._id,
+            
+            image: banners.banner?.image ? banners.banner.image : {}, // Nếu có ảnh, thêm vào mảng để hiển thị
         });
     };
 
@@ -44,7 +48,7 @@ const Bannerupdate = () => {
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'Cập nhật Banner thành công!',
+                        title: 'Cập nhật banner thành công!',
                         showConfirmButton: true,
                         timer: 1500,
                     });
@@ -55,7 +59,7 @@ const Bannerupdate = () => {
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'Cập nhật Banner thành công!',
+                        title: 'Cập nhật banner thành công!',
                         showConfirmButton: true,
                         timer: 1500,
                     });
@@ -86,7 +90,7 @@ const Bannerupdate = () => {
                     (async () => {
                         if (info.file.status === 'uploading') {
                             const response: any = await updateImage(({
-                                publicId: banners?.image?.publicId,
+                                publicId: banners.banner?.image?.publicId,
                                 files: formData,
                             } as any));
                             if (response.data && response.data.publicId) {
@@ -121,11 +125,11 @@ const Bannerupdate = () => {
     };
 
     if (isLoading) return <Skeleton />;
-    if (isError || !banners || !banners) {
+    if (isError || !banners || !banners.banner) {
 
-        return <div>Error: Unable to fetch Banner data.</div>;
+        return <div>Error: Unable to fetch banner data.</div>;
     }
-   
+    
     return (
         <div className="container-fluid">
             <div className="row">
@@ -142,7 +146,10 @@ const Bannerupdate = () => {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-
+                        <Form.Item label="" name="_id" style={{ display: 'none' }}>
+                            <Input />
+                        </Form.Item>
+                
                         <Form.Item
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
@@ -157,9 +164,9 @@ const Bannerupdate = () => {
                                 }}>
                                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
                             </Upload>
-                            {Object.keys(imageUrl).length <= 0 && banners.image && banners.image.url && (
+                            {Object.keys(imageUrl).length <= 0 && banners.banner.image && banners.banner.image.url && (
                                 <div className="mt-3">
-                                    <img src={banners.image.url} alt="Ảnh danh mục hiện tại" style={{ maxWidth: '100px' }} />
+                                    <img src={banners.banner.image.url} alt="Ảnh danh mục hiện tại" style={{ maxWidth: '100px' }} />
                                 </div>
                             )}
                         </Form.Item>
@@ -172,7 +179,7 @@ const Bannerupdate = () => {
                                 </div> : " Cập nhật danh mục"}
                             </Button>
                             <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/banners")} htmlType="submit">
-                                Danh sách Banner
+                                Danh sách banner
                             </Button>
                         </Form.Item>
                     </Form>

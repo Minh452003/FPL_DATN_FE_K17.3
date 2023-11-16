@@ -8,8 +8,10 @@ import { useGetBannerQuery, useRemoveBannerMutation } from '@/api/bannerApi';
 import { useState } from 'react';
 
 const Bannerlist = () => {
-  const { data:bannerData } = useGetBannerQuery();
-  const banners =bannerData;
+  const { data } = useGetBannerQuery();
+ 
+  
+  const banners =data?.banner.docs;
 
   const [removeBanner, { isLoading: isRemoveLoading }] = useRemoveBannerMutation()
   const [sortedInfo, setSortedInfo] = useState({} as any);
