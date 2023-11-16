@@ -1,15 +1,17 @@
-import { Table, Image, Input } from 'antd';
+import { Table, Image, Input, Button } from 'antd';
 import { useGetUsersQuery } from '@/api/authApi';
 import { useState } from 'react';
 import { IoSearchSharp } from "react-icons/io5";
+import { Link } from 'react-router-dom';
+import { FaWrench } from 'react-icons/fa';
 
 const Userlist = () => {
-  const { data,isloading }: any = useGetUsersQuery();
+  const { data, isloading }: any = useGetUsersQuery();
   const user = data?.data;
-  
+
   const [searchText, setSearchText] = useState('');
-  
-  const data1 =isloading ? []: user?.map((user: any, index: number) => {
+
+  const data1 = isloading ? [] : user?.map((user: any, index: number) => {
     return {
       key: user._id,
       STT: index + 1,
@@ -24,7 +26,7 @@ const Userlist = () => {
           src={user.avatar.url}
         />
         : "Chưa có ảnh",
-      role:user.role
+      role: user.role
     }
   });
   const columns = [
@@ -100,11 +102,11 @@ const Userlist = () => {
     <div className="container">
       <h3 className="font-semibold">Danh sách khách hàng </h3>
       <Input
-        prefix={<IoSearchSharp style={{ opacity: 0.5 }} /> }
+        prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
         placeholder="Tìm kiếm email người dùng..."
         onChange={(e) => setSearchText(e.target.value)}
-        style={{ marginBottom: '16px', borderRadius: "5px", width:"400px" }}
-        
+        style={{ marginBottom: '16px', borderRadius: "5px", width: "400px" }}
+
       />
       <br />
       <Table dataSource={filteredData} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />

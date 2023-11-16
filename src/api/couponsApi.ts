@@ -18,6 +18,10 @@ const couponApi = createApi({
             query: (id) => `/coupons/${id}`,
             providesTags: ['Coupon']
         }),
+        getCouponByUser: builder.query<ICoupon, number | string>({
+            query: (userId) => `/coupon/${userId}`,
+            providesTags: ['Coupon']
+        }),
         addCoupon: builder.mutation({
             query: (coupon: ICoupon) => ({
                 url: '/coupons',
@@ -45,7 +49,12 @@ const couponApi = createApi({
 });
 
 export const {
-    useGetCouponQuery, useGetCouponByIdQuery, useAddCouponMutation, useRemoveCouponMutation, useUpdateCouponMutation
+    useGetCouponQuery,
+    useGetCouponByIdQuery,
+    useAddCouponMutation,
+    useRemoveCouponMutation,
+    useUpdateCouponMutation,
+    useGetCouponByUserQuery
 } = couponApi;
 export const couponReducer = couponApi.reducer;
 export default couponApi

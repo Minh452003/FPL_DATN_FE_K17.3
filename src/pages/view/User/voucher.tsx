@@ -1,10 +1,13 @@
-import { useGetCouponQuery } from "@/api/couponsApi";
+import { useGetCouponByUserQuery } from "@/api/couponsApi";
+import { getDecodedAccessToken } from "@/decoder";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 
 const Voucher = () => {
-  const { data: coupon }: any = useGetCouponQuery();
-  const couponLish = coupon?.coupon;
+  const decodedToken: any = getDecodedAccessToken();
+  const iduser = decodedToken ? decodedToken.id : null;
+  const { data: coupon }: any = useGetCouponByUserQuery(iduser);
+  const couponLish = coupon?.validCoupons;
 
 
 
@@ -22,7 +25,7 @@ const Voucher = () => {
         <a className="px-5 text-xs no-underline text-black cursor-pointer hover:underline hover:font-semibold">Sắp hết hạn</a>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 py-2 px-2 mt-2">
-        {couponLish && couponLish.map((couponItem: any, index: number) => (
+        {couponLish ? couponLish.map((couponItem: any, index: number) => (
           <div key={index} className="flex shadow-lg">
             <img className="w-[100px] h-[100px] mt-3 rounded-md" src="https://cf.shopee.vn/file/vn-11134004-7r98o-llyheem4gvz306" alt="" />
             <div className="py-2 px-2 text-sm font-family ">
@@ -34,7 +37,7 @@ const Voucher = () => {
               <Link to={'/pay'} className="text-red-400 cursor-pointer no-underline hover:font-semibold">Dùng ngay </Link>
             </div>
           </div>
-        ))}
+        )) : 'Bạn không có phiếu giảm giá'}
       </div>
     </div>
   );

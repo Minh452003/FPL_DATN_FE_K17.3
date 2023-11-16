@@ -265,6 +265,10 @@
         margin: 0;
     }
 
+    .logo {
+        width: 50px;
+    }
+
     a.tl:hover p.ttt {
         color: #ff7600;
     }

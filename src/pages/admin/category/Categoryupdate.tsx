@@ -18,8 +18,8 @@ const Categoryupdate = () => {
     const { id }: any = useParams();
     const { data: categories, isLoading, isError }: any = useGetCategoryByIdQuery(id);
     const [updateCategory, resultUpdate] = useUpdateCategoryMutation();
-    const [updateImage] = useUpdateImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [updateImage, resultImage] = useUpdateImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
     const [imageUrl, setImageUrl] = useState<any>({});
     const navigate = useNavigate();
@@ -131,11 +131,11 @@ const Categoryupdate = () => {
         return <div>Error: Unable to fetch category data.</div>;
     }
     const validatePositiveNumber = (_: any, value: any) => {
-        if(parseFloat(value) < 0) {
-          return Promise.reject("Giá trị phải là số dương");
+        if (parseFloat(value) < 0) {
+            return Promise.reject("Giá trị phải là số dương");
         }
         return Promise.resolve();
-      }
+    }
     return (
         <div className="container-fluid">
             <div className="row">
@@ -165,17 +165,17 @@ const Categoryupdate = () => {
                             { min: 2, message: "Nhập ít nhất 2 ký tự" },
                             {
                                 validator: (_, value) => {
-                                  if (!value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
                                     return Promise.resolve();
-                                  }
-                                  if (/ {2,}/.test(value)) {
-                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                  }
-                                  return Promise.resolve();
                                 },
-                              },
-                        ]}
-                        hasFeedback
+                            },
+                            ]}
+                            hasFeedback
                         >
                             <Input />
                         </Form.Item>
@@ -187,10 +187,10 @@ const Categoryupdate = () => {
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                             style={{ marginLeft: '20px' }}
                             rules={[{ required: true, message: 'Tiền đặt cọc không được để trống!' },
-                            {validator: validatePositiveNumber},
+                            { validator: validatePositiveNumber },
                             { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                             hasFeedback
-                            
+
                         >
                             <InputNumber style={{ width: '100%' }} />
                         </Form.Item>
@@ -201,7 +201,7 @@ const Categoryupdate = () => {
                             style={{ marginLeft: '20px' }}
                             id="images" name="category_image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
                             hasFeedback
-                            >
+                        >
                             <Upload {...props} maxCount={1} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
@@ -217,8 +217,9 @@ const Categoryupdate = () => {
                         </Form.Item>
 
                         <Form.Item wrapperCol={{ span: 16 }}>
-
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                                disabled={resultImage.isLoading || resultDelete.isLoading}
+                                htmlType="submit">
                                 {resultUpdate.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Cập nhật danh mục"}

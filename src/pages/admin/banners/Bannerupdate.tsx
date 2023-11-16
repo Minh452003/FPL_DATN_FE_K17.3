@@ -15,11 +15,9 @@ import Swal from 'sweetalert2';
 const Bannerupdate = () => {
     const { id }: any = useParams();
     const { data: banners, isLoading, isError }: any = useGetBannerByIdQuery(id);
-   
-    
     const [updateBanner, resultUpdate] = useUpdateBannerMutation();
-    const [updateImage] = useUpdateImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [updateImage, resultImage] = useUpdateImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
     const [imageUrl, setImageUrl] = useState<any>({});
     const navigate = useNavigate();
@@ -35,7 +33,7 @@ const Bannerupdate = () => {
     const setFields = () => {
         form.setFieldsValue({
             _id: banners.banner?._id,
-            
+
             image: banners.banner?.image ? banners.banner.image : {}, // Nếu có ảnh, thêm vào mảng để hiển thị
         });
     };
@@ -129,7 +127,7 @@ const Bannerupdate = () => {
 
         return <div>Error: Unable to fetch banner data.</div>;
     }
-    
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -149,14 +147,14 @@ const Bannerupdate = () => {
                         <Form.Item label="" name="_id" style={{ display: 'none' }}>
                             <Input />
                         </Form.Item>
-                
+
                         <Form.Item
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                             style={{ marginLeft: '20px' }}
                             id="images" name="image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
                             hasFeedback
-                            >
+                        >
                             <Upload {...props} maxCount={1} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
@@ -172,8 +170,9 @@ const Bannerupdate = () => {
                         </Form.Item>
 
                         <Form.Item wrapperCol={{ span: 16 }}>
-
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                                disabled={resultImage.isLoading || resultDelete.isLoading}
+                                htmlType="submit">
                                 {resultUpdate.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Cập nhật danh mục"}
