@@ -7,13 +7,12 @@ import { HiArrowSmLeft, HiArrowSmRight } from 'react-icons/hi';
 import { useGetBannerQuery } from '@/api/bannerApi';
 
 const Homeslides = () => {
-  const {data} = useGetBannerQuery();
+  const { data } = useGetBannerQuery<any>();
   const listBanner = data?.banner.docs;
-  console.log(listBanner);
-  
+
   return (
     <div>
-      
+
       <Swiper
         className='relative group'
         spaceBetween={50}
@@ -29,13 +28,13 @@ const Homeslides = () => {
         }}
         loop={true} // Enable loop
       >
-        {listBanner && listBanner.map((items:any, index:number)=>(
-            <SwiperSlide key={index}>
+        {listBanner && listBanner.map((items: any, index: number) => (
+          <SwiperSlide key={index}>
             <div className="image">
               <img src={items.image.url} alt=""
-              className='w-[100%]' />
+                className='w-[100%]' />
             </div>
-          </SwiperSlide> 
+          </SwiperSlide>
         ))}
 
         <div className='top-[50%] absolute z-10 button-next-slie group-hover:left-0 -left-[23rem] duration-500 text-white w-[40px] h-[40px] bg-black grid place-items-center'>

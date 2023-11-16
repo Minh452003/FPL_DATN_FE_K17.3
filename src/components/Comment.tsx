@@ -6,7 +6,6 @@ import { FaUpload } from "react-icons/fa";
 import TextArea from "antd/es/input/TextArea";
 import { useAddCommentMutation } from "@/api/commentApi";
 import { getDecodedAccessToken } from "@/decoder";
-import Swal from "sweetalert2";
 import { useAddImageMutation, useDeleteImageMutation } from "@/api/uploadApi";
 import { RcFile, UploadProps } from "antd/es/upload";
 
@@ -15,9 +14,9 @@ const Comment = ({ order }: any) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const decodedToken: any = getDecodedAccessToken();
     const id = decodedToken ? decodedToken.id : null;
-    const [addComment] = useAddCommentMutation();
-    const [addImage] = useAddImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [addComment, resultAdd] = useAddCommentMutation();
+    const [addImage, resultImage] = useAddImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]);
     const [imageUrl, setImageUrl] = useState<any>([]);
     const navigate = useNavigate();
@@ -165,6 +164,13 @@ const Comment = ({ order }: any) => {
                                 </Upload>
                             </Form.Item>
                             <Form.Item wrapperCol={{ span: 16 }}>
+                                <Button className="h-10 bg-red-500 text-xs text-white"
+                                    disabled={resultImage.isLoading || resultDelete.isLoading}
+                                    htmlType="submit">
+                                    {resultAdd.isLoading ? <div className="spinner-border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div> : "Đánh giá"}
+                                </Button>
                                 <Button className="h-10 bg-red-500 text-xs text-white" htmlType="submit">
                                     Đánh giá
                                 </Button>

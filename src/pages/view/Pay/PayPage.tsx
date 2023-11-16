@@ -12,7 +12,7 @@ import { useGetAvailableMutation, useGetCityQuery, useGetDistrictMutation, useGe
 import Swal from "sweetalert2";
 import { useAddOrderMutation } from "@/api/orderApi";
 import { usePayMomoMutation, usePayPaypalMutation } from "@/api/paymentApi";
-import { useGetCouponQuery } from "@/api/couponsApi";
+import { useGetCouponByUserQuery } from "@/api/couponsApi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./PayPage.css"
 type TypeInputs = {
@@ -27,8 +27,8 @@ const PayPage = () => {
     const { data: Colors, isLoading: isLoadingColors }: any = useGetColorsQuery();
     const { data: Sizes, isLoading: isLoadingSizes }: any = useGetSizeQuery();
     const { data: Materials, isLoading: isLoadingMaterials }: any = useGetMaterialQuery();
-    const { data: dataCoupons }: any = useGetCouponQuery();
-    const coupons = dataCoupons?.coupon || [];
+    const { data: dataCoupons }: any = useGetCouponByUserQuery(id);
+    const coupons = dataCoupons?.validCoupons || [];
 
     const { data: city }: any = useGetCityQuery();
     const [addDistrict] = useGetDistrictMutation<any>();
@@ -361,6 +361,7 @@ const PayPage = () => {
                 showConfirmButton: true,
                 timer: 800
             });
+            setTotal(response.data.data.total)
         }
     }
     const removeCoupons: SubmitHandler<any> = async () => {

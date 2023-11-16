@@ -27,8 +27,8 @@ const Productadd = () => {
     const { data: categories } = useGetCategoryQuery<any>();
     const { data: brands } = useGetBrandQuery<any>();
     const { data: materials } = useGetMaterialQuery<any>();
-    const [addImage] = useAddImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [addImage, resultImage] = useAddImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]);
     const [imageUrl, setImageUrl] = useState<any>([]);
     const navigate = useNavigate();
@@ -244,7 +244,9 @@ const Productadd = () => {
                             />
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                                disabled={resultImage.isLoading || resultDelete.isLoading}
+                                htmlType="submit">
                                 {resultAdd.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Thêm sản phẩm"}
