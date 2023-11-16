@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 type FieldType = {
   _id?: string
   material_name?: string;
-  material_price?: number;
 
 };
 const MaterialUpdate = () => {
@@ -28,8 +27,7 @@ const MaterialUpdate = () => {
   const setFields = () => {
     form.setFieldsValue({
       _id: materialData?.material?._id,
-      material_name: materialData?.material?.material_name,
-      material_price: materialData?.material?.material_price
+      material_name: materialData?.material?.material_name
     });
   };
   const onFinish = (values: any) => {
@@ -99,20 +97,7 @@ const MaterialUpdate = () => {
             >
               <Input />
             </Form.Item>
-            <Form.Item<FieldType>
-              label="Giá vật liệu"
-              name="material_price"
-              rules={[{ required: true, message: 'Giá vật liệu không được để trống!' },
-              {validator: validatePositiveNumber},
-              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
-              
-              labelCol={{ span: 24 }}
-              wrapperCol={{ span: 24 }}
-              style={{ marginLeft: '20px' }}
-            >
-              <InputNumber style={{ width: '100%' }} />
-            </Form.Item>
+            
             <Form.Item wrapperCol={{ span: 16 }}>
               <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
                 {resultAdd.isLoading ? <div className="spinner-border" role="status">

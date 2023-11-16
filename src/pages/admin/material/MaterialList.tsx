@@ -11,11 +11,10 @@ const MaterialList = () => {
   const { data, isLoading }: any = useGetMaterialQuery();
   const [removeMaterial, { isLoading: isRemoveLoading }] = useRemoveMaterialMutation();
   const material = data?.material
-  const dataSource = material?.map(({ _id, material_name, material_price }: IMaterials) => {
+  const dataSource = material?.map(({ _id, material_name }: IMaterials) => {
     return {
       key: _id,
-      name: material_name,
-      price: material_price
+      name: material_name
     }
   });
 
@@ -54,11 +53,6 @@ const MaterialList = () => {
       title: 'Tên vật liệu',
       dataIndex: 'name',
       key: 'name',
-    },
-    {
-      title: 'Giá',
-      dataIndex: 'price',
-      key: 'price',
     },
     {
       title: 'Chức năng',

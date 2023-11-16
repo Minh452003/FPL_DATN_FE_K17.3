@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 type FieldType = {
     _id?: string;
     size_name?: string;
-    size_price?: number;
     size_height?: number;
     size_length?: number;
     size_weight?: number;
@@ -31,7 +30,6 @@ const setFields = () => {
     form.setFieldsValue({
         _id: sizes.size?._id,
         size_name: sizes.size?.size_name,
-        size_price: sizes.size?.size_price,
         size_height: sizes.size?.size_height,
         size_length: sizes.size?.size_length,
         size_weight: sizes.size?.size_weight,
@@ -109,19 +107,7 @@ const setFields = () => {
             >
               <Input />
             </Form.Item>
-            <Form.Item<FieldType>
-              label="Giá kích cỡ"
-              name="size_price"
-              rules={[{ required: true, message: 'Giá kích cỡ không được để trống!' },
-              {validator: validatePositiveNumber},
-              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
-              labelCol={{ span: 24 }}
-              wrapperCol={{ span: 24 }}
-              style={{ marginLeft: '20px' }}
-            >
-              <InputNumber style={{ width: '100%' }} />
-            </Form.Item>
+            
 
             <Form.Item<FieldType>
               label="Chiều cao kích cỡ"
