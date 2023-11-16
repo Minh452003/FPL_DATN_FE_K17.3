@@ -8,7 +8,7 @@ import { useGetBannerQuery } from '@/api/bannerApi';
 
 const Homeslides = () => {
   const {data} = useGetBannerQuery();
-  const listBanner = data;
+  const listBanner = data?.banner.docs;
   console.log(listBanner);
   
   return (
