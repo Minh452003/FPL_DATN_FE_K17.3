@@ -117,7 +117,7 @@ const Order = () => {
       <div className="m-3">
         <h3>Đơn hàng</h3>
         <div className="">
-          <ul className="font-medium flex flex-col p-3 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="font-medium flex flex-col p-3 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-500 dark:border-gray-700">
             <li>
               <a
                 href=""
@@ -149,27 +149,20 @@ const Order = () => {
             ))}
           </ul>
         </div>
-        <div className="md:grid  md:grid-cols-2 gap-3">
+        <div className="md:grid  md:grid-cols-2 gap-3 ">
           {displayedOrders.map((order: any) => {
             return (
               <div
-                className="md:flex md:flex-row gap-5 border-solid boder-2 border-slate-400 bg-white shadow-lg "
+                className="md:flex md:flex-row gap-5 border-solid boder-2 border-slate-400 bg-white shadow-lg border-0 rounded-md "
                 key={order._id}
               >
-                {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? <div className="absolute text-white p-2 rounded-sm icon-container">
+                {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? <div className="absolute text-gray-800 p-2 rounded-sm icon-container">
                   <LiaCarSideSolid className="animated-icon" />Đang giao
                 </div> : ''}
                 <div className="flex justify-start md:top-0 py-2 pt-2 justify-center items-center mx-5">
-                  {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-white p-2 rounded-sm text-sm">
-                    Đã đánh giá
-                  </div> : ''}
-                  {order && order.status._id == '64e8a93da63d2db5e8d8562a' ? <button className="absolute rounded-sm opacity-0 remove" onClick={() => deleteOrder(order._id)}>
-                    Huỷ đơn hàng
-                  </button> : ''}
-
                   <img
                     width="130"
-                    src="https://res.cloudinary.com/dkvghcobl/image/upload/v1686320794/dlu8imwhjnbunqlnvqgq.png"
+                    src={order.products[0].image.url}
                     alt="external-free-sales-flaticons-lineal-color-flat-icons"
                   />
                 </div>
@@ -192,7 +185,11 @@ const Order = () => {
                       {order.status.status_name}
                     </span>
                   </p>
-                  <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white">
+                  {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-gray-800 p-2 rounded-sm text-sm">
+                    Đã đánh giá
+                  </div> : ''}
+                 <div className="flex">
+                 <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white">
                     <Link
                       className="ctorder text-white"
                       to={`/user/orders/${order._id}/orderdetail`}
@@ -201,6 +198,12 @@ const Order = () => {
                       Chi tiết
                     </Link>
                   </button>
+                  {order.status._id !== 'status_id_of_confirmed' && (
+                    <button className="text-white bg-green-500 border-solid rounded border-1 py-1 px-3 text-white" onClick={() => deleteOrder(order._id)}>
+                      Hủy đơn hàng
+                    </button>
+                  )}
+                 </div>
                   {order && order.hasReviewed === false && order.status._id == '64e8a93da63d2db5e8d8562d' ? <Comment order={order} /> : ''}
                 </div>
 
