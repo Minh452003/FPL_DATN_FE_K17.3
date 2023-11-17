@@ -100,7 +100,7 @@ const Comment = ({ order }: any) => {
 
     return (
         <>
-            <button onClick={showModal} className="bg-orange-500 border-solid rounded border-1 py-1 px-3 text-white mt-2">
+            <button onClick={showModal} className="text-white bg-orange-500 border-solid rounded border-1 py-1 px-3 text-white">
                 <Link
                     className="ctorder text-white"
                     to={``}
@@ -170,9 +170,6 @@ const Comment = ({ order }: any) => {
                                     {resultAdd.isLoading ? <div className="spinner-border" role="status">
                                         <span className="visually-hidden">Loading...</span>
                                     </div> : "Đánh giá"}
-                                </Button>
-                                <Button className="h-10 bg-red-500 text-xs text-white" htmlType="submit">
-                                    Đánh giá
                                 </Button>
                             </Form.Item>
                         </Form>

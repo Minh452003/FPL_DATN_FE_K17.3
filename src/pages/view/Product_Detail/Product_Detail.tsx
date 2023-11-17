@@ -281,6 +281,26 @@ const Product_Detail = () => {
       behavior: "smooth", // Cuộn mượt
     });
   };
+  const formatTimeAgo = (timestamp: any) => {
+    const now: any = new Date();
+    const commentTime: any = new Date(timestamp);
+
+    const timeDiff = now - commentTime;
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days} ngày trước`;
+    } else if (hours > 0) {
+      return `${hours} giờ trước`;
+    } else if (minutes > 0) {
+      return `${minutes} phút trước`;
+    } else {
+      return 'Vừa xong';
+    }
+  }
   if (isLoadingFetching) return <Skeleton />;
   // if (isLoadingChild) return <Skeleton />;
   if (isLoadingColor) return <Skeleton />;
@@ -363,11 +383,10 @@ const Product_Detail = () => {
                   <li className="ima" role="presentation" key={index}>
                     <Link
                       to={`#image-tab-${index}`}
-                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${
-                        selectedIndex === index
-                          ? "bg-primary-100 text-primary-700"
-                          : "bg-neutral-700 text-white"
-                      } md:mr-4 `}
+                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
+                        ? "bg-primary-100 text-primary-700"
+                        : "bg-neutral-700 text-white"
+                        } md:mr-4 `}
                       id={`image-tab-${index}`}
                       data-te-toggle="tab"
                       key={`tab-${index}`}
@@ -420,9 +439,8 @@ const Product_Detail = () => {
                           key={color.colorId}
                           aria-label="M"
                           aria-disabled="false"
-                          className={`btn2 btn-solid-primary2 btn-b ${
-                            isActive ? "active1" : ""
-                          }`}
+                          className={`btn2 btn-solid-primary2 btn-b ${isActive ? "active1" : ""
+                            }`}
                           onClick={() => handleClickColor(color.colorId)}
                         >
                           {colorname.colors_name}
@@ -448,9 +466,8 @@ const Product_Detail = () => {
                           key={size.sizeId}
                           aria-label="M"
                           aria-disabled="false"
-                          className={`btn2 btn-solid-primary2 btn-b ${
-                            isActive ? "active1" : ""
-                          }`}
+                          className={`btn2 btn-solid-primary2 btn-b ${isActive ? "active1" : ""
+                            }`}
                           onClick={() => handleClickSize(size.sizeId)}
                           type="submit"
                         >
@@ -580,23 +597,22 @@ const Product_Detail = () => {
                       {commentProductDetail
                         ? ` (${commentProductDetail.length} đánh giá)`
                         : " (0)"}
-                         <div className=" mx-auto flex">
-                      {Array.from(
-                        { length: Math.round(roundedAverageRating) },
-                        (_, index) => (
-                          <AiFillStar key={index} style={{ color: "orange" }} />
-                        )
-                      )}
-                    </div>
+                      <div className=" mx-auto flex">
+                        {Array.from(
+                          { length: Math.round(roundedAverageRating) },
+                          (_, index) => (
+                            <AiFillStar key={index} style={{ color: "orange" }} />
+                          )
+                        )}
+                      </div>
                     </div>
                     <div className="rating-buttons">
                       {[1, 2, 3, 4, 5, "Tất cả"].map((rating) => (
                         <button
                           key={rating}
                           onClick={() => handleRatingFilter(rating)}
-                          className={`rating-button ${
-                            selectedRating === rating ? "selected" : ""
-                          }`}
+                          className={`rating-button ${selectedRating === rating ? "selected" : ""
+                            }`}
                         >
                           {rating === "Tất cả" ? "Tất cả" : `${rating} sao`}
                         </button>
@@ -631,7 +647,7 @@ const Product_Detail = () => {
                                 {comment.userId?.last_name}
                               </a>
                               <a className="cm-name1 font-normal ">
-                                {comment.formattedCreatedAt}
+                                {formatTimeAgo(comment.createdAt)}
                               </a>
                               {comment && comment.userId._id == id ? (
                                 <div className="button-wrapper float-right">
@@ -733,99 +749,98 @@ const Product_Detail = () => {
                         >
                           {similarProducts
                             ? similarProducts.map(
-                                (similar: any, index: any) => (
-                                  <SwiperSlide
-                                    style={{
-                                      width: "285px",
-                                      marginLeft: "27px",
-                                    }}
-                                    key={similar._id}
-                                  >
-                                    <div
-                                      className="items slick-slides slick-currents slick-actives"
-                                      tabIndex={-1}
-                                      role="option"
-                                      aria-describedby={`slick-slide${
-                                        index + 10
+                              (similar: any, index: any) => (
+                                <SwiperSlide
+                                  style={{
+                                    width: "285px",
+                                    marginLeft: "27px",
+                                  }}
+                                  key={similar._id}
+                                >
+                                  <div
+                                    className="items slick-slides slick-currents slick-actives"
+                                    tabIndex={-1}
+                                    role="option"
+                                    aria-describedby={`slick-slide${index + 10
                                       }`}
-                                      style={{
-                                        width: "235px",
-                                        marginLeft: "-18px",
-                                        // marginRight: "37px",
-                                      }}
-                                      data-slick-index={`${index}`}
-                                      aria-hidden="false"
-                                    >
-                                      <div className="col-item5s">
-                                        <div className="item-inners">
-                                          <div className="product-wrappers">
-                                            <div className="thumb-wrappers">
-                                              <Link
-                                                to={""}
-                                                className="thumbs flips"
-                                                title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                                tabIndex={0}
-                                              >
-                                                <img
-                                                  className="lazyloads loadeds"
-                                                  src={similar.image[0].url}
-                                                />
-                                              </Link>
-                                            </div>
+                                    style={{
+                                      width: "235px",
+                                      marginLeft: "-18px",
+                                      // marginRight: "37px",
+                                    }}
+                                    data-slick-index={`${index}`}
+                                    aria-hidden="false"
+                                  >
+                                    <div className="col-item5s">
+                                      <div className="item-inners">
+                                        <div className="product-wrappers">
+                                          <div className="thumb-wrappers">
+                                            <Link
+                                              to={""}
+                                              className="thumbs flips"
+                                              title="Bàn trà gỗ tự nhiên 5CBT-136"
+                                              tabIndex={0}
+                                            >
+                                              <img
+                                                className="lazyloads loadeds"
+                                                src={similar.image[0].url}
+                                              />
+                                            </Link>
                                           </div>
-                                          <div className="item-infos">
-                                            <div className="info-inners">
-                                              <h3 className="item-titles">
-                                                {" "}
-                                                <Link to={""} tabIndex={0}>
-                                                  {similar.product_name}{" "}
-                                                </Link>{" "}
-                                              </h3>
-                                              <div className="item-contents">
-                                                <div className="item-prices">
-                                                  <div className="price-boxs">
-                                                    <p className="special-prices">
-                                                      <span className="prices">
-                                                        {formatCurrency(
-                                                          similar?.product_price
-                                                        )}
-                                                        ₫
-                                                      </span>
-                                                    </p>
-                                                  </div>
+                                        </div>
+                                        <div className="item-infos">
+                                          <div className="info-inners">
+                                            <h3 className="item-titles">
+                                              {" "}
+                                              <Link to={""} tabIndex={0}>
+                                                {similar.product_name}{" "}
+                                              </Link>{" "}
+                                            </h3>
+                                            <div className="item-contents">
+                                              <div className="item-prices">
+                                                <div className="price-boxs">
+                                                  <p className="special-prices">
+                                                    <span className="prices">
+                                                      {formatCurrency(
+                                                        similar?.product_price
+                                                      )}
+                                                      ₫
+                                                    </span>
+                                                  </p>
                                                 </div>
                                               </div>
                                             </div>
+                                          </div>
 
-                                            <div className="actionss hidden-xs hidden-sm remove_html">
-                                              <form>
-                                                <input
-                                                  type="hidden"
-                                                  tabIndex={0}
-                                                />
-                                                <button
-                                                  className="buttons btn-carts"
-                                                  title="Mua hàng"
-                                                  type="button"
-                                                  tabIndex={0}
+                                          <div className="actionss hidden-xs hidden-sm remove_html">
+                                            <form>
+                                              <input
+                                                type="hidden"
+                                                tabIndex={0}
+                                              />
+                                              <button
+                                                className="buttons btn-carts"
+                                                title="Mua hàng"
+                                                type="button"
+                                                tabIndex={0}
+                                              >
+                                                <Link
+                                                  onClick={scrollToTop}
+                                                  to={`/products/${similar._id}`}
                                                 >
-                                                  <Link
-                                                    onClick={scrollToTop}
-                                                    to={`/products/${similar._id}`}
-                                                  >
-                                                    Chi tiết
-                                                  </Link>
-                                                </button>
-                                                <Model products={similar} />
-                                              </form>
-                                            </div>
+                                                  Chi tiết
+                                                </Link>
+                                              </button>
+                                              <Model products={similar} />
+                                            </form>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
-                                  </SwiperSlide>
-                                )
+                                  </div>
+                                </SwiperSlide>
                               )
+                            )
                             : "Không có sản phẩm liên quan"}
                         </div>
                       </div>

@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
 import { TbBrandProducthunt } from 'react-icons/tb';
 import { MdCategory } from 'react-icons/md';
-import { FaAccusoft } from "react-icons/fa";
+import { FaAccusoft, FaRegImage } from "react-icons/fa";
 import { AiFillMessage, AiOutlineAntDesign, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
@@ -162,7 +162,7 @@ const LayoutAdmin = () => {
           <li>
             <Link to={'materials'} className="a">
               <span className="icon"><FaAccusoft /></span>
-              <span className="text1">Vật liệu</span>
+              <span className="text1">Chất liệu</span>
             </Link>
           </li>
           <li>
@@ -173,8 +173,8 @@ const LayoutAdmin = () => {
           </li>
           <li>
             <Link to={'banners'} className="a">
-              <span className="icon"><BiNews /></span>
-              <span className="text1">Ảnh</span>
+              <span className="icon"><FaRegImage /></span>
+              <span className="text1">Ảnh quảng cáo</span>
             </Link>
           </li>
           <li>
