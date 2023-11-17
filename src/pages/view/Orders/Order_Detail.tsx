@@ -29,8 +29,6 @@ const OrderDetail = () => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-
-
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
     if ("data" in error && "status" in error) {
@@ -43,19 +41,19 @@ const OrderDetail = () => {
   }
   return (
     <div>
-      <h3 className='text-gray-500 md:py-10 py-5 pl-4'>Thông tin đơn hàng</h3>
-      <div className="md:grid  md:grid-cols-2 l md:mx-4 mx-2 bg-white shadow-lg rounded-md " key={orders._id}>
+      <h3 className='text-gray-500 md:py-10 pt-5 pl-6'>Thông tin đơn hàng</h3>
+      <div className="md:grid md:grid-cols-2 l md:mx-4 mx-2 rounded-md " key={orders._id}>
         {/* --------------------Col 1 --------------------------- */}
         <div className="rounded-lg ml-20">
           <div className="name font-sans pt-10">Họ và tên : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{dataUser?.first_name} {dataUser?.last_name} </a></div>
-          <div className='font-sans mt-1'>Số điện thoại : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.phone}</a></div>
-          <div className='font-sans mt-1'>Địa chỉ : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.address}</a></div>
-          <div className='font-sans mt-1'>Ngày đặt hàng : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{format(new Date(orders?.createdAt), "HH:mm a dd/MM/yyyy")}</a></div>
-          <div className='font-sans mt-1'>Ghi chú : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.notes}</a></div>
-          <div className='font-sans mt-1'>Phí vận chuyển: <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.shipping)}₫</a></div>
+          <div className='font-sans mt-2'>Số điện thoại : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.phone}</a></div>
+          <div className='font-sans mt-2'>Địa chỉ : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.address}</a></div>
+          <div className='font-sans mt-2'>Trạng thái : <strong style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.status?.status_name}</strong></div>
+          <div className='font-sans mt-2'>Ngày đặt hàng : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{format(new Date(orders?.createdAt), "HH:mm a dd/MM/yyyy")}</a></div>
+          {orders && orders.notes ? <div className='font-sans mt-1'>Ghi chú : <a href="" style={{ textDecoration: "none", color: "black", fontSize: '14px' }}>{orders?.notes}</a></div> : ''}
+          <div className='font-sans mt-2'>Phí vận chuyển: <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.shipping)}₫</a></div>
           {orders.deposit ? <div className='font-semibold'>Đã cọc: <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.deposit)}₫</a></div> : ''}
-          <div className='font-semibold mt-1 mb-10'>{orders.deposit ? 'Tổng tiền còn lại: ' : 'Tổng đơn hàng: '} <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.total)}₫</a></div>
-          <span className="bg-green-500 text-xl border-solid rounded border-1 py-1 px-3 text-white">{orders.status.status_name}</span>
+          <div className='font-semibold mt-2 mb-10'>{orders.deposit ? 'Tổng tiền còn lại: ' : 'Tổng đơn hàng: '} <a href="" style={{ textDecoration: "none", color: "red", }}>{formatCurrency(orders?.total)}₫</a></div>
         </div>
         {/* --------------------Col 1 --------------------------- */}
         <div className="rounded-lg md:mr-20">
@@ -63,7 +61,6 @@ const OrderDetail = () => {
             const colorname = color?.find((color: any) => color._id === product.colorId);
             const sizename = size?.find((size: any) => size._id === product.sizeId);
             const materialname = material?.find((material: any) => material._id === product.materialId);
-
             return (
               <div key={index} className='mb-3 mt-3' style={{ background: '#FAFAFA', borderRadius: "10px" }}>
                 <div className="container p-4">

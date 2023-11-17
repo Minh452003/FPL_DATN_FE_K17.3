@@ -19,6 +19,9 @@ const Login = () => {
     const handleGoogleLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/google";
     }
+    const handleFacebookLogin = () => {
+        window.location.href = "http://localhost:8088/api/auth/facebook";
+    }
     const onSubmit: SubmitHandler<TypeInputs> = async (data: IUser) => {
         const response: any = await signIn(data)
         if (response.error) {
@@ -45,7 +48,12 @@ const Login = () => {
             navigate("/")
         }
     }
-
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth", // Cuộn mượt
+        });
+    };
 
     return (
         <div className="system-ui bg-gray-300">
@@ -121,13 +129,14 @@ const Login = () => {
                                     <div className="mx-2"></div>
                                     <button
                                         className="flex-1 px-3 py-2 text-sm leading-tight text-white bg-blue-500 border rounded shadow appearance-none focus:outline-none focus:shadow-outline flex items-center justify-center"
+                                        onClick={handleFacebookLogin}
                                     >
                                         <BiLogoFacebookCircle style={{ marginRight: '4px' }} /> Facebook
                                     </button>
                                 </div>
                                 <div className="text-center">
                                     <span>Bạn chưa có tài khoản? </span>
-                                    <Link to="/signup" className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline">
+                                    <Link onClick={scrollToTop} to="/signup" className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800 no-underline">
                                         Đăng ký!
                                     </Link>
                                 </div>

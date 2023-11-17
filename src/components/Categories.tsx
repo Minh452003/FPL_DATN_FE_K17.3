@@ -30,6 +30,12 @@ const Categories = () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth", // Cuộn mượt
+        });
+    };
     if (isLoadingFetching) return <Skeleton />;
     if (error) {
         if ("data" in error && "status" in error) {
@@ -61,32 +67,32 @@ const Categories = () => {
                             >
                                 {categories && categories.category.docs.map((category: any, index: any) => (
                                     <SwiperSlide key={category._id} className="col-lg-4 col-md-4 col-sm-4 col-xs-6 a">
-                                    {category && (
-                                        <div
-                                            className="item slick-slide slick-current slick-active"
-                                            tabIndex={-1}
-                                            role="option"
-                                            aria-describedby={`slick-slide${index + 10}`}
-                                            style={{ width: "405px" }}
-                                            data-slick-index={`${index}`}
-                                            aria-hidden="false"
-                                        >
-                                            <Link to={`/category/${category._id}`} className="tl" title={category?.category_name}>
-                                                <p className="ttt">
-                                                    {category?.category_name}
-                                                    <span>Xem sản phẩm</span>
-                                                </p>
-                                                <picture>
-                                                    <img
-                                                        alt={category?.category_name}
-                                                        src={category.category_image?.url}
-                                                        className="w-full h-80"
-                                                    />
-                                                </picture>
-                                            </Link>
-                                        </div>
-                                    )}
-                                </SwiperSlide>
+                                        {category && (
+                                            <div
+                                                className="item slick-slide slick-current slick-active"
+                                                tabIndex={-1}
+                                                role="option"
+                                                aria-describedby={`slick-slide${index + 10}`}
+                                                style={{ width: "405px" }}
+                                                data-slick-index={`${index}`}
+                                                aria-hidden="false"
+                                            >
+                                                <Link to={`/category/${category._id}`} onClick={scrollToTop} className="tl" title={category?.category_name}>
+                                                    <p className="ttt">
+                                                        {category?.category_name}
+                                                        <span>Xem sản phẩm</span>
+                                                    </p>
+                                                    <picture>
+                                                        <img
+                                                            alt={category?.category_name}
+                                                            src={category.category_image?.url}
+                                                            className="w-full h-80"
+                                                        />
+                                                    </picture>
+                                                </Link>
+                                            </div>
+                                        )}
+                                    </SwiperSlide>
                                 ))}
                             </div>
                         </div>

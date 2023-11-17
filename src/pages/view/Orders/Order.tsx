@@ -101,6 +101,13 @@ const Order = () => {
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+  // -------------------------------------------
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Cuộn mượt
+    });
+  };
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
     if ("data" in error && "status" in error) {
@@ -156,55 +163,58 @@ const Order = () => {
                 className="md:flex md:flex-row gap-5 border-solid boder-2 border-slate-400 bg-white shadow-lg border-0 rounded-md "
                 key={order._id}
               >
-                {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? <div className="absolute text-gray-800 p-2 rounded-sm icon-container">
+                {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? <div className="absolute text-gray-800 p-2 rounded-sm icon-container text-white">
                   <LiaCarSideSolid className="animated-icon" />Đang giao
                 </div> : ''}
                 <div className="flex justify-start md:top-0 py-2 pt-2 justify-center items-center mx-5">
+                  {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-white p-2 rounded-sm text-sm">
+                    Đã đánh giá
+                  </div> : ''}
                   <img
                     width="130"
-                    src={order.products[0].image.url}
+                    src={order.products[0].image}
                     alt="external-free-sales-flaticons-lineal-color-flat-icons"
                   />
                 </div>
                 <div className="flex flex-col font-medium justify-center px-3 py-3 ">
                   <p>
                     Ngày mua:{" "}
-                    <span className="text-[#FF1493]">
+                    <span className="text-amber-600">
                       {format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy")}
                     </span>
                   </p>
                   <p className="total1">
                     Tổng tiền:{" "}
-                    <span className="text-[#FF1493]">
+                    <span className="text-amber-600">
                       {formatCurrency(order.total)}₫
                     </span>
                   </p>
                   <p className="justify-start">
                     Trạng thái:{" "}
-                    <span className="text-[#FF1493]">
+                    <span className="text-amber-600">
                       {order.status.status_name}
                     </span>
                   </p>
-                  {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-gray-800 p-2 rounded-sm text-sm">
-                    Đã đánh giá
-                  </div> : ''}
-                 <div className="flex">
-                 <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white">
-                    <Link
-                      className="ctorder text-white"
-                      to={`/user/orders/${order._id}/orderdetail`}
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      Chi tiết
-                    </Link>
-                  </button>
-                  {order.status._id !== 'status_id_of_confirmed' && (
-                    <button className="text-white bg-green-500 border-solid rounded border-1 py-1 px-3 text-white" onClick={() => deleteOrder(order._id)}>
-                      Hủy đơn hàng
+
+                  <div className="flex">
+                    <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white">
+                      <Link
+                        className="ctorder text-white"
+                        to={`/user/orders/${order._id}/orderdetail`}
+                        style={{ textDecoration: "none", color: "black" }}
+                        onClick={scrollToTop}
+                      >
+                        Chi tiết
+                      </Link>
                     </button>
-                  )}
-                 </div>
-                  {order && order.hasReviewed === false && order.status._id == '64e8a93da63d2db5e8d8562d' ? <Comment order={order} /> : ''}
+                    {order && order.status._id == '64e8a93da63d2db5e8d8562a' ? (
+                      <button className="text-white bg-amber-500 border-solid rounded border-1 py-1 px-3 text-white" onClick={() => deleteOrder(order._id)}>
+                        Hủy đơn hàng
+                      </button>
+                    ) : ''}
+                    {order && order.hasReviewed === false && order.status._id == '64e8a93da63d2db5e8d8562d' ? <Comment order={order} /> : ''}
+                  </div>
+
                 </div>
 
               </div>
