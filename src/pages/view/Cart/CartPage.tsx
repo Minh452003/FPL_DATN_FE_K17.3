@@ -14,6 +14,7 @@ import { useGetSizeQuery } from "@/api/sizeApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { useEffect, useState } from "react";
+import { useGetChildProductPriceQuery } from "@/api/chilProductApi";
 const CartPage = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -27,7 +28,16 @@ const CartPage = () => {
   const size = sizes?.size;
   const material = materials?.material;
   const productsInCart = carts?.data.products;
-  const [quantityInput, setQuantityInput] = useState({});
+  const [quantityInput, setQuantityInput] = useState<any>({});
+  const [idProduct, setIdProduct] = useState<string>(``);
+  const [activeColor, setActiveColor] = useState<string>(``);
+  const [activeSize, setActiveSize] = useState<string>(``);
+  const { data: childProduct }: any = useGetChildProductPriceQuery({
+    productId: idProduct,
+    sizeId: activeSize,
+    colorId: activeColor,
+  });
+
   const updateQuantity = (
     productId: string,
     sizeId: string,
@@ -43,48 +53,26 @@ const CartPage = () => {
       colorId: colorId,
       materialId: materialId,
     }).then(() => {
-      // Bạn có thể xử lý kết quả nếu cần
+      setActiveColor(colorId);
+      setActiveSize(sizeId);
+      setIdProduct(productId);
     });
   };
 
-  const handleQuantityChange = (
-    productId: string,
-    text: string,
-    newQuantity: any
-  ) => {
-    if (newQuantity < 1) {
-      return;
-    }
+  const handleQuantityChange = (productId: string, text?: any) => {
+    if (text > childProduct?.product.stock_quantity) return 0;
+
     updateQuantity(
       productId,
       productsInCart.find((item: any) => item.productId === productId)?.sizeId,
       productsInCart.find((item: any) => item.productId === productId)?.colorId,
       productsInCart.find((item: any) => item.productId === productId)
         ?.materialId,
-      newQuantity
+      text
     );
     setQuantityInput({ ...quantityInput, [productId]: text });
   };
 
-  useEffect(() => {
-    const debounceTimeout = setTimeout(() => {
-      // Gửi yêu cầu API chỉ khi giá trị đã ổn định sau khoảng thời gian chờ
-      Object.entries(quantityInput).forEach(([productId, text]) => {
-        updateQuantity(
-          productId,
-          productsInCart.find((item: any) => item.productId === productId)
-            ?.sizeId,
-          productsInCart.find((item: any) => item.productId === productId)
-            ?.colorId,
-          productsInCart.find((item: any) => item.productId === productId)
-            ?.materialId,
-          text
-        );
-      });
-    }, 500);
-
-    return () => clearTimeout(debounceTimeout);
-  }, [quantityInput, productsInCart]);
   const deleteCart = ({ productId, sizeId, colorId, materialId }: any) => {
     Swal.fire({
       title: "Bạn chắc chứ?",
@@ -171,23 +159,26 @@ const CartPage = () => {
       title: "Số lượng",
       dataIndex: "stock_quantity",
       key: "stock_quantity",
-      render: (text: any, record: any) => (
+      render: (text: number, record: any) => (
         <div className="quantity-input">
           <button
             className="quantity-btn"
-            onClick={() => handleQuantityChange(record.productId, text, text - 1)}
+            onClick={() => handleQuantityChange(record.productId, text - 1)}
           >
             -
           </button>
-
           {resultChangeQuantity.isLoading ? (
             <AiOutlineLoading3Quarters className="animate-spin m-auto" />
           ) : (
-            <input min="1" value={text} />
+            <input
+              min="1"
+              max={childProduct?.product.stock_quantity}
+              defaultValue={quantityInput[record.productId] || text}
+            />
           )}
           <button
             className="quantity-btn"
-            onClick={() => handleQuantityChange(record.productId, text, text + 1)}
+            onClick={() => handleQuantityChange(record.productId, text + 1)}
           >
             +
           </button>
@@ -249,8 +240,12 @@ const CartPage = () => {
     <div className="bg-gray-100 container mx-auto">
       <h1 className="pt-10 pb-10">Giỏ hàng của bạn</h1>
       <Table
-        dataSource={productsInCart}
+        dataSource={productsInCart.map((item:any) => ({
+          ...item,
+          key: item.productId, // Đặt key với giá trị độc nhất, có thể là productId
+        }))}
         columns={columns}
+        
         className="custom-table"
       />
       <div className="pt-20 pb-10">
