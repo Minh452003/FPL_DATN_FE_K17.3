@@ -2,7 +2,7 @@ import {
   useGetProductsQuery,
   useRemoveProductMutation,
 } from "@/api/productApi";
-import { Table, Button } from "antd";
+import { Table, Button, Input } from "antd";
 import {
   FaTrashCan,
   FaWrench,
@@ -17,7 +17,8 @@ import { useGetMaterialQuery } from "@/api/materialApi";
 import Swal from "sweetalert2";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState } from "react";
-import './productAdmin.css'
+import "./productAdmin.css";
+import { IoSearchSharp } from "react-icons/io5";
 const Productlist = () => {
   const { data, isLoading: isLoadingProducts } = useGetProductsQuery();
   const { data: categories } = useGetCategoryQuery<any>();
@@ -33,6 +34,7 @@ const Productlist = () => {
   const brand = brands?.brand;
   const material = materials?.material;
   const [sortedInfo, setSortedInfo] = useState({} as any);
+  const [searchText, setSearchText] = useState("");
   const handleChange = (pagination: any, filters: any, sorter: any) => {
     setSortedInfo(sorter);
   };
@@ -41,34 +43,28 @@ const Productlist = () => {
       selectedCategory === "all" || product.categoryId === selectedCategory;
     const brandMatches =
       selectedBrand === "all" || product.brandId === selectedBrand;
-    if (selectedPriceFilter === "all") {
-      return categoryMatches && brandMatches;
-    } else if (selectedPriceFilter === "100000-1000000") {
-      return (
-        categoryMatches &&
-        brandMatches &&
+
+    const priceFilterMatches =
+      selectedPriceFilter === "all" ||
+      (selectedPriceFilter === "100000-1000000" &&
         product.product_price >= 100000 &&
-        product.product_price <= 1000000
-      );
-    } else if (selectedPriceFilter === "1000000-5000000") {
-      return (
-        categoryMatches &&
-        brandMatches &&
+        product.product_price <= 1000000) ||
+      (selectedPriceFilter === "1000000-5000000" &&
         product.product_price >= 1000000 &&
-        product.product_price <= 5000000
-      );
-    } else if (selectedPriceFilter === "5000000-10000000") {
-      return (
-        categoryMatches &&
-        brandMatches &&
+        product.product_price <= 5000000) ||
+      (selectedPriceFilter === "5000000-10000000" &&
         product.product_price >= 5000000 &&
-        product.product_price <= 10000000
-      );
-    } else if (selectedPriceFilter === "10000000+") {
-      return (
-        categoryMatches && brandMatches && product.product_price >= 10000000
-      );
-    }
+        product.product_price <= 10000000) ||
+      (selectedPriceFilter === "10000000+" &&
+        product.product_price >= 10000000);
+
+    const searchMatches =
+      searchText === "" ||
+      product.product_name.toLowerCase().includes(searchText.toLowerCase());
+
+    return (
+      categoryMatches && brandMatches && priceFilterMatches && searchMatches
+    );
   });
   const data1 = filteredProducts?.map((product: any, index: number) => {
     return {
@@ -122,10 +118,9 @@ const Productlist = () => {
       key: "STT",
       render: (index: any) => <a>{index}</a>,
       sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
-      sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
+      sortOrder: sortedInfo.columnKey === "STT" && sortedInfo.order,
       ellipsis: true,
       width: 90, // Điều chỉnh chiều rộng của cột "STT"
-
     },
     {
       title: "Name",
@@ -133,10 +128,9 @@ const Productlist = () => {
       key: "name",
       render: (text: any) => <a>{text}</a>,
       sorter: (a: any, b: any) => a.name.localeCompare(b.name), // Sắp xếp theo Name
-      sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+      sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
       ellipsis: true,
       width: 200, // Điều chỉnh chiều rộng của cột "STT"
-
     },
     {
       title: "Ảnh",
@@ -241,7 +235,7 @@ const Productlist = () => {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
           className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        //...
+          //...
         >
           <option value="all">Tất cả danh mục</option>
           {categories?.category?.docs.map((category: any) => (
@@ -255,7 +249,7 @@ const Productlist = () => {
           value={selectedBrand}
           onChange={(e) => setSelectedBrand(e.target.value)}
           className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        //...
+          //...
         >
           <option value="all">Tất cả thương hiệu</option>
           {brands?.brand?.map((brand: any) => (
@@ -269,7 +263,7 @@ const Productlist = () => {
           value={selectedPriceFilter}
           onChange={(e) => setSelectedPriceFilter(e.target.value)}
           className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        //...
+          //...
         >
           <option value="all">Tất cả giá</option>
           <option value="100000-1000000">100.000-1.000.000</option>
@@ -278,25 +272,34 @@ const Productlist = () => {
           <option value="10000000+">10.000.000+</option>
         </select>
       </div>
-      <div className="overflow-x-auto drop-shadow-xl rounded-lg">
+      <div className="flex overflow-x-auto drop-shadow-xl rounded-lg items-center">
         <Button className="m-2 text-3xl text-blue-500">
           <Link to={"add"}>
             <FaCirclePlus style={{ fontSize: "24", display: "block" }} />
           </Link>
         </Button>
-        <Button className="m-2  float-right">
+
+        <Input
+          className="m-2"
+          prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
+          placeholder="Tìm kiếm tên sản phẩm..."
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ marginBottom: "16px", borderRadius: "5px", width: "400px" }}
+        />
+        <Button className="ml-auto">
           <Link to={"trash"}>
             <FaTrash style={{ fontSize: "20", display: "block" }} />
           </Link>
         </Button>
-        <Table
-          onChange={handleChange}
-          dataSource={data1}
-          columns={columns}
-          pagination={{ defaultPageSize: 6 }}
-          rowKey="key"
-        />
       </div>
+
+      <Table
+        onChange={handleChange}
+        dataSource={data1}
+        columns={columns}
+        pagination={{ defaultPageSize: 6 }}
+        rowKey="key"
+      />
     </div>
   );
 };
