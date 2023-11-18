@@ -72,6 +72,7 @@ import Banneradd from "./pages/admin/banners/Banneradd";
 import Bannerupdate from "./pages/admin/banners/Bannerupdate";
 import Bannerlist from "./pages/admin/banners/Bannerlist";
 import UserUpdate from "./pages/admin/user/UserUpdate";
+import NotFoundPage from "./pages/notfound/NotFoundPage";
 
 
 
@@ -229,5 +230,6 @@ export const router = createBrowserRouter([
                 ],
             },
         ]
-    }
+    },
+    { path: '*', element: <NotFoundPage /> }
 ])
