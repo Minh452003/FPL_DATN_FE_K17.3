@@ -59,18 +59,14 @@ const CartPage = () => {
     });
   };
 
-  const handleQuantityChange = (productId: string, text?: any) => {
+  const handleQuantityChange = (productId: string,sizeId:any,colorId:any,materialId:any,text?: any) => {
+    if (text < 1) return;
     if (text > childProduct?.product.stock_quantity) return 0;
 
-    updateQuantity(
-      productId,
-      productsInCart.find((item: any) => item.productId === productId)?.sizeId,
-      productsInCart.find((item: any) => item.productId === productId)?.colorId,
-      productsInCart.find((item: any) => item.productId === productId)
-        ?.materialId,
-      text
-    );
+    updateQuantity(productId, sizeId, colorId, materialId, text);
+    
     setQuantityInput({ ...quantityInput, [productId]: text });
+    
   };
 
   const deleteCart = ({ productId, sizeId, colorId, materialId }: any) => {
@@ -163,7 +159,7 @@ const CartPage = () => {
         <div className="quantity-input">
           <button
             className="quantity-btn"
-            onClick={() => handleQuantityChange(record.productId, text - 1)}
+            onClick={() => handleQuantityChange(record.productId,record.sizeId,record.colorId,record.materialId, text - 1)}
           >
             -
           </button>
@@ -173,12 +169,12 @@ const CartPage = () => {
             <input
               min="1"
               max={childProduct?.product.stock_quantity}
-              defaultValue={quantityInput[record.productId] || text}
+              value={quantityInput[`${record.productId}_${record.sizeId}_${record.colorId}_${record.materialId}`] || text}
             />
           )}
           <button
             className="quantity-btn"
-            onClick={() => handleQuantityChange(record.productId, text + 1)}
+            onClick={() => handleQuantityChange(record.productId,record.sizeId,record.colorId,record.materialId, text + 1)}
           >
             +
           </button>
@@ -225,28 +221,37 @@ const CartPage = () => {
     );
   }
   if (!carts || !carts?.data || carts?.data.products.length === 0) {
-    return <p>
-      <div className="grid  px-4 bg-white place-content-center  pb-3" style={{height: "500px"}}>
-  <div className="">
-      <img className="w-[400px]" src="https://nhanhieuquocgia.com.vn/assets/images/no-cart.png" alt="" />
+    return (
+      <p>
+        <div
+          className="grid  px-4 bg-white place-content-center  pb-3"
+          style={{ height: "500px" }}
+        >
+          <div className="">
+            <img
+              className="w-[400px]"
+              src="https://nhanhieuquocgia.com.vn/assets/images/no-cart.png"
+              alt=""
+            />
 
-    <h1
-      className="mt-6  font-bold tracking-tight text-gray-900 "
-      style={{fontSize: "17px"}}
-    >
-      Giỏ hàng của bạn còn trống, hãy lựa mua ngay nhé !
-    </h1>
+            <h1
+              className="mt-6  font-bold tracking-tight text-gray-900 "
+              style={{ fontSize: "17px" }}
+            >
+              Giỏ hàng của bạn còn trống, hãy lựa mua ngay nhé !
+            </h1>
 
-    <Link
-      to="/"
-      className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
-      style={{background: "#ff7600", marginLeft: "90px"}}
-    >
-      Mua sắm cùng Casa
-    </Link>
-  </div>
-</div>
-    </p>;
+            <Link
+              to="/"
+              className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+              style={{ background: "#ff7600", marginLeft: "90px" }}
+            >
+              Mua sắm cùng Casa
+            </Link>
+          </div>
+        </div>
+      </p>
+    );
   }
   if (isLoading) return <Skeleton />;
   if (error) {
@@ -261,12 +266,11 @@ const CartPage = () => {
     <div className="bg-gray-100 container mx-auto">
       <h1 className="pt-10 pb-10">Giỏ hàng của bạn</h1>
       <Table
-        dataSource={productsInCart.map((item:any) => ({
+        dataSource={productsInCart.map((item: any,index:any) => ({
           ...item,
-          key: item.productId, // Đặt key với giá trị độc nhất, có thể là productId
+          key: index,
         }))}
         columns={columns}
-        
         className="custom-table"
       />
       <div className="pt-20 pb-10">
