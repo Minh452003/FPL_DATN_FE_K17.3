@@ -52,11 +52,29 @@ const Voucher = () => {
     const newestCoupons = couponLish.filter(
       (couponItem: any) =>
       new Date(couponItem.expiration_date).getTime() - Date.now() > 0 // Chỉ lọc các voucher chưa hết hạn
-
-    );
+       );
     setFilteredCoupons(newestCoupons);
   }, [couponLish]); // Chỉ khi danh sách voucher thay đổi, useEffect này mới chạy
+  
 
+  if (!couponLish || couponLish.length === 0) {
+    return <div>
+      <div className="grid  px-4 bg-white place-content-center  pb-[400px]" style={{height: "1000px"}}>
+  <div className="">
+      <img className="w-[200px]  " src="https://symbols.vn/wp-content/uploads/2021/11/Mau-icon-gift-card-dac-sac.png" alt="" />
+
+
+    <h1
+      className="mt-6  font-light tracking-tight text-gray-900 ml-3"
+      style={{fontSize: "17px", }}
+    >
+      Bạn chưa có voucher nào !
+    </h1>
+
+  </div>
+</div>
+    </div>;
+  }
   return (
     <div className="container">
       <h6 className="text-lg">Kho Voucher</h6>
