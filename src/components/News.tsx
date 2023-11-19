@@ -1,9 +1,17 @@
 import { useGetNewsQuery } from "@/api/newsApi";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import './New.css';
 
 const NewsComponent = () => {
   const { data }: any = useGetNewsQuery();
   const newList = data?.news?.docs;
+  const initialVisibleItems = 6; 
+  const [visibleItems, setVisibleItems] = useState(initialVisibleItems);
+
+  const handleToggle = () => {
+    setVisibleItems((prev) => (prev < data?.news?.docs.length ? data?.news?.docs.length : initialVisibleItems));
+  };
 
   return (
     <div className="main-col5">
@@ -21,19 +29,17 @@ const NewsComponent = () => {
           </div>
 
           <div className="row x">
-            {newList &&
-              newList.map((newItems: any, index: number) => (
+            {data?.news?.docs &&
+              data?.news?.docs.slice(0, visibleItems).map((newItems: any, index: number) => (
                 <div
                   key={index}
                   className="col-xs-12 col-sm-6 col-md-4 item_bl_index"
                 >
                   <div className="blog_inner border rounded-lg">
                     <div className="blog-img blog-l">
-                      <Link
-                        to={''}
-                      >
+                      <Link to={''}>
                         <img
-                          className="lazyload loaded object-fill h-48 w-96"
+                          className="lazyload loaded object-fill h-48 w-96 ppqq"
                           src={newItems.new_image.url}
                           alt="Thiết kế phòng bếp hiện đại 2020"
                         />
@@ -41,23 +47,17 @@ const NewsComponent = () => {
                     </div>
                     <div className="px-3">
                       <h3>
-                        <Link
-                          to={''}
-                        >
-                          {newItems.new_name}
-                        </Link>{" "}
+                        <Link to={''}>{newItems.new_name}</Link>
                       </h3>
-                      <p className="justify">
-                        {newItems.new_description}
-                      </p>
+                      <p className="justify wwtt">{newItems.new_description}</p>
                     </div>
                   </div>
                 </div>
               ))}
           </div>
-          <div className="view_more">
-            <Link to={''} title="Xem tất cả">
-              Xem tất cả
+          <div className="view_more" onClick={handleToggle}>
+            <Link to={''} title="Xem thêm">
+              {visibleItems === initialVisibleItems ? 'Xem thêm' : 'Thu gọn'}
             </Link>
           </div>
         </div>
