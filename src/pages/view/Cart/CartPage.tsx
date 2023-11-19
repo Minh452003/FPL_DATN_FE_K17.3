@@ -225,7 +225,28 @@ const CartPage = () => {
     );
   }
   if (!carts || !carts?.data || carts?.data.products.length === 0) {
-    return <p>Không có sản phẩm trong giỏ hàng </p>;
+    return <p>
+      <div className="grid  px-4 bg-white place-content-center  pb-3" style={{height: "500px"}}>
+  <div className="">
+      <img className="w-[400px]" src="https://nhanhieuquocgia.com.vn/assets/images/no-cart.png" alt="" />
+
+    <h1
+      className="mt-6  font-bold tracking-tight text-gray-900 "
+      style={{fontSize: "17px"}}
+    >
+      Giỏ hàng của bạn còn trống, hãy lựa mua ngay nhé !
+    </h1>
+
+    <Link
+      to="/"
+      className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+      style={{background: "#ff7600", marginLeft: "90px"}}
+    >
+      Mua sắm cùng Casa
+    </Link>
+  </div>
+</div>
+    </p>;
   }
   if (isLoading) return <Skeleton />;
   if (error) {

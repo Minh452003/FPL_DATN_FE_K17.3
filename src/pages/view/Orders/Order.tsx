@@ -118,6 +118,30 @@ const Order = () => {
       );
     }
   }
+  if (!orders || orders.length === 0) {
+    return <div>
+      <div className="grid  px-4 bg-white place-content-center  pb-[400px]" style={{height: "1000px"}}>
+  <div className="">
+      <img className="w-[200px] ml-20" src="https://ichibajp.com/images/img-cart-empty.png" alt="" />
+
+    <h1
+      className="mt-6  font-light tracking-tight text-gray-900 pr-10"
+      style={{fontSize: "17px", }}
+    >
+      Bạn chưa có đơn hàng nào, hãy đặt hàng ngay nhé !
+    </h1>
+
+    <Link
+      to="/"
+      className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+      style={{background: "#ff7600", marginLeft: "90px"}}
+    >
+      Mua Ngay
+    </Link>
+  </div>
+</div>
+    </div>;
+  }
 
   return (
     <div className="bg-slate-50 border-solid border-1 rounded">
