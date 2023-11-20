@@ -68,7 +68,6 @@ const Login = () => {
                                         id="email"
                                         type="email"
                                         placeholder="Email"
-                                        // required
                                         {...register('email', { required: true })}
                                     />
                                     {errors.email && <p className="text-red-500 text-xs mt-1">Email là trường bắt buộc.</p>}
@@ -83,7 +82,6 @@ const Login = () => {
                                         id="password"
                                         type="password"
                                         placeholder="******************"
-                                        // required
                                         {...register('password', { required: true })}
                                     />
                                     {errors.password && <p className="text-red-500 text-xs mt-1"> Mật khẩu là trường bắt buộc.</p>}

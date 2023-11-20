@@ -26,6 +26,34 @@ const userApi = createApi({
             query: (id) => `/users/${id}`,
             providesTags: ['User']
         }),
+
+        //Quên mật khẩu
+        forgotPassword: builder.mutation({
+            query: (user: IUser) => ({
+                url: '/forgotpassword',
+                method: 'POST',
+                body: user
+            }),
+            invalidatesTags: ['User']
+        }),
+        // VerifyOTP Quên Mật khẩu
+        verifyOTPResetPassword: builder.mutation({
+            query: (user: IUser) => ({
+                url: '/verifyOTPResetPassword',
+                method: 'POST',
+                body: user
+            }),
+            invalidatesTags: ['User']
+        }),
+        // Đặt lại mật khẩu
+        resetPassword: builder.mutation({
+            query: (user: IUser) => ({
+                url: `/resetpassword`,
+                method: 'PATCH',
+                body: user
+            }),
+            invalidatesTags: ['User']
+        }),
         // VerifyOTP
         verifyOTP: builder.mutation({
             query: (user: IUser) => ({
@@ -83,7 +111,7 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
-    
+
     }),
 
 
@@ -93,12 +121,15 @@ export const {
     useGetUsersQuery,
     useGetUserByIdQuery,
     useVerifyOTPMutation,
+    useVerifyOTPResetPasswordMutation,
+    useResetPasswordMutation,
     useSignInMutation,
     useSignUpMutation,
     useRemoveUserMutation,
     useUpdateUserMutation,
     useRemoveUserByAdminMutation,
     useUpdateUserByAdminMutation,
+    useForgotPasswordMutation
 } = userApi;
 export const userReducer = userApi.reducer;
 export default userApi
