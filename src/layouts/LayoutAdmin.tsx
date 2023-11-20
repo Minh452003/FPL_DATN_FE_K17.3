@@ -8,6 +8,7 @@ import { AiFillMessage, AiOutlineAntDesign, AiOutlineBranches, AiOutlineComment,
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
 import { BiNews, BiSolidCoupon } from 'react-icons/bi';
+import { IoMdContact } from "react-icons/io";
 import { useSearchProductsQuery } from '@/api/productApi';
 import { checkAndRemoveExpiredData } from '@/checkAndRemoveExpiredData';
 import { getDecodedAccessToken } from '@/decoder';
@@ -169,6 +170,12 @@ const LayoutAdmin = () => {
             <Link to={'news'} className="a">
               <span className="icon"><BiNews /></span>
               <span className="text1">Tin tức</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'contact'} className="a">
+              <span className="icon"><IoMdContact /></span>
+              <span className="text1">Liên hệ</span>
             </Link>
           </li>
           <li>

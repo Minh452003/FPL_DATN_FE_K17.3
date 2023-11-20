@@ -73,6 +73,7 @@ import VerifyOTPForgotPassword from "./pages/view/Auth/VerifyOTPForgotPassword";
 import ResetPassword from "./pages/view/Auth/ResetPassword";
 import UserUpdate from "./pages/admin/user/UserUpdate";
 import NotFoundPage from "./pages/notfound/NotFoundPage";
+import ContactList from "./pages/admin/contact/ContactList";
 
 
 
@@ -162,6 +163,14 @@ export const router = createBrowserRouter([
             {
                 path: 'news', children: [
                     { index: true, element: <Newslist /> },
+                    { path: 'add', element: <NewsAdd /> },
+                    { path: 'trash', element: <NewsTrash /> },
+                    { path: ':id/edit', element: <NewsUpdate /> },
+                ],
+            },
+            {
+                path: 'contact', children: [
+                    { index: true, element: <ContactList /> },
                     { path: 'add', element: <NewsAdd /> },
                     { path: 'trash', element: <NewsTrash /> },
                     { path: ':id/edit', element: <NewsUpdate /> },

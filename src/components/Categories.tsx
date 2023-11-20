@@ -11,9 +11,6 @@ const Categories = () => {
     const { data: categories, error, isLoading: isLoadingFetching }: any = useGetCategoryQuery();
     const [slidesPerView, setSlidesPerView] = useState(1); // Mặc định là 1
 
-
-
-
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
