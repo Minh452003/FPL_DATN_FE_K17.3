@@ -53,13 +53,11 @@ import OrdersDetail from "./pages/admin/orders/OrdersDetail";
 import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProductAdd";
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
 import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDetail";
-
 import CustomProductslist from "./pages/admin/customProducts/CustomProductslist";
 import CustomProductsTrash from "./pages/admin/customProducts/CustomProductsTrash";
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
 import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
 import OrdersManager from "./pages/admin/orders/OrdersManager";
-
 import Listcomments from "./pages/admin/comment/Listcomments";
 import Commentdetail from "./pages/admin/comment/Commentdetail";
 import Category_Detail from "./pages/view/Category_Detail/Category_Detail";
@@ -71,8 +69,11 @@ import PrivateRouter from "./PrivateRouter";
 import Banneradd from "./pages/admin/banners/Banneradd";
 import Bannerupdate from "./pages/admin/banners/Bannerupdate";
 import Bannerlist from "./pages/admin/banners/Bannerlist";
+import VerifyOTPForgotPassword from "./pages/view/Auth/VerifyOTPForgotPassword";
+import ResetPassword from "./pages/view/Auth/ResetPassword";
 import UserUpdate from "./pages/admin/user/UserUpdate";
 import NotFoundPage from "./pages/notfound/NotFoundPage";
+
 
 
 
@@ -114,7 +115,14 @@ export const router = createBrowserRouter([
             },
             { path: 'products', element: <ProductPage /> },
             { path: 'news', element: <News /> },
-            { path: 'forgotpassword', element: <ForgotPassword /> },
+            {
+                path: 'forgotpassword', children: [
+                    { index: true, element: <ForgotPassword /> },
+                    { path: 'verifyOTPForgotPassword/:userId', element: <VerifyOTPForgotPassword /> },
+                    { path: 'resetPassword/:userId', element: <ResetPassword /> },
+                ]
+            },
+            
             {
                 path: 'signup', children: [
                     { index: true, element: <Signup /> },
