@@ -16,8 +16,9 @@ type TypeInputs = {
 
 const Signup = () => {
     const [signUp] = useSignUpMutation()
-    const { register, handleSubmit } = useForm<TypeInputs>();
+    const { register, handleSubmit, formState: { errors } } = useForm<TypeInputs>();
     const navigate = useNavigate();
+    
     const handleGoogleLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/google";
     }
@@ -74,9 +75,11 @@ const Signup = () => {
                                             id="firstName"
                                             type="text"
                                             placeholder="Tên"
-                                            required
-                                            {...register('first_name', { required: true })}
+                                            {...register('first_name', { required: true, pattern: /^[^\s]+$/ })}
                                         />
+                                        {errors.first_name && errors.first_name.type === 'pattern' && (
+                                            <p className="text-red-500 text-xs italic">Tên không được chứa dấu cách.</p>
+                                        )}
                                     </div>
                                     <div className="md:ml-2">
                                         <label className="block mb-2 text-sm font-bold text-gray-700" >
@@ -87,10 +90,11 @@ const Signup = () => {
                                             id="lastName"
                                             type="text"
                                             placeholder="Họ"
-                                            required
-                                            {...register('last_name', { required: true })}
-
+                                            {...register('last_name', { required: true, pattern: /^[^\s]+$/ })}
                                         />
+                                        {errors.last_name && errors.last_name.type === 'pattern' && (
+                                            <p className="text-red-500 text-xs italic">Họ không được chứa dấu cách.</p>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="mb-4">
@@ -102,10 +106,11 @@ const Signup = () => {
                                         id="email"
                                         type="email"
                                         placeholder="Email"
-                                        required
-                                        {...register('email', { required: true })}
-
+                                        {...register('email', { required: true, pattern: /^[^\s]+$/ })}
                                     />
+                                    {errors.email && errors.email.type === 'pattern' && (
+                                        <p className="text-red-500 text-xs italic">Email không được chứa dấu cách.</p>
+                                    )}
                                 </div>
                                 <div className="mb-4 md:flex md:justify-between">
                                     <div className="mb-4 md:mr-2 md:mb-0">
@@ -117,10 +122,11 @@ const Signup = () => {
                                             id="password"
                                             type="password"
                                             placeholder="******************"
-                                            required
-                                            {...register('password', { required: true })}
-
+                                            {...register('password', { required: true, pattern: /^[^\s]+$/ })}
                                         />
+                                        {errors.password && errors.password.type === 'pattern' && (
+                                            <p className="text-red-500 text-xs italic">Mật khẩu không được chứa dấu cách.</p>
+                                        )}
                                     </div>
                                     <div className="md:ml-2">
                                         <label className="block mb-2 text-sm font-bold text-gray-700">
@@ -128,13 +134,14 @@ const Signup = () => {
                                         </label>
                                         <input
                                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                            id="c_password"
+                                            id="confirmPassword"
                                             type="password"
                                             placeholder="******************"
-                                            required
-                                            {...register('confirmPassword', { required: true })}
-
+                                            {...register('confirmPassword', { required: true, pattern: /^[^\s]+$/ })}
                                         />
+                                        {errors.confirmPassword && errors.confirmPassword.type === 'pattern' && (
+                                            <p className="text-red-500 text-xs italic">Xác nhận mật khẩu không được chứa dấu cách.</p>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="mb-6 text-center">
