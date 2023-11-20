@@ -71,6 +71,9 @@ import Bannerupdate from "./pages/admin/banners/Bannerupdate";
 import Bannerlist from "./pages/admin/banners/Bannerlist";
 import VerifyOTPForgotPassword from "./pages/view/Auth/VerifyOTPForgotPassword";
 import ResetPassword from "./pages/view/Auth/ResetPassword";
+import UserUpdate from "./pages/admin/user/UserUpdate";
+import NotFoundPage from "./pages/notfound/NotFoundPage";
+
 
 
 
@@ -176,7 +179,7 @@ export const router = createBrowserRouter([
             {
                 path: 'users', children: [
                     { index: true, element: <Userlist /> },
-
+                    { path:"edit/:id", element: <UserUpdate /> },
                 ],
             },
             {
@@ -235,5 +238,6 @@ export const router = createBrowserRouter([
                 ],
             },
         ]
-    }
+    },
+    { path: '*', element: <NotFoundPage /> }
 ])

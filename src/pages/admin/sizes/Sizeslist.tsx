@@ -12,11 +12,10 @@ const Sizeslist = () => {
   const { data, error, isLoading }: any = useGetSizeQuery();
   const [removeSize, { isLoading: isRemoveLoading }] = useRemoveSizeMutation();
   const size = data?.size
-  const dataSource = size?.map(({_id, size_name, size_price, size_height, size_length, size_weight, size_width}: ISize) => {
+  const dataSource = size?.map(({_id, size_name, size_height, size_length, size_weight, size_width}: ISize) => {
     return {
       key: _id,
       size_name,
-      size_price,
       size_height,
       size_length,
       size_weight,
@@ -58,11 +57,6 @@ const Sizeslist = () => {
       title: 'Tên',
       dataIndex: 'size_name',
       key: 'size_name',
-    },
-    {
-      title: 'Giá',
-      dataIndex: 'size_price',
-      key: 'size_price',
     },
     {
       title: 'Chiều cao',

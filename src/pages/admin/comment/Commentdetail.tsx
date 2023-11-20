@@ -3,15 +3,12 @@ import { Table } from "antd";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { StarOutlined } from "@ant-design/icons";
+import { format } from "date-fns";
 
 const Commentdetail = () => {
   const { id }: any = useParams();
-  const { data, isLoading: isLoadingComments }: any =
-    useGetCommentByProductIdQuery(id);
-
+  const { data, isLoading: isLoadingComments }: any = useGetCommentByProductIdQuery(id);
   const comments = isLoadingComments ? [] : data?.comments;
-  console.log(comments);
-  
   const [filter, setFilter] = useState("all");
   const [sortedInfo, setSortedInfo] = useState({} as any);
   const handleChange = (pagination: any, filters: any, sorter: any) => {
@@ -19,6 +16,34 @@ const Commentdetail = () => {
   };
   const handleFilterChange = (newFilter: any) => {
     setFilter(newFilter);
+  };
+  const formatTimeAgo = (timestamp: any) => {
+    const now: any = new Date();
+    const commentTime: any = new Date(timestamp);
+
+    const timeDiff = now - commentTime;
+    const seconds = Math.floor(timeDiff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days} ngày trước`;
+    } else if (hours > 0) {
+      return `${hours} giờ trước`;
+    } else if (minutes > 0) {
+      return `${minutes} phút trước`;
+    } else {
+      return 'Vừa xong';
+    }
+  }
+  const parseTimeStringToDate = (timeString: string) => {
+    const [time, date] = timeString.split(' '); // Tách thời gian và ngày tháng
+    const [hours, minutes] = time.split(':'); // Tách giờ và phút
+    const [day, month, year] = date.split('/'); // Tách ngày, tháng, năm
+
+    // Tạo đối tượng Date từ các thành phần đã tách
+    return new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
   };
   const data1 = comments?.map((comment: any, index: number) => {
     return {
@@ -28,15 +53,15 @@ const Commentdetail = () => {
       email: comment.userId,
       description: comment.description,
       rating: comment.rating,
-      formattedCreatedAt: comment.formattedCreatedAt,
-    };
+      formattedCreatedAt: format(new Date(comment.createdAt), "HH:mm a dd/MM/yyyy")
+    }
   });
   const filteredData =
     filter === "positive"
       ? data1.filter((comment: any) => comment.rating > 3)
       : filter === "negative"
-      ? data1.filter((comment: any) => comment.rating <= 3)
-      : data1;
+        ? data1.filter((comment: any) => comment.rating <= 3)
+        : data1;
   const columns = [
     {
       title: "STT",
@@ -76,7 +101,7 @@ const Commentdetail = () => {
       sortOrder: sortedInfo.columnKey === "rating" && sortedInfo.order,
       ellipsis: true,
       width: 200,
-      render: (rating: number,index:any) => {
+      render: (rating: number, index: any) => {
         const starIcons = [];
         for (let i = 1; i <= 5; i++) {
           starIcons.push(
@@ -87,7 +112,7 @@ const Commentdetail = () => {
             )
           );
         }
-  
+
         return <div>{starIcons}</div>;
       },
     },
@@ -110,9 +135,8 @@ const Commentdetail = () => {
           <li>
             <a
               href=""
-              className={`no-underline text-gray-700 ${
-                filter === "all" ? "font-bold" : ""
-              }`}
+              className={`no-underline text-gray-700 ${filter === "all" ? "font-bold" : ""
+                }`}
               onClick={(e) => {
                 e.preventDefault();
                 handleFilterChange("all");
@@ -124,9 +148,8 @@ const Commentdetail = () => {
           <li>
             <a
               href=""
-              className={`no-underline text-gray-700 ${
-                filter === "negative" ? "font-bold" : ""
-              }`}
+              className={`no-underline text-gray-700 ${filter === "negative" ? "font-bold" : ""
+                }`}
               onClick={(e) => {
                 e.preventDefault();
                 handleFilterChange("negative");
@@ -138,9 +161,8 @@ const Commentdetail = () => {
           <li>
             <a
               href=""
-              className={`no-underline text-gray-700 ${
-                filter === "positive" ? "font-bold" : ""
-              }`}
+              className={`no-underline text-gray-700 ${filter === "positive" ? "font-bold" : ""
+                }`}
               onClick={(e) => {
                 e.preventDefault();
                 handleFilterChange("positive");

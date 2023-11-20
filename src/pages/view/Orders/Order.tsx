@@ -101,6 +101,13 @@ const Order = () => {
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+  // -------------------------------------------
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Cuộn mượt
+    });
+  };
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
     if ("data" in error && "status" in error) {
@@ -111,13 +118,37 @@ const Order = () => {
       );
     }
   }
+  if (!orders || orders.length === 0) {
+    return <div>
+      <div className="grid  px-4 bg-white place-content-center  pb-[400px]" style={{height: "1000px"}}>
+  <div className="">
+      <img className="w-[200px] ml-20" src="https://ichibajp.com/images/img-cart-empty.png" alt="" />
+
+    <h1
+      className="mt-6  font-light tracking-tight text-gray-900 pr-10"
+      style={{fontSize: "17px", }}
+    >
+      Bạn chưa có đơn hàng nào, hãy đặt hàng ngay nhé !
+    </h1>
+
+    <Link
+      to="/"
+      className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+      style={{background: "#ff7600", marginLeft: "90px"}}
+    >
+      Mua Ngay
+    </Link>
+  </div>
+</div>
+    </div>;
+  }
 
   return (
     <div className="bg-slate-50 border-solid border-1 rounded">
       <div className="m-3">
         <h3>Đơn hàng</h3>
         <div className="">
-          <ul className="font-medium flex flex-col p-3 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="font-medium flex flex-col p-3 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-500 dark:border-gray-700">
             <li>
               <a
                 href=""
@@ -149,60 +180,65 @@ const Order = () => {
             ))}
           </ul>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
+        <div className="md:grid  md:grid-cols-2 gap-3 ">
           {displayedOrders.map((order: any) => {
             return (
               <div
-                className="flex flex-row gap-10 border-solid boder-2 border-slate-400 bg-white shadow-lg "
+                className="md:flex md:flex-row gap-5 border-solid boder-2 border-slate-400 bg-white shadow-lg border-0 rounded-md "
                 key={order._id}
               >
-                {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? <div className="absolute text-white p-2 rounded-sm icon-container">
+                {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? <div className="absolute text-gray-800 p-2 rounded-sm icon-container text-white">
                   <LiaCarSideSolid className="animated-icon" />Đang giao
                 </div> : ''}
-                <div className="flex justify-start items-center mx-5">
+                <div className="flex justify-start md:top-0 py-2 pt-2 justify-center items-center mx-5">
                   {order && order.hasReviewed === true ? <div className="absolute bg-red-500 text-white p-2 rounded-sm text-sm">
                     Đã đánh giá
                   </div> : ''}
-                  {order && order.status._id == '64e8a93da63d2db5e8d8562a' ? <button className="absolute rounded-sm opacity-0 remove" onClick={() => deleteOrder(order._id)}>
-                    Huỷ đơn hàng
-                  </button> : ''}
-
                   <img
-                    width="100"
-                    height="100"
+                    width="130"
                     src={order.products[0].image}
                     alt="external-free-sales-flaticons-lineal-color-flat-icons"
                   />
                 </div>
-                <div className="flex flex-col font-medium justify-center px-10 py-4 ">
+                <div className="flex flex-col font-medium justify-center px-3 py-3 ">
                   <p>
                     Ngày mua:{" "}
-                    <span className="text-[#FF1493]">
+                    <span className="text-amber-600">
                       {format(new Date(order.createdAt), "HH:mm a dd/MM/yyyy")}
                     </span>
                   </p>
                   <p className="total1">
                     Tổng tiền:{" "}
-                    <span className="text-[#FF1493]">
+                    <span className="text-amber-600">
                       {formatCurrency(order.total)}₫
                     </span>
                   </p>
                   <p className="justify-start">
                     Trạng thái:{" "}
-                    <span className="text-[#FF1493]">
+                    <span className="text-amber-600">
                       {order.status.status_name}
                     </span>
                   </p>
-                  <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white">
-                    <Link
-                      className="ctorder text-white"
-                      to={`/user/orders/${order._id}/orderdetail`}
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      Chi tiết
-                    </Link>
-                  </button>
-                  {order && order.hasReviewed === false && order.status._id == '64e8a93da63d2db5e8d8562d' ? <Comment order={order} /> : ''}
+
+                  <div className="flex">
+                    <button className="bg-green-500 border-solid rounded border-1 py-1 px-3 text-white">
+                      <Link
+                        className="ctorder text-white"
+                        to={`/user/orders/${order._id}/orderdetail`}
+                        style={{ textDecoration: "none", color: "black" }}
+                        onClick={scrollToTop}
+                      >
+                        Chi tiết
+                      </Link>
+                    </button>
+                    {order && order.status._id == '64e8a93da63d2db5e8d8562a' ? (
+                      <button className="text-white bg-amber-500 border-solid rounded border-1 py-1 px-3 text-white" onClick={() => deleteOrder(order._id)}>
+                        Hủy đơn hàng
+                      </button>
+                    ) : ''}
+                    {order && order.hasReviewed === false && order.status._id == '64e8a93da63d2db5e8d8562d' ? <Comment order={order} /> : ''}
+                  </div>
+
                 </div>
 
               </div>

@@ -105,7 +105,7 @@ const userApi = createApi({
         }),
         updateUserByAdmin: builder.mutation({
             query: (user: IUser) => ({
-                url: `/user/${user.id}/admin`,
+                url: `/user/${user._id}/admin`,
                 method: 'PATCH',
                 body: user
             }),

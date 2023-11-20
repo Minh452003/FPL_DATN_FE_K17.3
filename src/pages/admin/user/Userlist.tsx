@@ -1,14 +1,17 @@
-
-import { Table, Image } from 'antd';
+import { Table, Image, Input, Button } from 'antd';
 import { useGetUsersQuery } from '@/api/authApi';
-
+import { useState } from 'react';
+import { IoSearchSharp } from "react-icons/io5";
+import { Link } from 'react-router-dom';
+import { FaWrench } from 'react-icons/fa';
 
 const Userlist = () => {
-  const { data }: any = useGetUsersQuery();
+  const { data, isloading }: any = useGetUsersQuery();
   const user = data?.data;
-  console.log(user);
 
-  const data1 = user?.map((user: any, index: number) => {
+  const [searchText, setSearchText] = useState('');
+
+  const data1 = isloading ? [] : user?.map((user: any, index: number) => {
     return {
       key: user._id,
       STT: index + 1,
@@ -22,7 +25,8 @@ const Userlist = () => {
           height={80}
           src={user.avatar.url}
         />
-        : "Chưa có ảnh"
+        : "Chưa có ảnh",
+      role: user.role
     }
   });
   const columns = [
@@ -71,13 +75,41 @@ const Userlist = () => {
       key: 'address',
       render: (address: any) => <a>{address}</a>,
     },
+    {
+      title: 'Chức vụ',
+      dataIndex: 'role',
+      key: 'role',
+    },
+    {
+      title: 'Chức năng',
+      render: ({ key: _id }: any) => {
+        return (
+          <div style={{ width: '150px' }}>
+            <Button className='mr-1 text-blue-500'>
+              <Link to={`/admin/users/edit/${_id}`}><FaWrench /></Link>
+            </Button>
+          </div>
+        )
+      }
+    },
   ];
 
+  // Xử lý filter..............
+  const filteredData = data1?.filter((item: any) => {
+    return item.email.toLowerCase().includes(searchText.toLowerCase());
+  });
   return (
     <div className="container">
       <h3 className="font-semibold">Danh sách khách hàng </h3>
+      <Input
+        prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
+        placeholder="Tìm kiếm email người dùng..."
+        onChange={(e) => setSearchText(e.target.value)}
+        style={{ marginBottom: '16px', borderRadius: "5px", width: "400px" }}
+
+      />
       <br />
-      <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
+      <Table dataSource={filteredData} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
     </div>
   );
 }

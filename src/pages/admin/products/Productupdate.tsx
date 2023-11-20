@@ -27,8 +27,8 @@ const Productupdate = () => {
     const { data: categories } = useGetCategoryQuery<any>();
     const { data: brands } = useGetBrandQuery<any>();
     const { data: materials } = useGetMaterialQuery<any>();
-    const [updateImage] = useUpdateImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [updateImage, resultImage] = useUpdateImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]);
     const [imageUrl, setImageUrl] = useState<any>([]);
     const [publicId, setpublicId] = useState<string>();
@@ -144,11 +144,11 @@ const Productupdate = () => {
     }
 
     const validatePositiveNumber = (_: any, value: any) => {
-        if(parseFloat(value) < 0) {
-          return Promise.reject("Giá trị phải là số dương");
+        if (parseFloat(value) < 0) {
+            return Promise.reject("Giá trị phải là số dương");
         }
         return Promise.resolve();
-      }
+    }
     return (
         <div className="container-fluid mb-7">
             <div className="row">
@@ -177,18 +177,18 @@ const Productupdate = () => {
                             rules={[{ required: true, message: 'Tên sản phẩm không được để trống!' },
                             {
                                 validator: (_, value) => {
-                                  if (!value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
                                     return Promise.resolve();
-                                  }
-                                  if (/ {2,}/.test(value)) {
-                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                  }
-                                  return Promise.resolve();
                                 },
-                              },
+                            },
                             { min: 2, message: "Nhập ít nhất 2 ký tự" }
-                        ]}
-                        hasFeedback
+                            ]}
+                            hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <Input placeholder='Tên sản phẩm' />
@@ -199,7 +199,7 @@ const Productupdate = () => {
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             rules={[{ required: true, message: 'Trường giá không được để trống!' },
-                            {validator: validatePositiveNumber},
+                            { validator: validatePositiveNumber },
                             { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                             hasFeedback
                             style={{ marginLeft: '20px' }}
@@ -212,7 +212,7 @@ const Productupdate = () => {
                             style={{ marginLeft: '20px' }}
                             label="Ảnh" rules={[{ required: true, message: 'Ảnh không được để trống' }]}
                             hasFeedback
-                            >
+                        >
                             {imageUrl && imageUrl?.map((img: any, index: any) => (
                                 <Upload
                                     {...props}
@@ -298,7 +298,9 @@ const Productupdate = () => {
                             />
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                                disabled={resultImage.isLoading || resultDelete.isLoading}
+                                htmlType="submit">
                                 {resultUpdate.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Cập nhật sản phẩm"}

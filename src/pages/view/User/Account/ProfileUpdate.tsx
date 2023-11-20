@@ -1,10 +1,16 @@
 import { useGetUserByIdQuery, useUpdateUserMutation } from "@/api/authApi";
 import {
+  useGetAvailableMutation,
+  useGetCityQuery,
+  useGetDistrictMutation,
+  useGetWardMutation,
+} from "@/api/shipApi";
+import {
   useDeleteImageMutation,
   useUpdateImageMutation,
 } from "@/api/uploadApi";
 import { getDecodedAccessToken } from "@/decoder";
-import { Button, Form, Input, Skeleton, Upload, message } from "antd";
+import { Button, Form, Input, Skeleton, Upload, message, Select } from "antd";
 import { RcFile, UploadProps } from "antd/es/upload";
 import { useEffect, useState } from "react";
 import { FaUpload } from "react-icons/fa6";
@@ -25,21 +31,41 @@ const ProfileUpdate = () => {
   const id = decodedToken ? decodedToken.id : null;
 
   const { data: user, isLoading, isError }: any = useGetUserByIdQuery(id);
+  const { data: city }: any = useGetCityQuery();
+  
+
   console.log(user);
 
   const [updateUser, resultUpdate] = useUpdateUserMutation();
   const [updateImage] = useUpdateImageMutation();
   const [deleteImage] = useDeleteImageMutation();
+  const [wardCode, setwardCode] = useState<any>("");
+  const [addAvailable] = useGetAvailableMutation();
+  const [available, setAvailable] = useState<any>([]);
   const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
   const [imageUrl, setImageUrl] = useState<any>({});
   const navigate = useNavigate();
-
+  const [addDistrict] = useGetDistrictMutation<any>();
+  const [addWard] = useGetWardMutation<any>();
+  const [district, setDistrict] = useState([]);
+  const [ward, setWard] = useState<any>([]);
   useEffect(() => {
     if (user) {
       setFields();
+      const { address } = user;
+      if (address) {
+        const [street, district,ward] = address.split(', ').reverse();
+        form.setFieldsValue({
+          address: {
+            street,
+            ward,
+            district,
+          
+          },
+        });
+      }
     }
   }, [user]);
-
   const [form] = Form.useForm();
 
   const setFields = () => {
@@ -53,36 +79,60 @@ const ProfileUpdate = () => {
       avatar: user?.avatar ? user?.avatar : {},
     });
   };
-
+  const handleCityChange = async (value: any, option: any) => {
+    const id = Number(option.key); // Lấy id từ option.key
+    addDistrict({ province_id: id }).then((response: any) => {
+      setDistrict(response.data.data);
+      sizeTotal();
+    });
+  };
+  const handleDistrictChange = async (value: any, option: any) => {
+    const id = Number(option.key); // Lấy id từ option.key
+    addWard({ district_id: id }).then((response: any) => {
+      setWard(response.data.data);
+    });
+  };
+  const handleAvailableChange = async (value: any, option: any) => {
+    const id = option.key; // Lấy id từ option.key
+    setwardCode(id);
+    addAvailable({
+      shop_id: 4537750,
+      from_district: 3440,
+      to_district: ward[0].DistrictID,
+    }).then((response: any) => {
+      setAvailable(response.data.data);
+    });
+  };
   const onFinish = (values: any) => {
     try {
+  
+  
+      const formattedAddress = `${values.address?.ward}, ${values.address?.district}, ${values.address?.street}`;
+  
+
+      values.address = formattedAddress;
+  
       if (Object.keys(imageUrl).length > 0) {
         values.avatar = imageUrl;
-        updateUser(values).then(() => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Cập nhật hồ sơ thành công!",
-            showConfirmButton: true,
-            timer: 1500,
-          });
-          navigate('/user/profile');
-        });
-      } else {
-        updateUser(values).then(() => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Cập nhật hồ sơ thành công!",
-            showConfirmButton: true,
-            timer: 1500,
-          });
-          navigate('/user/profile');
-        });
-        console.log(values);
       }
-    } catch (error) {}
+  
+      updateUser(values).then(() => {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Cập nhật hồ sơ thành công!",
+          showConfirmButton: true,
+          timer: 1500,
+        });
+        navigate("/user/profile");
+      });
+  
+    } catch (error) {
+      
+      message.error("An error occurred while updating the profile");
+    }
   };
+  
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
@@ -137,10 +187,11 @@ const ProfileUpdate = () => {
     },
   };
 
-  if (isLoading) return <Skeleton />;
-  if (isError || !user) {
-    return <div>Error: Unable to fetch category data.</div>;
-  }
+    if (isLoading) return <Skeleton />;
+    if (isError || !user) {
+      return <div>Error: Unable to fetch category data.</div>;
+    }
+
 
   return (
     <div className="container-fluid">
@@ -219,17 +270,82 @@ const ProfileUpdate = () => {
               <Input />
             </Form.Item>
 
-            <Form.Item<FieldType>
-              label="Address"
-              name="address"
-              labelCol={{ span: 24 }}
-              wrapperCol={{ span: 24 }}
-              style={{ marginLeft: "20px" }}
+            <Form.Item
+              name={["address", "street"]}
+              style={{ marginBottom: 20 ,marginLeft: "20px"}}
+              
               rules={[
-                { required: true, message: "Please input your Address!" },
+                { required: true, message: "Thành phố không được để trống" },
               ]}
             >
-              <Input />
+              <Select
+                style={{ width: 330 }}
+                onChange={handleCityChange}
+                placeholder="Tỉnh Thành"
+              >
+                {city &&
+                  city?.data?.map((ct: any) => {
+                    return (
+                      <Select.Option
+                        key={ct?.ProvinceID}
+                        value={ct?.ProvinceName}
+                      >
+                        {ct?.ProvinceName}
+                      </Select.Option>
+                    );
+                  })}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name={["address", "district"]}
+              style={{ marginBottom: 20,marginLeft: "20px" }}
+              
+              rules={[
+                { required: true, message: "Quận huyện không được để trống" },
+              ]}
+            >
+              <Select
+                style={{ width: 330 }}
+                onChange={handleDistrictChange}
+                placeholder="Quận huyện"
+              >
+                {district &&
+                  district.map((dis: any) => {
+                    return (
+                      <Select.Option
+                        key={dis?.DistrictID}
+                        value={dis?.DistrictName}
+                      >
+                        {dis?.DistrictName}
+                      </Select.Option>
+                    );
+                  })}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name={["address", "ward"]}
+              style={{ marginBottom: 20 ,marginLeft: "20px"}}
+              rules={[
+                { required: true, message: "Phường xã không được để trống" },
+              ]}
+            >
+              <Select
+                style={{ width: 330 }}
+                onChange={handleAvailableChange}
+                placeholder="Phường xã"
+              >
+                {ward &&
+                  ward.map((ward: any) => {
+                    return (
+                      <Select.Option
+                        key={ward?.WardCode}
+                        value={ward?.WardName}
+                      >
+                        {ward?.WardName}
+                      </Select.Option>
+                    );
+                  })}
+              </Select>
             </Form.Item>
             <Form.Item
               labelCol={{ span: 24 }} // Đặt chiều rộng của label
@@ -289,3 +405,14 @@ const ProfileUpdate = () => {
 };
 
 export default ProfileUpdate;
+function addShipping(data: {
+  service_id: string;
+  from_district_id: number;
+  to_district_id: any;
+}) {
+  throw new Error("Function not implemented.");
+}
+
+function setShip(data: any) {
+  throw new Error("Function not implemented.");
+}

@@ -12,8 +12,8 @@ import Swal from 'sweetalert2';
 
 const Banneradd = () => {
     const [addBanner, resultAdd] = useAddBannerMutation();
-    const [addImage] = useAddImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [addImage, resultImage] = useAddImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
     const [imageUrl, setImageUrl] = useState<any>({});
     const navigate = useNavigate();
@@ -81,7 +81,7 @@ const Banneradd = () => {
         },
     };
 
-    
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -99,13 +99,13 @@ const Banneradd = () => {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-                         <Form.Item
+                        <Form.Item
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
                             id="images" name="image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
                             hasFeedback
-                            >
+                        >
                             <Upload {...props} maxCount={1} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
@@ -115,9 +115,11 @@ const Banneradd = () => {
                                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
                             </Upload>
                         </Form.Item>
-                        
+
                         <Form.Item wrapperCol={{ span: 16 }}>
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                                disabled={resultImage.isLoading || resultDelete.isLoading}
+                                htmlType="submit">
                                 {resultAdd.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Thêm banner"}

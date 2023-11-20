@@ -11,6 +11,7 @@
 .ctorder {
     color: #FFF !important;
     width: 30px !important;
+    cursor: pointer;
 }
 
 /* Bình luận */
@@ -246,7 +247,7 @@
 
 /*  */
 .icon-container {
-    font-size: 10px !important;
+    font-size: 12px !important;
     background-color: #ff7600;
     opacity: 0.9;
 }

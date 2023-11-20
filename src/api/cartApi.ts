@@ -38,7 +38,7 @@ const cartApi = createApi({
         }),
 
         changeQuantity: builder.mutation({
-            query: ({ data, userId, productId, sizeId, colorId, materialId }: { data: InputCart; userId: string, productId: string, sizeId: string, colorId: string, materialId: string }) => ({
+            query: ({ data, userId, productId, sizeId, colorId, materialId }: { data: any; userId: string, productId: string, sizeId: string, colorId: string, materialId: string }) => ({
                 url: `/carts/${userId}/change?productId=${productId}&sizeId=${sizeId}&colorId=${colorId}&materialId=${materialId}`,
                 method: 'PUT',
                 body: data

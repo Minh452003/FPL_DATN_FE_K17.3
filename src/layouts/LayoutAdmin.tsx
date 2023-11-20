@@ -1,39 +1,39 @@
 import { useState, useEffect } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
 import { TbBrandProducthunt } from 'react-icons/tb';
 import { MdCategory } from 'react-icons/md';
-import { FaAccusoft } from "react-icons/fa";
+import { FaAccusoft, FaRegImage } from "react-icons/fa";
 import { AiFillMessage, AiOutlineAntDesign, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import '@/layouts/LayoutAdmin.css'
 import { BiNews, BiSolidCoupon } from 'react-icons/bi';
-import { useGetProductsQuery, useSearchProductsQuery } from '@/api/productApi';
+import { useSearchProductsQuery } from '@/api/productApi';
 import { checkAndRemoveExpiredData } from '@/checkAndRemoveExpiredData';
+import { getDecodedAccessToken } from '@/decoder';
+import { useGetUserByIdQuery } from '@/api/authApi';
 
 
 const LayoutAdmin = () => {
   const [isSidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [currentList, setCurrentList] = useState('all');
+  const [isLogout, setLogout] = useState(false);
+  const decodedToken: any = getDecodedAccessToken();
+  const iduser = decodedToken ? decodedToken.id : null;
+  const { data: user, isLoading, isError } = useGetUserByIdQuery(iduser);
+  const navigate = useNavigate()
+  const logout = () => {
+    localStorage.removeItem("status");
+    localStorage.removeItem("accessToken")
+    navigate("/");
+    setLogout(true);
+
+  };
   const handleSearchChange = (event: any) => {
     event.preventDefault();
     setSearchKeyword(event.target.value);
-};
-const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
-
-  // const onHandleSearch = (e: any) => {
-  //   const keyword = e.target.value.toLowerCase();
-  //   setSearchKeyWord(keyword);
-  //   searchProduct(keyword);
-  // };
-
-  // const searchProduct = (keyword: any) => {
-  //   const results = listdata.filter(
-  //     (item: any) => item.product_name.toLowerCase().includes(keyword)
-  //   )
-  //   setSearchResults(results)
-  // }
+  };
+  const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
   useEffect(() => {
     checkAndRemoveExpiredData();
   }, []);
@@ -162,13 +162,19 @@ const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
           <li>
             <Link to={'materials'} className="a">
               <span className="icon"><FaAccusoft /></span>
-              <span className="text1">Vật liệu</span>
+              <span className="text1">Chất liệu</span>
             </Link>
           </li>
           <li>
             <Link to={'news'} className="a">
               <span className="icon"><BiNews /></span>
               <span className="text1">Tin tức</span>
+            </Link>
+          </li>
+          <li>
+            <Link to={'banners'} className="a">
+              <span className="icon"><FaRegImage /></span>
+              <span className="text1">Ảnh quảng cáo</span>
             </Link>
           </li>
           <li>
@@ -205,39 +211,39 @@ const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
             {searchKeyword && (
               <div className="rounded-md z-50 absolute mt-5" id="listProduct" style={{ top: '20%', left: '22%', transform: 'translateX(-50%)', width: "31%", maxHeight: "400px", overflowY: "scroll" }}>
                 <div className='container'>
-                <div className="p-2 bg-white rounded-md">
-                {searchKeyword && searchProducts && searchProducts.product.docs && searchProducts.product.docs.length > 0 ? (
-                    searchProducts.product.docs.map((product: any, index: any) => (
-                      
-                      <div key={index}>
-                        <div className="grid grid-cols-[50px,auto] h-full p-1 rounded-md gap-y-5 focus:visible bg-gray-100 mt-1">
-                          <div>
-                            <Link to={`/products/${product._id}`}>
-                              <img
-                                src={product.image[0].url}
-                                alt="ảnh"
-                                className="transition duration-200 ease-in-out hover:scale-105 md:h-[50px] md:w-[50px] ml-2 mt-1"
-                              />
-                            </Link>
-                          </div>
-                          <div className="gap-y-3">
-                            <Link
-                              to={`/products/${product._id}`}
-                              className="text-black hover:text-yellow-500 transition duration-200 no-underline ml-4 mt-1 font-semibold"
-                            >
-                              {product.product_name}
-                            </Link>
-                            <p className="text-red-500 ml-4 font-semibold">
-                              {formatCurrency(product.product_price)}₫
-                            </p>
+                  <div className="p-2 bg-white rounded-md">
+                    {searchKeyword && searchProducts && searchProducts.product.docs && searchProducts.product.docs.length > 0 ? (
+                      searchProducts.product.docs.map((product: any, index: any) => (
+
+                        <div key={index}>
+                          <div className="grid grid-cols-[50px,auto] h-full p-1 rounded-md gap-y-5 focus:visible bg-gray-100 mt-1">
+                            <div>
+                              <Link to={`/products/${product._id}`}>
+                                <img
+                                  src={product.image[0].url}
+                                  alt="ảnh"
+                                  className="transition duration-200 ease-in-out hover:scale-105 md:h-[50px] md:w-[50px] ml-2 mt-1"
+                                />
+                              </Link>
+                            </div>
+                            <div className="gap-y-3">
+                              <Link
+                                to={`/products/${product._id}`}
+                                className="text-black hover:text-yellow-500 transition duration-200 no-underline ml-4 mt-1 font-semibold"
+                              >
+                                {product.product_name}
+                              </Link>
+                              <p className="text-red-500 ml-4 font-semibold">
+                                {formatCurrency(product.product_price)}₫
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center">Không tìm thấy sản phẩm nào</div>
-                  )}
-                </div>
+                      ))
+                    ) : (
+                      <div className="text-center">Không tìm thấy sản phẩm nào</div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -251,7 +257,45 @@ const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
             <span className="num">8</span>
           </Link>
           <Link to="#" className="profile">
-            <img src="https://i.pinimg.com/170x/6b/62/20/6b6220e809e48ee2226f725edfcbc957.jpg" alt="" />
+            {user && (
+              <div className="relative mr-5 group">
+                <div className="py-2">
+                  <img
+                    className=" block rounded-full"
+                    width={5}
+                    src={
+                      user.avatar?.url ||
+                      `https://res.cloudinary.com/dndyxqosg/image/upload/v1699260603/hhegkbrro5wwaxpjkuwx.png`
+                    }
+                    alt=""
+                  />
+                </div>
+
+                <ul
+                  className={`hidden group-hover:block absolute  absolute z-50 w-[150px] bg-white right-[25px] top-[10px] mt-[30px] `}
+                >
+                  <li>
+                    <Link
+                      to="/user/profile"
+                      className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
+                    >
+                      Thông tin tài khoản
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to=""
+                      onClick={logout}
+                      className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
+                    >
+                      Đăng xuất
+                    </Link>
+                  </li>
+                </ul>
+
+
+              </div>
+            )}
           </Link>
         </nav >
         <main>

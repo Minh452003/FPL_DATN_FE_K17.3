@@ -4,10 +4,15 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { Autoplay } from 'swiper/modules';
 import { HiArrowSmLeft, HiArrowSmRight } from 'react-icons/hi';
+import { useGetBannerQuery } from '@/api/bannerApi';
 
 const Homeslides = () => {
+  const { data } = useGetBannerQuery<any>();
+  const listBanner = data?.banner.docs;
+
   return (
     <div>
+
       <Swiper
         className='relative group'
         spaceBetween={50}
@@ -23,16 +28,14 @@ const Homeslides = () => {
         }}
         loop={true} // Enable loop
       >
-        <SwiperSlide>
-          <div className="image">
-            <img src="https://res.cloudinary.com/dndyxqosg/image/upload/v1695188550/z4710101523983_6628be7f39ed23ea61f8aa79ba0a08ab_up7x1f.jpg" alt="" />
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="image">
-            <img src="https://res.cloudinary.com/dndyxqosg/image/upload/v1695359501/z4716280626807_a3f2538b67d8595f431405e84fd92d20_c9jsbn.jpg" alt="" />
-          </div>
-        </SwiperSlide>
+        {listBanner && listBanner.map((items: any, index: number) => (
+          <SwiperSlide key={index}>
+            <div className="image">
+              <img src={items.image.url} alt=""
+                className='w-[100%]' />
+            </div>
+          </SwiperSlide>
+        ))}
 
         <div className='top-[50%] absolute z-10 button-next-slie group-hover:left-0 -left-[23rem] duration-500 text-white w-[40px] h-[40px] bg-black grid place-items-center'>
           <HiArrowSmLeft />

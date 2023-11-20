@@ -1,25 +1,27 @@
-import { useGetProductsQuery, useSearchProductsQuery } from "@/api/productApi";
+import { useSearchProductsQuery } from "@/api/productApi";
 import { useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import { Link } from 'react-router-dom';
 import "./Search.css";
 
 const Search = () => {
-  
   const [searchKeyword, setSearchKeyword] = useState('');
   const handleSearchChange = (event: any) => {
     event.preventDefault();
     setSearchKeyword(event.target.value);
-};
-const handleSearchReset = () => {
-  setSearchKeyword('');
-};
-const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
+  };
+  const handleSearchReset = () => {
+    setSearchKeyword('');
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Cuộn mượt
+    });
+  };
+  const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
 
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
-
   return (
     <div>
       <div className="pr-3 ">
@@ -48,9 +50,9 @@ const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
             <div className="rounded-md pl-3 z-50 absolute w-[530px] mt-4" id="listProduct" style={{ maxHeight: "400px", overflowY: "scroll" }}>
               <div className="container">
                 <div className="p-2 bg-white rounded-md">
-                {searchKeyword && searchProducts && searchProducts.product.docs && searchProducts.product.docs.length > 0 ? (
+                  {searchKeyword && searchProducts && searchProducts.product.docs && searchProducts.product.docs.length > 0 ? (
                     searchProducts.product.docs.map((product: any, index: any) => (
-                      
+
                       <div key={index}>
                         <div className="grid grid-cols-[50px,auto] h-full p-1 rounded-md gap-y-5 focus:visible bg-gray-100 mt-1">
                           <div>

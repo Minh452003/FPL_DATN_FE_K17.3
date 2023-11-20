@@ -54,7 +54,7 @@ a {
 }
 
 a.tl p.ttt {
-    font-size: 25px;
+    font-size: 20px;
 }
 
 a.tl p.ttt {
@@ -1528,9 +1528,16 @@ p {
     border: 1px solid #f5f5f5;
     border-radius: 3px;
     background: #fff;
-    
+
 }
 
+img.ppqq {
+    margin-left: 14px;
+}
+
+p.wwtt {
+    margin-top: -16px;
+}
 
 .blog-img.blog-l {
     overflow: hidden;

@@ -15,10 +15,11 @@ type FieldType = {
 };
 const Categoryadd = () => {
     const [addCategory, resultAdd] = useAddCategoryMutation();
-    const [addImage] = useAddImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [addImage, resultImage] = useAddImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
     const [imageUrl, setImageUrl] = useState<any>({});
+    const [isImageUploaded, setIsImageUploaded] = useState(false);
     const navigate = useNavigate();
 
 
@@ -58,7 +59,8 @@ const Categoryadd = () => {
                             if (response.data && response.data.urls) {
                                 info.file.status = 'done'
                                 setFileList(info.fileList);
-                                setImageUrl(response.data.urls[0])
+                                setImageUrl(response.data.urls[0]);
+                                setIsImageUploaded(true); // Đặt state khi ảnh được tải lên
                             }
                         }
                     })()
@@ -84,11 +86,11 @@ const Categoryadd = () => {
         },
     };
     const validatePositiveNumber = (_: any, value: any) => {
-        if(parseFloat(value) < 0) {
-          return Promise.reject("Giá trị phải là số dương");
+        if (parseFloat(value) < 0) {
+            return Promise.reject("Giá trị phải là số dương");
         }
         return Promise.resolve();
-      }
+    }
     return (
         <div className="container-fluid">
             <div className="row">
@@ -115,18 +117,18 @@ const Categoryadd = () => {
                             { min: 2, message: "Nhập ít nhất 2 ký tự" },
                             {
                                 validator: (_, value) => {
-                                  if (!value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
                                     return Promise.resolve();
-                                  }
-                                  if (/ {2,}/.test(value)) {
-                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                  }
-                                  return Promise.resolve();
                                 },
-                              },
-                            
-                           ]}
-                          
+                            },
+
+                            ]}
+
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
@@ -138,10 +140,10 @@ const Categoryadd = () => {
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                             rules={[{ required: true, message: 'Tiền đặt cọc bắt buộc nhập!' },
-                            {validator: validatePositiveNumber},
+                            { validator: validatePositiveNumber },
                             { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                             hasFeedback
-                            
+
                             style={{ marginLeft: '20px' }}
                         >
                             <InputNumber style={{ width: '100%' }} />
@@ -152,7 +154,7 @@ const Categoryadd = () => {
                             style={{ marginLeft: '20px' }}
                             id="images" name="category_image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
                             hasFeedback
-                            >
+                        >
                             <Upload {...props} maxCount={1} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
@@ -163,7 +165,9 @@ const Categoryadd = () => {
                             </Upload>
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
+                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                                disabled={!isImageUploaded || resultImage.isLoading || resultDelete.isLoading}
+                                htmlType="submit">
                                 {resultAdd.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div> : " Thêm danh mục"}

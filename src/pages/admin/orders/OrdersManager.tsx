@@ -146,9 +146,8 @@ const OrdersManager = () => {
           <li>
             <a
               href=""
-              className={`no-underline text-gray-700 ${
-                currentStatus === "all" ? "font-medium active" : ""
-              }`}
+              className={`no-underline text-gray-700 ${currentStatus === "all" ? "font-medium active2" : ""
+                }`}
               onClick={(e) => {
                 e.preventDefault();
                 handleFilterOrders("all");
@@ -162,9 +161,8 @@ const OrdersManager = () => {
             <li key={statusItem._id}>
               <a
                 href=""
-                className={`no-underline text-gray-700 ${
-                  currentStatus === statusItem._id ? "font-medium active" : ""
-                }`}
+                className={`no-underline text-gray-700 ${currentStatus === statusItem._id ? "font-medium active2" : ""
+                  }`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleFilterOrders(statusItem._id);
