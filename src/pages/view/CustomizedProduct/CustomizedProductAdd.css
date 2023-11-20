@@ -1,25 +1,21 @@
 .content1 {
-    width: 1532px;
-    background: #fff;
-    margin-left: 4px;
-    margin-top: 10px;
-    max-width: 1000%;
-    height: 1062px; 
-    transition: height 0.3s ease;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .container_swap.expanded .content1 {
-    height: 1380px;
-    
-  }
+  width: 100%;
+  background: #fff;
+  margin-top: 10px;
+  max-width: 100%;
+  height: 800px;
+  transition: height 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
 
-  .colors,
+
+
+.colors,
 .sizes,
 .materials {
-  margin-top: 10px; 
-  transition: height 0.3s ease; 
+  margin-top: 10px;
+  transition: height 0.3s ease;
   flex: 1;
 }
 
@@ -38,7 +34,7 @@
 
 .btn-show-more::before,
 .btn-show-more1::before {
-  content: '\00bb';
+  content: "\00bb";
   font-size: 16px;
   margin-left: -6px;
 }
@@ -52,9 +48,8 @@
 }
 
 .collapses {
-  margin-top: 10px; 
+  margin-top: 10px;
 }
-
 
 .collapses .btn-show-more,
 .collapses .btn-show-more1 {
@@ -62,289 +57,288 @@
 }
 
 .ml-16s {
-    margin-left: 200px;
+  margin-left: 200px;
 }
 
 .mb-5s {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .price1 {
-    font-size: 30px;
-    font-weight: 700;
-    color: red;
-    padding-top: 36px;
-    padding-left: 300px;
+  font-size: 30px;
+  font-weight: 700;
+  color: red;
+  padding-top: 36px;
+  padding-left: 200px;
 }
 
-
 .product-image1 {
-    padding-left: 198px;
-    width: 800px;
-    height: 370px;
+  padding-left: 120px;
+  width: 800px;
+  height: 370px;
 }
 
 .product-medium1 {
-    display: flex;
-    padding-left: 197px;
-    padding-top: 40px;
+  display: flex;
+  padding-left: 197px;
+  padding-top: 40px;
 }
 
 .image1s {
-    width: 100px;
-    height: 100px;
-    padding-right: -2px;
-    border: 2px double red;
+  width: 100px;
+  height: 100px;
+  padding-right: -2px;
+  border: 2px double red;
 }
 
 .image2s {
-    width: 100px;
-    height: 100px;
-    margin-left: 16px;
-    padding-left: -2px;
-    border: 2px double orange;
+  width: 100px;
+  height: 100px;
+  margin-left: 16px;
+  padding-left: -2px;
+  border: 2px double orange;
 }
 
 .image3s {
-    width: 108px;
-    height: 100px;
-    padding-right: 12px;
+  width: 108px;
+  height: 100px;
+  padding-right: 12px;
 }
 
 .image4s {
-    width: 142px;
-    height: 100px;
-    padding-left: 26px;
-    padding-right: 12px;
+  width: 142px;
+  height: 100px;
+  padding-left: 26px;
+  padding-right: 12px;
 }
 
 .product-text1 {
-    background: #f3f3f3;
-    width: 400px;
-    height: 140px;
-    margin-left: 118px;
-    border-radius: 16px;
+  background: #f3f3f3;
+  width: 400px;
+  height: 120px;
+  margin-left: 120px;
+  border-radius: 16px;
 }
 
 .text1s {
-    color: gray;
-    font-weight: 700;
-    margin-left: 10px;
+  color: gray;
+  font-weight: 700;
+  margin-left: 10px;
 }
 
 .text2s {
-    color: #ff7600;
-    font-weight: 700;
+  color: #ff7600;
+  font-weight: 700;
 }
 
 .kjs {
-    padding-left: 92px !important;
+  padding-left: 92px !important;
 }
 
 .colors p {
-    font-size: 18px;
-    font-weight: 700;
-    margin-top: 60px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 60px;
 }
 
 .sizes p {
-    font-size: 18px;
-    font-weight: 700;
-    margin-top: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 20px;
 }
 
 .materials p {
-    font-size: 18px;
-    font-weight: 700;
-    margin-top: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 20px;
 }
 
 .sp2s {
-    font-size: 15px !important;
-    color: #8B8B8B;
-    margin-top: 1px !important;
+  font-size: 15px !important;
+  color: #8b8b8b;
+  margin-top: 1px !important;
 }
 
 div .btn1s {
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 div .btn-solid-primary1s {
-    color: #fff;
-    position: relative;
-    font-weight: 700;
-    background: #ff7600;
+  color: #fff;
+  position: relative;
+  font-weight: 700;
+  background: #ff7600;
 }
 
 div .btn-as {
-    font-size: 18px;
-    height: 48px;
-    padding: 0 16px;
-    max-width: 200px;
+  font-size: 18px;
+  height: 48px;
+  padding: 0 16px;
+  max-width: 200px;
 }
 
 div .btn2s {
-    border-radius: 2px;
-    border: 1px solid gray;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  border-radius: 2px;
+  border: 1px solid gray;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 div .btn-solid-primary2s {
-    color: black;
-    position: relative;
-    font-weight: 700;
-    background: #fff;
+  color: black;
+  position: relative;
+  font-weight: 700;
+  background: #fff;
 }
 
 .active1s {
-    color: #fff !important;
-    position: relative !important;
-    font-weight: 700 !important;
-    background: #ff7600 !important;
+  color: #fff !important;
+  position: relative !important;
+  font-weight: 700 !important;
+  background: #ff7600 !important;
 }
 
 div .btn-bs {
-    font-size: 15px;
-    height: 40px;
-    padding: 0 16px;
-    width: 100px;
+  font-size: 15px;
+  height: 40px;
+  padding: 0 16px;
+  width: 100px;
 }
 
 .sp1s {
-    font-size: 12px;
-    margin-top: 10px;
-    color: gray;
+  font-size: 12px;
+  margin-top: 10px;
+  color: gray;
 }
 
 .img1s {
-    width: 550px;
-    height: 350px;
-    border-radius: 5px;
+  width: 550px;
+  height: 350px;
+  border-radius: 5px;
 }
 
 .pill-img1 {
-    width: 100%;
-    height: 70px;
+  width: 100%;
+  height: 70px;
 }
 
 .quantitys p {
-    margin-top: 20px;
-    font-weight: 700;
-    font-size: 20px;
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 20px;
 }
 
 div .btn-cs {
-    font-size: 18px;
-    height: 40px;
-    padding: 0 16px;
-    max-width: 100px;
+  font-size: 18px;
+  height: 40px;
+  padding: 0 16px;
+  max-width: 100px;
 }
 
 div .btn-solid-primary3s {
-    color: black;
-    position: relative;
-    font-weight: 800;
-    background: gainsboro;
-    opacity: 0.3;
-    border: 2px solid gainsboro;
+  color: black;
+  position: relative;
+  font-weight: 800;
+  background: gainsboro;
+  opacity: 0.3;
+  border: 2px solid gainsboro;
 }
 
 div .btn3s {
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .button1 {
-    margin-top: 34px;
+  margin-top: 34px;
 }
 
 div .btn-ds {
-    font-size: 18px;
-    height: 40px;
-    padding: 0 16px;
-    width: 93px;
-    margin-left: 4px;
-    margin-right: 4px;
+  font-size: 18px;
+  height: 40px;
+  padding: 0 16px;
+  width: 93px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 div .btn-solid-primary4s {
-    color: black;
-    position: relative;
-    font-weight: 400;
-    background: white;
-    border: 2px solid gainsboro;
+  color: black;
+  position: relative;
+  font-weight: 400;
+  background: white;
+  border: 2px solid gainsboro;
 }
 
 div .btn4s {
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
 }
 
 div .btn-es {
-    font-size: 18px;
-    height: 40px;
-    padding: 0 16px;
-    max-width: 100px;
+  font-size: 18px;
+  height: 40px;
+  padding: 0 16px;
+  max-width: 100px;
 }
 
 div .btn-solid-primary5s {
-    color: black;
-    position: relative;
-    font-weight: 800;
-    background: gainsboro;
-    opacity: 0.3;
-    border: 2px solid gainsboro;
+  color: black;
+  position: relative;
+  font-weight: 800;
+  background: gainsboro;
+  opacity: 0.3;
+  border: 2px solid gainsboro;
 }
 
 div .btn5s {
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 div .btn6s {
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 div .btn-solid-primary6s {
-    color: #fff;
-    position: relative;
-    font-weight: 700;
-    background: #ff7600;
+  color: #fff;
+  position: relative;
+  font-weight: 700;
+  background: #ff7600;
 }
 
 div .btn-fs {
-    font-size: 14px;
-    padding: 0 16px;
-    max-width: 200px;
-    height: 40px;
-    margin-left: 10px;
+  font-size: 14px;
+  padding: 0 16px;
+  max-width: 200px;
+  height: 40px;
+  margin-left: 10px;
 }
 
 div .btn-ps {
-    font-size: 10px;
-    padding: 0 16px;
-    max-width: 200px;
-    height: 40px;
-    margin-left: 10px;
+  font-size: 10px;
+  padding: 0 16px;
+  max-width: 200px;
+  height: 40px;
+  margin-left: 10px;
 }

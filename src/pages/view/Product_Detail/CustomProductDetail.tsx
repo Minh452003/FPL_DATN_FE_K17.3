@@ -1,7 +1,7 @@
 const CustomProductDetail = () => {
   return (
     
-        <div className=" mx-auto bg-white p-8 rounded shadow-md">
+        <div className="mx-auto bg-white p-8 rounded shadow-md">
           <h1 className="text-3xl font-bold mb-4">
             Sản Phẩm Nội Thất Tùy Chỉnh
           </h1>
