@@ -73,6 +73,7 @@ import VerifyOTPForgotPassword from "./pages/view/Auth/VerifyOTPForgotPassword";
 import ResetPassword from "./pages/view/Auth/ResetPassword";
 import UserUpdate from "./pages/admin/user/UserUpdate";
 import NotFoundPage from "./pages/notfound/NotFoundPage";
+import ChangePassword from "./pages/view/User/Account/changepassword";
 
 
 
@@ -110,7 +111,9 @@ export const router = createBrowserRouter([
                             { path: ':id/orderdetail', element: <OrderDetail /> }
                         ],
                     },
-                    { path: "address", element: <AddressPage /> }
+                    { path: "address", element: <AddressPage /> },
+                    { path: "changepasswordnew", element: <ChangePassword /> }
+
                 ]
             },
             { path: 'products', element: <ProductPage /> },

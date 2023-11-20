@@ -63,6 +63,14 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
+        changePassword: builder.mutation({
+            query: (user: IUser) => ({
+                url: '/changepassword',
+                method: 'PATCH',
+                body: user
+            }),
+            invalidatesTags: ['User']
+        }),
         // Đăng nhập
         signIn: builder.mutation({
             query: (user: IUser) => ({
@@ -129,7 +137,8 @@ export const {
     useUpdateUserMutation,
     useRemoveUserByAdminMutation,
     useUpdateUserByAdminMutation,
-    useForgotPasswordMutation
+    useForgotPasswordMutation,
+    useChangePasswordMutation
 } = userApi;
 export const userReducer = userApi.reducer;
 export default userApi
