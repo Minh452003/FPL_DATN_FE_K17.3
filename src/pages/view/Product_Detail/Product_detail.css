@@ -1,9 +1,7 @@
-.content {
-    width: 1532px;
+.content{
+    
     background: #fff;
-    margin-left: -137px;
     margin-top: 10px;
-    max-width: 1000%;
 }
 
 .price3 {
@@ -11,7 +9,7 @@
     font-weight: 700;
     color: red;
     padding-top: 36px;
-    padding-left: 100px;
+    padding-left: 200px;
 }
 
 .price {
@@ -23,7 +21,7 @@
 }
 
 .product-image {
-    padding-left: 198px;
+    padding-left: 120px;
     width: 800px;
     height: 370px;
 }
@@ -70,7 +68,7 @@
 .product-text {
     background: #f3f3f3;
     width: 400px;
-    height: 170px;
+    height: 150px;
     margin-left: 118px;
     border-radius: 16px;
 }
@@ -508,14 +506,12 @@ div .btn-g {
 }
 
 #chi-tiet-content {
-    margin-top: 58px;
-    margin-left: -785px;
+    
     font-size: 20px;
 }
 
 #binh-luan-content {
-    margin-top: 58px;
-    margin-left: -781px;
+    
     font-size: 20px;
 }
 
@@ -589,14 +585,12 @@ div .btn-g {
 
 .product-soks {
     overflow: hidden;
-    width: 117%;
-    margin-left: 8px;
+    
+    
 }
 
 .product-sokss {
     overflow: hidden;
-    width: 117%;
-    margin-left: 47px;
 }
 
 .new_titles {
@@ -653,10 +647,9 @@ div .btn-g {
 .new_titles.text-center:after {
     content: '';
     height: 1px;
-    width: 2487px;
+    width: 2470px;
     position: absolute;
     bottom: 23px;
-    left: 155px;
     background: #ff7600;
     z-index: 0;
 }
@@ -666,8 +659,8 @@ div .btn-g {
 }
 
 .sock_slidess.slick-sliderss {
-    margin-top: 16px;
-    margin-left: 102px;
+    margin-top: 20px;
+    margin-left: 140px;
 }
 
 .slick-sliders {
