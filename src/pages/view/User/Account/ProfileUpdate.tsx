@@ -222,6 +222,7 @@ const ProfileUpdate = () => {
               style={{ marginLeft: "20px" }}
               rules={[
                 { required: true, message: "Please input your first name!" },
+                { whitespace: true, message: "Cannot be only whitespace!" },
               ]}
             >
               <Input />
@@ -235,6 +236,7 @@ const ProfileUpdate = () => {
               style={{ marginLeft: "20px" }}
               rules={[
                 { required: true, message: "Please input your last name!" },
+                { whitespace: true, message: "Cannot be only whitespace!" }
               ]}
             >
               <Input />

@@ -167,7 +167,7 @@ const Header = () => {
                         </li>
                         <li>
                           <Link
-                            to="changepasswordnew"
+                            to="user/changepasswordnew"
                             className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
                           >
                             Đổi mật khẩu
