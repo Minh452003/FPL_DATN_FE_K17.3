@@ -7,8 +7,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { IUser } from '@/interfaces/auth';
 
 type TypeInputs = {
-    email: string,
-    password: string
+    email?: string,
+    password?: string
 }
 
 const Login = () => {
@@ -76,9 +76,11 @@ const Login = () => {
                                         id="email"
                                         type="email"
                                         placeholder="Email"
-                                        {...register('email', { required: true })}
+                                        {...register('email', { required: true, pattern: /^[^\s]+$/ })}
                                     />
-                                    {errors.email && <p className="text-red-500 text-xs mt-1">Email là trường bắt buộc.</p>}
+                                    {errors.email && errors.email.type === 'pattern' && (
+                                        <p className="text-red-500 text-xs italic">Email không được chứa dấu cách.</p>
+                                    )}
 
                                 </div>
                                 <div className="mb-4">
@@ -90,9 +92,11 @@ const Login = () => {
                                         id="password"
                                         type="password"
                                         placeholder="******************"
-                                        {...register('password', { required: true })}
+                                        {...register('password', { required: true, pattern: /^[^\s]+$/ })}
                                     />
-                                    {errors.password && <p className="text-red-500 text-xs mt-1"> Mật khẩu là trường bắt buộc.</p>}
+                                    {errors.password && errors.password.type === 'pattern' && (
+                                        <p className="text-red-500 text-xs italic">Mật khẩu không được chứa dấu cách.</p>
+                                    )}
                                 </div>
 
                                 <div className="mb-6 text-center">
