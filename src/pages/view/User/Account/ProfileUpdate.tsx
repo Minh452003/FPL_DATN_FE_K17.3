@@ -52,9 +52,20 @@ const ProfileUpdate = () => {
   useEffect(() => {
     if (user) {
       setFields();
+      const { address } = user;
+      if (address) {
+        const [street, district,ward] = address.split(', ').reverse();
+        form.setFieldsValue({
+          address: {
+            street,
+            ward,
+            district,
+          
+          },
+        });
+      }
     }
   }, [user]);
-
   const [form] = Form.useForm();
 
   const setFields = () => {
@@ -180,6 +191,7 @@ const ProfileUpdate = () => {
     if (isError || !user) {
       return <div>Error: Unable to fetch category data.</div>;
     }
+
 
   return (
     <div className="container-fluid">
