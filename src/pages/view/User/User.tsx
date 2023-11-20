@@ -6,6 +6,7 @@ import { ImProfile } from "react-icons/im";
 import { FaCartPlus, FaBell } from "react-icons/fa";
 import { BiSolidCoupon } from "react-icons/bi";
 import { Skeleton } from "antd";
+import { AiOutlineSync } from "react-icons/ai";
 
 const UserPage = () => {
   const decodedToken: any = getDecodedAccessToken();
@@ -74,6 +75,16 @@ const UserPage = () => {
                         <ImProfile />
                       </p>{" "}
                       Hồ sơ
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/user/changepasswordnew"
+                      className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      <p className="text-black float-left mt-1 mr-1">
+                      <AiOutlineSync />
+                      </p>{" "}
+                      Đổi mật khẩu
                     </Link>
                   </li>
                   {/* Thêm các liên kết điều hướng khác ở đây */}
