@@ -86,7 +86,7 @@ const ProductPage = () => {
     window.scrollTo(0, 0);
   };
   return (
-    <div className="px-6 lg:px-0 ml-28">
+    <div className="md:px-6 ml-5 md:ml-28">
       <div className="flex items-center ">
         <div className="float-left py-2">
           <Link
@@ -105,7 +105,7 @@ const ProductPage = () => {
       <div className=" py-3 text-xl font-bold">
         Giúp bạn tìm sản phẩm nhanh hơn
       </div>
-      <div className="mt-2 py-3 flex ">
+      <div className="mt-2 py-3 md:flex ">
         <select
           id="small"
           value={selectedCategory}

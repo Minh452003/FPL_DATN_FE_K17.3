@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <div>
-      <header className=" lg:container shadow-lg z-50 top-0">
+      <header className=" mx-auto shadow-lg z-50 top-0">
         <section className="py-2 bg-white">
           <div className="md:grid md:grid-cols-[30%,70%] max-w-7xl mx-auto p-0 m-0 ">
             <div className="md:flex items-center ">

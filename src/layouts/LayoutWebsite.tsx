@@ -23,7 +23,7 @@ const LayoutWebsite = () => {
     }
   }, [])
   return (
-    <div className="mx-auto top-0 lg:container ">
+    <div className="mx-auto top-0  ">
       <Header />
       {/* Outlet */}
       <section >
