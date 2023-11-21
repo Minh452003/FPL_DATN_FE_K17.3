@@ -103,7 +103,7 @@ const ProductPage = () => {
         <div className="py-3">Sản Phẩm</div>
       </div>
       <div className=" py-3 text-xl font-bold">
-        giúp bạn tìm sản phẩm nhanh hơn
+        Giúp bạn tìm sản phẩm nhanh hơn
       </div>
       <div className="mt-2 py-3 flex ">
         <select

@@ -1,29 +1,38 @@
 import { Button, Form, Input } from 'antd';
 import './contactPage.css'
+import { useAddContactMutation } from '@/api/contactApi';
+import Swal from 'sweetalert2';
 const ContactPage = () => {
 
-
-
+    const [addContact] = useAddContactMutation();
+    const [form] = Form.useForm();
 
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 22 },
     };
-    const validateMessages = {
-        required: '${label} is required!',
-        types: {
-            email: '${label} is not a valid email!',
-            number: '${label} is not a valid number!',
-        },
-        number: {
-            range: '${label} must be between ${min} and ${max}',
-        },
-    };
-    /* eslint-enable no-template-curly-in-string */
 
     const onFinish = (values: any) => {
-        console.log(values);
+        addContact(values).then(() => {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Gửi thông tin phản hồi thành công!',
+                showConfirmButton: true,
+                timer: 2000
+            })
+            form.resetFields();
+        })
+    }
+
+    const validateNoSpaces = (_: any, value: any) => {
+        if (!value.trim()) {
+            return Promise.reject('Vui lòng không nhập chỉ dấu cách!');
+        }
+        return Promise.resolve();
     };
+
+
     return (
         <div>
             <div className="App">
@@ -44,31 +53,38 @@ const ContactPage = () => {
                     <div className="title text italic text opacity-70">Nội thất Casa</div>
                     <h4 className="mt-2">BẠN CÓ BẤT KỲ CÂU HỎI NÀO?</h4>
                     <p className="opacity-70 mt-2 mb-10">Nội thất Casa cam kết cung cấp giải pháp thương mại điện tử với trải nghiệm mua sắm tốt nhất cho người tiêu dùng trong định hình phong cách sống hiện đại và mua sắm nội thất tại Việt Nam. Mọi thông tin liên hệ xin gửi vào form dưới đây hoặc liên hệ chúng tôi theo địa chỉ.</p>
-                    <div className="font-semibold float-left ">Địa Chỉ : <p className="font-normal ml-1 float-right ">70 Lu Gia, Ward 15, District 11, Ho Chi Minh City</p></div> <br /> <br />
+                    <div className="font-semibold float-left ">Địa Chỉ : <p className="font-normal ml-1 float-right ">Số 668, Xuân Phương, Nam Từ Liêm, Hà Nội</p></div> <br /> <br />
                     <div className="font-semibold float-left ">Điện Thoại : <p className="font-normal ml-1 float-right">1900 6750</p></div> <br /> <br />
                     <div className="font-semibold float-left">Email : <p className="font-normal ml-1 float-right">noithatcasa@gmail.com</p></div> <br />
                 </div>
                 <div className="rounded-lg mt-12 ">
                     <Form
-
                         {...layout}
                         name="nest-messages"
                         onFinish={onFinish}
                         className="centered-form"
-
-                        validateMessages={validateMessages}
+                        form={form}
                     >
 
-                        <Form.Item name={['user', 'name']} rules={[{ required: true }]}>
-                            <Input placeholder="Họ và tên" style={{ width: '100%', height: '40px' }} />
+                        <Form.Item name={['contact_name']} rules={[{ required: true, message: "Vui lòng nhập họ tên" }, { validator: validateNoSpaces }]}>
+                            <Input placeholder="Họ tên" style={{ width: '100%', height: '40px' }} />
                         </Form.Item>
-                        <Form.Item name={['user', 'email']} rules={[{ type: 'email' }]}>
+                        <Form.Item name={['contact_email']} rules={[{ required: true, message: 'Vui lòng nhập Email!' }, { type: 'email', message: "Vui lòng nhập đúng định dạng email" }, { validator: validateNoSpaces }]}>
                             <Input placeholder="Email" style={{ width: '100%', height: '40px' }} />
                         </Form.Item>
-                        <Form.Item name={['user', 'website']} >
+                        <Form.Item name={['contact_phone']} rules={[
+                            {
+                                pattern: /^[0-9]{10}$/,
+                                message: 'Vui lòng nhập đúng định dạng số điện thoại!',
+                            },
+                            { required: true, message: "Vui lòng nhập số điện thoại " },
+                            { validator: validateNoSpaces }
+                        ]}
+                        >
                             <Input placeholder="Số điện thoại" style={{ width: '100%', height: '40px' }} />
                         </Form.Item>
-                        <Form.Item name={['user', 'introduction']} >
+                        <Form.Item name={['contact_description']} rules={[{ required: true, message: "Vui lòng nhập mô tả" },
+                        { validator: validateNoSpaces }]}>
                             <Input.TextArea placeholder="Mô tả" style={{ width: '100%', resize: 'vertical', height: '100' }} />
                         </Form.Item>
                         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>

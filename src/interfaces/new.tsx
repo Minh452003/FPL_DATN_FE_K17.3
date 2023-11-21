@@ -1,8 +1,8 @@
 import { IImage } from "./auth"
-export interface INew{
+export interface INew {
     _id?: string
     id: string | number
     new_name?: string
     new_image?: IImage
-    new_description?:String
+    new_description?: string
 }
