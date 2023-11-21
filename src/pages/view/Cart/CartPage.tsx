@@ -59,14 +59,14 @@ const CartPage = () => {
     });
   };
 
-  const handleQuantityChange = (productId: string,sizeId:any,colorId:any,materialId:any,text?: any) => {
+  const handleQuantityChange = (productId: string, sizeId: any, colorId: any, materialId: any, text?: any) => {
     if (text < 1) return;
     if (text > childProduct?.product.stock_quantity) return 0;
 
     updateQuantity(productId, sizeId, colorId, materialId, text);
-    
+
     setQuantityInput({ ...quantityInput, [productId]: text });
-    
+
   };
 
   const deleteCart = ({ productId, sizeId, colorId, materialId }: any) => {
@@ -159,7 +159,7 @@ const CartPage = () => {
         <div className="quantity-input">
           <button
             className="quantity-btn"
-            onClick={() => handleQuantityChange(record.productId,record.sizeId,record.colorId,record.materialId, text - 1)}
+            onClick={() => handleQuantityChange(record.productId, record.sizeId, record.colorId, record.materialId, text - 1)}
           >
             -
           </button>
@@ -169,12 +169,12 @@ const CartPage = () => {
             <input
               min="1"
               max={childProduct?.product.stock_quantity}
-              value={quantityInput[`${record.productId}_${record.sizeId}_${record.colorId}_${record.materialId}`] || text}
+              defaultValue={quantityInput[`${record.productId}_${record.sizeId}_${record.colorId}_${record.materialId}`] || text}
             />
           )}
           <button
             className="quantity-btn"
-            onClick={() => handleQuantityChange(record.productId,record.sizeId,record.colorId,record.materialId, text + 1)}
+            onClick={() => handleQuantityChange(record.productId, record.sizeId, record.colorId, record.materialId, text + 1)}
           >
             +
           </button>
@@ -222,7 +222,7 @@ const CartPage = () => {
   }
   if (!carts || !carts?.data || carts?.data.products.length === 0) {
     return (
-      <p>
+      <div>
         <div
           className="grid  px-4 bg-white place-content-center  pb-3"
           style={{ height: "500px" }}
@@ -250,7 +250,7 @@ const CartPage = () => {
             </Link>
           </div>
         </div>
-      </p>
+      </div>
     );
   }
   if (isLoading) return <Skeleton />;
@@ -266,7 +266,7 @@ const CartPage = () => {
     <div className="bg-gray-100 container mx-auto">
       <h1 className="pt-10 pb-10">Giỏ hàng của bạn</h1>
       <Table
-        dataSource={productsInCart.map((item: any,index:any) => ({
+        dataSource={productsInCart.map((item: any, index: any) => ({
           ...item,
           key: index,
         }))}

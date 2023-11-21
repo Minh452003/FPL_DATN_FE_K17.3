@@ -30,7 +30,7 @@ const ChangePassword = () => {
     }
   };
 
-  const onFinishFailed = () => {};
+  const onFinishFailed = () => { };
 
   type FieldType = {
     currentPassword?: string;
@@ -39,7 +39,7 @@ const ChangePassword = () => {
   return (
     <div>
       <div className="mb-5">
-        <div className="font-bold text-xl text-gray-700 m-2">Thêm mật khẩu</div>
+        <div className="font-bold text-xl text-gray-700 m-2">Thay đổi mật khẩu</div>
         <div className="text-lg font-normal m-2">
           Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác
         </div>
@@ -58,21 +58,21 @@ const ChangePassword = () => {
         <Form.Item<FieldType>
           label="Mật khẩu cũ"
           name="currentPassword"
-          rules={[{ required: true, message: "Please input your password!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập mật khẩu cũ!" }]}
         >
           <Input.Password />
         </Form.Item>
         <Form.Item<FieldType>
           label="Mật khẩu mới"
           name="newPassword"
-          rules={[{ required: true, message: "Please input your password!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập mật khẩu mới!" }]}
         >
           <Input.Password />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button className="bg-green-700 text-white font-semibold" >
-            Submit
+          <Button className="bg-green-700 text-white font-semibold" htmlType="submit">
+            Thay đổi
           </Button>
         </Form.Item>
       </Form>

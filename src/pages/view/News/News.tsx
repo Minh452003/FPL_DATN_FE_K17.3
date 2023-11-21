@@ -54,58 +54,55 @@ const News = () => {
           ))}
         {/* <!-- Thêm các tin tức khác tương tự ở đây --> */}
 
-       
+
       </div>
       <div
-          aria-label="Page navigation example"
-          className="mt-4 text-right mr-4"
-        >
-          <ul className="inline-flex -space-x-px text-sm">
-            <li>
-              <a
-                href=""
-                onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
-                aria-disabled={currentPage === 1}
-                className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                <GrPrevious />
-              </a>
-            </li>
-            {pages.map((page) => (
-              <li key={page}>
-                <a
-                  href="#"
-                  onClick={() => setCurrentPage(page)}
-                  className={`flex items-center justify-center px-3 h-8 ${
-                    currentPage === page
-                      ? "text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                      : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  }`}
-                >
-                  {page}
-                </a>
-              </li>
-            ))}
-
-            <li>
+        aria-label="Page navigation example"
+        className="mt-4 text-right mr-4"
+      >
+        <ul className="inline-flex -space-x-px text-sm">
+          <li>
+            <a
+              href=""
+              onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
+              aria-disabled={currentPage === 1}
+              className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <GrPrevious />
+            </a>
+          </li>
+          {pages.map((page) => (
+            <li key={page}>
               <a
                 href="#"
-                onClick={() => setCurrentPage((prevPage) => prevPage + 1)}
-                aria-disabled={currentPage === pageNumbers}
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                onClick={() => setCurrentPage(page)}
+                className={`flex items-center justify-center px-3 h-8 ${currentPage === page
+                    ? "text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                    : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  }`}
               >
-                <GrNext />
+                {page}
               </a>
             </li>
-          </ul>
-        </div>
+          ))}
 
-      
+          <li>
+            <a
+              href="#"
+              onClick={() => setCurrentPage((prevPage) => prevPage + 1)}
+              aria-disabled={currentPage === pageNumbers}
+              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <GrNext />
+            </a>
+          </li>
+        </ul>
+      </div>
 
-      <h2 className="my-3 text-center text-red-500">TIN NỔI BẬT</h2>
 
+
+      {/* <h2 className="my-3 text-center text-red-500">TIN NỔI BẬT</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {/* <!-- Mỗi tin tức sẽ là một thẻ div có className là "bg-white p-4 rounded shadow" --> */}
         <div className="bg-white p-3 rounded shadow">
           <a
             href="/tan-trang-phong-ngu-dep-voi-noi-that-cao-cap-dip-cuoi-nam"
@@ -279,9 +276,7 @@ const News = () => {
             Vì vậy...
           </p>
         </div>
-
-        {/* <!-- Thêm các tin tức khác tương tự ở đây --> */}
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -25,14 +25,32 @@ const Login = () => {
     const onSubmit: SubmitHandler<TypeInputs> = async (data: IUser) => {
         const response: any = await signIn(data)
         if (response.error) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: response.error.data.message,
-                showConfirmButton: false,
-                timer: 3000
-            })
-            navigate(`/signup/verifyOTP/${response?.error?.data?.otpResponse?.data?.userId}`);
+            if (response.error.data.message == 'Mật khẩu không đúng') {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: response.error.data.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+            } else if (response.error.data.message == 'Tài khoản không tồn tại') {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: response.error.data.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+            } else if (response.error.data.message == 'Vui lòng xác minh tài khoản trước khi đăng nhập') {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: response.error.data.message,
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+                navigate(`/signup/verifyOTP/${response?.error?.data?.otpResponse?.data?.userId}`);
+            }
         } else {
             const accessToken: any = response.data.accessToken;
             const expirationTime = new Date().getTime() + 2 * 60 * 60 * 1000; // 2 giờ
@@ -43,7 +61,7 @@ const Login = () => {
                 icon: 'success',
                 title: 'Đăng nhập thành công!',
                 showConfirmButton: true,
-                timer: 2000
+                timer: 1000
             })
             navigate("/")
         }

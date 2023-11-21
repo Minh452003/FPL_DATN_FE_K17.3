@@ -318,8 +318,8 @@ const Product_Detail = () => {
   }
   return (
     <div className="">
-      <div className=" bg-[#fff]">
-        <div className="flex items-center px-2 pt-2">
+      <div className="container">
+        <div className="flex items-center ml-16 mt-2">
           <div className="float-left font-bold">Trang Chủ</div>
           <FaArrowRight className="ml-2" />
           <div className="pl-2">{categoryLishOne}</div>
@@ -328,7 +328,7 @@ const Product_Detail = () => {
         </div>
         <div className="content">
           <div className="flex">
-            <h3 className="font-bold pt-10 pl-32 ">
+            <h3 className="font-bold pt-10 pl-52 iklm">
               {listOneData?.product_name}
             </h3>
             {childProduct ? (
@@ -341,7 +341,7 @@ const Product_Detail = () => {
               </p>
             )}
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 np">
             <div className="product-image">
               <div className="mb-6">
                 {listOneData?.image?.map((img: any, index: any) => {
@@ -403,27 +403,27 @@ const Product_Detail = () => {
               </ul>
             </div>
             <div className="product-text">
-              <div className="grid grid-cols-3 mt-3 ">
+              <div className="col-span-2 flex mt-4 ef">
                 <div className="text1">Tình trạng:</div>
-                <div className="text2 ">Còn hàng</div>
+                <div className="text2 pl-10 lp">Còn hàng</div>
               </div>
-              <div className="grid grid-cols-3">
+              <div className="col-span-2 flex ef">
                 <div className="text1">Đã bán: </div>
-                <div className="text2">
+                <div className="text2 pl-16 lp">
                   {listOneData?.sold_quantity} chiếc
                 </div>
               </div>
-              <div className="grid grid-cols-[33%,40%,23%]">
+              <div className="col-span-2 flex ef">
                 <div className="text1">Thương hiệu:</div>
-                <div className="text2 ">{brandListOne}</div>
+                <div className="text2 pl-4 lp">{brandListOne}</div>
               </div>
-              <div className="grid grid-cols-3">
+              <div className="col-span-2 flex ef">
                 <div className="text1">Loại:</div>
-                <div className="text2 ">{categoryLishOne}</div>
+                <div className="text2 kj lp">{categoryLishOne}</div>
               </div>
-              <div className="grid grid-cols-3">
+              <div className="col-span-2 flex ef">
                 <div className="text1">Chất liệu:</div>
-                <div className="text2">{materialLishOne}</div>
+                <div className="text2 pl-14 lp">{materialLishOne}</div>
               </div>
               <div className="color">
                 <p>Màu sắc</p>
@@ -547,10 +547,7 @@ const Product_Detail = () => {
               </div>
             </div>
           </div>
-         
-        </div>
-
-        <div className="container mt-36 text-center ">
+          <div className="include">
             <input type="radio" id="chi-tiet" name="tab" defaultChecked />
             <label
               htmlFor="chi-tiet"
@@ -578,7 +575,7 @@ const Product_Detail = () => {
             </label>
             <div id="chi-tiet-content">
               <br />
-              <div className="">
+              <div className="max-w-4xl mx-auto px-4">
                 <div
                   className="text-gray-500 dark:text-gray-400"
                   dangerouslySetInnerHTML={{ __html: listOneData?.description }}
@@ -610,7 +607,7 @@ const Product_Detail = () => {
                       </div>
                     </div>
                     <div className="rating-buttons">
-                      {[1, 2, 3, 4, 5, "Tất cả"].map((rating) => (
+                      {["Tất cả", 1, 2, 3, 4, 5].map((rating) => (
                         <button
                           key={rating}
                           onClick={() => handleRatingFilter(rating)}
@@ -714,9 +711,8 @@ const Product_Detail = () => {
               </section>
             </div>
           </div>
-
           {/*  */}
-<div className="container main-col2s sock_to_days text-center">
+          <div className="main-col2s sock_to_days">
             <div className="containers">
               <div className="product-sokss">
                 <div className="new_titles text-center">
@@ -854,10 +850,9 @@ const Product_Detail = () => {
               </div>
             </div>
           </div>
-
+        </div>
       </div>
-      </div>
-    
+    </div>
   );
 };
 export default Product_Detail;

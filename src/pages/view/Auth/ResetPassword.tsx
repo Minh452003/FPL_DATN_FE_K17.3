@@ -14,8 +14,7 @@ const ResetPassword = () => {
     const { register, handleSubmit } = useForm<TypeInputs>();
     const { userId } = useParams();
 
-    const onSubmit: SubmitHandler<TypeInputs> = async (data: TypeInputs) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<TypeInputs> = async (data: TypeInputs | any) => {
         const response: any = await resetPassword({
             userId,
             newPassword: data.newPassword,
@@ -27,7 +26,7 @@ const ResetPassword = () => {
                 icon: "error",
                 title: response.error.data.message,
                 showCancelButton: true,
-                timer: 2000
+                timer: 1000
             });
         } else {
             Swal.fire({
@@ -35,7 +34,7 @@ const ResetPassword = () => {
                 icon: "success",
                 title: "Đặt mật khẩu thành công, vui lòng đăng nhập!",
                 showConfirmButton: true,
-                timer: 2000
+                timer: 1000
             });
             navigate("/signin");
         }

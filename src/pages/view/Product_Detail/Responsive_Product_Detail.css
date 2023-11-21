@@ -41,6 +41,14 @@
         padding-left: 55px;
     }
 
+    .price3 {
+        font-size: 27px;
+        font-weight: 700;
+        color: red;
+        padding-top: 33px;
+        padding-left: 55px;
+    }
+
     .product-text {
         background: #f3f3f3;
         width: 287px;
@@ -368,6 +376,12 @@
     }
 
     .price {
+        margin-top: -12px;
+        font-size: 11px;
+        margin-left: -170px;
+    }
+
+    .price3 {
         margin-top: -12px;
         font-size: 11px;
         margin-left: -170px;

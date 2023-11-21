@@ -20,9 +20,18 @@ const Comment = ({ order }: any) => {
     const [fileList, setFileList] = useState<RcFile[]>([]);
     const [imageUrl, setImageUrl] = useState<any>([]);
     const navigate = useNavigate();
+    // Lưu trữ productId đã xuất hiện
+    const uniqueProductIds = new Set<string>();
+    const uniqueProducts = order?.products.filter((product: any) => {
+        if (!uniqueProductIds.has(product.productId)) {
+            uniqueProductIds.add(product.productId);
+            return true;
+        }
+        return false;
+    });
     const onFinish = (values: any) => {
         values.image = imageUrl;
-        order?.products.map((product: any) => {
+        uniqueProducts?.map((product: any) => {
             addComment({
                 productId: product.productId,
                 description: values.description,

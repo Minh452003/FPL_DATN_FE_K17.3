@@ -32,7 +32,7 @@ const ProfileUpdate = () => {
 
   const { data: user, isLoading, isError }: any = useGetUserByIdQuery(id);
   const { data: city }: any = useGetCityQuery();
-  
+
 
   console.log(user);
 
@@ -54,13 +54,13 @@ const ProfileUpdate = () => {
       setFields();
       const { address } = user;
       if (address) {
-        const [street, district,ward] = address.split(', ').reverse();
+        const [street, district, ward] = address.split(', ').reverse();
         form.setFieldsValue({
           address: {
             street,
             ward,
             district,
-          
+
           },
         });
       }
@@ -83,7 +83,6 @@ const ProfileUpdate = () => {
     const id = Number(option.key); // Lấy id từ option.key
     addDistrict({ province_id: id }).then((response: any) => {
       setDistrict(response.data.data);
-      sizeTotal();
     });
   };
   const handleDistrictChange = async (value: any, option: any) => {
@@ -105,17 +104,11 @@ const ProfileUpdate = () => {
   };
   const onFinish = (values: any) => {
     try {
-  
-  
       const formattedAddress = `${values.address?.ward}, ${values.address?.district}, ${values.address?.street}`;
-  
-
       values.address = formattedAddress;
-  
       if (Object.keys(imageUrl).length > 0) {
         values.avatar = imageUrl;
       }
-  
       updateUser(values).then(() => {
         Swal.fire({
           position: "center",
@@ -126,13 +119,11 @@ const ProfileUpdate = () => {
         });
         navigate("/user/profile");
       });
-  
     } catch (error) {
-      
       message.error("An error occurred while updating the profile");
     }
   };
-  
+
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
@@ -141,7 +132,7 @@ const ProfileUpdate = () => {
   const props: UploadProps = {
     name: "category_image",
     fileList: fileList, // Sử dụng state fileList
-    customRequest: async ({ file }: any) => {},
+    customRequest: async ({ file }: any) => { },
     onChange(info: any) {
       if (info.file) {
         const formData = new FormData();
@@ -187,10 +178,10 @@ const ProfileUpdate = () => {
     },
   };
 
-    if (isLoading) return <Skeleton />;
-    if (isError || !user) {
-      return <div>Error: Unable to fetch category data.</div>;
-    }
+  if (isLoading) return <Skeleton />;
+  if (isError || !user) {
+    return <div>Error: Unable to fetch category data.</div>;
+  }
 
 
   return (
@@ -274,8 +265,8 @@ const ProfileUpdate = () => {
 
             <Form.Item
               name={["address", "street"]}
-              style={{ marginBottom: 20 ,marginLeft: "20px"}}
-              
+              style={{ marginBottom: 20, marginLeft: "20px" }}
+
               rules={[
                 { required: true, message: "Thành phố không được để trống" },
               ]}
@@ -300,8 +291,8 @@ const ProfileUpdate = () => {
             </Form.Item>
             <Form.Item
               name={["address", "district"]}
-              style={{ marginBottom: 20,marginLeft: "20px" }}
-              
+              style={{ marginBottom: 20, marginLeft: "20px" }}
+
               rules={[
                 { required: true, message: "Quận huyện không được để trống" },
               ]}
@@ -326,7 +317,7 @@ const ProfileUpdate = () => {
             </Form.Item>
             <Form.Item
               name={["address", "ward"]}
-              style={{ marginBottom: 20 ,marginLeft: "20px"}}
+              style={{ marginBottom: 20, marginLeft: "20px" }}
               rules={[
                 { required: true, message: "Phường xã không được để trống" },
               ]}

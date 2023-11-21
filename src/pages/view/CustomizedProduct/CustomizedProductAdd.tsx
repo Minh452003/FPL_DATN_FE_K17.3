@@ -228,11 +228,10 @@ const CustomizedProductAdd = () => {
                   <li role="presentation">
                     <Link
                       to={`#image-tab-${index}`}
-                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${
-                        selectedIndex === index
+                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
                           ? "bg-primary-100 text-primary-700"
                           : "bg-neutral-700 text-white"
-                      } md:mr-4 `}
+                        } md:mr-4 `}
                       id={`image-tab-${index}`}
                       data-te-toggle="tab"
                       key={`tab-${index}`}
@@ -281,9 +280,8 @@ const CustomizedProductAdd = () => {
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={`btn2s btn-solid-primary2s btn-bs ${
-                                isActive ? "active1" : ""
-                              }`}
+                              className={`btn2s btn-solid-primary2s btn-bs ${isActive ? "active1" : ""
+                                }`}
                               onClick={() => handleClickColor(color._id)}
                               style={{
                                 height: "40px",
@@ -303,9 +301,8 @@ const CustomizedProductAdd = () => {
                 {colors && colors.color.length > 3 && (
                   <button
                     onClick={handleToggleColors}
-                    className={`btn-show-more ${
-                      showAllColors ? "collapses" : "expand"
-                    }`}
+                    className={`btn-show-more ${showAllColors ? "collapses" : "expand"
+                      }`}
                   >
                     {showAllColors ? "Thu gọn" : "Xem thêm"}
                   </button>
@@ -325,9 +322,8 @@ const CustomizedProductAdd = () => {
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={`btn2s btn-solid-primary2s btn-bs ${
-                                isActive ? "active1" : ""
-                              }`}
+                              className={`btn2s btn-solid-primary2s btn-bs ${isActive ? "active1" : ""
+                                }`}
                               onClick={() => handleClickSize(size._id)}
                               style={{
                                 height: "40px",
@@ -373,9 +369,8 @@ const CustomizedProductAdd = () => {
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={`btn2s btn-solid-primary2s btn-bs ${
-                                isActive ? "active1" : ""
-                              }`}
+                              className={`btn2s btn-solid-primary2s btn-bs ${isActive ? "active1" : ""
+                                }`}
                               onClick={() => handleClickMaterial(material._id)}
                               style={{
                                 height: "40px",
@@ -395,9 +390,8 @@ const CustomizedProductAdd = () => {
                 {materials && materials.material.length > 3 && (
                   <button
                     onClick={handleToggleMaterials}
-                    className={`btn-show-more1 ${
-                      showAllMaterials ? "collapses" : "expand"
-                    }`}
+                    className={`btn-show-more1 ${showAllMaterials ? "collapses" : "expand"
+                      }`}
                   >
                     {showAllMaterials ? "Thu gọn" : "Xem thêm"}
                   </button>

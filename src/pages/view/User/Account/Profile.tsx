@@ -59,16 +59,14 @@ const Profile = () => {
                   <label className="pl-4 pb-3 py-3">Email :</label>
                 </td>
                 <td className="flex">
-                  <td>
-                    <div className="py-4">
-                      <input
-                        type="text"
-                        placeholder={user.email}
-                        className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
-                        disabled
-                      />
-                    </div>
-                  </td>
+                  <div className="py-4">
+                    <input
+                      type="text"
+                      placeholder={user.email}
+                      className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
+                      disabled
+                    />
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -106,7 +104,7 @@ const Profile = () => {
 
             </table>
             <button className=" bg-green-500 rounded py-2 px-4 ml-4 mt-4">
-              <Link to={"edit"} style={{ textDecoration: "none", color: "black" }}>Cập Nhật</Link>
+              <Link to={"/user/profile/edit"} style={{ textDecoration: "none", color: "white" }}>Cập Nhật</Link>
             </button>
           </form>
         </div>

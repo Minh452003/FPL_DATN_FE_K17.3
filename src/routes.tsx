@@ -74,7 +74,8 @@ import ResetPassword from "./pages/view/Auth/ResetPassword";
 import UserUpdate from "./pages/admin/user/UserUpdate";
 import NotFoundPage from "./pages/notfound/NotFoundPage";
 import ContactList from "./pages/admin/contact/ContactList";
-import ChangePassword from "./pages/view/User/Account/changepassword";
+import ChangePassword from "./pages/view/User/Account/Changepassword";
+import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
 
 
 
@@ -91,7 +92,7 @@ export const router = createBrowserRouter([
             { path: 'category/:id', element: <Category_Detail /> },
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
-            { path: '/customized-products/:id', element: <Custom_ProductDetail /> },
+            { path: '/customized-products/:id', element: <CustomProductDetail /> },
             { path: 'customizedProducts', element: <ListCustomizedProduct /> },
             { path: 'customizedProducts/trash', element: <ListCustomizedProductTrash /> },
             { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },
@@ -127,7 +128,7 @@ export const router = createBrowserRouter([
                     { path: 'resetPassword/:userId', element: <ResetPassword /> },
                 ]
             },
-            
+
             {
                 path: 'signup', children: [
                     { index: true, element: <Signup /> },
@@ -192,7 +193,7 @@ export const router = createBrowserRouter([
             {
                 path: 'users', children: [
                     { index: true, element: <Userlist /> },
-                    { path:"edit/:id", element: <UserUpdate /> },
+                    { path: "edit/:id", element: <UserUpdate /> },
                 ],
             },
             {
