@@ -27,7 +27,7 @@ const Search = () => {
       <div className="pr-3 ">
         <form className="pt-2 md:pl-8 pl-2 flex items-center justify-end mr-auto relative">
           <input
-            className="block h-10 px-2 py-2 w-[250px] outline-none hover:border-secondary border duration-200 rounded-lg pl-2"
+            className="block h-10 px-2 py-2 md:w-[250px] w-[100%] outline-none hover:border-secondary border duration-200 rounded-lg pl-2"
             style={{ borderRadius: "30px" }}
             type="text"
             placeholder="Tìm kiếm sản phẩm"
