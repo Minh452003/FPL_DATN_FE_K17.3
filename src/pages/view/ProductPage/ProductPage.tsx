@@ -1,6 +1,6 @@
 import "../Home/Homepage.css";
 import "../Home/Responsive_homepage.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetProductSellQuery } from "@/api/productApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
