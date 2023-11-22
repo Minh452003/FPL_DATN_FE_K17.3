@@ -16,12 +16,12 @@ const Footer = () => {
           </div>
           <div >
             <ul className="text-white space-y-2 pl-0 text-sm ">
-              <h2 className="text-white font-bold text-base">kênh bán hàng</h2>
+              <h2 className="text-white font-bold text-base">Kênh bán hàng</h2>
               <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Zalo</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">shoppe</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">lazada </a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">tiki</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Sendo</a></li>
+              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Shoppe</a></li>
+              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Lazada </a></li>
+              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Tiki</a></li>
+              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Tiktok</a></li>
             </ul>
           </div>
           <div>

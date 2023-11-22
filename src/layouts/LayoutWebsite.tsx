@@ -25,13 +25,11 @@ const LayoutWebsite = () => {
   return (
     <div className="mx-auto top-0  ">
       <Header />
-      {/* Outlet */}
       <section >
         <main className="max-w mx-auto  ">
           <Outlet />
         </main>
       </section>
-      {/* Footer */}
       <Footer />
     </div>
   );
