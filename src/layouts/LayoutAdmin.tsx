@@ -190,12 +190,12 @@ const LayoutAdmin = () => {
               <span className="text1">Sản phẩm thiết kế</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="#" className="logout">
               <span className="icon"><RiLogoutCircleLine /></span>
               <span className="text1" onClick={() => ''}>Đăng xuất</span>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </section>
 
@@ -263,7 +263,7 @@ const LayoutAdmin = () => {
             <AiFillMessage />
             <span className="num">8</span>
           </Link>
-          <Link to="#" className="profile">
+          <div className="profile">
             {user && (
               <div className="relative mr-5 group">
                 <div className="py-2">
@@ -303,7 +303,7 @@ const LayoutAdmin = () => {
 
               </div>
             )}
-          </Link>
+          </div>
         </nav >
         <main>
           <Outlet />

@@ -29,8 +29,7 @@ const VerifyOTP = () => {
                 position: "center",
                 icon: "error",
                 title: response.error.data.message,
-                showCancelButton: true,
-                timer: 2000
+                timer: 1500
             });
         } else {
             Swal.fire({
@@ -38,13 +37,10 @@ const VerifyOTP = () => {
                 icon: "success",
                 title: "Xác minh tài khoản thành công!",
                 showConfirmButton: true,
-                timer: 2000
+                timer: 1500
             })
             navigate("/signin")
         }
-
-
-
     }
 
     return (

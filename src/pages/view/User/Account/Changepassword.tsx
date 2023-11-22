@@ -1,10 +1,11 @@
 import { useChangePasswordMutation } from "@/api/authApi";
 import { Button, Form, Input } from "antd";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const ChangePassword = () => {
-  const [updatePassword] = useChangePasswordMutation();
+  const [updatePassword, resultUpdate] = useChangePasswordMutation();
   const navigate = useNavigate();
   const onFinish = async (values: any) => {
     const response: any = await updatePassword(values);
@@ -72,7 +73,9 @@ const ChangePassword = () => {
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button className="bg-green-700 text-white font-semibold" htmlType="submit">
-            Thay đổi
+            {resultUpdate.isLoading ? (
+              <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+            ) : ("Thay đổi")}
           </Button>
         </Form.Item>
       </Form>

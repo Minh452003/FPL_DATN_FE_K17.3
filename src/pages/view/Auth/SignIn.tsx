@@ -31,7 +31,7 @@ const Login = () => {
                     icon: "error",
                     title: response.error.data.message,
                     showConfirmButton: false,
-                    timer: 1000
+                    timer: 1500
                 })
             } else if (response.error.data.message == 'Tài khoản không tồn tại') {
                 Swal.fire({
@@ -39,7 +39,7 @@ const Login = () => {
                     icon: "error",
                     title: response.error.data.message,
                     showConfirmButton: false,
-                    timer: 1000
+                    timer: 1500
                 })
             } else if (response.error.data.message == 'Vui lòng xác minh tài khoản trước khi đăng nhập') {
                 Swal.fire({
@@ -47,7 +47,7 @@ const Login = () => {
                     icon: "error",
                     title: response.error.data.message,
                     showConfirmButton: false,
-                    timer: 1000
+                    timer: 1500
                 })
                 navigate(`/signup/verifyOTP/${response?.error?.data?.otpResponse?.data?.userId}`);
             }
@@ -61,7 +61,7 @@ const Login = () => {
                 icon: 'success',
                 title: 'Đăng nhập thành công!',
                 showConfirmButton: true,
-                timer: 1000
+                timer: 1500
             })
             navigate("/")
         }
