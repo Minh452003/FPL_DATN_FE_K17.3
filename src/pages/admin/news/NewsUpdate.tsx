@@ -1,9 +1,10 @@
 
 import { useGetNewByIdQuery, useUpdateNewMutation } from '@/api/newsApi';
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
-import { Button, Form, Input, InputNumber, Skeleton, Upload, message } from 'antd';
+import { Button, Form, Input, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -19,8 +20,8 @@ const NewsUpdate = () => {
     const { id }: any = useParams();
     const { data: news, isLoading, isError }: any = useGetNewByIdQuery(id);
     const [updateNew, resultUpdate] = useUpdateNewMutation();
-    const [updateImage] = useUpdateImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [updateImage, resultImage] = useUpdateImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
     const [imageUrl, setImageUrl] = useState<any>({});
     const navigate = useNavigate();
@@ -131,7 +132,7 @@ const NewsUpdate = () => {
 
         return <div>Error: Unable to fetch new data.</div>;
     }
-   
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -161,17 +162,17 @@ const NewsUpdate = () => {
                             { min: 2, message: "Nhập ít nhất 2 ký tự" },
                             {
                                 validator: (_, value) => {
-                                  if (!value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
                                     return Promise.resolve();
-                                  }
-                                  if (/ {2,}/.test(value)) {
-                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                  }
-                                  return Promise.resolve();
                                 },
-                              },
-                        ]}
-                        hasFeedback
+                            },
+                            ]}
+                            hasFeedback
                         >
                             <Input />
                         </Form.Item>
@@ -186,17 +187,17 @@ const NewsUpdate = () => {
                             { min: 10, message: "Nhập ít nhất 10 ký tự" },
                             {
                                 validator: (_, value) => {
-                                  if (!value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
                                     return Promise.resolve();
-                                  }
-                                  if (/ {2,}/.test(value)) {
-                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                  }
-                                  return Promise.resolve();
                                 },
-                              },
-                        ]}
-                        hasFeedback
+                            },
+                            ]}
+                            hasFeedback
                         >
                             <Input />
                         </Form.Item>
@@ -207,7 +208,7 @@ const NewsUpdate = () => {
                             style={{ marginLeft: '20px' }}
                             id="images" name="new_image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
                             hasFeedback
-                            >
+                        >
                             <Upload {...props} maxCount={1} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
@@ -224,10 +225,11 @@ const NewsUpdate = () => {
 
                         <Form.Item wrapperCol={{ span: 16 }}>
 
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
-                                {resultUpdate.isLoading ? <div className="spinner-border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </div> : " Cập nhật tin tức"}
+                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                                disabled={resultImage.isLoading || resultDelete.isLoading}
+                                htmlType="submit">
+                                {resultUpdate.isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                    : " Cập nhật tin tức"}
                             </Button>
                             <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/news")} htmlType="submit">
                                 Danh sách tin tức

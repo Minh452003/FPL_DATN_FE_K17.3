@@ -273,14 +273,14 @@ const Model = ({ products }: any) => {
               title={
                 id && activeColor && activeSize
                   ? ""
-                  : "Bạn phải đăng nhập, chọn màu và kích thước"
+                  : "Bạn phải đăng nhập, chọn màu và kích thước."
               }
             >
               {resultAdd.isLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin m-auto" />
               ) : (
                 <Button
-                  aria-disabled={!id || !activeColor || !activeSize}
+                  disabled={childProduct?.product.stock_quantity <= 0}
                   className="btn6 btn-solid-primary6 btn-x hl mt-4 ml-16"
                   onClick={() => {
                     if (id && activeColor && activeSize) {

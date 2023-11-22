@@ -1,4 +1,4 @@
-import { useGetCommentStatiscalQuery, useGetCountOrderQuery, useGetCountUserQuery, useGetProductSellQuery, useSellingProductsQuery, useStatisticalOrdersQuery, useTotalCreatedProductsQuery, useTotalSoldQuantityQuery, useViewedProductsQuery } from "@/api/statisticalApi"
+import { useGetCommentStatiscalQuery, useGetCountOrderQuery, useGetCountUserQuery, useGetOrderAccomplishedQuery, useGetOrderConfirmedQuery, useGetOrderUnconfirmedQuery, useGetProductSellQuery, useSellingProductsQuery, useStatisticalOrdersQuery, useTotalCreatedProductsQuery, useTotalSoldQuantityQuery, useViewedProductsQuery } from "@/api/statisticalApi";
 import { useEffect, useState } from "react";
 import { Bar, Doughnut } from 'react-chartjs-2';
 import 'chart.js';
@@ -60,6 +60,22 @@ const DashBoardPage = () => {
     const { data: commentSta, isLoading: isLoadingComment } = useGetCommentStatiscalQuery<any>({
         month: monthSta,
         year: yearSta
+    });
+    const { data: orderUnconfirmed } = useGetOrderUnconfirmedQuery<any>({
+        month: month,
+        year: year
+    });
+    const { data: orderConfirmed } = useGetOrderConfirmedQuery<any>({
+        month: month,
+        year: year
+    });
+    const { data: orderAccomplished } = useGetOrderAccomplishedQuery<any>({
+        month: month,
+        year: year
+    });
+    const { data: comment, error } = useGetCommentStatiscalQuery<any>({
+        month: month,
+        year: year
     });
     // ----------------------------------------------
     useEffect(() => {
@@ -311,6 +327,9 @@ const DashBoardPage = () => {
     const shouldCountProducts = countProducts && countProducts.length > 0;
     const shouldCountOrders = countOrders && countOrders.length > 0;
     const shouldCountUsers = countUsers && countUsers.length > 0;
+    const shouldOrderUnconfirmed = orderUnconfirmed && orderUnconfirmed.length > 0;
+    const shouldOrderConfirmed = orderConfirmed && orderConfirmed.length > 0;
+    const shouldOrderAccomplished = orderAccomplished && orderAccomplished.length > 0;
 
     if (isLoading) return <Skeleton />;
     if (isLoadingProducts) return <Skeleton />;
@@ -342,7 +361,7 @@ const DashBoardPage = () => {
 
                     <div className="p-6 bg-blue-500 text-white rounded-lg shadow-md flex items-center justify-between">
                         <div>
-                            <h3 className="text-xl font-semibold mb-2">Sản Phẩm Đã Bán</h3>
+                            <h3 className="text-xl font-semibold mb-2">Số Lượng Sản Phẩm Đã Bán</h3>
                             <p className="text-3xl font-bold">{shouldSoldProducts ? soldProducts[0]?.totalSoldQuantity : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -355,8 +374,8 @@ const DashBoardPage = () => {
 
                     <div className="p-6 bg-green-500 text-white rounded-lg shadow-md flex items-center justify-between">
                         <div>
-                            <h3 className="text-xl font-semibold mb-2">Số Lượng Đơn Hàng</h3>
-                            <p className="text-3xl font-bold">{shouldCountOrders ? countOrders[0]?.count : 0}</p>
+                            <h3 className="text-xl font-semibold mb-2">Số Lượng Đánh Giá Mới</h3>
+                            <p className="text-3xl font-bold">{error?.status == 400 ? 0 : comment?.tongdanhgia}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             className="h-8 w-8 text-white">
@@ -369,6 +388,53 @@ const DashBoardPage = () => {
                         <div>
                             <h3 className="text-xl font-semibold mb-2">Số Lượng Khách Hàng</h3>
                             <p className="text-3xl font-bold">{shouldCountUsers ? countUsers[0]?.count : 0}</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            className="h-8 w-8 text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </div>
+                </div>
+                <br />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="p-6 bg-cyan-500 text-white rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <h3 className="text-xl font-semibold mb-2">Số Lượng Đơn Hàng</h3>
+                            <p className="text-3xl font-bold">{shouldCountOrders ? countOrders[0]?.count : 0}</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            className="h-8 w-8 text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </div>
+                    <div className="p-6 bg-pink-700 text-white rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <h3 className="text-xl font-semibold mb-2">Đơn Hàng Chưa Xác Nhận</h3>
+                            <p className="text-3xl font-bold">{shouldOrderUnconfirmed ? orderUnconfirmed[0]?.count : 0}</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            className="h-8 w-8 text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </div>
+                    <div className="p-6 bg-indigo-800 text-white rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <h3 className="text-xl font-semibold mb-2">Đơn Hàng Đã Xác Nhận</h3>
+                            <p className="text-3xl font-bold">{shouldOrderConfirmed ? orderConfirmed[0]?.count : 0}</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            className="h-8 w-8 text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </div>
+                    <div className="p-6 bg-cyan-600 text-white rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <h3 className="text-xl font-semibold mb-2">Đơn Hàng Đã Hoàn Thành</h3>
+                            <p className="text-3xl font-bold">{shouldOrderAccomplished ? orderAccomplished[0]?.count : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             className="h-8 w-8 text-white">
@@ -403,6 +469,7 @@ const DashBoardPage = () => {
                         defaultValue={''}
                     >
                         <option value="" disabled>Năm {new Date().getFullYear()}</option>
+                        <option value={2021}>Năm 2021</option>
                         <option value={2022}>Năm 2022</option>
                         <option value={2023}>Năm 2023</option>
                         <option value={2024}>Năm 2024</option>
@@ -439,6 +506,7 @@ const DashBoardPage = () => {
                             defaultValue={''}
                         >
                             <option value="" disabled>Năm {new Date().getFullYear()}</option>
+                            <option value={2021}>Năm 2021</option>
                             <option value={2022}>Năm 2022</option>
                             <option value={2023}>Năm 2023</option>
                             <option value={2024}>Năm 2024</option>
@@ -477,12 +545,13 @@ const DashBoardPage = () => {
                             defaultValue={''}
                         >
                             <option value="" disabled>Năm {new Date().getFullYear()}</option>
+                            <option value={2021}>Năm 2021</option>
                             <option value={2022}>Năm 2022</option>
                             <option value={2023}>Năm 2023</option>
                             <option value={2024}>Năm 2024</option>
                         </select>
                     </div>
-                    <div className="flex flex-row">
+                    <div className="flex flex-wrap">
                         <div className="basis-1/2">
                             <Doughnut data={chartData1} options={options1} style={{ height: '150px' }} />
                         </div>
@@ -549,6 +618,7 @@ const DashBoardPage = () => {
                             defaultValue={''}
                         >
                             <option value="" disabled>Năm {new Date().getFullYear()}</option>
+                            <option value={2021}>Năm 2021</option>
                             <option value={2022}>Năm 2022</option>
                             <option value={2023}>Năm 2023</option>
                             <option value={2024}>Năm 2024</option>
@@ -556,7 +626,7 @@ const DashBoardPage = () => {
                     </div>
                     {shouldViewProducts ? <ul>
                         {viewProducts?.map((product: any) => (
-                            <li className="bg-gray-200 p-6 rounded-lg shadow-md mb-4" key={product?._id}>
+                            <li className="bg-gray-200 p-6 rounded-lg shadow-md mb-4 max-w-screen-sm" key={product?._id}>
                                 <div className="flex justify-between">
                                     <div>
                                         <h3 className="text-xl font-semibold mb-2">{product?.views} lượt xem</h3>
@@ -573,12 +643,6 @@ const DashBoardPage = () => {
                     </ul> : ''}
                 </div>
             </div>
-
-
-
-
-
-
         </div>
     )
 }

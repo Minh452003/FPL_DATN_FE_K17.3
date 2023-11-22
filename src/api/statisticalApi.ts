@@ -81,6 +81,42 @@ const statisticalApi = createApi({
             },
             providesTags: ['Statistical']
         }),
+        getOrderUnconfirmed: builder.query({
+            query: (query) => {
+                let url = `/statistical/order-unconfirmed?year=${query.year}`;
+                if (query.month) {
+                    url += `&month=${query.month}`;
+                } else if (query.month == null) {
+                    return url;
+                }
+                return url;
+            },
+            providesTags: ['Statistical']
+        }),
+        getOrderConfirmed: builder.query({
+            query: (query) => {
+                let url = `/statistical/order-confirmed?year=${query.year}`;
+                if (query.month) {
+                    url += `&month=${query.month}`;
+                } else if (query.month == null) {
+                    return url;
+                }
+                return url;
+            },
+            providesTags: ['Statistical']
+        }),
+        getOrderAccomplished: builder.query({
+            query: (query) => {
+                let url = `/statistical/order-accomplished?year=${query.year}`;
+                if (query.month) {
+                    url += `&month=${query.month}`;
+                } else if (query.month == null) {
+                    return url;
+                }
+                return url;
+            },
+            providesTags: ['Statistical']
+        }),
         getCountUser: builder.query({
             query: (query) => {
                 let url = `/statistical/users?year=${query.year}`;
@@ -129,7 +165,10 @@ export const {
     useGetCountOrderQuery,
     useGetCountUserQuery,
     useGetCommentStatiscalQuery,
-    useGetProductSellQuery
+    useGetProductSellQuery,
+    useGetOrderUnconfirmedQuery,
+    useGetOrderConfirmedQuery,
+    useGetOrderAccomplishedQuery
 } = statisticalApi;
 export const statisticalReducer = statisticalApi.reducer;
 export default statisticalApi

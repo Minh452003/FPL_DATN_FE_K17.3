@@ -2,9 +2,10 @@
 import { useAddNewMutation } from '@/api/newsApi';
 import { useAddImageMutation, useDeleteImageMutation } from '@/api/uploadApi';
 import { INew } from '@/interfaces/new';
-import { Button, Form, Input, InputNumber, Upload, UploadProps, message } from 'antd';
+import { Button, Form, Input, Upload, UploadProps, message } from 'antd';
 import { RcFile } from 'antd/es/upload';
 import { useState } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
@@ -16,8 +17,8 @@ type FieldType = {
 };
 const NewsAdd = () => {
     const [addNew, resultAdd] = useAddNewMutation();
-    const [addImage] = useAddImageMutation();
-    const [deleteImage] = useDeleteImageMutation();
+    const [addImage, resultImage] = useAddImageMutation();
+    const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
     const [imageUrl, setImageUrl] = useState<any>({});
     const navigate = useNavigate();
@@ -111,48 +112,48 @@ const NewsAdd = () => {
                             { min: 2, message: "Nhập ít nhất 2 ký tự" },
                             {
                                 validator: (_, value) => {
-                                  if (!value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
                                     return Promise.resolve();
-                                  }
-                                  if (/ {2,}/.test(value)) {
-                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                  }
-                                  return Promise.resolve();
                                 },
-                              },
-                            
-                           ]}
-                          
+                            },
+
+                            ]}
+
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <Input />
                         </Form.Item>
                         <Form.Item<FieldType>
-                           label="Mô tả"
-                           name="new_description"
-                           labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                           wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                           rules={[{ required: true, message: 'Mô tả bắt buộc nhập!' },
-                           { min: 10, message: "Nhập ít nhất 10 ký tự" },
-                           {
-                               validator: (_, value) => {
-                                 if (!value) {
-                                   return Promise.resolve();
-                                 }
-                                 if (/ {2,}/.test(value)) {
-                                   return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                 }
-                                 return Promise.resolve();
-                               },
-                             },
-                           
-                          ]}
-                         
-                           hasFeedback
-                           style={{ marginLeft: '20px' }}
-                       >
-                           <Input />
+                            label="Mô tả"
+                            name="new_description"
+                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
+                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
+                            rules={[{ required: true, message: 'Mô tả bắt buộc nhập!' },
+                            { min: 10, message: "Nhập ít nhất 10 ký tự" },
+                            {
+                                validator: (_, value) => {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
+                                    return Promise.resolve();
+                                },
+                            },
+
+                            ]}
+
+                            hasFeedback
+                            style={{ marginLeft: '20px' }}
+                        >
+                            <Input />
                         </Form.Item>
                         <Form.Item
                             labelCol={{ span: 24 }}
@@ -160,7 +161,7 @@ const NewsAdd = () => {
                             style={{ marginLeft: '20px' }}
                             id="images" name="new_image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
                             hasFeedback
-                            >
+                        >
                             <Upload {...props} maxCount={1} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
@@ -171,10 +172,11 @@ const NewsAdd = () => {
                             </Upload>
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
-                                {resultAdd.isLoading ? <div className="spinner-border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </div> : " Thêm tin tức"}
+                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                                disabled={resultImage.isLoading || resultDelete.isLoading}
+                                htmlType="submit">
+                                {resultAdd.isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                    : " Thêm tin tức"}
                             </Button>
                             <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/news")} htmlType="submit">
                                 Danh sách tin tức
