@@ -3,7 +3,7 @@ import { useGetMaterialQuery, useRemoveMaterialMutation } from '@/api/materialAp
 import { IMaterials } from '@/interfaces/materials';
 import { Table, Button, Skeleton } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { FaCirclePlus, FaTrash, FaTrashCan, FaWrench } from "react-icons/fa6";
+import { FaCirclePlus, FaTrashCan, FaWrench } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -75,7 +75,7 @@ const MaterialList = () => {
   if (isLoading) return <Skeleton />
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách vật liệu</h3>
+      <h3 className="font-semibold">Danh sách chất liệu</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='text-blue-500'>
           <Link to="/admin/materials/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>

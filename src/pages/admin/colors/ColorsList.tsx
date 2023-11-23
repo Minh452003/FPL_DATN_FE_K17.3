@@ -1,7 +1,7 @@
 
 import { useGetColorsQuery, useRemoveColorMutation } from '@/api/colorApi';
 import { IColor } from '@/interfaces/color';
-import { Button, Skeleton, Table, Alert } from 'antd';
+import { Button, Skeleton, Table } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { Link } from "react-router-dom";
@@ -58,7 +58,7 @@ const Colorslist = () => {
       title: 'Chức năng',
       render: ({ key: _id }: any) => {
         return (
-          <div style={{ width: '150px' }}>
+          <div>
             <Button className='mr-1 text-red-500' onClick={() => deleteColor(_id)}>
               {isRemoveLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />

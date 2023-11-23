@@ -1,5 +1,6 @@
 import { useResetPasswordMutation } from "@/api/authApi";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -9,7 +10,7 @@ type TypeInputs = {
 }
 
 const ResetPassword = () => {
-    const [resetPassword] = useResetPasswordMutation();
+    const [resetPassword, resultAdd] = useResetPasswordMutation();
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<TypeInputs>();
     const { userId } = useParams();
@@ -25,8 +26,8 @@ const ResetPassword = () => {
                 position: "center",
                 icon: "error",
                 title: response.error.data.message,
-                showCancelButton: true,
-                timer: 1000
+                showConfirmButton: true,
+                timer: 1500
             });
         } else {
             Swal.fire({
@@ -34,7 +35,7 @@ const ResetPassword = () => {
                 icon: "success",
                 title: "Đặt mật khẩu thành công, vui lòng đăng nhập!",
                 showConfirmButton: true,
-                timer: 1000
+                timer: 1500
             });
             navigate("/signin");
         }
@@ -71,12 +72,16 @@ const ResetPassword = () => {
                         />
                     </div>
                     <div className="text-center">
-                        <button
-                            type="submit"
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg"
-                        >
-                            Đặt lại mật khẩu
-                        </button>
+                        {resultAdd.isLoading ? (
+                            <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                        ) : (
+                            <button
+                                type="submit"
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg"
+                            >
+                                Đặt lại mật khẩu
+                            </button>
+                        )}
                     </div>
                 </form>
             </div>

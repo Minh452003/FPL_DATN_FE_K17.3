@@ -36,14 +36,14 @@ const ContactList = () => {
         removeContact(id).then(() => {
           Swal.fire(
             'Xoá thành công!',
-            'Liên hệ của bạn đã được xoá.',
+            'Góp ý đã được xoá.',
             'success'
           )
         })
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
           'Thất bại',
-          'Liên hệ xóa thất bại.',
+          'Góp ý xóa thất bại.',
           'error'
         )
       }
@@ -99,7 +99,7 @@ const ContactList = () => {
   ];
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách liên hệ</h3>
+      <h3 className="font-semibold">Danh sách góp ý</h3>
       <br />
       <Table dataSource={datacontact} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
     </div>

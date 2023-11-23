@@ -25,7 +25,6 @@ const childProductApi = createApi({
                 if (query.productId && query.sizeId && query.colorId) {
                     return `/get-child-product?productId=${query.productId}&sizeId=${query.sizeId}&colorId=${query.colorId}`;
                 } else {
-                    // Trường hợp không đủ tham số, trả về một giá trị mặc định hoặc null
                     return '';
                 }
             },
@@ -37,7 +36,13 @@ const childProductApi = createApi({
         }),
         // 
         getChildProductByProductId: builder.query<IChildProduct, number | string>({
-            query: (productId) => `/child-products/${productId}`,
+            query: (productId) => {
+                if (productId) {
+                    return `/child-products/${productId}`;
+                } else {
+                    return '';
+                }
+            },
             providesTags: ['child-products']
         }),
 

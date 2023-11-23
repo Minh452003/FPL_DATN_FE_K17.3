@@ -10,7 +10,6 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BiFoodMenu } from 'react-icons/bi';
 
 const ProductTrash = () => {
-
     const { data }: any = useGetProductsDeleteQuery();
     const { data: categories } = useGetCategoryQuery<any>();
     const { data: brands } = useGetBrandQuery<any>();
@@ -18,10 +17,7 @@ const ProductTrash = () => {
     const [removeProduct, { isLoading: isRemoveLoading }] = useRemoveForceProductMutation();
     const [restoreProduct, { isLoading: isRestoreLoading }] = useRestoreProductMutation()
 
-    console.log(data);
-
     const products = data?.product;
-
     const category = categories?.category?.docs;
     const brand = brands?.brand;
     const material = materials?.material;
