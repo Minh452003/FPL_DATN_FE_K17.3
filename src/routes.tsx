@@ -39,7 +39,6 @@ import MaterialList from "./pages/admin/material/MaterialList";
 import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
 import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
 import UserPage from "./pages/view/User/User";
-import ContactPage from "./pages/view/Contact/ContactPage";
 import CategoryTrash from "./pages/admin/category/CategoryTrash";
 import CouponsList from "./pages/admin/coupons/CouponsList";
 import CouponsAdd from "./pages/admin/coupons/CouponsAdd";
@@ -76,6 +75,7 @@ import NotFoundPage from "./pages/notfound/NotFoundPage";
 import ContactList from "./pages/admin/contact/ContactList";
 import ChangePassword from "./pages/view/User/Account/Changepassword";
 import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
+import ContactPage from "./pages/view/contact/ContactPage";
 
 
 

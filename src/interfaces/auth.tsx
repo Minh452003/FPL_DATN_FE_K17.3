@@ -19,6 +19,8 @@ export interface IUser {
     passwordChangeAt?: string
     userId?: string;
     otp?: string
+    newPassword?: string
+    confirmPassword?: string
 }
 export interface IImage {
     url: string;

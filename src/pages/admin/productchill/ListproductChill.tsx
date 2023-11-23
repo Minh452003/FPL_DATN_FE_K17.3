@@ -1,9 +1,10 @@
 
 import { useGetChildProductByProductIdQuery, useRemovecChildProductMutation } from '@/api/chilProductApi';
 import { useGetColorsQuery } from '@/api/colorApi';
+import { useGetProductByIdQuery } from '@/api/productApi';
 import { useGetSizeQuery } from '@/api/sizeApi';
 import { IChildProduct } from '@/interfaces/childProduct';
-import { Image, Table, Button, message, Popconfirm } from 'antd';
+import { Image, Table, Button } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash } from "react-icons/fa6";
 import { Link, useParams } from 'react-router-dom';
@@ -13,16 +14,11 @@ const ListproductChill = () => {
   const { data }: any = useGetChildProductByProductIdQuery<IChildProduct>(productId);
   const { data: colors } = useGetColorsQuery<any>();
   const { data: sizes } = useGetSizeQuery<any>()
-  const [RemoveChillproduct, { isLoading: isRemoveLoading }] = useRemovecChildProductMutation()
-  const [messageApi] = message.useMessage();
-
-
-
+  const [RemoveChillproduct, { isLoading: isRemoveLoading }] = useRemovecChildProductMutation();
+  const { data: productData }: any = useGetProductByIdQuery(productId);
   const products = data?.products
   const color = colors?.color;
   const size = sizes?.size
-
-
 
   const data1 = products?.map((product: any, index: number) => {
     return {
@@ -66,7 +62,9 @@ const ListproductChill = () => {
       }
     })
   }
-
+  const formatCurrency = (number: number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 
   const columns = [
     {
@@ -79,14 +77,13 @@ const ListproductChill = () => {
       title: 'Ảnh',
       dataIndex: 'image',
       key: 'image',
-      render: () => <Image src={"https://faha.vn/wp-content/uploads/2023/07/ban-ghe-cafe-ghe-cafe-dau-trau-gg01-6.jpg"} width={100} />
+      render: () => <Image src={productData?.product?.image[0]?.url} width={100} />
     },
     {
       title: 'Kích cỡ',
       dataIndex: 'sizes',
       key: 'sizes',
       render: (record: any) => {
-        console.log(size);
         const sizesname = size?.find((s: any) => s._id == record);
         return sizesname?.size_name
           ;
@@ -107,6 +104,7 @@ const ListproductChill = () => {
       title: 'Giá',
       dataIndex: 'price',
       key: 'price',
+      render: (price: any) => <p className="text-red-700">{formatCurrency(price)}₫</p>
     },
     {
       title: 'Số lượng',
@@ -136,10 +134,9 @@ const ListproductChill = () => {
   ];
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách sản phẩm thiết kế</h3>
+      <h3 className="font-semibold">{productData?.product?.product_name}</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-      <Button className='mr-5 text-blue-500'><Link to={`/admin/products/childProduct/add/${productId}`}><FaCirclePlus/></Link></Button>
-        
+        <Button className='mr-5 text-blue-500'><Link to={`/admin/products/childProduct/add/${productId}`}><FaCirclePlus /></Link></Button>
         <Button className='m-2  float-right'><Link to={''}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
         {data1 && data1.length > 0 ? (
           <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />

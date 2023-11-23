@@ -139,7 +139,7 @@ const OrdersManager = () => {
     <div>
       <br />
       <header className="flex items-center justify-between mb-4">
-        <h2 className="font-bold text-2xl">Đơn hàng của bạn</h2>
+        <h2 className="font-bold text-2xl">Danh sách đơn hàng</h2>
       </header>
       <div className="">
         <ul className="font-medium flex flex-col p-3 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">

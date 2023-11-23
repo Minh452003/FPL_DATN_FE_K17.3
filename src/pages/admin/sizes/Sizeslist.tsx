@@ -1,7 +1,7 @@
 
 import { useGetSizeQuery, useRemoveSizeMutation } from '@/api/sizeApi';
 import { ISize } from '@/interfaces/size';
-import { Button, Skeleton, Table, Alert } from 'antd';
+import { Button, Skeleton, Table } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { Link } from "react-router-dom";
@@ -12,7 +12,7 @@ const Sizeslist = () => {
   const { data, error, isLoading }: any = useGetSizeQuery();
   const [removeSize, { isLoading: isRemoveLoading }] = useRemoveSizeMutation();
   const size = data?.size
-  const dataSource = size?.map(({_id, size_name, size_height, size_length, size_weight, size_width}: ISize) => {
+  const dataSource = size?.map(({ _id, size_name, size_height, size_length, size_weight, size_width }: ISize) => {
     return {
       key: _id,
       size_name,
@@ -110,7 +110,7 @@ const Sizeslist = () => {
   }
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách Kích cỡ</h3>
+      <h3 className="font-semibold">Danh sách kích cỡ</h3>
       <div className="overflow-x-auto drop-shadow-xl rounded-lg">
         <Button className='text-blue-500'>
           <Link to="/admin/sizes/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>

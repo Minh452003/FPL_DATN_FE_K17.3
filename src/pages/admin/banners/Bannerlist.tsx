@@ -92,7 +92,7 @@ const Bannerlist = () => {
   ];
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách Banner</h3>
+      <h3 className="font-semibold">Danh sách banner</h3>
       <Button className='text-blue-500'>
         <Link to="/admin/banners/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
       </Button>
