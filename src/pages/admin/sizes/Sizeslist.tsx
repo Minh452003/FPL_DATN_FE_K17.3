@@ -175,5 +175,4 @@ const Sizeslist = () => {
         </div>
     );
 };
-
 export default Sizeslist;

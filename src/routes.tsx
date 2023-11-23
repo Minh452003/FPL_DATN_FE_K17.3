@@ -52,7 +52,6 @@ import ProductTrash from "./pages/admin/products/ProductTrash";
 import OrdersDetail from "./pages/admin/orders/OrdersDetail";
 import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProductAdd";
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
-import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDetail";
 import CustomProductslist from "./pages/admin/customProducts/CustomProductslist";
 import CustomProductsTrash from "./pages/admin/customProducts/CustomProductsTrash";
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";

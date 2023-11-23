@@ -55,7 +55,10 @@ const Product_Detail = () => {
   const [activeSize, setActiveSize] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(false);
   const [selectedRating, setSelectedRating] = useState("Tất cả");
-
+  const [activeTab, setActiveTab] = useState('tab-1');
+  const handleTabClick = (tab: any) => {
+    setActiveTab(tab);
+  };
   const handleRatingFilter = (rating: any) => {
     setSelectedRating(rating);
   };
@@ -72,7 +75,7 @@ const Product_Detail = () => {
   let averageRating = 0;
   if (commentProductDetail && commentProductDetail.length > 0) {
     // Kiểm tra xem commentProductDetail tồn tại và có ít nhất một phần tử
-    averageRating = totalRating / commentProductDetail.length;
+    averageRating = totalRating / commentProductDetail?.length;
   }
   const filteredComments = commentProductDetail?.filter((comment: any) => {
     if (selectedRating === "Tất cả") {
@@ -319,30 +322,16 @@ const Product_Detail = () => {
   return (
     <div className="">
       <div className="container">
-        <div className="flex items-center ml-16 mt-2">
+        <div className="flex items-center my-4 px-3">
           <div className="float-left font-bold">Trang Chủ</div>
           <FaArrowRight className="ml-2" />
           <div className="pl-2">{categoryLishOne}</div>
           <FaArrowRight className="ml-2" />
           <div className="pl-2">{listOneData?.product_name}</div>
         </div>
-        <div className="content">
-          <div className="flex">
-            <h3 className="font-bold pt-10 pl-52 iklm">
-              {listOneData?.product_name}
-            </h3>
-            {childProduct ? (
-              <p className="price3">
-                {formatCurrency(childProduct?.product?.product_price)}₫
-              </p>
-            ) : (
-              <p className="price3">
-                {formatCurrency(listOneData?.product_price)}₫
-              </p>
-            )}
-          </div>
-          <div className="grid grid-cols-2 gap-2 np">
-            <div className="product-image">
+        <div className="">
+          <div className="md:grid md:grid-cols-2 bg-white p-4 gap-2 justify-between px-3">
+            <div className=" md:w-43% md:ml-53px md:h-106px">
               <div className="mb-6">
                 {listOneData?.image?.map((img: any, index: any) => {
                   if (!selectedIndex && index === 0) {
@@ -355,7 +344,7 @@ const Product_Detail = () => {
                         key={`image-content-${index}`}
                         data-te-tab-active
                       >
-                        <img src={img?.url} className={`object-cover img1`} />
+                        <img src={img?.url} className={`object-cover object-cover md:w-[250] md:h-[180]  `} />
                       </div>
                     );
                   } else {
@@ -367,7 +356,7 @@ const Product_Detail = () => {
                         aria-labelledby={`tab-${index}`}
                         key={`image-content-${index}`}
                       >
-                        <img src={img?.url} className={`object-cover img1`} />
+                        <img src={img?.url} className={`object-cover object-cover md:w-[250] md:h-[180]  `} />
                       </div>
                     );
                   }
@@ -402,32 +391,71 @@ const Product_Detail = () => {
                 ))}
               </ul>
             </div>
-            <div className="product-text">
-              <div className="col-span-2 flex mt-4 ef">
-                <div className="text1">Tình trạng:</div>
-                <div className="text2 pl-10 lp">Còn hàng</div>
+            <div className="md:w-287px md:h-200px md:ml-215px  ">
+              <div className="mb-3">
+                <h3 className="font-bold iklm ">
+                  {listOneData?.product_name}
+                </h3>
+                <div className=" max-w-4xl mx-auto flex">
+                  <div className="flex items-center">
+                    <span >
+                      {roundedAverageRating}{" "}
+                      /5
+                    </span>
+
+                    <div className=" mx-auto flex items-center">
+                      {Array.from(
+                        { length: Math.round(roundedAverageRating) },
+                        (_, index) => (
+                          <AiFillStar key={index} style={{ color: "orange" }} />
+                        )
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-gray-300 px-2 h-[30px] text-xl flex items-center">
+                    |
+                  </div>
+                  <div className="flex items-center">
+                    {commentProductDetail ? `${commentProductDetail?.length} đánh giá` : '0 đánh giá'}
+                  </div>
+                  <div className="text-gray-300 px-2 h-[30px] text-xl flex items-center">
+                    |
+                  </div>
+                  <div className="col-span-2 space-x-4 flex items-center" >
+                    <div className="  text-[16px]">Đã bán:  {listOneData?.sold_quantity} chiếc</div>
+                  </div>
+
+                </div>
+
               </div>
-              <div className="col-span-2 flex ef">
-                <div className="text1">Đã bán: </div>
-                <div className="text2 pl-16 lp">
-                  {listOneData?.sold_quantity} chiếc
+              <div className=" space-y-3 px-3">
+                <div className="mt-3">
+                  {childProduct ? (
+                    <p className="text-red-700 text-2xl font-bold">
+                      <span>đ</span> {formatCurrency(childProduct?.product?.product_price)}
+                    </p>
+                  ) : (
+                    <p className="text-red-700 text-2xl font-bold">
+                      <span>đ</span> {formatCurrency(listOneData?.product_price)}
+                    </p>
+                  )}
+                </div>
+                <div className="col-span-2  flex space-x-4 ">
+                  <div className="font-bold text-[16px]">Thương hiệu:</div>
+                  <div className=" ">{brandListOne}</div>
+                </div>
+                <div className="col-span-2 flex  space-x-4 ">
+                  <div className="font-bold text-[16px]">Loại:</div>
+                  <div className="">{categoryLishOne}</div>
+                </div>
+                <div className="col-span-2 flex  space-x-4 ">
+                  <div className=" font-bold text-[16px]">Chất liệu:</div>
+                  <div className="">{materialLishOne}</div>
                 </div>
               </div>
-              <div className="col-span-2 flex ef">
-                <div className="text1">Thương hiệu:</div>
-                <div className="text2 pl-4 lp">{brandListOne}</div>
-              </div>
-              <div className="col-span-2 flex ef">
-                <div className="text1">Loại:</div>
-                <div className="text2 kj lp">{categoryLishOne}</div>
-              </div>
-              <div className="col-span-2 flex ef">
-                <div className="text1">Chất liệu:</div>
-                <div className="text2 pl-14 lp">{materialLishOne}</div>
-              </div>
-              <div className="color">
-                <p>Màu sắc</p>
-                <div className="flex">
+              <div className="py-3">
+                <p className="text-[16px] font-bold">Màu sắc</p>
+                <div className="flex space-x-2">
                   {childProducts ? (
                     filteredColors.map((color: any) => {
                       const colorname = colors?.color?.find(
@@ -439,7 +467,7 @@ const Product_Detail = () => {
                           key={color.colorId}
                           aria-label="M"
                           aria-disabled="false"
-                          className={`btn2 btn-solid-primary2 btn-b ${isActive ? "active1" : ""
+                          className={` border boder-1 text-sm font-bold rounded-lg py-1 px-2 ${isActive ? "active1" : ""
                             }`}
                           onClick={() => handleClickColor(color.colorId)}
                         >
@@ -452,9 +480,9 @@ const Product_Detail = () => {
                   )}
                 </div>
               </div>
-              <div className="size">
+              <div className="text-[16px] font-bold">
                 <p>Kích thước</p>
-                <div className="flex">
+                <div className="flex space-x-2">
                   {childProducts ? (
                     filteredSizes.map((size: any) => {
                       const sizesname = sizes?.size?.find(
@@ -466,7 +494,7 @@ const Product_Detail = () => {
                           key={size.sizeId}
                           aria-label="M"
                           aria-disabled="false"
-                          className={`btn2 btn-solid-primary2 btn-b ${isActive ? "active1" : ""
+                          className={`text-sm border boder-1 rounded-lg px-2 py-1 ${isActive ? "active1" : ""
                             }`}
                           onClick={() => handleClickSize(size.sizeId)}
                           type="submit"
@@ -487,233 +515,255 @@ const Product_Detail = () => {
               ) : (
                 ""
               )}
-              <div className="flex button">
-                <button
-                  aria-label="Decrease"
-                  className="btn3 btn-solid-primary3 btn-c"
-                  onClick={decreaseQuantity}
-                >
-                  -
-                </button>
-                <input
-                  className="btn4 btn-solid-primary4 btn-d mn"
-                  aria-live="assertive"
-                  aria-valuenow={1}
-                  value={quantity}
-                  onChange={(e) => setQuantity(parseInt(e.target.value))}
-                />
-                <button
-                  aria-label="Increase"
-                  className="btn5 btn-solid-primary5 btn-e"
-                  onClick={increaseQuantity}
-                >
-                  +
-                </button>
-                <Tooltip
-                  title={
-                    id && activeColor && activeSize
-                      ? ""
-                      : "Bạn phải đăng nhập, chọn màu và kích thước"
-                  }
-                >
-                  {resultAdd.isLoading ? (
-                    <AiOutlineLoading3Quarters className="animate-spin m-auto" />
-                  ) : (
-                    <Button
-                      aria-disabled={!id || !activeColor || !activeSize}
-                      className="btn6 btn-solid-primary6 btn-f hl"
-                      onClick={() => {
-                        if (id && activeColor && activeSize) {
-                          handleAddToCart();
-                        }
-                      }}
-                    >
-                      MUA HÀNG
-                    </Button>
-                  )}
-                </Tooltip>
-                <Link
-                  to={`/customized/${idProduct}/add`}
-                  style={{ textDecoration: "none", color: "#fff" }}
-                >
+              <div className="md:flex button">
+                <div className="flex items-center mt-2">
                   <button
-                    type="button"
-                    aria-disabled="false"
-                    className="btn10 btn-solid-primary10 btn-p hq"
+                    aria-label="Decrease"
+                    className="btn3 btn-solid-primary3 btn-c"
+                    onClick={decreaseQuantity}
                   >
-                    TỰ THIẾT KẾ
+                    -
                   </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="include">
-            <input type="radio" id="chi-tiet" name="tab" defaultChecked />
-            <label
-              htmlFor="chi-tiet"
-              className="detail tab-link"
-              data-tab="tab-1"
-            >
-              Thông tin chi tiết
-              <hr className="w-52" />
-            </label>
-            <input type="radio" id="binh-luan" name="tab" />
-            <label
-              htmlFor="binh-luan"
-              className="comment tab-link"
-              data-tab="tab-2"
-            >
-              <div className="flex">
-                <span>Bình Luận</span>
-                <div className="text-sm">
-                  {commentProductDetail
-                    ? ` (${commentProductDetail.length})`
-                    : " (0)"}
+                  <input
+                    className="btn4 btn-solid-primary4 w-[150px] h-[10px] btn-d mn"
+                    aria-live="assertive"
+                    aria-valuenow={1}
+                    value={quantity}
+                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                  />
+                  <button
+                    aria-label="Increase"
+                    className="btn5 btn-solid-primary5 btn-e"
+                    onClick={increaseQuantity}
+                  >
+                    +
+                  </button>
+                </div>
+                <div className=" pl-0 flex md:mt-0 items-center mt-2">
+                  <Tooltip
+                    title={
+                      id && activeColor && activeSize
+                        ? ""
+                        : "Bạn phải đăng nhập, chọn màu và kích thước"
+                    }
+                  >
+                    {resultAdd.isLoading ? (
+                      <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                    ) : (
+                      <Button
+                        aria-disabled={!id || !activeColor || !activeSize}
+                        className=" ml-2 md:w-200px bg-blue-600 bg-red-600 border-0 text-white  text-m font-bold py-1  "
+                        onClick={() => {
+                          if (id && activeColor && activeSize) {
+                            handleAddToCart();
+                          }
+                        }}
+                      >
+                        MUA HÀNG
+                      </Button>
+                    )}
+                  </Tooltip>
+                  <Link
+                    to={`/customized/${idProduct}/add`}
+                    style={{ textDecoration: "none", color: "#fff" }}
+                  >
+                    <button
+                      type="button"
+                      aria-disabled="false"
+                      className=" ml-2 md:w-200px bg-blue-600 text-white  border rounded-md text-m font-bold py-1  px-2 "
+                    >
+                      TỰ THIẾT KẾ
+                    </button>
+                  </Link>
                 </div>
               </div>
-              <hr className="w-50" />
-            </label>
-            <div id="chi-tiet-content">
-              <br />
-              <div className="max-w-4xl mx-auto px-4">
-                <div
-                  className="text-gray-500 dark:text-gray-400"
-                  dangerouslySetInnerHTML={{ __html: listOneData?.description }}
-                ></div>
+              <hr className="my-4" />
+              <div className="md:flex space-x-2 ">
+                <div className=" flex items-center pl-2 "><img className="w-5" src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/6c502a2641457578b0d5f5153b53dd5d.png" /><div className="mnQqkL">7 ngày miễn phí trả hàng</div></div>
+                <div className=" flex items-center "><img className="w-5" src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/511aca04cc3ba9234ab0e4fcf20768a2.png" /><div className="mnQqkL">Hàng chính hãng 100%</div></div>
+                <div className=" flex items-center "><img className="w-5" src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/511aca04cc3ba9234ab0e4fcf20768a2.png" /><div className="mnQqkL">Giao hàng cực nhanh</div></div>
+              </div>
+
+            </div>
+          </div>
+          <div className="bg-white">
+            <div className="flex justify-center ">
+              <div className="flex space-x-4  ">
+                <div>
+                  <input
+                    type="radio"
+                    id="chi-tiet"
+                    name="tab"
+                    checked={activeTab === 'tab-1'}
+                    onChange={() => handleTabClick('tab-1')}
+                  />
+                  <label
+                    htmlFor="chi-tiet"
+                    className={` md:text-xl font-bold tab-link ${activeTab === 'tab-1' ? 'active-tab' : ''}`}
+                    data-tab="tab-1"
+                  >
+                    Thông tin chi tiết
+                    <hr />
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="binh-luan"
+                    name="tab"
+                    checked={activeTab === 'tab-2'}
+                    onChange={() => handleTabClick('tab-2')}
+                  />
+                  <label
+                    htmlFor="binh-luan"
+                    className={`md:text-xl font-bold tab-link ${activeTab === 'tab-2' ? 'active-tab' : ''}`}
+                    data-tab="tab-2"
+                  >
+                    Đánh giá
+                    <hr />
+                  </label>
+                </div>
               </div>
             </div>
-            <div id="binh-luan-content">
-              <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
-                <div>
-                  <div className="font-semibold text-2xl mb-4">
-                    Đánh giá sản phẩm
-                  </div>
-                  <div className="flex">
-                    <div className=" max-w-4xl mx-auto px-4">
-                      <span style={{ fontSize: "1.5em" }}>
-                        {roundedAverageRating}{" "}
-                      </span>
-                      trên 5
-                      {commentProductDetail
-                        ? ` (${commentProductDetail.length} đánh giá)`
-                        : " (0)"}
-                      <div className=" mx-auto flex">
-                        {Array.from(
-                          { length: Math.round(roundedAverageRating) },
-                          (_, index) => (
-                            <AiFillStar key={index} style={{ color: "orange" }} />
-                          )
-                        )}
+            <div className="md:px-4">
+              {activeTab === 'tab-1' ? (
+                <div className="text-gray-500 dark:text-gray-400 py-3 px-5" dangerouslySetInnerHTML={{ __html: listOneData?.description }}>
+                  {/* Content for Thông tin chi tiết */}
+                </div>
+              ) : (
+                <section className=" bg-white md:py-3 md:px-5  antialiased">
+                  <div>
+                    <div className="font-semibold pl-2 md:text-2xl mb-4">
+                      Đánh giá sản phẩm
+                    </div>
+                    <div className="md:flex ">
+                      <div className="mr-2 pl-2 ">
+                        <span style={{ fontSize: "1.5em" }}>
+                          {roundedAverageRating}{" "}
+                        </span>
+                        trên 5
+                        {commentProductDetail
+                          ? ` (${commentProductDetail?.length} đánh giá)`
+                          : " (0)"}
+                        <div className="mx-auto flex">
+                          {Array.from(
+                            { length: Math.round(roundedAverageRating) },
+                            (_, index) => (
+                              <AiFillStar key={index} style={{ color: "orange" }} />
+                            )
+                          )}
+                        </div>
+                      </div>
+                      <div className="rating-buttons space-x-2  md:mt-0 mt-3">
+                        {["Tất cả", 1, 2, 3, 4, 5].map((rating) => (
+                          <button
+                            key={rating}
+                            onClick={() => handleRatingFilter(rating)}
+                            className={`rating-button py-1 px-2 ${selectedRating === rating ? "selected" : ""
+                              }`}
+                          >
+                            {rating === "Tất cả" ? "Tất cả" : `${rating} sao`}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                    <div className="rating-buttons">
-                      {["Tất cả", 1, 2, 3, 4, 5].map((rating) => (
-                        <button
-                          key={rating}
-                          onClick={() => handleRatingFilter(rating)}
-                          className={`rating-button ${selectedRating === rating ? "selected" : ""
-                            }`}
-                        >
-                          {rating === "Tất cả" ? "Tất cả" : `${rating} sao`}
-                        </button>
-                      ))}
-                    </div>
                   </div>
-                </div>
-                <hr className="w-72" />
-                <div className="max-w-4xl mx-auto px-4">
-                  {filteredComments?.length > 0 ? (
-                    filteredComments.map((comment: any) => (
-                      <article
-                        key={comment._id}
-                        className="p-6 text-base bg-white rounded-lg dark:bg-gray-900"
-                      >
-                        <footer className="flex items-center footer1">
-                          <div className="evaluate">
-                            <div className="inline-flex items-center mr-3 text-xs text-gray-900 dark:text-white font-semibold">
-                              {comment && comment.userId.avatar ? (
-                                <img
-                                  src={comment?.userId.avatar?.url}
-                                  className="mr-2 w-8 h-8 rounded-full avatar"
-                                />
-                              ) : (
-                                <img
-                                  src="https://static.thenounproject.com/png/363640-200.png"
-                                  className="mr-2 w-8 h-8 rounded-full avatar"
-                                />
+                  <hr className="" />
+                  <div className=" md:py-3 md:px-5">
+                    {filteredComments && filteredComments?.length > 0 ? (
+                      filteredComments.map((comment: any) => (
+                        <article
+                          key={comment._id}
+                          className="p-6 text-base rounded-lg "
+                        >
+                          <footer className="flex items-center footer1">
+                            <div className="evaluate">
+                              <div className="inline-flex items-center mr-3 text-xs text-gray-900 dark:text-white font-semibold">
+                                {comment && comment.userId.avatar ? (
+                                  <img
+                                    src={comment?.userId.avatar?.url}
+                                    className="mr-2 w-8 h-8 rounded-full avatar"
+                                  />
+                                ) : (
+                                  <img
+                                    src="https://static.thenounproject.com/png/363640-200.png"
+                                    className="mr-2 w-8 h-8 rounded-full avatar"
+                                  />
+                                )}
+                                <a className="cm-name">
+                                  {comment.userId?.first_name}{" "}
+                                  {comment.userId?.last_name}
+                                </a>
+                                <a className="cm-name1 font-normal ">
+                                  {formatTimeAgo(comment.createdAt)}
+                                </a>
+                                {comment && comment.userId._id == id ? (
+                                  <div className="button-wrapper float-right">
+                                    <Button
+                                      className="text-red-500 "
+                                      size="small"
+                                      onClick={() =>
+                                        deleteComment({
+                                          id: comment._id,
+                                          userId: comment.userId._id,
+                                        })
+                                      }
+                                    >
+                                      {isRemoveLoading ? (
+                                        <AiOutlineLoading3Quarters className="animate-spin" />
+                                      ) : (
+                                        <FaTrashCan style={{ width: "10px" }} />
+                                      )}
+                                    </Button>
+                                  </div>
+                                ) : null}
+                              </div>
+                            </div>
+                          </footer>
+
+                          <div className="stars ml-16 flex">
+                            <div className="star-rating" >
+                              {comment.rating && Array.from(
+                                { length: comment.rating },
+                                (_, index) => (
+                                  <AiFillStar
+                                    key={index}
+                                    style={{ color: "orange" }}
+                                  />
+                                )
                               )}
-                              <a className="cm-name">
-                                {comment.userId?.first_name}{" "}
-                                {comment.userId?.last_name}
-                              </a>
-                              <a className="cm-name1 font-normal ">
-                                {formatTimeAgo(comment.createdAt)}
-                              </a>
-                              {comment && comment.userId._id == id ? (
-                                <div className="button-wrapper float-right">
-                                  <Button
-                                    className="text-red-500 "
-                                    size="small"
-                                    onClick={() =>
-                                      deleteComment({
-                                        id: comment._id,
-                                        userId: comment.userId._id,
-                                      })
-                                    }
-                                  >
-                                    {isRemoveLoading ? (
-                                      <AiOutlineLoading3Quarters className="animate-spin" />
-                                    ) : (
-                                      <FaTrashCan style={{ width: "10px" }} />
-                                    )}
-                                  </Button>
-                                </div>
-                              ) : null}
                             </div>
                           </div>
-                        </footer>
 
-                        <div className="stars ml-16 flex">
-                          <div className="star-rating">
-                            {Array.from(
-                              { length: comment.rating },
-                              (_, index) => (
-                                <AiFillStar
-                                  key={index}
-                                  style={{ color: "orange" }}
-                                />
-                              )
-                            )}
+                          <p className="ml-16 text-gray-500 dark:text-gray-400">
+                            {comment.description}
+                          </p>
+                          <div className="product-small">
+                            {comment &&
+                              comment?.image.map((img: any) => {
+                                return (
+                                  <img
+                                    key={img?.publicId}
+                                    className="image5"
+                                    src={img?.url}
+                                  />
+                                );
+                              })}
                           </div>
-                        </div>
-
-                        <p className="ml-16 text-gray-500 dark:text-gray-400">
-                          {comment.description}
-                        </p>
-                        <div className="product-small">
-                          {comment &&
-                            comment?.image.map((img: any) => {
-                              return (
-                                <img
-                                  key={img?.publicId}
-                                  className="image5"
-                                  src={img?.url}
-                                />
-                              );
-                            })}
-                        </div>
-                      </article>
-                    ))
-                  ) : (
-                    <p className="sp2 ">Không có binh luận</p>
-                  )}
-                </div>
-              </section>
+                        </article>
+                      ))
+                    ) : (
+                      <p className="sp2 ">Không có binh luận</p>
+                    )}
+                  </div>
+                </section>
+              )}
             </div>
           </div>
-          {/*  */}
+
+
           <div className="main-col2s sock_to_days">
-            <div className="containers">
+            <div className="">
               <div className="product-sokss">
                 <div className="new_titles text-center">
                   <h2 className="mt-6 kg zd">

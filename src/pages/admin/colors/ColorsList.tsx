@@ -55,7 +55,7 @@ const Colorslist = () => {
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
-            width: 90, 
+            width: 90,
         },
         {
             title: 'Tên màu',

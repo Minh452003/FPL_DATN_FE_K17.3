@@ -3,7 +3,6 @@ import {
     useRemoveCustomProductMutation,
 } from '@/api/CustomizedProductAPI';
 import { useGetUsersQuery } from '@/api/authApi';
-import { useGetBrandQuery } from '@/api/brandApi';
 import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
@@ -15,6 +14,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
+import { useGetBrandQuery } from '@/api/brandApi';
 const CustomProductslist = () => {
     const { data: listcustomProducts, isloading: isLoadingCustomProducts } =
         useGetCustomProductsQuery<any>();

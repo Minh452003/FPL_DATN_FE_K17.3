@@ -36,7 +36,6 @@ const OrdersManager = () => {
 
     useEffect(() => {
         if (isLoadingFetching) return;
-
         if (currentStatus === 'all') {
             setFilteredOrders(orders);
         } else {
