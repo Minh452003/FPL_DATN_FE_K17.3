@@ -39,6 +39,7 @@ import MaterialList from "./pages/admin/material/MaterialList";
 import ColorsUpdate from "./pages/admin/colors/ColorsUpdate";
 import SizesUpdate from "./pages/admin/sizes/SizesUpdate";
 import UserPage from "./pages/view/User/User";
+import ContactPage from "./pages/view/contact/ContactPage";
 import CategoryTrash from "./pages/admin/category/CategoryTrash";
 import CouponsList from "./pages/admin/coupons/CouponsList";
 import CouponsAdd from "./pages/admin/coupons/CouponsAdd";
@@ -51,7 +52,6 @@ import ProductTrash from "./pages/admin/products/ProductTrash";
 import OrdersDetail from "./pages/admin/orders/OrdersDetail";
 import CustomizedProductAdd from "./pages/view/CustomizedProduct/CustomizedProductAdd";
 import ListCustomizedProduct from "./pages/view/CustomizedProduct/ListCustomizedProduct";
-import Custom_ProductDetail from "./pages/view/CustomizedProduct/CustomProductDetail";
 import CustomProductslist from "./pages/admin/customProducts/CustomProductslist";
 import CustomProductsTrash from "./pages/admin/customProducts/CustomProductsTrash";
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
@@ -75,7 +75,6 @@ import NotFoundPage from "./pages/notfound/NotFoundPage";
 import ContactList from "./pages/admin/contact/ContactList";
 import ChangePassword from "./pages/view/User/Account/Changepassword";
 import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
-import ContactPage from "./pages/view/contact/ContactPage";
 
 
 

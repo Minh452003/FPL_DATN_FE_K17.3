@@ -1,5 +1,4 @@
 import { useGetUserByIdQuery, useUpdateUserByAdminMutation } from "@/api/authApi";
-
 import { Button, Form, Input, Skeleton} from "antd";
 import { useEffect} from "react";
 import { useNavigate, useParams } from "react-router-dom";
