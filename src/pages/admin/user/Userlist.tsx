@@ -12,7 +12,7 @@ const Userlist = () => {
     const [searchText, setSearchText] = useState('');
     const [sortedInfo, setSortedInfo] = useState({} as any);
 
-    const handleChange = (pagination: any, filters: any, sorter: any) => {
+    const handleChange = ( sorter: any) => {
         setSortedInfo(sorter);
     };
     const data1 = isloading
@@ -38,7 +38,7 @@ const Userlist = () => {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: any) => <a>{index}</a>,
+            render: (index: string| number) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
@@ -48,7 +48,7 @@ const Userlist = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text: any) => <a>{text}</a>,
+            render: (text: string) => <a>{text}</a>,
         },
         {
             title: 'Ảnh ',
@@ -62,19 +62,19 @@ const Userlist = () => {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
-            render: (email: any) => <a>{email}</a>,
+            render: (email: string) => <a>{email}</a>,
         },
         {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
-            render: (phone: any) => <a>{phone}</a>,
+            render: (phone: string) => <a>{phone}</a>,
         },
         {
             title: 'Địa chỉ',
             dataIndex: 'address',
             key: 'address',
-            render: (address: any) => <a>{address}</a>,
+            render: (address: string) => <a>{address}</a>,
         },
         {
             title: 'Chức vụ',

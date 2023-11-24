@@ -5,7 +5,6 @@ import { useSignUpMutation } from '@/api/authApi';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Swal from 'sweetalert2';
 import { IUser } from '@/interfaces/auth';
-
 import { useState } from 'react';
 
 
@@ -74,7 +73,7 @@ const Signup = () => {
                         <div
                             className="w-full h-auto bg-gray-400 hidden lg:block lg:w-6/12 bg-cover rounded-l-lg"
                             style={{
-                                backgroundImage: 'url("https://www.quadernionline.it/wp-content/uploads/2021/07/siti-web-parma.jpg")',
+                                backgroundImage: 'url("https://res.cloudinary.com/dkvghcobl/image/upload/v1700830393/kxezpbocqy36krmssbg8.png")',
                                 height: '400px',
                                 objectFit: 'cover'
                             }}

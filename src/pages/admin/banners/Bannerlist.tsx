@@ -54,19 +54,12 @@ const Bannerlist = () => {
   }
   
 
-    const data1 = banners?.map((banner: any, index: number) => {
-        return {
-            key: banner._id,
-            STT: index + 1,
-            image: <img width={200} src={banner.image?.url} alt="" />,
-        };
-    });
     const columns = [
         {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: any) => <a>{index}</a>,
+            render: (index: number | string) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,

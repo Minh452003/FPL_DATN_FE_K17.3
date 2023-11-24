@@ -89,7 +89,7 @@ const Login = () => {
                     <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                         <div
                             className="w-full h-auto bg-gray-400 hidden lg:block lg:w-6/12 bg-cover rounded-l-lg"
-                            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1513128034602-7814ccaddd4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8&w=1000&q=80")' }}
+                            style={{ backgroundImage: 'url("https://res.cloudinary.com/dkvghcobl/image/upload/v1700830330/vood2p0tjs5posddk3cu.png")' }}
                         ></div>
                         <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                             <h3 className="pt-4 text-3xl text-center">ĐĂNG NHẬP 🔑</h3>
