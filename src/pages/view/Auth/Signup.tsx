@@ -1,17 +1,21 @@
 import { BiLogoFacebookCircle } from 'react-icons/bi';
-import { AiOutlineGoogle, AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineGoogle, AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '@/api/authApi';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Swal from 'sweetalert2';
 import { IUser } from '@/interfaces/auth';
 
+import { useState } from 'react';
+
+
 
 const Signup = () => {
     const [signUp, resultAdd] = useSignUpMutation()
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>();
-
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleGoogleLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/google";
@@ -20,7 +24,22 @@ const Signup = () => {
         window.location.href = "http://localhost:8088/api/auth/facebook";
     }
 
-    const onSubmit: SubmitHandler<IUser> = async data => {
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    }
+
+    const passwordInputType = showPassword ? 'text' : 'password';
+    const confirmPasswordInputType = showConfirmPassword ? 'text' : 'password';
+    const eyeIcon = showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />;
+    const confirmEyeIcon = showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />;
+
+
+    const onSubmit: SubmitHandler<IUser> = async (data: IUser) => {
         const response: any = await signUp(data)
         if (response.error) {
             Swal.fire({
@@ -29,7 +48,7 @@ const Signup = () => {
                 title: response.error.data.message,
                 showConfirmButton: true,
                 timer: 1500
-            });
+            })
         } else {
             Swal.fire({
                 position: 'center',
@@ -54,7 +73,11 @@ const Signup = () => {
                     <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                         <div
                             className="w-full h-auto bg-gray-400 hidden lg:block lg:w-6/12 bg-cover rounded-l-lg"
-                            style={{ backgroundImage: 'url("https://www.quadernionline.it/wp-content/uploads/2021/07/siti-web-parma.jpg")' }}
+                            style={{
+                                backgroundImage: 'url("https://www.quadernionline.it/wp-content/uploads/2021/07/siti-web-parma.jpg")',
+                                height: '400px',
+                                objectFit: 'cover'
+                            }}
                         ></div>
                         <div className="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
                             <h3 className="pt-4 text-3xl text-center">ĐĂNG KÝ TÀI KHOẢN! 👤</h3>
@@ -69,10 +92,10 @@ const Signup = () => {
                                             id="firstName"
                                             type="text"
                                             placeholder="Tên"
-                                            {...register('first_name', { required: true, pattern: /^[^\s]+$/ })}
+                                            {...register('first_name', { required: true, pattern: /^[^\s].*[^\s]$/ })}
                                         />
                                         {errors.first_name && errors.first_name.type === 'pattern' && (
-                                            <p className="text-red-500 text-xs italic">Tên không được chứa dấu cách.</p>
+                                            <p className="text-red-500 text-xs italic">Không được chứa dấu cách.</p>
                                         )}
                                     </div>
                                     <div className="md:ml-2">
@@ -84,10 +107,10 @@ const Signup = () => {
                                             id="lastName"
                                             type="text"
                                             placeholder="Họ"
-                                            {...register('last_name', { required: true, pattern: /^[^\s]+$/ })}
+                                            {...register('last_name', { required: true, pattern: /^[^\s].*[^\s]$/ })}
                                         />
                                         {errors.last_name && errors.last_name.type === 'pattern' && (
-                                            <p className="text-red-500 text-xs italic">Họ không được chứa dấu cách.</p>
+                                            <p className="text-red-500 text-xs italic">Không được chứa dấu cách.</p>
                                         )}
                                     </div>
                                 </div>
@@ -100,41 +123,59 @@ const Signup = () => {
                                         id="email"
                                         type="email"
                                         placeholder="Email"
-                                        {...register('email', { required: true, pattern: /^[^\s]+$/ })}
+                                        {...register('email', { required: true, pattern: /^[^\s].*[^\s]$/ })}
                                     />
                                     {errors.email && errors.email.type === 'pattern' && (
-                                        <p className="text-red-500 text-xs italic">Email không được chứa dấu cách.</p>
+                                        <p className="text-red-500 text-xs italic">Không được chứa dấu cách.</p>
                                     )}
                                 </div>
                                 <div className="mb-4 md:flex md:justify-between">
                                     <div className="mb-4 md:mr-2 md:mb-0">
-                                        <label className="block mb-2 text-sm font-bold text-gray-700" >
+                                        <label className="block mb-2 text-sm font-bold text-gray-700">
                                             Mật khẩu
                                         </label>
-                                        <input
-                                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                            id="password"
-                                            type="password"
-                                            placeholder="******************"
-                                            {...register('password', { required: true, pattern: /^[^\s]+$/ })}
-                                        />
+                                        <div className="relative">
+                                            <input
+                                                className={`w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline ${errors.password ? 'border-red-500' : 'border'}`}
+                                                id="password"
+                                                type={passwordInputType}
+                                                placeholder="******************"
+                                                {...register('password', { required: true, pattern: /^[^\s].*[^\s]$/ })}
+                                            />
+                                            <button
+                                                type="button"
+                                                className="absolute top-0 right-0 mt-2 mr-2"
+                                                onClick={togglePasswordVisibility}
+                                            >
+                                                {eyeIcon}
+                                            </button>
+                                        </div>
                                         {errors.password && errors.password.type === 'pattern' && (
-                                            <p className="text-red-500 text-xs italic">Mật khẩu không được chứa dấu cách.</p>
+                                            <p className="text-red-500 text-xs italic">Không được chứa dấu cách.</p>
                                         )}
                                     </div>
                                     <div className="md:ml-2">
                                         <label className="block mb-2 text-sm font-bold text-gray-700">
                                             Xác nhận mật khẩu
                                         </label>
-                                        <input
-                                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                            id="confirmPassword"
-                                            type="password"
-                                            placeholder="******************"
-                                            {...register('confirmPassword', { required: true, pattern: /^[^\s]+$/ })}
-                                        />
+                                        <div className="relative">
+                                            <input
+                                                className={`w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                                                id="confirmPassword"
+                                                type={confirmPasswordInputType}
+                                                placeholder="******************"
+                                                {...register('confirmPassword', { required: true, pattern: /^[^\s].*[^\s]$/ })}
+                                            />
+                                            <button
+                                                type="button"
+                                                className="absolute top-0 right-0 mt-2 mr-2"
+                                                onClick={toggleConfirmPasswordVisibility}
+                                            >
+                                                {confirmEyeIcon}
+                                            </button>
+                                        </div>
                                         {errors.confirmPassword && errors.confirmPassword.type === 'pattern' && (
-                                            <p className="text-red-500 text-xs italic">Xác nhận mật khẩu không được chứa dấu cách.</p>
+                                            <p className="text-red-500 text-xs italic">Không được chứa dấu cách.</p>
                                         )}
                                     </div>
                                 </div>

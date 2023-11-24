@@ -1,10 +1,12 @@
 import { BiLogoFacebookCircle } from 'react-icons/bi';
-import { AiOutlineGoogle, AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineGoogle, AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '@/api/authApi';
 import Swal from 'sweetalert2';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IUser } from '@/interfaces/auth';
+import { useState } from 'react';
+
 
 
 const Login = () => {
@@ -12,6 +14,7 @@ const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>()
     
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleGoogleLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/google";
@@ -19,7 +22,15 @@ const Login = () => {
     const handleFacebookLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/facebook";
     }
-    const onSubmit: SubmitHandler<IUser> = async data => {
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+    const passwordInputType = showPassword ? 'text' : 'password';
+    const eyeIcon = showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />;
+
+    const onSubmit: SubmitHandler<IUser> = async (data: IUser) => {
+
         const response: any = await signIn(data)
         if (response.error) {
             if (response.error.data.message == 'Mật khẩu không đúng') {
@@ -49,6 +60,7 @@ const Login = () => {
                 navigate(`/signup/verifyOTP/${response?.error?.data?.otpResponse?.data?.userId}`);
             }
         } else {
+    
             const accessToken: IUser = response.data.accessToken;
             const expirationTime = new Date().getTime() + 2 * 60 * 60 * 1000; // 2 giờ
             const dataToStore = { accessToken, expirationTime };
@@ -91,7 +103,7 @@ const Login = () => {
                                         id="email"
                                         type="email"
                                         placeholder="Email"
-                                        {...register('email', { required: true, pattern: /^[^\s]+$/ })}
+                                        {...register('email', { required: true, pattern: /^[^\s].*[^\s]$/ })}
                                     />
                                     {errors.email && errors.email.type === 'pattern' && (
                                         <p className="text-red-500 text-xs italic">Email không được chứa dấu cách.</p>
@@ -102,13 +114,22 @@ const Login = () => {
                                     <label className="block mb-2 text-sm font-bold text-gray-700" >
                                         Mật khẩu
                                     </label>
-                                    <input
-                                        className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                        id="password"
-                                        type="password"
-                                        placeholder="******************"
-                                        {...register('password', { required: true, pattern: /^[^\s]+$/ })}
-                                    />
+                                    <div className="relative">
+                                        <input
+                                            className={`w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline ${errors.password ? 'border-red-500' : 'border'}`}
+                                            id="password"
+                                            type={passwordInputType}
+                                            placeholder="******************"
+                                            {...register('password', { required: true, pattern: /^[^\s].*[^\s]$/ })}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute top-0 right-0 mt-2 mr-2"
+                                            onClick={togglePasswordVisibility}
+                                        >
+                                            {eyeIcon}
+                                        </button>
+                                    </div>
                                     {errors.password && errors.password.type === 'pattern' && (
                                         <p className="text-red-500 text-xs italic">Mật khẩu không được chứa dấu cách.</p>
                                     )}
