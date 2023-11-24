@@ -1,22 +1,25 @@
 import { useForgotPasswordMutation } from "@/api/authApi";
+import { IUser } from "@/interfaces/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 
-type TypeInputs = {
-  email?: string
-}
 
 const ForgotPassword = () => {
   const [forgotPassword, resultAdd] = useForgotPasswordMutation();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<TypeInputs>();
+  const { register, handleSubmit } = useForm<IUser>();
 
 
-  const onSubmit: SubmitHandler<TypeInputs> = async data => {
+  const onSubmit: SubmitHandler<IUser> = async data => {
+    console.log(data);
+
     const response: any = await forgotPassword(data)
+
+    console.log(response);
+
     if (response.error) {
       Swal.fire({
         position: 'center',
@@ -36,6 +39,7 @@ const ForgotPassword = () => {
       navigate(`/forgotpassword/verifyOTPForgotPassword/${response?.data.otpResponse.data.userId}`);
     }
   }
+
   return (
     <div className=" mx-auto bg-[url('https://i.pinimg.com/564x/2f/cc/65/2fcc65edb0dfe0d942a3a1e77cce9718.jpg')] bg-cover h-screen">
       <div className="flex justify-center items-center h-screen">

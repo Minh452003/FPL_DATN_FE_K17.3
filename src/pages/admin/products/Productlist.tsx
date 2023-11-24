@@ -54,8 +54,7 @@ const Productlist = () => {
     });
     const data1 = filteredProducts?.map((product: any, index: number) => {
         return {
-            key: product._id,
-            STT: index + 1,
+            key: product._id,STT: index + 1,
             name: product.product_name,
             price: product.product_price,
             category: product.categoryId,
@@ -131,8 +130,7 @@ const Productlist = () => {
             ellipsis: true,
         },
         {
-            title: 'Đã bán',
-            dataIndex: 'quantity',
+            title: 'Đã bán',dataIndex: 'quantity',
             key: 'quantity',
             width: 100, // Điều chỉnh chiều rộng của cột "STT"
 
@@ -207,8 +205,7 @@ const Productlist = () => {
                 <select
                     id="small"
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    onChange={(e) => setSelectedCategory(e.target.value)}className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     //...
                 >
                     <option value="all">Tất cả danh mục</option>
@@ -256,8 +253,7 @@ const Productlist = () => {
                 <Input
                     className="m-2"
                     prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-                    placeholder="Tìm kiếm tên sản phẩm..."
-                    onChange={(e) => setSearchText(e.target.value)}
+                    placeholder="Tìm kiếm tên sản phẩm..."onChange={(e) => setSearchText(e.target.value)}
                     style={{ marginBottom: '16px', borderRadius: '5px', width: '400px' }}
                 />
                 <Button className="ml-auto">

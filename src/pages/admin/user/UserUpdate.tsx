@@ -1,9 +1,10 @@
 import { useGetUserByIdQuery, useUpdateUserByAdminMutation } from "@/api/authApi";
-import { Button, Form, Input, Skeleton} from "antd";
-import { useEffect} from "react";
+import { Button, Form, Input, Skeleton } from "antd";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Select } from "antd";
+
 type FieldType = {
   first_name?: string;
   last_name?: string;
@@ -17,10 +18,10 @@ type FieldType = {
 const UserUpdate = () => {
   const { id } = useParams<{ id: any }>();
   const { Option } = Select;
-  const { data: user, isLoading, isError }: any = useGetUserByIdQuery(id||"");
-
+  const { data: user, isLoading, isError } = useGetUserByIdQuery(id || "");
   const [updateUser, resultUpdate] = useUpdateUserByAdminMutation<any>();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (user) {
@@ -28,7 +29,6 @@ const UserUpdate = () => {
     }
   }, [user]);
 
-  const [form] = Form.useForm();
 
   const setFields = () => {
     form.setFieldsValue({
@@ -45,22 +45,21 @@ const UserUpdate = () => {
 
   const onFinish = (values: any) => {
     try {
-        updateUser(values).then(() => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Cập nhật hồ sơ thành công!",
-            showConfirmButton: true,
-            timer: 1500,
-          });
-          navigate('/admin/users');
+      updateUser(values).then(() => {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Cập nhật hồ sơ thành công!",
+          showConfirmButton: true,
+          timer: 1500,
         });
-      }
- catch (error) {}
-  };
+        navigate('/admin/users');
+      });
+    }
+    catch (error) {
+      console.log(error);
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    }
   };
 
 
@@ -85,7 +84,6 @@ const UserUpdate = () => {
             style={{ maxWidth: 1000 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
             <Form.Item label="" name="_id" style={{ display: "none" }}>

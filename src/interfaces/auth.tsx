@@ -4,24 +4,30 @@ export interface IUser {
     first_name?: string
     last_name?: string
     password?: string
-    confirmpassword?: string
+    confirmPassword?: string
     email?: string
     phone?: string
     address?: string,
-    avatar?: IImage | any
+    avatar?: IImage,
     role?: string,
     googeId?: string
     facebookId?: string
     authType?: string
-    createdAt?: any
+    createdAt?: string,
     passwordResetToken?: string
     passwordResetExpires?: string
     passwordChangeAt?: string
     userId?: string;
     otp?: string
-    newPassword?: string
-    confirmPassword?: string
+    accessToken?: string | number
 }
+
+export interface IResetPassword {
+    userId?: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+  
 export interface IImage {
     url: string;
     publicId: string;

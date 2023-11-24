@@ -88,7 +88,7 @@ const Userlist = () => {
                     <div style={{ width: '150px' }}>
                         <Button className="mr-1 text-blue-500">
                             <Link to={`/admin/users/edit/${_id}`}>
-                                <FaWrench />
+                            <FaWrench />
                             </Link>
                         </Button>
                     </div>
@@ -129,3 +129,5 @@ const Userlist = () => {
 };
 
 export default Userlist;
+
+                    

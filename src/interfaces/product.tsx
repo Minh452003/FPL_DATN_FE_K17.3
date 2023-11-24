@@ -1,4 +1,4 @@
-export interface IProduct{
+export interface IProduct {
     id?: string
     product_name?: string;
     product_price?: number;
@@ -13,6 +13,6 @@ export interface IProduct{
     brandId?: string;
     materialId?: string;
     _id?: string;
-    createdAt?: any;
+    createdAt?: Date;
     updatedAt?: string;
 }
