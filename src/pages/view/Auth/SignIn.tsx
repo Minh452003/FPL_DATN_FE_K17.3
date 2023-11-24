@@ -8,7 +8,7 @@ import { IUser } from '@/interfaces/auth';
 
 
 const Login = () => {
-    const [signIn] = useSignInMutation();
+    const [signIn, resultAdd] = useSignInMutation();
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>()
     
     const navigate = useNavigate();

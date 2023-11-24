@@ -54,8 +54,7 @@ const Productlist = () => {
     });
     const data1 = filteredProducts?.map((product: any, index: number) => {
         return {
-            key: product._id,
-            STT: index + 1,
+            key: product._id,STT: index + 1,
             name: product.product_name,
             price: product.product_price,
             category: product.categoryId,
@@ -131,8 +130,7 @@ const Productlist = () => {
             ellipsis: true,
         },
         {
-            title: 'Đã bán',
-            dataIndex: 'quantity',
+            title: 'Đã bán',dataIndex: 'quantity',
             key: 'quantity',
             width: 100, // Điều chỉnh chiều rộng của cột "STT"
 
@@ -168,93 +166,7 @@ const Productlist = () => {
             dataIndex: 'brand',
             key: 'brand',
             width: 100, // Điều chỉnh chiều rộng của cột "STT"
-      render: (record: string) => {
-        const brandname = brand?.find((bra: any) => bra._id === record);
-        return brandname?.brand_name;
-      },
-    },
-    {
-      title: "Chức năng",
-      width: 200, // Điều chỉnh chiều rộng của cột "STT"
-      render: ({ key: _id }: any) => (
-        <div style={{ width: "150px" }}>
-          <Button
-            className="mr-1 text-red-500"
-            onClick={() => deleteProduct(_id)}
-          >
-            {isRemoveLoading ? (
-              <AiOutlineLoading3Quarters className="animate-spin" />
-            ) : (
-              <FaTrashCan />
-            )}
-          </Button>
-          <Button className="mr-1 text-blue-500">
-            <Link to={`/admin/products/edit/${_id}`}>
-              <FaWrench />
-            </Link>
-          </Button>
-          <Button className="mr-1 text-blue-500">
-            <Link to={`childProduct/${_id}`}>
-              <FaProductHunt />
-            </Link>
-          </Button>
-        </div>
-      ),
-    },
-  ];
-  return (
-    <div className="table-container">
-      <h3 className="font-semibold">Danh sách sản phẩm </h3>
-      <div className="mt-2 p-2 flex ">
-        <select
-          id="small"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        //...
-        >
-          <option value="all">Tất cả danh mục</option>
-          {categories?.category?.docs.map((category: any) => (
-            <option key={category._id} value={category._id}>
-              {category.category_name}
-            </option>
-          ))}
-        </select>
-        <select
-          id="small"
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        //...
-        >
-          <option value="all">Tất cả thương hiệu</option>
-          {brands?.brand?.map((brand: any) => (
-            <option key={brand._id} value={brand._id}>
-              {brand.brand_name}
-            </option>
-          ))}
-        </select>
-        <select
-          id="small"
-          value={selectedPriceFilter}
-          onChange={(e) => setSelectedPriceFilter(e.target.value)}
-          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        //...
-        >
-          <option value="all">Tất cả giá</option>
-          <option value="100000-1000000">100.000-1.000.000</option>
-          <option value="1000000-5000000">1.000.0000-5.000.000</option>
-          <option value="5000000-10000000">5.000.000-10.000.000</option>
-          <option value="10000000+">10.000.000+</option>
-        </select>
-      </div>
-      <div className="flex overflow-x-auto drop-shadow-xl rounded-lg items-center">
-        <Button className="m-2 text-3xl text-blue-500">
-          <Link to={"add"}>
-            <FaCirclePlus style={{ fontSize: "24", display: "block" }} />
-          </Link>
-        </Button>
-=======
+
             render: (record: string) => {
                 const brandname = brand?.find((bra: any) => bra._id === record);
                 return brandname?.brand_name;
@@ -293,8 +205,7 @@ const Productlist = () => {
                 <select
                     id="small"
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    onChange={(e) => setSelectedCategory(e.target.value)}className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     //...
                 >
                     <option value="all">Tất cả danh mục</option>
@@ -342,8 +253,7 @@ const Productlist = () => {
                 <Input
                     className="m-2"
                     prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-                    placeholder="Tìm kiếm tên sản phẩm..."
-                    onChange={(e) => setSearchText(e.target.value)}
+                    placeholder="Tìm kiếm tên sản phẩm..."onChange={(e) => setSearchText(e.target.value)}
                     style={{ marginBottom: '16px', borderRadius: '5px', width: '400px' }}
                 />
                 <Button className="ml-auto">
@@ -353,16 +263,6 @@ const Productlist = () => {
                 </Button>
             </div>
 
-      <Table
-        onChange={handleChange}
-        dataSource={data1}
-        columns={columns}
-        pagination={{ defaultPageSize: 6 }}
-        rowKey="key"
-        scroll={{ x: 800 }}
-      />
-    </div>
-  );
             <Table
                 onChange={handleChange}
                 dataSource={data1}
@@ -372,7 +272,6 @@ const Productlist = () => {
             />
         </div>
     );
-
 };
 
 export default Productlist;

@@ -6,118 +6,11 @@ import { Link } from 'react-router-dom';
 import { FaWrench } from 'react-icons/fa';
 
 const Userlist = () => {
-  const { data, isloading }: any = useGetUsersQuery();
-  const user = data?.data;
     const { data, isloading }: any = useGetUsersQuery();
     const user = data?.data;
 
-
     const [searchText, setSearchText] = useState('');
     const [sortedInfo, setSortedInfo] = useState({} as any);
-
-
-  const userlist = isloading ? [] : user?.map((user: any, index: number) => {
-    return {
-      key: user._id,
-      STT: index + 1,
-      name: user.first_name,
-      email: user.email,
-      phone: user.phone ? user.phone : "Chưa có số điện thoại",
-      address: user.address ? user.address : "Chưa có địa chỉ",
-      image: user.avatar
-        ? <Image
-          width={80}
-          height={80}
-          src={user.avatar.url}
-        />
-        : "Chưa có ảnh",
-      role: user.role
-    }
-  });
-  const columns = [
-    {
-      title: 'STT',
-      dataIndex: 'STT',
-      key: 'STT',
-      render: (index: string | number) => <a>{index}</a>,
-
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text: string | number) => <a>{text}</a>,
-    },
-    {
-      title: 'Ảnh ',
-      dataIndex: 'image',
-      key: 'image',
-      reder: (record: any ) => {
-        return (
-          <Image
-            width={80}
-            height={80}
-            src={record.url}
-          />
-        )
-      }
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      render: (email: string | number) => <a>{email}</a>,
-    },
-    {
-      title: 'Số điện thoại',
-      dataIndex: 'phone',
-      key: 'phone',
-      render: (phone: string | number) => <a>{phone}</a>,
-    },
-    {
-      title: 'Địa chỉ',
-      dataIndex: 'address',
-      key: 'address',
-      render: (address: string | number) => <a>{address}</a>,
-    },
-    {
-      title: 'Chức vụ',
-      dataIndex: 'role',
-      key: 'role',
-    },
-    {
-      title: 'Chức năng',
-      render: ({ key: _id } : any) => {
-        return (
-          <div style={{ width: '150px' }}>
-            <Button className='mr-1 text-blue-500'>
-              <Link to={`/admin/users/edit/${_id}`}><FaWrench /></Link>
-            </Button>
-          </div>
-        )
-      }
-    },
-  ];
-
-  // Xử lý filter..............
-  const filteredData = userlist?.filter((item: any) => {
-    return item.email.toLowerCase().includes(searchText.toLowerCase());
-  });
-  return (
-    <div className="container">
-      <h3 className="font-semibold">Danh sách khách hàng </h3>
-      <Input
-        prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-        placeholder="Tìm kiếm email người dùng..."
-        onChange={(e) => setSearchText(e.target.value)}
-        style={{ marginBottom: '16px', borderRadius: "5px", width: "400px" }}
-
-      />
-      <br />
-      <Table dataSource={filteredData} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
-    </div>
-  );
-}
 
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
@@ -195,7 +88,7 @@ const Userlist = () => {
                     <div style={{ width: '150px' }}>
                         <Button className="mr-1 text-blue-500">
                             <Link to={`/admin/users/edit/${_id}`}>
-                                <FaWrench />
+                            <FaWrench />
                             </Link>
                         </Button>
                     </div>
@@ -234,4 +127,7 @@ const Userlist = () => {
         </div>
     );
 };
+
 export default Userlist;
+
+                    
