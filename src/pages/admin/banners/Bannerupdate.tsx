@@ -1,14 +1,12 @@
-
 import { useGetBannerByIdQuery, useUpdateBannerMutation } from '@/api/bannerApi';
-
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
+import { IImage } from '@/interfaces/auth';
 import { Button, Form, Input, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
 
 
 
@@ -19,7 +17,7 @@ const Bannerupdate = () => {
     const [updateImage, resultImage] = useUpdateImageMutation();
     const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
-    const [imageUrl, setImageUrl] = useState<any>({});
+    const [imageUrl, setImageUrl] = useState<{ url: string, publicId: string }>({ url: '', publicId: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -33,8 +31,8 @@ const Bannerupdate = () => {
     const setFields = () => {
         form.setFieldsValue({
             _id: banners.banner?._id,
-
-            image: banners.banner?.image ? banners.banner.image : {}, // Nếu có ảnh, thêm vào mảng để hiển thị
+            // Nếu có ảnh, thêm vào mảng để hiển thị
+            image: banners.banner?.image ? banners.banner.image : {},
         });
     };
 
@@ -66,21 +64,18 @@ const Bannerupdate = () => {
             }
 
         } catch (error) {
-
+            console.log(error);
         }
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
 
     const props: UploadProps = {
         name: 'image',
         fileList: fileList, // Sử dụng state fileList
-        customRequest: async ({ file }: any) => {
+        customRequest: async ({ file }) => {
+            console.log(file);
         },
         onChange(info: any) {
-
             if (info.file) {
                 const formData = new FormData();
                 formData.append('images', info.file.originFileObj);
@@ -90,7 +85,7 @@ const Bannerupdate = () => {
                             const response: any = await updateImage(({
                                 publicId: banners.banner?.image?.publicId,
                                 files: formData,
-                            } as any));
+                            }));
                             if (response.data && response.data.publicId) {
                                 info.file.status = 'done'
                                 setFileList(info.fileList);
@@ -112,10 +107,10 @@ const Bannerupdate = () => {
                         const removedFile = info.file;
                         const updatedFileList = fileList.filter(item => item.uid !== removedFile.uid);
                         setFileList(updatedFileList);
-                        setImageUrl({});
+                        setImageUrl({} as IImage);
                     })();
                 } if (info.fileList.length > 1) {
-                    const updatedFileList: any = [info.fileList[0]];
+                    const updatedFileList = [info.fileList[0]];
                     setFileList(updatedFileList);
                 }
             }
@@ -141,7 +136,6 @@ const Bannerupdate = () => {
                         style={{ maxWidth: 1000, }}
                         initialValues={{ remember: true }}
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
                         <Form.Item label="" name="_id" style={{ display: 'none' }}>

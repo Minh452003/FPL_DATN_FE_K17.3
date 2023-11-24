@@ -1,4 +1,4 @@
-import { IUser } from '@/interfaces/auth';
+import { IResetPassword, IUser } from '@/interfaces/auth';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const userApi = createApi({
@@ -47,7 +47,7 @@ const userApi = createApi({
         }),
         // Đặt lại mật khẩu
         resetPassword: builder.mutation({
-            query: (user: IUser) => ({
+            query: (user: IResetPassword) => ({
                 url: `/resetpassword`,
                 method: 'PATCH',
                 body: user

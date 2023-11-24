@@ -6,14 +6,11 @@ import Swal from 'sweetalert2';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IUser } from '@/interfaces/auth';
 
-type TypeInputs = {
-    email?: string,
-    password?: string
-}
 
 const Login = () => {
-    const [signIn, resultAdd] = useSignInMutation();
-    const { register, handleSubmit, formState: { errors } } = useForm<TypeInputs>()
+    const [signIn] = useSignInMutation();
+    const { register, handleSubmit, formState: { errors } } = useForm<IUser>()
+    
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
@@ -22,7 +19,7 @@ const Login = () => {
     const handleFacebookLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/facebook";
     }
-    const onSubmit: SubmitHandler<TypeInputs> = async (data: IUser) => {
+    const onSubmit: SubmitHandler<IUser> = async data => {
         const response: any = await signIn(data)
         if (response.error) {
             if (response.error.data.message == 'Mật khẩu không đúng') {
@@ -52,7 +49,7 @@ const Login = () => {
                 navigate(`/signup/verifyOTP/${response?.error?.data?.otpResponse?.data?.userId}`);
             }
         } else {
-            const accessToken: any = response.data.accessToken;
+            const accessToken: IUser = response.data.accessToken;
             const expirationTime = new Date().getTime() + 2 * 60 * 60 * 1000; // 2 giờ
             const dataToStore = { accessToken, expirationTime };
             localStorage.setItem('accessToken', JSON.stringify(dataToStore));
@@ -145,11 +142,10 @@ const Login = () => {
                                 </div>
                                 <div className="mb-4 flex justify-between">
                                     <button
-                                        type='button'
                                         className="flex-1 px-3 py-2 text-sm leading-tight text-white bg-red-500 border rounded shadow appearance-none focus:outline-none focus:shadow-outline flex items-center justify-center"
                                         onClick={handleGoogleLogin}
                                     >
-                                        <AiOutlineGoogle style={{ marginRight: '4px' }} />    Google
+                                        <AiOutlineGoogle style={{ marginRight: '4px' }} />Google
                                     </button>
                                     <div className="mx-2"></div>
                                     <button

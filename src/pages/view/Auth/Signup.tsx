@@ -4,19 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '@/api/authApi';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Swal from 'sweetalert2';
+import { IUser } from '@/interfaces/auth';
 
-
-type TypeInputs = {
-    first_name?: string,
-    last_name?: string,
-    email?: string,
-    password?: string,
-    confirmPassword?: string
-}
 
 const Signup = () => {
-    const [signUp, resultAdd] = useSignUpMutation()
-    const { register, handleSubmit, formState: { errors } } = useForm<TypeInputs>();
+    const [signUp] = useSignUpMutation()
+    const { register, handleSubmit, formState: { errors } } = useForm<IUser>();
+
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
@@ -25,8 +19,8 @@ const Signup = () => {
     const handleFacebookLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/facebook";
     }
-    const onSubmit: SubmitHandler<TypeInputs> = async data => {
 
+    const onSubmit: SubmitHandler<IUser> = async data => {
         const response: any = await signUp(data)
         if (response.error) {
             Swal.fire({
@@ -167,8 +161,9 @@ const Signup = () => {
                                 <div className="mb-4 flex justify-between">
                                     <button
                                         className="flex-1 px-3 py-2 text-sm leading-tight text-white bg-red-500 border rounded shadow appearance-none focus:outline-none focus:shadow-outline flex items-center justify-center"
+                                        onClick={handleGoogleLogin}
                                     >
-                                        <AiOutlineGoogle style={{ marginRight: '4px' }} onClick={handleGoogleLogin} />    Google
+                                        <AiOutlineGoogle style={{ marginRight: '4px' }} />Google
                                     </button>
                                     <div className="mx-2"></div>
                                     <button

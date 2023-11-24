@@ -14,12 +14,12 @@ type TypeInputs = {
 
 const VerifyOTP = () => {
     const navigate = useNavigate();
-    const { userId }: any = useParams();
+    const { userId } = useParams();
     const { register, handleSubmit } = useForm<TypeInputs>();
     const [verifyOTPRequest] = useVerifyOTPMutation();
 
 
-    const onSubmit: SubmitHandler<TypeInputs> = async (data: any) => {
+    const onSubmit: SubmitHandler<TypeInputs> = async data => {
 
         const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
         const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;

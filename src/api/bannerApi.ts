@@ -26,7 +26,7 @@ const bannerApi = createApi({
         }),
       
         getBannerById: builder.query<IBanner, number | string>({
-            query: (id: any) => `/banners/${id}`,
+            query: (id) => `/banners/${id}`,
             providesTags: ['Banner']
         }),
         
