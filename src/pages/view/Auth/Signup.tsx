@@ -1,5 +1,5 @@
 import { BiLogoFacebookCircle } from 'react-icons/bi';
-import { AiOutlineGoogle } from 'react-icons/ai';
+import { AiOutlineGoogle, AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '@/api/authApi';
 import { useForm, SubmitHandler } from 'react-hook-form'
@@ -10,6 +10,7 @@ import { IUser } from '@/interfaces/auth';
 const Signup = () => {
     const [signUp] = useSignUpMutation()
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>();
+
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
@@ -138,12 +139,17 @@ const Signup = () => {
                                     </div>
                                 </div>
                                 <div className="mb-6 text-center">
-                                    <button
-                                        className="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-600 focus:outline-none focus:shadow-outline"
-                                        type="submit"
-                                    >
-                                        ĐĂNG KÝ NGAY
-                                    </button>
+                                    {resultAdd.isLoading ? (
+                                        <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                    ) : (
+                                        <button
+                                            className="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-600 focus:outline-none focus:shadow-outline"
+                                            type="submit"
+                                        >
+                                            ĐĂNG KÝ NGAY
+                                        </button>
+                                    )}
+
                                 </div>
                                 <div className="mb-6 text-center relative">
                                     <div className="flex justify-between items-center">

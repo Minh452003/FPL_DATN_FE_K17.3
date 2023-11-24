@@ -175,7 +175,7 @@ const LayoutAdmin = () => {
           <li>
             <Link to={'contact'} className="a">
               <span className="icon"><IoMdContact /></span>
-              <span className="text1">Liên hệ</span>
+              <span className="text1">Góp ý</span>
             </Link>
           </li>
           <li>

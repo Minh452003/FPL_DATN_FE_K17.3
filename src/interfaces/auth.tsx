@@ -27,6 +27,7 @@ export interface IResetPassword {
     newPassword: string;
     confirmPassword: string;
 }
+  
 export interface IImage {
     url: string;
     publicId: string;

@@ -1,5 +1,5 @@
 import { BiLogoFacebookCircle } from 'react-icons/bi';
-import { AiOutlineGoogle } from 'react-icons/ai';
+import { AiOutlineGoogle, AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '@/api/authApi';
 import Swal from 'sweetalert2';
@@ -10,6 +10,7 @@ import { IUser } from '@/interfaces/auth';
 const Login = () => {
     const [signIn] = useSignInMutation();
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>()
+    
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
@@ -114,12 +115,17 @@ const Login = () => {
                                 </div>
 
                                 <div className="mb-6 text-center">
-                                    <button
-                                        className="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-600 focus:outline-none focus:shadow-outline"
-                                        type="submit"
-                                    >
-                                        Đăng nhập ngay!
-                                    </button>
+                                    {resultAdd.isLoading ? (
+                                        <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                    ) : (
+                                        <button
+                                            className="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-600 focus:outline-none focus:shadow-outline"
+                                            type="submit"
+                                        >
+                                            Đăng nhập ngay!
+                                        </button>
+                                    )}
+
                                 </div>
                                 <div className="text-left">
                                     <Link to="/forgotpassword" className="inline-block text-sm text-blue-700 align-baseline no-underline">

@@ -5,6 +5,7 @@
 
     div.ml-16 {
         margin-left: 20px;
+        
     }
 
     h3.iklm {
@@ -15,11 +16,11 @@
         margin-left: -28px;
     }
 
-    .product-image {
+    /* .product-image {
         padding-left: 189px;
         width: 496px;
         height: 239px;
-    }
+    } */
 
     .img1 {
         padding-left: 189px;
@@ -51,9 +52,7 @@
 
     .product-text {
         background: #f3f3f3;
-        width: 287px;
-        height: 200px;
-        margin-left: -215px;
+        
         border-radius: 16px;
     }
 
@@ -252,10 +251,7 @@
         padding-right: 12px;
     }
 
-    .include {
-        margin-left: 160px;
-        margin-top: 379px;
-    }
+   
 
     #chi-tiet,
     #binh-luan,
@@ -287,8 +283,8 @@
 
     #binh-luan:checked~#binh-luan-content {
         display: block;
-        margin-left: -800px;
-        width: 750px;
+    
+       
     }
 
     #chi-tiet-content {
@@ -313,9 +309,7 @@
         cursor: pointer;
     }
 
-    .detail {
-        margin-left: 102px;
-        margin-right: -113px;
+    .detail {    
         font-size: 22px;
     }
 
@@ -368,9 +362,9 @@
     }
 
     h3.iklm {
-        margin-left: -61px;
+     
         margin-right: 92px;
-        font-size: 10px;
+        font-size: 20px;
         margin-top: -15px;
         width: 350px;
     }
@@ -395,12 +389,6 @@
         margin-left: -469px;
         width: 171px;
         height: 130px;
-    }
-
-    .product-image {
-        margin-left: -53px;
-        width: 43%;
-        height: 106px;
     }
 
     .img1 {
@@ -436,9 +424,7 @@
         font-size: 10px;
     }
 
-    .ef {
-        margin-top: 2px;
-    }
+  
 
     div.lp {
         padding-left: 5px !important;
@@ -506,7 +492,7 @@
     }
 
     button.btn-c {
-        margin-left: -152px;
+       
         width: 27%;
         height: 34px;
     }
@@ -522,13 +508,13 @@
     }
 
     button.btn-f {
-        width: 60%;
+     
         height: 34px;
         font-size: 8px;
     }
 
     button.btn-p {
-        width: 60%;
+      
         height: 34px;
         font-size: 8px;
     }
@@ -640,7 +626,7 @@
     }
 
     .include {
-        margin-left: 100px;
+        
         margin-top: 379px;
     }
 
