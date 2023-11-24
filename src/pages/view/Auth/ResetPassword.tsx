@@ -1,20 +1,17 @@
 import { useResetPasswordMutation } from "@/api/authApi";
+import { IResetPassword } from "@/interfaces/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
-type TypeInputs = {
-    newPassword?: string;
-    confirmPassword?: string;
-}
 
 const ResetPassword = () => {
     const [resetPassword] = useResetPasswordMutation();
     const navigate = useNavigate();
-    const { register, handleSubmit } = useForm<TypeInputs>();
+    const { register, handleSubmit } = useForm<IResetPassword>();
     const { userId } = useParams();
 
-    const onSubmit: SubmitHandler<TypeInputs> = async (data: TypeInputs | any) => {
+    const onSubmit: SubmitHandler<IResetPassword> = async (data: IResetPassword) => {
         const response: any = await resetPassword({
             userId,
             newPassword: data.newPassword,

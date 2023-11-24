@@ -30,18 +30,15 @@ const ProfileUpdate = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
 
-  const { data: user, isLoading, isError }: any = useGetUserByIdQuery(id);
-  const { data: city }: any = useGetCityQuery();
-
-
-  console.log(user);
+  const { data: user, isLoading, isError } : any = useGetUserByIdQuery(id);
+  const { data: city } = useGetCityQuery();
 
   const [updateUser, resultUpdate] = useUpdateUserMutation();
   const [updateImage] = useUpdateImageMutation();
   const [deleteImage] = useDeleteImageMutation();
-  const [wardCode, setwardCode] = useState<any>("");
+  const [setwardCode] = useState<any>("");
   const [addAvailable] = useGetAvailableMutation();
-  const [available, setAvailable] = useState<any>([]);
+  const [setAvailable] = useState<any>([]);
   const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
   const [imageUrl, setImageUrl] = useState<any>({});
   const navigate = useNavigate();
@@ -60,7 +57,6 @@ const ProfileUpdate = () => {
             street,
             ward,
             district,
-
           },
         });
       }
@@ -79,20 +75,20 @@ const ProfileUpdate = () => {
       avatar: user?.avatar ? user?.avatar : {},
     });
   };
-  const handleCityChange = async (value: any, option: any) => {
+  const handleCityChange = async (option: any) => {
     const id = Number(option.key); // Lấy id từ option.key
     addDistrict({ province_id: id }).then((response: any) => {
       setDistrict(response.data.data);
     });
   };
-  const handleDistrictChange = async (value: any, option: any) => {
+  const handleDistrictChange = async (option: any) => {
     const id = Number(option.key); // Lấy id từ option.key
     addWard({ district_id: id }).then((response: any) => {
       setWard(response.data.data);
     });
   };
-  const handleAvailableChange = async (value: any, option: any) => {
-    const id = option.key; // Lấy id từ option.key
+  const handleAvailableChange = async (option: any) => {
+    const id = Number(option.key); // Lấy id từ option.key
     setwardCode(id);
     addAvailable({
       shop_id: 4537750,
@@ -125,14 +121,9 @@ const ProfileUpdate = () => {
   };
 
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
   const props: UploadProps = {
     name: "category_image",
     fileList: fileList, // Sử dụng state fileList
-    customRequest: async ({ file }: any) => { },
     onChange(info: any) {
       if (info.file) {
         const formData = new FormData();
@@ -143,7 +134,7 @@ const ProfileUpdate = () => {
               const response: any = await updateImage({
                 publicId: user?.publicId,
                 files: formData,
-              } as any);
+              });
               if (response.data && response.data.publicId) {
                 info.file.status = "done";
                 setFileList(info.fileList);
@@ -171,7 +162,7 @@ const ProfileUpdate = () => {
           })();
         }
         if (info.fileList.length > 1) {
-          const updatedFileList: any = [info.fileList[0]];
+          const updatedFileList = [info.fileList[0]];
           setFileList(updatedFileList);
         }
       }
@@ -199,7 +190,7 @@ const ProfileUpdate = () => {
             style={{ maxWidth: 1000 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+
             autoComplete="off"
           >
             <Form.Item label="" name="_id" style={{ display: "none" }}>
@@ -398,14 +389,5 @@ const ProfileUpdate = () => {
 };
 
 export default ProfileUpdate;
-function addShipping(data: {
-  service_id: string;
-  from_district_id: number;
-  to_district_id: any;
-}) {
-  throw new Error("Function not implemented.");
-}
 
-function setShip(data: any) {
-  throw new Error("Function not implemented.");
-}
+

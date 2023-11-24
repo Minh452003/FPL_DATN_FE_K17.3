@@ -1,10 +1,5 @@
 .container-xl {
-  /* background-image: url('https://images.pexels.com/photos/5942742/pexels-photo-5942742.jpeg?cs=srgb&dl=pexels-karolina-grabowska-5942742.jpg&fm=jpg'); */
   background-size: cover;
-  /* Adjust as needed to control the image size */
   background-repeat: no-repeat;
   background-attachment: fixed;
-  /* Adjust the shadow values as needed */
-  /* Optional: If you want a fixed background */
-  /* Add any other background-related CSS properties here, like background-position */
 }

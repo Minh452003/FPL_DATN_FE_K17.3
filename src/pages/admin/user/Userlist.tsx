@@ -7,11 +7,13 @@ import { FaWrench } from 'react-icons/fa';
 
 const Userlist = () => {
   const { data, isloading }: any = useGetUsersQuery();
+
+
   const user = data?.data;
 
   const [searchText, setSearchText] = useState('');
 
-  const data1 = isloading ? [] : user?.map((user: any, index: number) => {
+  const userlist = isloading ? [] : user?.map((user: any, index: number) => {
     return {
       key: user._id,
       STT: index + 1,
@@ -34,20 +36,20 @@ const Userlist = () => {
       title: 'STT',
       dataIndex: 'STT',
       key: 'STT',
-      render: (index: any) => <a>{index}</a>,
+      render: (index: string | number) => <a>{index}</a>,
 
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text: any) => <a>{text}</a>,
+      render: (text: string | number) => <a>{text}</a>,
     },
     {
       title: 'Ảnh ',
       dataIndex: 'image',
       key: 'image',
-      reder: (record: any) => {
+      reder: (record: any ) => {
         return (
           <Image
             width={80}
@@ -61,19 +63,19 @@ const Userlist = () => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      render: (email: any) => <a>{email}</a>,
+      render: (email: string | number) => <a>{email}</a>,
     },
     {
       title: 'Số điện thoại',
       dataIndex: 'phone',
       key: 'phone',
-      render: (phone: any) => <a>{phone}</a>,
+      render: (phone: string | number) => <a>{phone}</a>,
     },
     {
       title: 'Địa chỉ',
       dataIndex: 'address',
       key: 'address',
-      render: (address: any) => <a>{address}</a>,
+      render: (address: string | number) => <a>{address}</a>,
     },
     {
       title: 'Chức vụ',
@@ -82,7 +84,7 @@ const Userlist = () => {
     },
     {
       title: 'Chức năng',
-      render: ({ key: _id }: any) => {
+      render: ({ key: _id } : any) => {
         return (
           <div style={{ width: '150px' }}>
             <Button className='mr-1 text-blue-500'>
@@ -95,7 +97,7 @@ const Userlist = () => {
   ];
 
   // Xử lý filter..............
-  const filteredData = data1?.filter((item: any) => {
+  const filteredData = userlist?.filter((item: any) => {
     return item.email.toLowerCase().includes(searchText.toLowerCase());
   });
   return (

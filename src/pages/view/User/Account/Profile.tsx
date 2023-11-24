@@ -1,19 +1,16 @@
 import { useGetUserByIdQuery } from "@/api/authApi";
-
 import { getDecodedAccessToken } from "@/decoder";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Profile.css"
+
+
 const Profile = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
-  const navigate = useNavigate();
   const { data: user } = useGetUserByIdQuery(id);
   if (!user) {
     return <div>Loading...</div>;
   }
-
-
   return (
     <div className="container-xl ">
       <div className="header ">

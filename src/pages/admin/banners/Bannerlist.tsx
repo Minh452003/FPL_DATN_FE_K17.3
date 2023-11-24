@@ -1,4 +1,3 @@
-
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Table, Button } from 'antd';
 import { FaCirclePlus, FaTrashCan, FaWrench } from "react-icons/fa6";
@@ -7,24 +6,24 @@ import Swal from 'sweetalert2';
 import { useGetBannerQuery, useRemoveBannerMutation } from '@/api/bannerApi';
 import { useState } from 'react';
 
+
 const Bannerlist = () => {
-  const { data } = useGetBannerQuery<any>();
+  const { data }: any = useGetBannerQuery();
   const banners = data?.banner?.docs;
   const [removeBanner, { isLoading: isRemoveLoading }] = useRemoveBannerMutation()
   const [sortedInfo, setSortedInfo] = useState({} as any);
-  const handleChange = (pagination: any, filters: any, sorter: any) => {
+  const handleChange = (sorter: any) => {
     setSortedInfo(sorter);
   };
 
-
-  const data1 = banners?.map((banner: any, index: number) => {
+  const bannerlist = banners?.map((banner: any, index: number) => {
     return {
       key: banner._id,
       STT: index + 1,
-      image: <img width={200} src={banner.image?.url} alt="" />,
+      image: <img width={200} src={banner.image?.url} alt="404 Image" />,
     }
   });
-  const deleteBanner = (id: any) => {
+  const deleteBanner = (id: string) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
       text: "Khi xóa bạn không thể khôi phục lại!",
@@ -58,7 +57,7 @@ const Bannerlist = () => {
       title: "STT",
       dataIndex: "STT",
       key: "STT",
-      render: (index: any) => <a>{index}</a>,
+      render: (index: number | string) => <a>{index}</a>,
       sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
       sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
       ellipsis: true,
@@ -72,7 +71,7 @@ const Bannerlist = () => {
 
     {
       title: 'Chức năng',
-      render: ({ key: _id }: { key: number | string }) => (
+      render: ({ key: _id }: { key: string }) => (
         <div style={{ width: '150px' }}>
           <Button className='mr-1 text-red-500' onClick={() => deleteBanner(_id)}>
             {isRemoveLoading ? (
@@ -96,7 +95,7 @@ const Bannerlist = () => {
       <Button className='text-blue-500'>
         <Link to="/admin/banners/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
       </Button>
-      <Table onChange={handleChange} dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
+      <Table onChange={handleChange} dataSource={bannerlist} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
 
     </div>
 

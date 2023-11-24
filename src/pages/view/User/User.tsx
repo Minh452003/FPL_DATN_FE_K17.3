@@ -8,6 +8,7 @@ import { BiSolidCoupon } from "react-icons/bi";
 import { Skeleton } from "antd";
 import { AiOutlineSync } from "react-icons/ai";
 
+
 const UserPage = () => {
   const decodedToken: any = getDecodedAccessToken();
   const iduser = decodedToken ? decodedToken.id : null;
@@ -87,7 +88,6 @@ const UserPage = () => {
                       Đổi mật khẩu
                     </Link>
                   </li>
-                  {/* Thêm các liên kết điều hướng khác ở đây */}
                 </ul>
               </details>
             </li>

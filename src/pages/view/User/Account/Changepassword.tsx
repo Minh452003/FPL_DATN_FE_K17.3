@@ -1,4 +1,5 @@
 import { useChangePasswordMutation } from "@/api/authApi";
+import { IUser } from "@/interfaces/auth";
 import { Button, Form, Input } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,7 @@ import Swal from "sweetalert2";
 const ChangePassword = () => {
   const [updatePassword, resultUpdate] = useChangePasswordMutation();
   const navigate = useNavigate();
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: IUser) => {
     const response: any = await updatePassword(values);
     if (response.error) {
       Swal.fire({
@@ -31,8 +32,6 @@ const ChangePassword = () => {
     }
   };
 
-  const onFinishFailed = () => { };
-
   type FieldType = {
     currentPassword?: string;
     newPassword?: string;
@@ -53,7 +52,6 @@ const ChangePassword = () => {
         style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item<FieldType>

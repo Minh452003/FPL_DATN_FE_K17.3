@@ -14,16 +14,15 @@ type TypeInputs = {
 
 const VerifyOTPForgotPassword = () => {
     const navigate = useNavigate();
-    const { userId }: any = useParams();
+    const { userId }  = useParams();
     const { register, handleSubmit } = useForm<TypeInputs>();
     const [verifyOTPResetPassword] = useVerifyOTPResetPasswordMutation();
 
-
-    const onSubmit: SubmitHandler<TypeInputs> = async (data: any) => {
+    const onSubmit: SubmitHandler<TypeInputs> = async data => {
         const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
         const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
 
-        const response: any = await verifyOTPResetPassword({ userId, otp: combinedOTP })
+        const response: any = await verifyOTPResetPassword({ userId, otp : combinedOTP })
         if (response.error) {
             Swal.fire({
                 position: "center",
