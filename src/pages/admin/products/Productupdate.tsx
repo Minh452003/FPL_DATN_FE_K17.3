@@ -74,7 +74,7 @@ const Productupdate = () => {
                 navigate('/admin/products');
             });
         } catch (error) {
-
+        
         }
     };
 
