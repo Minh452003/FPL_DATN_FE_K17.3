@@ -106,7 +106,7 @@ const Order = () => {
             );
         }
     }
-    if (!orders || orders.length === 0) {
+    if (!orders || orders?.length === 0) {
         return (
             <div>
                 <div
@@ -149,9 +149,8 @@ const Order = () => {
                         <li>
                             <a
                                 href=""
-                                className={`no-underline text-gray-700 ${
-                                    currentStatus === 'all' ? 'font-medium' : ''
-                                }`}
+                                className={`no-underline text-gray-700 ${currentStatus === 'all' ? 'font-medium' : ''
+                                    }`}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleFilterOrders('all');
@@ -166,9 +165,8 @@ const Order = () => {
                                 <li key={statusItem._id}>
                                     <a
                                         href=""
-                                        className={`no-underline text-gray-700 ${
-                                            currentStatus === statusItem._id ? 'font-medium' : ''
-                                        }`}
+                                        className={`no-underline text-gray-700 ${currentStatus === statusItem._id ? 'font-medium' : ''
+                                            }`}
                                         onClick={(e) => {
                                             e.preventDefault();
                                             handleFilterOrders(statusItem._id);
@@ -254,8 +252,8 @@ const Order = () => {
                                             ''
                                         )}
                                         {order &&
-                                        order.hasReviewed === false &&
-                                        order.status._id == '64e8a93da63d2db5e8d8562d' ? (
+                                            order.hasReviewed === false &&
+                                            order.status._id == '64e8a93da63d2db5e8d8562d' ? (
                                             <Comment order={order} />
                                         ) : (
                                             ''

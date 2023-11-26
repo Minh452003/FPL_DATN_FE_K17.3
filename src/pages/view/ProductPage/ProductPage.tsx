@@ -62,7 +62,7 @@ const ProductPage = () => {
     }
   }
 
-  const filteredProducts = products.filter((product: Product) => {
+  const filteredProducts = products?.filter((product: Product) => {
     const categoryMatches =
       selectedCategory === "all" || product.categoryId === selectedCategory;
     const brandMatches =
@@ -99,7 +99,7 @@ const ProductPage = () => {
   //  Phân trang........................
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedProducts = filteredProducts.slice(startIndex, endIndex);
+  const displayedProducts = filteredProducts?.slice(startIndex, endIndex);
   const handlePageChange = (event: any, page: number) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
@@ -172,8 +172,8 @@ const ProductPage = () => {
 
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
 
-          {displayedProducts.length > 0 ? (
-            displayedProducts.map((product: Product, index: string) => (
+          {displayedProducts?.length > 0 ? (
+            displayedProducts?.map((product: Product, index: string) => (
 
               <div
                 key={product._id}
@@ -254,7 +254,26 @@ const ProductPage = () => {
               </div>
             ))
           ) : (
-            <p>..................không có sản phẩm nào.</p>
+            <div>
+              <div
+                className="grid  px-4 bg-white place-content-center  pb-3"
+                style={{ height: "500px" }}
+              >
+                <div className="">
+                  <img
+                    className="w-[400px]"
+                    src="https://bizweb.dktcdn.net/100/333/755/themes/688335/assets/empty_cart.png?1647314197820"
+                  />
+
+                  <h1
+                    className="mt-6  font-bold tracking-tight text-gray-900 "
+                    style={{ fontSize: "17px" }}
+                  >
+                    Không có sản phẩm nào, vui lòng đợi cập nhật sản phẩm !
+                  </h1>
+                </div>
+              </div>
+            </div>
           )}
         </div>
 
@@ -262,7 +281,7 @@ const ProductPage = () => {
 
       <div className="flex w-full py-4 justify-center ">
         <Pagination
-          count={Math.ceil(filteredProducts.length / itemsPerPage)}
+          count={Math.ceil(filteredProducts?.length / itemsPerPage)}
           page={currentPage}
           onChange={handlePageChange}
           variant="outlined"
