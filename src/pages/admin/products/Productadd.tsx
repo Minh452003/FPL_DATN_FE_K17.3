@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { IProduct } from '@/interfaces/product';
 
 type FieldType = {
     product_name?: string;
@@ -34,11 +35,13 @@ const Productadd = () => {
     const navigate = useNavigate();
     const [productDescription, setProductDescription] = useState('');
 
-    const onFinish = (values: any) => {
+    
+    const onFinish = (values: IProduct) => {
         values.description = productDescription
         if (imageUrl.length > 0) {
             values.image = imageUrl;
-            addProduct(values).then(() => {
+            addProduct(values).then((response) => {
+                console.log('Data after adding product:', response); 
                 Swal.fire({
                     position: 'center',
                     icon: 'success',

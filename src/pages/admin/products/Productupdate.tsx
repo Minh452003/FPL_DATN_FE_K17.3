@@ -10,6 +10,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { IProduct } from '@/interfaces/product';
+import { ICategory } from '@/interfaces/category';
+import { IBrand } from '@/interfaces/brand';
+import { IMaterials } from '@/interfaces/materials';
 type FieldType = {
     product_name?: string;
     product_price?: string;
@@ -57,7 +61,7 @@ const Productupdate = () => {
     };
 
 
-    const onFinish = (values: any) => {
+    const onFinish = (values: IProduct) => {
         values.description = productDescription
         console.log(productDescription);
 
@@ -238,7 +242,7 @@ const Productupdate = () => {
                             style={{ marginLeft: '20px' }}
                         >
                             <Select >
-                                {categories && categories?.category.docs?.map((category: any) => {
+                                {categories && categories?.category.docs?.map((category: ICategory) => {
                                     return <Select.Option key={category?._id} value={category._id}>{category.category_name}</Select.Option>
                                 })}
                             </Select>
@@ -253,7 +257,7 @@ const Productupdate = () => {
                             style={{ marginLeft: '20px' }}
                         >
                             <Select >
-                                {brands && brands?.brand?.map((brand: any) => {
+                                {brands && brands?.brand?.map((brand: IBrand) => {
                                     return <Select.Option key={brand?._id} value={brand._id}>{brand.brand_name}</Select.Option>
                                 })}
                             </Select>
@@ -268,7 +272,7 @@ const Productupdate = () => {
                             style={{ marginLeft: '20px' }}
                         >
                             <Select >
-                                {materials && materials?.material?.map((mate: any) => {
+                                {materials && materials?.material?.map((mate: IMaterials) => {
                                     return <Select.Option key={mate?._id} value={mate._id}>{mate.material_name}</Select.Option>
                                 })}
                             </Select>

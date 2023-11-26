@@ -10,6 +10,30 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useState } from 'react';
 import './productAdmin.css';
 import { IoSearchSharp } from 'react-icons/io5';
+import { ICategory } from '@/interfaces/category';
+import { IBrand } from '@/interfaces/brand';
+
+
+interface IProduct {
+    _id: string;
+    product_name: string;
+    product_price: number;
+    sold_quantity: number;
+    description: string;
+    image: { url: string }[];
+    categoryId: string;
+    brandId: string;
+    materialId: string;
+    createdAt: string;
+    updatedAt: string;
+    deleted: boolean;
+    views: number;
+    key: string; 
+    
+}
+
+
+
 const Productlist = () => {
     const { data, isLoading: isLoadingProducts } = useGetProductsQuery();
     const { data: categories } = useGetCategoryQuery<any>();
@@ -28,7 +52,7 @@ const Productlist = () => {
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
     };
-    const filteredProducts = products.filter((product: any) => {
+    const filteredProducts = products.filter((product: IProduct) => {
         const categoryMatches =
             selectedCategory === 'all' || product.categoryId === selectedCategory;
         const brandMatches = selectedBrand === 'all' || product.brandId === selectedBrand;
@@ -46,13 +70,11 @@ const Productlist = () => {
                 product.product_price <= 10000000) ||
             (selectedPriceFilter === '10000000+' && product.product_price >= 10000000);
 
-        const searchMatches =
-            searchText === '' ||
-            product.product_name.toLowerCase().includes(searchText.toLowerCase());
+        const searchMatches =searchText === '' || product.product_name.toLowerCase().includes(searchText.toLowerCase());
 
         return categoryMatches && brandMatches && priceFilterMatches && searchMatches;
-    });
-    const data1 = filteredProducts?.map((product: any, index: number) => {
+    });    
+    const data1 = filteredProducts?.map((product: IProduct, index: number) => {
         return {
             key: product._id,STT: index + 1,
             name: product.product_name,
@@ -64,11 +86,12 @@ const Productlist = () => {
             image: <img width={50} src={product.image[0]?.url} alt="" />,
         };
     });
+    
     const formatCurrency = (number: number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
 
-    const deleteProduct = (id: any) => {
+    const deleteProduct = (id: number) => {
         Swal.fire({
             title: 'Bạn chắc chứ?',
             text: 'Khi có thể vào thùng rác để khôi phục lại!',
@@ -97,7 +120,7 @@ const Productlist = () => {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: any) => <a>{index}</a>,
+            render: (index: number ) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
@@ -107,24 +130,24 @@ const Productlist = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text: any) => <a>{text}</a>,
+            render: (text: string) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.name.localeCompare(b.name), // Sắp xếp theo Name
             sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
             ellipsis: true,
-            width: 200, // Điều chỉnh chiều rộng của cột "STT"
+            width: 200, // Điều chỉnh chiều rộng của cột "name"
         },
         {
             title: 'Ảnh',
             dataIndex: 'image',
             key: 'image',
-            width: 100, // Điều chỉnh chiều rộng của cột "STT"
+            width: 100, // Điều chỉnh chiều rộng của cột "image"
         },
         {
             title: 'Giá',
             dataIndex: 'price',
             key: 'price',
-            width: 100, // Điều chỉnh chiều rộng của cột "STT"
-            render: (price: any) => <p className="text-red-700">{formatCurrency(price)}₫</p>,
+            width: 100, // Điều chỉnh chiều rộng của cột "price"
+            render: (price: number) => <p className="text-red-700">{formatCurrency(price)}₫</p>,
             sorter: (a: any, b: any) => a.price - b.price, // Sắp xếp theo giá
             sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
             ellipsis: true,
@@ -132,9 +155,9 @@ const Productlist = () => {
         {
             title: 'Đã bán',dataIndex: 'quantity',
             key: 'quantity',
-            width: 100, // Điều chỉnh chiều rộng của cột "STT"
+            width: 100, // Điều chỉnh chiều rộng của cột "quantity"
 
-            render: (text: any) => <a>{text}</a>,
+            render: (text: number) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.quantity - b.quantity, // Sắp xếp theo số lượng đã bán
             sortOrder: sortedInfo.columnKey === 'quantity' && sortedInfo.order,
             ellipsis: true,
@@ -143,10 +166,12 @@ const Productlist = () => {
             title: 'Danh Mục',
             dataIndex: 'category',
             key: 'category',
-            width: 100, // Điều chỉnh chiều rộng của cột "STT"
+            width: 100, // Điều chỉnh chiều rộng của cột "category"
 
-            render: (record: any) => {
-                const catename = category?.find((cate: any) => cate._id === record);
+            render: (record: string) => {
+                const catename = category?.find((cate: ICategory) => cate._id === record);
+                console.log(category);
+                
                 return catename?.category_name;
             },
         },
@@ -154,7 +179,7 @@ const Productlist = () => {
             title: 'Chất liệu',
             dataIndex: 'materials',
             key: 'materials',
-            width: 100, // Điều chỉnh chiều rộng của cột "STT"
+            width: 100, // Điều chỉnh chiều rộng của cột "materials"
 
             render: (record: string) => {
                 const materialname = material?.find((materials: any) => materials._id === record);
@@ -165,17 +190,17 @@ const Productlist = () => {
             title: 'Thương hiệu',
             dataIndex: 'brand',
             key: 'brand',
-            width: 100, // Điều chỉnh chiều rộng của cột "STT"
+            width: 100, // Điều chỉnh chiều rộng của cột "brand"
 
             render: (record: string) => {
-                const brandname = brand?.find((bra: any) => bra._id === record);
+                const brandname = brand?.find((bra:IBrand) => bra._id === record);
                 return brandname?.brand_name;
             },
         },
         {
             title: 'Chức năng',
-            width: 200, // Điều chỉnh chiều rộng của cột "STT"
-            render: ({ key: _id }: any) => (
+            width: 200, // Điều chỉnh chiều rộng của cột "chức năng"
+            render: ({ key: _id }: {key: any}) => (
                 <div style={{ width: '150px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteProduct(_id)}>
                         {isRemoveLoading ? (
@@ -198,6 +223,7 @@ const Productlist = () => {
             ),
         },
     ];
+    
     return (
         <div className="table-container">
             <h3 className="font-semibold">Danh sách sản phẩm </h3>
@@ -209,7 +235,8 @@ const Productlist = () => {
                     //...
                 >
                     <option value="all">Tất cả danh mục</option>
-                    {categories?.category?.docs.map((category: any) => (
+                    {categories?.category?.docs.map((category: ICategory) => (
+                        
                         <option key={category._id} value={category._id}>
                             {category.category_name}
                         </option>
@@ -223,7 +250,7 @@ const Productlist = () => {
                     //...
                 >
                     <option value="all">Tất cả thương hiệu</option>
-                    {brands?.brand?.map((brand: any) => (
+                    {brands?.brand?.map((brand: IBrand) => (
                         <option key={brand._id} value={brand._id}>
                             {brand.brand_name}
                         </option>
