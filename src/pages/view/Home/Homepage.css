@@ -57,6 +57,12 @@ a.tl p.ttt {
     font-size: 20px;
 }
 
+.category-image {
+    width: 100%;
+    height: 320px;
+    border-radius: 2px;
+}
+
 a.tl p.ttt {
     position: absolute;
     background: #fff;

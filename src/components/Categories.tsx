@@ -49,7 +49,8 @@ const Categories = () => {
                 <div className="row">
                     <Swiper
                         slidesPerView={slidesPerView}
-                        navigation={true}
+                        navigation={false}
+                        spaceBetween={53}
                         modules={[Navigation]}
                     >
                         <div aria-live="polite" className="slick-list draggable">
@@ -70,7 +71,7 @@ const Categories = () => {
                                                 tabIndex={-1}
                                                 role="option"
                                                 aria-describedby={`slick-slide${index + 10}`}
-                                                style={{ width: "405px" }}
+                                                style={{ width: "395px" }}
                                                 data-slick-index={`${index}`}
                                                 aria-hidden="false"
                                             >
@@ -83,7 +84,7 @@ const Categories = () => {
                                                         <img
                                                             alt={category?.category_name}
                                                             src={category.category_image?.url}
-                                                            className="w-full h-80"
+                                                            className="category-image"
                                                         />
                                                     </picture>
                                                 </Link>
