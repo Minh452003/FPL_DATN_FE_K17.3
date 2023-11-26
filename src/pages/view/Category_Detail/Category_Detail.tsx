@@ -8,7 +8,25 @@ import "../Home/Homepage.css";
 import "../Home/Responsive_homepage.css";
 import { FaArrowRight } from "react-icons/fa";
 import { useGetBrandQuery } from "@/api/brandApi";
+import { ICategory } from "@/interfaces/category";
+import { IBrand } from "@/interfaces/brand";
 
+interface Categories {
+  brandId: string;
+  categoryId: string;
+  createdAt: string;
+  deleted: boolean;
+  description: string;
+  image: { url: string }[];
+  materialId: string;
+  product_name: string;
+  product_price: number;
+  sold_quantity: number;
+  updatedAt: string;
+  views: number;
+  _id: string;
+  // Các trường khác nếu có
+}
 const Category_Detail = () => {
   const { id } = useParams();
   const { data: products, error, isLoading: isLoadingFetching } = useGetProductsQuery();
@@ -20,7 +38,7 @@ const Category_Detail = () => {
 
 
   const selectedCategoryData = categories?.category?.docs.find(
-    (category: any) => category._id === selectedCategory
+    (category: ICategory) => category._id === selectedCategory
   );
 
   useEffect(() => {
@@ -29,18 +47,18 @@ const Category_Detail = () => {
       setCurrentPage(1);
     }
   }, [id]);
-
-  const formatCurrency = (number: any) => {
+  
+  const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 8;
 
   const handleChangePage = (page: number) => {
     setCurrentPage(page);
   };
-  const filteredProducts = products?.product?.docs?.filter((product: any) => {
+  const filteredProducts = products?.product?.docs?.filter((product: Categories) => {
     const categoryMatches =
       selectedCategory === "all" || product.categoryId === selectedCategory;
     const brandMatches =
@@ -91,7 +109,8 @@ const Category_Detail = () => {
       );
     }
   }
-
+  console.log(filteredProducts);
+  
 
   return (
     <div>
@@ -126,7 +145,7 @@ const Category_Detail = () => {
             //...
             >
               <option value="all" disabled>Tất cả danh mục</option>
-              {categories?.category?.docs.map((category: any) => (
+              {categories?.category?.docs.map((category: ICategory) => (
                 <option key={category._id} value={category._id}>
                   {category.category_name}
                 </option>
@@ -141,7 +160,7 @@ const Category_Detail = () => {
             //...
             >
               <option value="all">Tất cả thương hiệu</option>
-              {brands?.brand?.map((brand: any) => (
+              {brands?.brand?.map((brand: IBrand) => (
                 <option key={brand._id} value={brand._id}>
                   {brand.brand_name}
                 </option>
@@ -167,7 +186,7 @@ const Category_Detail = () => {
             <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
 
               {displayedProducts.length > 0 ? (
-                displayedProducts.map((product: any, index: any) => (
+                displayedProducts.map((product: Categories, index: string) => (
 
                   <div
                     key={product._id}

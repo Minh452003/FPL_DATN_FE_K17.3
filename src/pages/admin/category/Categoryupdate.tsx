@@ -1,5 +1,6 @@
 import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/api/categoryApi';
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
+import { ICategory } from '@/interfaces/category';
 import { Button, Form, Input, InputNumber, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
@@ -41,7 +42,7 @@ const Categoryupdate = () => {
         });
     };
 
-    const onFinish = (values: any) => {
+    const onFinish = (values: ICategory) => {
         try {
             if (Object.keys(imageUrl).length > 0) {
                 values.category_image = imageUrl;

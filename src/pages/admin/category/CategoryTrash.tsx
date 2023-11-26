@@ -1,4 +1,5 @@
 import { useGetAllDeleteQuery, useRemoveForceCategoryMutation, useRestoreCategoryMutation } from '@/api/categoryApi';
+import { ICategory } from '@/interfaces/category';
 import { Table, Button } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BiFoodMenu } from 'react-icons/bi';
@@ -13,7 +14,7 @@ const CategoryTrash = () => {
   const [removeCategory, { isLoading: isRemoveLoading }] = useRemoveForceCategoryMutation();
   const [restoreCategory, { isLoading: isRestoreLoading }] = useRestoreCategoryMutation()
 
-  const deleteCategory = (id: any) => {
+  const deleteCategory = (id: string) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
       text: "Khi xóa bạn không thể khôi phục lại!",
@@ -42,7 +43,7 @@ const CategoryTrash = () => {
       }
     })
   }
-  const restoreCategory1 = (id: any) => {
+  const restoreCategory1 = (id: string) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
       text: "Bạn có muốn khôi phục lại!",
@@ -72,7 +73,7 @@ const CategoryTrash = () => {
     })
   }
 
-  const data1 = categories?.map((category: any) => {
+  const data1 = categories?.map((category: ICategory) => {
     return {
       key: category._id,
       name: category.category_name,
@@ -99,7 +100,7 @@ const CategoryTrash = () => {
     },
     {
       title: 'Chức năng',
-      render: ({ key: _id }: { key: number | string }) => (
+      render: ({ key: _id }: { key: string }) => (
         
         <div>
            <Button className='mr-1 text-red-500' onClick={() => deleteCategory(_id)}>
