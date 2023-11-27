@@ -84,7 +84,6 @@ const Product_Detail = () => {
             }
         })
         .slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-
     const roundedAverageRating: number = Number(averageRating.toFixed(1));
     const deleteComment = ({ id, userId }: any): any => {
         Swal.fire({
@@ -172,7 +171,6 @@ const Product_Detail = () => {
     useEffect(() => {
         const uniqueSizesSet = new Set();
         const filteredSizesList: any = [];
-
         childProducts?.products.forEach((product: any) => {
             const sizeId = product.sizeId;
             if (!uniqueSizesSet.has(sizeId)) {
@@ -180,13 +178,11 @@ const Product_Detail = () => {
                 filteredSizesList.push(product);
             }
         });
-
         setUniqueSizes(uniqueSizesSet);
         setFilteredSizes(filteredSizesList);
     }, [childProducts]);
     // --------------------------
     const userId: string = id;
-
     const handleAddToCart = () => {
         if (data && userId) {
             const data: any = {
