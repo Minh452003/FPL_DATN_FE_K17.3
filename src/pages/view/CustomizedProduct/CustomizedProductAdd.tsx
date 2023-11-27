@@ -65,7 +65,7 @@ const CustomizedProductAdd = () => {
         productId: idProduct,
         categoryId: listOneData.categoryId,
         product_name: listOneData.product_name,
-        product_price: listOneData.product_price,
+      product_price:  Number(listOneData.product_price),
         image: listOneData.image,
         stock_quantity: quantity,
         colorId: activeColor,
@@ -171,14 +171,13 @@ const CustomizedProductAdd = () => {
           <FaArrowRight className="ml-2" />
           <div className="pl-2">{listOneData?.product_name}</div>
         </div>
-        <div className="content1">
-          <div className=" flex flex-col items-end">
-            <h3 className="font-bold iklm mt-4 text-center ">{listOneData?.product_name}</h3>
-          </div>
-          <p className="mt-2 text-red-500 text-lg text-center ml-20"> Giá : {formatCurrency(listOneData?.product_price)}₫</p>
-          <div className="grid grid-cols-2 gap-2 np1">
-            <div className="product-image1">
+        <div className="content1 py-3 ">
+         
+          
+          <div className="grid grid-cols-2 gap-2 ">
+            <div className="px-3">
               <div className="mb-6s">
+                
                 {listOneData?.image?.map((img: any, index: any) => {
                   if (!selectedIndex && index === 0) {
                     return (
@@ -237,25 +236,14 @@ const CustomizedProductAdd = () => {
                 ))}
               </ul>
             </div>
-            <div className="product-text1">
-              <div className="grid grid-cols-3 mt-4">
-                <div className="text1s">Tình trạng:</div>
-                <div className="text2s ">Còn hàng</div>
-              </div>
-              <div className=" grid grid-cols-3">
-                <div className="text1s">Đã bán: </div>
-                <div className="text2s">
-                  {listOneData?.sold_quantity} chiếc
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3">
-                <div className="text1s">Loại:</div>
-                <div className="text2s ">{categoryLishOne}</div>
-              </div>
-
+            <div className="">
+            <div className=" flex  items-center justify-between ">
+            <h3 className="font-bold iklm   ">{listOneData?.product_name}</h3>    
+             </div>
+            <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price)}₫</p>
+           
               <div
-                className="colors"
+                className="text-l font-bold py-2"
                 style={{ height: showAllColors ? "auto" : "" }}
               >
                 <p>Màu sắc</p>
@@ -270,7 +258,7 @@ const CustomizedProductAdd = () => {
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={` ${isActive ? "active1" : ""} h-10 min-w-32 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
+                              className={` ${isActive ? "active1" : ""} text-[12px] py-1  min-w-32 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
                               onClick={() => handleClickColor(color._id)}
                             >
@@ -295,7 +283,7 @@ const CustomizedProductAdd = () => {
                 )}
               </div>
 
-              <div className="sizes">
+              <div className="text-l font-bold py-2">
                 <p>Kích thước</p>
                 <div className="flex flex-wrap">
                   {sizes ? (
@@ -308,7 +296,7 @@ const CustomizedProductAdd = () => {
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={` ${isActive ? "active1" : ""} h-10 min-w-32 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
+                              className={` ${isActive ? "active1" : ""}  text-[12px] py-1 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
                               onClick={() => handleClickSize(size._id)}
                             >
@@ -332,7 +320,7 @@ const CustomizedProductAdd = () => {
               </div>
 
               <div
-                className="materials"
+                className="text-l font-bold py-2"
                 style={{ height: showAllMaterials ? "auto" : "" }}
               >
                 <p>Nguyên vật liệu</p>
@@ -350,7 +338,7 @@ const CustomizedProductAdd = () => {
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={` ${isActive ? "active1" : ""} h-10 min-w-32 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
+                              className={` ${isActive ? "active1" : ""} text-[12px] py-1  border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
                               onClick={() => handleClickMaterial(material._id)}
                             >
