@@ -259,10 +259,10 @@ const LayoutAdmin = () => {
 
           <input type="checkbox" id="switch-mode" hidden />
           <label htmlFor="switch-mode" className="switch-mode"></label>
-          <Link to="#" className="notification">
+          {/* <Link to="#" className="notification">
             <AiFillMessage />
             <span className="num">8</span>
-          </Link>
+          </Link> */}
           <div className="profile">
             {user && (
               <div className="relative mr-5 group">

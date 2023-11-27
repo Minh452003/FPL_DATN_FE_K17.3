@@ -1007,7 +1007,6 @@ input[type="hidden" i] {
     border: initial;
 }
 
-input:not([type="file" i], [type="image" i], [type="checkbox" i], [type="radio" i]) {}
 
 a {
     color: #ff7600;

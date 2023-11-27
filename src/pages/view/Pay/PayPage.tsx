@@ -86,11 +86,6 @@ const PayPage = () => {
     const [total, setTotal] = useState<number>(0);
     const { register, handleSubmit } = useForm<TypeInputs>();
     // css active
-    const [selectedPayment, setSelectedPayment] = useState('');
-
-    const handlePaymentSelection = (paymentMethod: any) => {
-        setSelectedPayment(paymentMethod);
-    };
     const sizeTotal = () => {
         if (productsInCart) {
             const sizesArray = productsInCart.map((product: any) => {
@@ -100,7 +95,7 @@ const PayPage = () => {
         }
     };
     useEffect(() => {
-        if (size && size.length > 0) {
+        if (size && size?.length > 0) {
             const totalWidth = size.reduce(
                 (sum: any, size: any) => sum + (size.size_width || 0),
                 0,
@@ -181,7 +176,10 @@ const PayPage = () => {
         });
     };
     const formatCurrency = (number: number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        if (typeof number !== 'undefined' && number !== null) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+        return ''; // Trả về một giá trị mặc định hoặc xử lý sao cho phù hợp với ứng dụng của bạn
     };
 
     const onFinish = ({ address, phone, notes }: any) => {
@@ -435,6 +433,73 @@ const PayPage = () => {
         setIsModalOpen(false);
     };
 
+    if (!id) {
+        return (
+            <div>
+                <div
+                    className="grid px-4 bg-white place-content-center  pb-3"
+                    style={{ height: "500px" }}
+                >
+                    <div className="">
+                        <img
+                            className="w-[400px]"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRllmpIxnyIgtYuaJhrUERHnONFy6GdgWfgbg&usqp=CAU"
+                            alt=""
+                        />
+
+                        <h1
+                            className="mt-6 font-bold tracking-tight text-gray-900 "
+                            style={{ fontSize: "17px" }}
+                        >
+                            Bạn chưa đăng nhập, hãy tiến hành đăng nhập đã nhé !
+                        </h1>
+
+                        <Link
+                            to="/signin"
+                            className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+                            style={{ background: "#ff7600", marginLeft: "90px" }}
+                        >
+                            Đăng nhập cùng Casa
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    if (!productsInCart || productsInCart?.length === 0) {
+        return (
+            <div>
+                <div
+                    className="grid  px-4 bg-white place-content-center  pb-3"
+                    style={{ height: "500px" }}
+                >
+                    <div className="">
+                        <img
+                            className="w-[400px]"
+                            src="https://nhanhieuquocgia.com.vn/assets/images/no-cart.png"
+                            alt=""
+                        />
+
+                        <h1
+                            className="mt-6  font-bold tracking-tight text-gray-900 "
+                            style={{ fontSize: "17px" }}
+                        >
+                            Giỏ hàng của bạn còn trống, hãy lựa mua ngay nhé !
+                        </h1>
+
+                        <Link
+                            to="/"
+                            className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+                            style={{ background: "#ff7600", marginLeft: "90px" }}
+                        >
+                            Mua sắm cùng Casa
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     if (isLoading) return <Skeleton />;
     if (isLoadingColors) return <Skeleton />;
     if (isLoadingSizes) return <Skeleton />;
@@ -565,7 +630,7 @@ const PayPage = () => {
                                 onChange={(value) => handleShippingChange(value)}
                                 placeholder="Loại vận chuyển"
                             >
-                                {available && available.length > 0 && (
+                                {available && available?.length > 0 && (
                                     <Select.Option
                                         key={available[0]?.service_id}
                                         value={available[0]?.service_id}
@@ -752,7 +817,7 @@ const PayPage = () => {
                 {/* --------------------Col 3 --------------------------- */}
                 <div className="rounded-lg" style={{ background: '#FAFAFA' }}>
                     <h3 className="pl-4 font-semibold bt-1">
-                        Đơn hàng ({productsInCart.length} sản phẩm)
+                        Đơn hàng ({productsInCart?.length} sản phẩm)
                     </h3>
                     <hr />
                     {productsInCart ? (
@@ -814,7 +879,7 @@ const PayPage = () => {
                     <hr />
                     <div className="Coupons my-3">
                         <div>
-                            {carts && carts.data.couponId ? (
+                            {carts && carts?.data.couponId ? (
                                 <div>
                                     <form
                                         className="px-2 flex "
@@ -861,7 +926,7 @@ const PayPage = () => {
                                         </div>
                                     </form>
                                 </div>
-                            ) : validCoupons && validCoupons.length > 0 ? (
+                            ) : validCoupons && validCoupons?.length > 0 ? (
                                 <div>
                                     <div className='flex justify-between px-2 '>
                                         <div className='flex items-center'>
@@ -954,7 +1019,7 @@ const PayPage = () => {
                             className="text-xl float-right  font-semibold"
                             style={{ fontFamily: 'Lato, sans-serif', color: '#f30c28' }}
                         >
-                            {formatCurrency(carts.data.total)}₫
+                            {formatCurrency(carts?.data.total)}₫
                         </p>
                     </div>
                     <div className=" ml-4 mr-6 h-14 mt-2">
@@ -974,7 +1039,7 @@ const PayPage = () => {
                             style={{ fontFamily: 'sans-serif', color: '#f30c28' }}
                         >
                             {ship && ship.total ? (
-                                formatCurrency(carts.data.total + ship.total) + '₫'
+                                formatCurrency(carts?.data.total + ship.total) + '₫'
                             ) : (
                                 <p
                                     className="sp2 font-semibold"

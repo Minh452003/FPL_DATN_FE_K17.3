@@ -624,23 +624,29 @@ const DashBoardPage = () => {
                             <option value={2024}>Năm 2024</option>
                         </select>
                     </div>
-                    {shouldViewProducts ? <ul>
-                        {viewProducts?.map((product: any) => (
-                            <li className="bg-gray-200 p-6 rounded-lg shadow-md mb-4 max-w-screen-sm" key={product?._id}>
-                                <div className="flex justify-between">
-                                    <div>
+                    {shouldViewProducts ? (
+                        <ul className="grid gap-6 md:grid-cols-2">
+                            {viewProducts?.map((product: any) => (
+                                <li
+                                    className="bg-gray-200 p-6 rounded-lg shadow-md mb-4 max-w-screen-sm grid grid-cols-2 gap-6"
+                                    key={product?._id}
+                                >
+                                    <div className="col-span-1">
                                         <h3 className="text-xl font-semibold mb-2">{product?.views} lượt xem</h3>
                                         <p>Sản Phẩm: {product?.product_name}</p>
                                         <p style={{ color: 'red' }}>Giá: {formatCurrency(product?.product_price)}đ</p>
-                                        <p>Ngày bán: {format(new Date(product?.createdAt), "dd/MM/yyyy")} </p>
+                                        <p>Ngày bán: {format(new Date(product?.createdAt), "dd/MM/yyyy")}</p>
                                     </div>
-                                    <div>
-                                        <img src={product?.image[0]?.url} width={100} height={100} />
+                                    <div className="col-span-1 flex justify-end items-center">
+                                        <img src={product?.image[0]?.url} width={200} height={200} className="object-cover" />
                                     </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul> : ''}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        ''
+                    )}
+
                 </div>
             </div>
         </div>
