@@ -63,6 +63,7 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
+        // Thay đổi mật khẩu
         changePassword: builder.mutation({
             query: (user: IUser) => ({
                 url: '/changepassword',

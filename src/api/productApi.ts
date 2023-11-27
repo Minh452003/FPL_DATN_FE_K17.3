@@ -39,7 +39,7 @@ const productApi = createApi({
             query: (searchKeyword) => `/products/?q=${searchKeyword}`,
             providesTags: ['Products'],
         }),
-        addProduct: builder.mutation({
+        addProduct: builder.mutation<IProduct, IProduct>({
             query: (product: IProduct) => ({
                 url: '/products',
                 method: 'POST',

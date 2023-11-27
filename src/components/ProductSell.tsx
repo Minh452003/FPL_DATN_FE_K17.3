@@ -70,7 +70,8 @@ const ProductSell = () => {
 
                         <Swiper
                             slidesPerView={slidesPerView}
-                            navigation={true}
+                            navigation={false}
+                            spaceBetween={40}
                             modules={[Navigation]}
                         >
 
@@ -84,7 +85,7 @@ const ProductSell = () => {
                                         transform: "translate3d(0px, 0px, 0px)",
                                     }}
                                 >
-                                    {products.length > 0 ? (
+                                    {products?.length > 0 ? (
                                         products && products.map((product: any, index: any) => (
                                             <SwiperSlide key={product._id}>
                                                 <div
@@ -92,7 +93,7 @@ const ProductSell = () => {
                                                     tabIndex={-1}
                                                     role="option"
                                                     aria-describedby={`slick-slide${index + 10}`}
-                                                    style={{ width: "273px" }}
+                                                    style={{ width: "283px" }}
                                                     data-slick-index={`${index}`}
                                                     aria-hidden="false"
                                                 >
@@ -167,7 +168,21 @@ const ProductSell = () => {
                                             </SwiperSlide>
                                         ))
                                     ) : (
-                                        <p>..................không có sản phẩm nào.</p>
+                                        <div>
+                                            <div
+                                                className="grid px-4 place-content-center pb-3"
+                                                style={{ height: "100px" }}
+                                            >
+                                                <div className="">
+                                                    <h1
+                                                        className="mt-6 font-bold tracking-tight text-gray-900 "
+                                                        style={{ fontSize: "17px" }}
+                                                    >
+                                                        Không có sản phẩm nổi bật nào !
+                                                    </h1>
+                                                </div>
+                                            </div>
+                                        </div>
                                     )}
 
                                 </div>

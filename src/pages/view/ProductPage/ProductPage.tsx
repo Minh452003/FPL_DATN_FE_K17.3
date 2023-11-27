@@ -9,6 +9,25 @@ import { Skeleton } from "antd";
 import { FaArrowRight } from "react-icons/fa6";
 import { useGetBrandQuery } from "@/api/brandApi";
 import Model from "@/components/Model";
+import { ICategory } from "@/interfaces/category";
+import { IBrand } from "@/interfaces/brand";
+
+interface Product {
+  brandId: string;
+  categoryId: string;
+  createdAt: string;
+  deleted: boolean;
+  description: string;
+  image: { url: string }[];
+  materialId: string;
+  product_name: string;
+  product_price: number;
+  sold_quantity: number;
+  updatedAt: string;
+  views: number;
+  _id: string;
+  // Các trường khác nếu có
+}
 
 const ProductPage = () => {
   const {
@@ -23,7 +42,7 @@ const ProductPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedBrand, setSelectedBrand] = useState("all");
 
-  const formatCurrency = (number: any) => {
+  const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
@@ -43,7 +62,7 @@ const ProductPage = () => {
     }
   }
 
-  const filteredProducts = products.filter((product: any) => {
+  const filteredProducts = products?.filter((product: Product) => {
     const categoryMatches =
       selectedCategory === "all" || product.categoryId === selectedCategory;
     const brandMatches =
@@ -80,8 +99,8 @@ const ProductPage = () => {
   //  Phân trang........................
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedProducts = filteredProducts.slice(startIndex, endIndex);
-  const handlePageChange = (event: any, page: any) => {
+  const displayedProducts = filteredProducts?.slice(startIndex, endIndex);
+  const handlePageChange = (event: any, page: number) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
@@ -114,7 +133,7 @@ const ProductPage = () => {
         //...
         >
           <option value="all">Tất cả danh mục</option>
-          {categories?.category?.docs.map((category: any) => (
+          {categories?.category?.docs.map((category: ICategory) => (
             <option key={category._id} value={category._id}>
               {category.category_name}
             </option>
@@ -128,7 +147,7 @@ const ProductPage = () => {
         //...
         >
           <option value="all">Tất cả thương hiệu</option>
-          {brands?.brand?.map((brand: any) => (
+          {brands?.brand?.map((brand: IBrand) => (
             <option key={brand._id} value={brand._id}>
               {brand.brand_name}
             </option>
@@ -153,8 +172,8 @@ const ProductPage = () => {
 
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
 
-          {displayedProducts.length > 0 ? (
-            displayedProducts.map((product: any, index: any) => (
+          {displayedProducts?.length > 0 ? (
+            displayedProducts?.map((product: Product, index: string) => (
 
               <div
                 key={product._id}
@@ -235,7 +254,26 @@ const ProductPage = () => {
               </div>
             ))
           ) : (
-            <p>..................không có sản phẩm nào.</p>
+            <div>
+              <div
+                className="grid  px-4 bg-white place-content-center  pb-3"
+                style={{ height: "500px" }}
+              >
+                <div className="">
+                  <img
+                    className="w-[400px]"
+                    src="https://bizweb.dktcdn.net/100/333/755/themes/688335/assets/empty_cart.png?1647314197820"
+                  />
+
+                  <h1
+                    className="mt-6  font-bold tracking-tight text-gray-900 "
+                    style={{ fontSize: "17px" }}
+                  >
+                    Không có sản phẩm nào, vui lòng đợi cập nhật sản phẩm !
+                  </h1>
+                </div>
+              </div>
+            </div>
           )}
         </div>
 
@@ -243,7 +281,7 @@ const ProductPage = () => {
 
       <div className="flex w-full py-4 justify-center ">
         <Pagination
-          count={Math.ceil(filteredProducts.length / itemsPerPage)}
+          count={Math.ceil(filteredProducts?.length / itemsPerPage)}
           page={currentPage}
           onChange={handlePageChange}
           variant="outlined"

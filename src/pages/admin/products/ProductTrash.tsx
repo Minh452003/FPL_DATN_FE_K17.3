@@ -1,6 +1,6 @@
 import { useGetProductsDeleteQuery, useRemoveForceProductMutation, useRestoreProductMutation } from '@/api/productApi';
-import { Image, Table, Button } from 'antd';
-import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash, FaProductHunt, FaWindowRestore } from "react-icons/fa6";
+import { Table, Button } from 'antd';
+import { FaTrashCan, FaWindowRestore } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetBrandQuery } from '@/api/brandApi';
@@ -8,9 +8,13 @@ import { useGetMaterialQuery } from '@/api/materialApi';
 import Swal from 'sweetalert2';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BiFoodMenu } from 'react-icons/bi';
+import { IProduct } from '@/interfaces/product';
+import { ICategory } from '@/interfaces/category';
+import { IMaterials } from '@/interfaces/materials';
+import { IBrand } from '@/interfaces/brand';
 
 const ProductTrash = () => {
-    const { data }: any = useGetProductsDeleteQuery();
+    const { data }: any = useGetProductsDeleteQuery<IProduct[]>();
     const { data: categories } = useGetCategoryQuery<any>();
     const { data: brands } = useGetBrandQuery<any>();
     const { data: materials } = useGetMaterialQuery<any>();
@@ -38,9 +42,9 @@ const ProductTrash = () => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    const deleteProduct = (id: any) => {
+    const deleteProduct = (id: number) => {
         Swal.fire({
-            title: 'Bạn chắc chứ?',
+            title: 'Bạn chắc chứ ?',
             text: "Khi xóa bạn không thể khôi phục lại!",
             icon: 'warning',
             showCancelButton: true,
@@ -67,7 +71,7 @@ const ProductTrash = () => {
             }
         })
     }
-    const restoreProduct1 = (id: any) => {
+    const restoreProduct1 = (id: string) => {
         Swal.fire({
             title: 'Bạn chắc chứ?',
             text: "bạn có muốn khôi phục lại!",
@@ -102,13 +106,13 @@ const ProductTrash = () => {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: any) => <a>{index}</a>,
+            render: (index: string) => <a>{index}</a>,
         },
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text: any) => <a>{text}</a>,
+            render: (text: string) => <a>{text}</a>,
         },
         {
             title: 'Ảnh',
@@ -119,20 +123,20 @@ const ProductTrash = () => {
             title: 'Giá',
             dataIndex: 'price',
             key: 'price',
-            render: (price: any) => <p className='text-red-700'>{formatCurrency(price)}₫</p>,
+            render: (price: number) => <p className='text-red-700'>{formatCurrency(price)}₫</p>,
         },
         {
             title: 'Đã bán',
             dataIndex: 'quantity',
             key: 'quantity',
-            render: (text: any) => <a>{text}</a>,
+            render: (text: number) => <a>{text}</a>,
         },
         {
             title: 'Danh Mục',
             dataIndex: 'category',
             key: 'category',
-            render: (record: any) => {
-                const catename = category?.find((cate: any) => cate._id === record);
+            render: (record: string) => {
+                const catename = category?.find((cate: ICategory) => cate._id === record);
                 return catename?.category_name
                     ;
             }
@@ -142,7 +146,7 @@ const ProductTrash = () => {
             dataIndex: 'materials',
             key: 'materials',
             render: (record: string) => {
-                const materialname = material?.find((materials: any) => materials._id === record);
+                const materialname = material?.find((materials: IMaterials) => materials._id === record);
                 return materialname?.material_name;
             }
         },
@@ -151,7 +155,7 @@ const ProductTrash = () => {
             dataIndex: 'brand',
             key: 'brand',
             render: (record: string) => {
-                const brandname = brand?.find((bra: any) => bra._id === record);
+                const brandname = brand?.find((bra: IBrand) => bra._id === record);
                 return brandname?.brand_name
                     ;
             }

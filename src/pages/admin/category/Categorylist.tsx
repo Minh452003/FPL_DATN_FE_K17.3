@@ -9,7 +9,14 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
-
+interface Category {
+  _id?: string;
+  category_name: string;
+  price_increase_percent: number;
+  category_image: {
+      url: string;
+  };
+}
 const Categorylist = () => {
   const { data }: any = useGetCategoryQuery();
   const categories = data?.category.docs;
@@ -22,7 +29,7 @@ const Categorylist = () => {
     setSortedInfo(sorter);
   };
 
-  const data1 = categories?.map((category: any, index: number) => {
+  const data1 = categories?.map((category: Category, index: number) => {
     return {
       key: category._id,
       STT: index + 1,
@@ -33,12 +40,12 @@ const Categorylist = () => {
       ),
     };
   });
-  const filteredData = data1?.filter((category: any) => {
+  const filteredData = data1?.filter((category: Category) => {
     return category.category_name
       .toLowerCase()
       .includes(searchText.toLowerCase());
   });
-  const deleteProduct = (id: any) => {
+  const deleteProduct = (id: string) => {
     Swal.fire({
       title: "Bạn chắc chứ?",
       text: "Khi có thể vào thùng rác để khôi phục lại!",
@@ -70,7 +77,7 @@ const Categorylist = () => {
       title: "STT",
       dataIndex: "STT",
       key: "STT",
-      render: (index: any) => <a>{index}</a>,
+      render: (index: number) => <a>{index}</a>,
       sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
       sortOrder: sortedInfo.columnKey === "STT" && sortedInfo.order,
       ellipsis: true,
@@ -93,7 +100,7 @@ const Categorylist = () => {
       title: "Tiền đặt cọc (%)",
       dataIndex: "price_increase_percent",
       key: "price_increase_percent",
-      render: (index: any) => <a>{index}%</a>,
+      render: (index: string) => <a>{index}%</a>,
       sorter: (a: any, b: any) =>
         a.price_increase_percent - b.price_increase_percent, // Sắp xếp theo giá
       sortOrder:
@@ -102,7 +109,7 @@ const Categorylist = () => {
     },
     {
       title: "Chức năng",
-      render: ({ key: _id }: { key: number | string }) => (
+      render: ({ key: _id }: { key: string }) => (
         <div style={{ width: "150px" }}>
           <Button
             className="mr-1 text-red-500"

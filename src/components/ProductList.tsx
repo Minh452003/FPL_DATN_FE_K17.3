@@ -1,4 +1,3 @@
-import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -55,12 +54,26 @@ const ProductList = () => {
     }
   }
   if (!categories || !categories.category || categories.category.docs.length === 0) {
-    return <p>Không có danh mục nào.</p>;
+    return <div>
+      <div
+        className="grid px-4 place-content-center pb-3"
+        style={{ height: "100px" }}
+      >
+        <div className="">
+          <h1
+            className="mt-6 font-bold tracking-tight text-gray-900 "
+            style={{ fontSize: "17px" }}
+          >
+            Không danh mục nào !
+          </h1>
+        </div>
+      </div>
+    </div>;
   }
 
   return (
     <div >
-      {categories && categories.category.docs.map((category: any) => {
+      {categories && categories?.category.docs.map((category: any) => {
         if (!products || !products.product || !products.product.docs) {
           return <p key={category._id}>Không có sản phẩm nào.</p>;
         }
@@ -91,7 +104,8 @@ const ProductList = () => {
                       <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
                         <Swiper
                           slidesPerView={slidesPerView}
-                          navigation={true}
+                          navigation={false}
+                          spaceBetween={40}
                           modules={[Navigation]}
                         >
                           <div aria-live="polite" className="slick-list draggable">
@@ -111,7 +125,7 @@ const ProductList = () => {
                                     tabIndex={-1}
                                     role="option"
                                     aria-describedby={`slick-slide${index + 10}`}
-                                    style={{ width: "273px" }}
+                                    style={{ width: "283px" }}
                                     data-slick-index={`${index}`}
                                     aria-hidden="false"
                                   >

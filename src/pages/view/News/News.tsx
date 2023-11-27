@@ -24,6 +24,31 @@ const News = () => {
   for (let i = 1; i <= pageNumbers; i++) {
     pages.push(i);
   }
+  if (!data || !data?.news || newList === 0) {
+    return (
+      <div>
+        <div
+          className="grid  px-4 bg-white place-content-center  pb-3"
+          style={{ height: "500px" }}
+        >
+          <div className="">
+            <img
+              className="w-[400px]"
+              src="https://i.ytimg.com/vi/SGMm1Nda9gk/maxresdefault.jpg"
+              alt=""
+            />
+
+            <h1
+              className="mt-6  font-bold tracking-tight text-gray-900 "
+              style={{ fontSize: "17px" }}
+            >
+              Không có tin tức, Xin hãy đợi CASA cập nhật tin tức !
+            </h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto ">
@@ -75,8 +100,8 @@ const News = () => {
                 href="#"
                 onClick={() => setCurrentPage(page)}
                 className={`flex items-center justify-center px-3 h-8 ${currentPage === page
-                    ? "text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                    : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  ? "text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                  : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                   }`}
               >
                 {page}
