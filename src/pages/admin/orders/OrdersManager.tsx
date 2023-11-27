@@ -87,24 +87,29 @@ const OrdersManager = () => {
             title: 'Ảnh',
             dataIndex: 'image',
             key: 'image',
+            width: 100,
         },
         {
             title: 'Người mua',
             dataIndex: 'userId',
             key: 'userId',
+            width: 150,
         },
         {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
+            width: 120,
         },
         {
             title: 'Địa chỉ',
             dataIndex: 'address',
             key: 'address',
+            width: 150,
         },
         {
             title: 'Tổng đơn hàng',
+            width: 200,
             dataIndex: 'total',
             key: 'total',
             render: (total: any) => <span className="text-red-700">{formatCurrency(total)}₫</span>,
@@ -114,6 +119,7 @@ const OrdersManager = () => {
         },
         {
             title: 'Thời gian mua',
+            width: 170,
             dataIndex: 'createAt',
             key: 'createAt',
             sorter: (a: any, b: any) => a.createdAtTimestamp - b.createdAtTimestamp,
@@ -121,6 +127,7 @@ const OrdersManager = () => {
         },
         {
             title: 'Hành động',
+            width: 120,
             key: 'action',
             render: (_, record: any) => (
                 <Space size="middle">

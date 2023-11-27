@@ -90,11 +90,12 @@ const CustomProductslist = () => {
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
-            width: 80,
+            width: 90,
         },
         {
             title: 'Tên khách hàng ',
             dataIndex: 'user',
+            width: 150,
             key: 'user',
             render: (record: any) => {
                 const username = user?.find((cate: any) => cate._id === record);
@@ -104,16 +105,19 @@ const CustomProductslist = () => {
         {
             title: 'Tên sản phẩm ',
             dataIndex: 'name',
+            width: 200,
             key: 'name',
             render: (text: any) => <a>{text}</a>,
         },
         {
             title: 'Ảnh',
+            width: 100,
             dataIndex: 'image',
             key: 'image',
         },
         {
             title: 'Giá',
+            width: 100,
             dataIndex: 'price',
             key: 'price',
             render: (text: any) => <p className="text-red-700">{formatCurrency(text)}₫</p>,
@@ -125,6 +129,7 @@ const CustomProductslist = () => {
             title: 'Đã bán',
             dataIndex: 'quantity',
             key: 'quantity',
+            width: 120,
             render: (text: any) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.price - b.price, // Sắp xếp theo giá
             sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
@@ -132,6 +137,7 @@ const CustomProductslist = () => {
         },
         {
             title: 'Danh Mục',
+            width: 200,
             dataIndex: 'category',
             key: 'category',
             render: (record: any) => {
@@ -141,6 +147,7 @@ const CustomProductslist = () => {
         },
         {
             title: 'Chất liệu',
+            width: 120,
             dataIndex: 'materials',
             key: 'materials',
             render: (record: any) => {
@@ -151,6 +158,7 @@ const CustomProductslist = () => {
         {
             title: 'Thương hiệu',
             dataIndex: 'brand',
+            width: 120,
             key: 'brand',
             render: (record: any) => {
                 const brandname = brand?.find((cate: any) => cate._id === record);
@@ -159,6 +167,7 @@ const CustomProductslist = () => {
         },
         {
             title: 'Kích cỡ ',
+            width: 120,
             dataIndex: 'sizes',
             key: 'sizes',
             render: (record: any) => {
@@ -168,6 +177,7 @@ const CustomProductslist = () => {
         },
         {
             title: 'Màu ',
+            width: 120,
             dataIndex: 'color',
             key: 'color',
             render: (record: any) => {
@@ -177,6 +187,7 @@ const CustomProductslist = () => {
         },
         {
             title: 'Chức năng',
+            width: 170,
             render: ({ key: _id }: any) => (
                 <div style={{ width: '150px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteProduct(_id)}>

@@ -1,19 +1,18 @@
 import { useGetBrandQuery } from '@/api/brandApi';
 import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
-import { useGetProductByIdQuery, useUpdateProductMutation } from '@/api/productApi';
-import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
-import { Button, Form, Input, Upload, Select, InputNumber, message } from 'antd';
+import { useAddProductMutation } from '@/api/productApi';
+import { useAddImageMutation, useDeleteImageMutation } from '@/api/uploadApi';
+import { Button, Form, Input, Upload, Select, message, InputNumber } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { FaUpload } from "react-icons/fa6";
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { IProduct } from '@/interfaces/product';
-import { ICategory } from '@/interfaces/category';
-import { IBrand } from '@/interfaces/brand';
-import { IMaterials } from '@/interfaces/materials';
+
 type FieldType = {
     product_name?: string;
     product_price?: string;
@@ -24,73 +23,49 @@ type FieldType = {
     materialId?: string;
 };
 
-const Productupdate = () => {
-    const { id }: any = useParams();
-    const { data: productData }: any = useGetProductByIdQuery(id);
-    const [updateProduct, resultUpdate] = useUpdateProductMutation();
+const Productadd = () => {
+    const [addProduct, resultAdd] = useAddProductMutation();
     const { data: categories } = useGetCategoryQuery<any>();
     const { data: brands } = useGetBrandQuery<any>();
     const { data: materials } = useGetMaterialQuery<any>();
-    const [updateImage, resultImage] = useUpdateImageMutation();
+    const [addImage, resultImage] = useAddImageMutation();
     const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]);
     const [imageUrl, setImageUrl] = useState<any>([]);
-    const [publicId, setpublicId] = useState<string>();
+    const navigate = useNavigate();
     const [productDescription, setProductDescription] = useState('');
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (productData) {
-            setFields();
-            setImageUrl(productData?.product?.image)
-        }
-    }, [productData]);
-    const [form] = Form.useForm();
-    const setFields = () => {
-        form.setFieldsValue({
-            _id: productData?.product?._id,
-            product_name: productData?.product?.product_name,
-            product_price: productData?.product?.product_price,
-            image: productData?.product?.image ? productData?.product.image : [], // Nếu có ảnh, thêm vào mảng để hiển thị
-            description: productData?.product?.description,
-            categoryId: productData?.product?.categoryId,
-            brandId: productData?.product?.brandId,
-            materialId: productData?.product?.materialId,
-        });
-    };
-
-
+    
     const onFinish = (values: IProduct) => {
         values.description = productDescription
-        console.log(productDescription);
-
-        try {
-            values.image = imageUrl
-            updateProduct(values).then(() => {
+        if (imageUrl.length > 0) {
+            values.image = imageUrl;
+            addProduct(values).then((response) => {
+                console.log('Data after adding product:', response); 
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Cập nhật sản phẩm thành công!',
+                    title: 'Thêm sản phẩm thành công!',
                     showConfirmButton: true,
-                    timer: 1500,
+                    timer: 1500
                 });
-                navigate('/admin/products');
-            });
-        } catch (error) {
-        console.log(error);
-        
+                navigate("/admin/products");
+            })
+        } else {
+            message.error(`Thêm sản phẩm thất bại`);
+            return
         }
     };
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
+
     const props: UploadProps = {
         name: 'image',
         fileList: fileList, // Sử dụng state fileList
-        customRequest: async ({ file }) => {
-            console.log(file);    
+        customRequest: async ({ file }: any) => {
+            console.log(file);
         },
         onChange(info: any) {
             if (info.file) {
@@ -99,23 +74,12 @@ const Productupdate = () => {
                 try {
                     (async () => {
                         if (info.file.status === 'uploading') {
-                            const response: any = await updateImage(({
-                                publicId: publicId,
-                                files: formData,
-                            } as any));
-                            if (response.data && response.data.publicId) {
+                            const response: any = await addImage(formData);
+                            if (response.data && response.data.urls) {
                                 info.file.status = 'done'
-                                info.file.uid = response.data.publicId
-                                const publicId1 = response.data.publicId;
-                                const url = response.data.url;
-                                const updatedImage = { url: url, publicId: publicId1 };
+                                info.file.uid = response.data.urls[0].publicId
                                 setFileList(info.fileList);
-                                setImageUrl((prevUrls: any) => prevUrls.map((item: any) => {
-                                    if (item.publicId === publicId) {
-                                        return updatedImage; // Thay thế ảnh có publicId tương ứng
-                                    }
-                                    return item;
-                                }));
+                                setImageUrl((prevUrls: any) => [...prevUrls, response.data.urls[0]]);
                             }
                         }
                     })()
@@ -123,7 +87,7 @@ const Productupdate = () => {
                     console.error(error);
                 }
                 if (info.file.status === 'error') {
-                    message.error(` upload thất bại.`);
+                    message.error(`${info.file.name} upload ảnh thất bại.`);
                 } else if (info.file.status === 'removed') {
                     const publicId = info.file.uid;
                     (async () => {
@@ -139,16 +103,6 @@ const Productupdate = () => {
         },
     };
 
-    const uploadButton = (
-        <div>
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
-    const handleImageUpdate = (index: number) => {
-        const selectedImage = imageUrl[index];
-        setpublicId(selectedImage.publicId);
-    }
-
     const validatePositiveNumber = (_: any, value: any) => {
         if (parseFloat(value) < 0) {
             return Promise.reject("Giá trị phải là số dương");
@@ -159,9 +113,8 @@ const Productupdate = () => {
         <div className="container-fluid mb-7">
             <div className="row">
                 <div className="card-body">
-                    <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Cập nhật Sản Phẩm</h5>
+                    <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm Sản Phẩm</h5>
                     <Form
-                        form={form}
                         name="basic"
                         labelCol={{ span: 8 }}
                         wrapperCol={{ span: 16 }}
@@ -171,10 +124,6 @@ const Productupdate = () => {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-
-                        <Form.Item<FieldType> name="_id" style={{ display: 'none' }}>
-                            <Input />
-                        </Form.Item>
                         <Form.Item<FieldType>
                             label="Tên"
                             name="product_name"
@@ -208,33 +157,28 @@ const Productupdate = () => {
                             { validator: validatePositiveNumber },
                             { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                             hasFeedback
+
                             style={{ marginLeft: '20px' }}
                         >
                             <InputNumber style={{ width: '100%' }} />
                         </Form.Item>
-                        <Form.Item<FieldType>
+                        <Form.Item
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
-                            label="Ảnh" rules={[{ required: true, message: 'Ảnh không được để trống' }]}
-                            hasFeedback
+                            id="images" name="image" label="Ảnh" rules={[{ required: true, message: 'Ảnh không được để trống' }]}
                         >
-                            {imageUrl && imageUrl?.map((img: any, index: any) => (
-                                <Upload
-                                    {...props}
-                                    key={img?.publicId}
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    beforeUpload={() => handleImageUpdate(index)}
-                                >
-                                    {img ? <img src={img?.url} alt="avatar" style={{ width: '100px', height: "100px" }} /> :
-                                        uploadButton
-                                    }
-                                </Upload>
-                            ))}
+                            <Upload {...props} listType="picture" multiple
+                                fileList={fileList}
+                                beforeUpload={file => {
+                                    setFileList([...fileList, file]);
+                                }}
+
+                            >
+                                <Button icon={<FaUpload />}>Chọn ảnh</Button>
+                            </Upload>
                         </Form.Item>
-                        <Form.Item<FieldType>
+                        <Form.Item
                             label="Danh mục"
                             name="categoryId"
                             rules={[{ required: true, message: 'Danh mục không được để trống!' }]}
@@ -244,12 +188,12 @@ const Productupdate = () => {
                             style={{ marginLeft: '20px' }}
                         >
                             <Select >
-                                {categories && categories?.category.docs?.map((category: ICategory) => {
+                                {categories && categories?.category.docs?.map((category: any) => {
                                     return <Select.Option key={category?._id} value={category._id}>{category.category_name}</Select.Option>
                                 })}
                             </Select>
                         </Form.Item>
-                        <Form.Item<FieldType>
+                        <Form.Item
                             label="Thương hiệu"
                             name="brandId"
                             rules={[{ required: true, message: 'Thương hiệu không được để trống!' }]}
@@ -259,12 +203,12 @@ const Productupdate = () => {
                             style={{ marginLeft: '20px' }}
                         >
                             <Select >
-                                {brands && brands?.brand?.map((brand: IBrand) => {
+                                {brands && brands?.brand?.map((brand: any) => {
                                     return <Select.Option key={brand?._id} value={brand._id}>{brand.brand_name}</Select.Option>
                                 })}
                             </Select>
                         </Form.Item>
-                        <Form.Item<FieldType>
+                        <Form.Item
                             label="Chất liệu"
                             name="materialId"
                             rules={[{ required: true, message: 'Chất liệu không được để trống!' }]}
@@ -274,7 +218,7 @@ const Productupdate = () => {
                             style={{ marginLeft: '20px' }}
                         >
                             <Select >
-                                {materials && materials?.material?.map((mate: IMaterials) => {
+                                {materials && materials?.material?.map((mate: any) => {
                                     return <Select.Option key={mate?._id} value={mate._id}>{mate.material_name}</Select.Option>
                                 })}
                             </Select>
@@ -291,7 +235,6 @@ const Productupdate = () => {
                         >
                             <CKEditor
                                 editor={ClassicEditor}
-                                data={productData?.product?.description}
                                 config={{
                                     mediaEmbed: {
                                         previewsInData: true
@@ -307,9 +250,9 @@ const Productupdate = () => {
                             <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
                                 disabled={resultImage.isLoading || resultDelete.isLoading}
                                 htmlType="submit">
-                                {resultUpdate.isLoading ? <div className="spinner-border" role="status">
+                                {resultAdd.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
-                                </div> : " Cập nhật sản phẩm"}
+                                </div> : " Thêm sản phẩm"}
                             </Button>
                             <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/products")} htmlType="submit">
                                 Danh sách sản phẩm
@@ -322,4 +265,4 @@ const Productupdate = () => {
     )
 }
 
-export default Productupdate
+export default Productadd

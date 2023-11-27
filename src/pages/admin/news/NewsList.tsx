@@ -60,22 +60,26 @@ const Newslist = () => {
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
+            width: 90,
         },
         {
             title: 'Ảnh ',
             dataIndex: 'new_image',
             key: 'new_image',
+            width: 100,
         },
         {
             title: 'Tiêu đề',
             dataIndex: 'new_name',
             key: 'new_name',
+            width: 200,
             sorter: (a: any, b: any) => a.new_name.localeCompare(b.new_name),
             sortOrder: sortedInfo.columnKey === 'new_name' && sortedInfo.order,
             ellipsis: true,
         },
         {
             title: 'Mô tả',
+            width: 250,
             dataIndex: 'new_description',
             key: 'new_description',
             sorter: (a: any, b: any) => a.new_description - b.new_description, // Sắp xếp theo giá
@@ -84,6 +88,7 @@ const Newslist = () => {
         },
         {
             title: 'Chức năng',
+            width: 170,
             render: ({ key: _id }: { key: number | string }) => (
                 <div style={{ width: '150px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteNew(_id)}>

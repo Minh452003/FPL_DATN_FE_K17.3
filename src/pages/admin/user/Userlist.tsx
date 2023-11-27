@@ -8,7 +8,6 @@ import { FaWrench } from 'react-icons/fa';
 const Userlist = () => {
     const { data, isloading }: any = useGetUsersQuery();
     const user = data?.data;
-
     const [searchText, setSearchText] = useState('');
     const [sortedInfo, setSortedInfo] = useState({} as any);
 
@@ -48,12 +47,14 @@ const Userlist = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
+            width: 120,
             render: (text: string) => <a>{text}</a>,
         },
         {
             title: 'Ảnh ',
             dataIndex: 'image',
             key: 'image',
+            width: 120,
             reder: (record: any) => {
                 return <Image width={80} height={80} src={record.url} />;
             },
@@ -62,27 +63,32 @@ const Userlist = () => {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
+            width: 250,
             render: (email: string) => <a>{email}</a>,
         },
         {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
+            width: 120,
             render: (phone: string) => <a>{phone}</a>,
         },
         {
             title: 'Địa chỉ',
             dataIndex: 'address',
             key: 'address',
+            width: 150,
             render: (address: string) => <a>{address}</a>,
         },
         {
             title: 'Chức vụ',
             dataIndex: 'role',
             key: 'role',
+            width: 100,
         },
         {
             title: 'Chức năng',
+            width: 170,
             render: ({ key: _id }: any) => {
                 return (
                     <div style={{ width: '150px' }}>

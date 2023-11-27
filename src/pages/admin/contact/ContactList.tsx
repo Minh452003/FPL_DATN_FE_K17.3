@@ -65,24 +65,29 @@ const ContactList = () => {
             title: 'Họ tên',
             dataIndex: 'contact_name',
             key: ' contact_name',
+            width: 100,
         },
         {
             title: 'Email',
             dataIndex: 'contact_email',
             key: 'contact_email',
+            width: 270,
         },
         {
             title: 'Số điện thoại',
+            width: 120,
             dataIndex: 'contact_phone',
             key: 'contact_phone',
         },
         {
             title: 'Mô tả',
+            width: 200,
             dataIndex: 'contact_description',
             key: 'contact_description',
         },
         {
             title: 'Chức năng',
+            width: 170,
             render: ({ key: _id }: any) => {
                 return (
                     <div style={{ width: '150px' }}>

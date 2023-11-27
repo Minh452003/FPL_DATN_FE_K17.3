@@ -61,9 +61,11 @@ const Colorslist = () => {
             title: 'Tên màu',
             dataIndex: 'name',
             key: 'name',
+            width: 150,
         },
         {
             title: 'Chức năng',
+            width: 170,
             render: ({ key: _id }: any) => {
                 return (
                     <div style={{ width: '150px' }}>

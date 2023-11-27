@@ -89,19 +89,23 @@ const CouponsList = () => {
             title: 'Phiếu giảm giá',
             dataIndex: 'coupon_name',
             key: 'coupon_name',
+            width: 150,
         },
         {
             title: 'Mã giảm giá',
             dataIndex: 'coupon_code',
             key: 'coupon_code',
+            width: 120,
         },
         {
             title: 'Nội dung',
             dataIndex: 'coupon_content',
             key: 'coupon_content',
+            width: 200,
         },
         {
             title: 'Số lượng',
+            width: 120,
             dataIndex: 'coupon_quantity',
             key: 'coupon_quantity',
             sorter: (a: any, b: any) => a.coupon_quantity - b.coupon_quantity, // Sắp xếp theo coupon_quantity
@@ -110,6 +114,7 @@ const CouponsList = () => {
         },
         {
             title: 'Chiết khấu',
+            width: 120,
             dataIndex: 'discount_amount',
             key: 'discount_amount',
             render: (index: any) => <a>{index}%</a>,
@@ -119,6 +124,7 @@ const CouponsList = () => {
         },
         {
             title: 'Ngày hết hạn',
+            width: 120,
             dataIndex: 'expiration_date',
             key: 'expiration_date',
             sorter: (a: any, b: any) => a.expiration_date.localeCompare(b.expiration_date),
@@ -126,6 +132,7 @@ const CouponsList = () => {
         },
         {
             title: 'Số tiền mua tối thiểu',
+            width: 200,
             dataIndex: 'min_purchase_amount',
             key: 'min_purchase_amount',
             render: (index: any) => <a>{formatCurrency(index)}đ</a>,
@@ -135,6 +142,7 @@ const CouponsList = () => {
         },
         {
             title: 'Chức năng',
+            width: 170,
             render: ({ key: _id }: any) => {
                 return (
                     <div style={{ width: '150px' }}>
