@@ -1,29 +1,42 @@
-import React from 'react';
+import { FaNewspaper } from "react-icons/fa";
+import { FiTarget } from "react-icons/fi";
+import { IoLocate } from "react-icons/io5";
+import { MdOutlineSecurityUpdateGood } from "react-icons/md";
 
 const ReviewPage = () => {
   return (
 
     <div className="text-black min-h-screen">
       <div className="text-center p-4 mb-4">
-        <h1 className="text-4xl font-bold py-6 text-center">Casa Furniture là 1 website bán đồ nội thất mới được thành lập.</h1>
-        <p className="text-1xl m-4 flex flex-col items-center ">
-          <span className="opacity-50 m-3">Ra mắt năm 2023, nền tảng Casa được xây dựng nhằm cung cấp cho người dùng những trải nghiệm dễ dàng,
-            an toàn và nhanh chóng khi mua sắm trực tuyến thông qua hệ thống hỗ trợ thanh toán và vận hành tốt.</span>
-          <span className="opacity-50">
-            Chúng tôi có niềm tin mạnh mẽ rằng trải nghiệm mua sắm trực tuyến phải đơn giản, dễ dàng và mang đến cảm xúc vui thích.
-            Niềm tin này truyền cảm hứng và thúc đẩy chúng tôi mỗi ngày tại Casa.
-          </span>
-        </p>
+        <h1 className="text-1xl font-bold py-6 text-center font-semibold">Casa Furniture là 1 website bán đồ nội thất mới được thành lập!</h1>
+      </div>
+      <div className="flex justify-center mb-5">
+        <div className="w-3/5 p-4 m-2 text-center shadow-md rounded-lg border-2">
+          <h2 className="text-2xl font-bold mb-2 flex items-center justify-center">
+            Ra mắt năm 2023 <FaNewspaper className="ml-2" />
+          </h2>
+          <p className="text-sm opacity-50 mt-3">
+            Nền tảng Casa được xây dựng nhằm cung cấp cho người dùng những trải nghiệm dễ dàng, an toàn và nhanh chóng khi mua sắm trực tuyến thông qua hệ thống hỗ trợ thanh toán và vận hành tốt.
+          </p>
+        </div>
+        <div className="w-3/5 p-4 m-2 text-center shadow-md rounded-lg border-2">
+          <h2 className="text-2xl font-bold mb-2 flex items-center justify-center">
+            Đem đến cho khách hàng <MdOutlineSecurityUpdateGood className="ml-2" />
+          </h2>
+          <p className="text-sm opacity-50 mt-3">
+            Chúng tôi có niều tin mạnh mẽ rằng trải nghiệm mua sắm trực tuyến phải đơn giản, dễ dàng và mang đến cảm xúc vui thích. Niều tin này truyền cảm hứng và thúc đẩy chúng tôi mỗi ngày tại Casa.
+          </p>
+        </div>
       </div>
 
       <div className="flex justify-center mb-5">
         <div className="w-3/5 p-4 m-2 text-center shadow-md rounded-lg border-2">
-          <h2 className="text-2xl font-bold mb-2">Mục tiêu của chúng tôi</h2>
+          <h2 className="text-2xl font-bold mb-2 flex items-center justify-center">Mục tiêu của chúng tôi <FiTarget className="ml-2" /></h2>
           <p className="text-sm opacity-50 mt-3">Chúng tôi tin tưởng vào sức mạnh khai triển của công nghệ và mong muốn góp phần làm cho thế giới trở nên
             tốt đẹp hơn bằng việc kết nối cộng đồng người mua và người bán thông qua việc cung cấp một nền tảng mới.</p>
         </div>
         <div className="w-3/5 p-4 m-2 text-center shadow-md rounded-lg border-2">
-          <h2 className="text-2xl font-bold mb-2">Định vị của chúng tôi</h2>
+          <h2 className="text-2xl font-bold mb-2 flex items-center justify-center">Định vị của chúng tôi <IoLocate className="ml-2" /></h2>
           <p className="text-sm opacity-50 mt-3">Đối với người dùng trên toàn khu vực, Casa mang đến trải nghiệm mua sắm trực tuyến tích hợp với vô số sản phẩm đa dạng chủng loại,
             cộng đồng người dùng năng động và chuỗi dịch vụ liền mạch.</p>
         </div>
@@ -31,7 +44,7 @@ const ReviewPage = () => {
 
       <div className="text-center p-2 mb-5">
         <div className="w-full p-4 m-2 text-center shadow-md rounded-lg border-2">
-          <h2 className="text-2xl font-bold mb-2">Đặc điểm về con người của chúng tôi</h2>
+          <h2 className="text-2xl font-bold mb-2">Đặc điểm về con người của chúng tôi </h2>
           <p className="text-1xl opacity-50 m-4">Để định nghĩa chúng tôi là ai - Thông qua lời nói hay cách ứng xử trong nhiều trường hợp khác nhau - Thì thực chất, chúng tôi Gần gũi, Vui vẻ và Đồng lòng.
             Đây là những đặc tính chính và nổi bật trong từng bước đường phát triển của Casa Furniture.</p>
           <div className="flex justify-between">

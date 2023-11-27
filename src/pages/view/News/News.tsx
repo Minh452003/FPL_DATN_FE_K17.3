@@ -8,7 +8,6 @@ const News = () => {
   // console.log(newList);
 
   const itemsPerPage = 4;
-
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
 
   // Tính chỉ số của tin tức đầu tiên và cuối cùng trên trang hiện tại
@@ -28,7 +27,7 @@ const News = () => {
     return (
       <div>
         <div
-          className="grid  px-4 bg-white place-content-center  pb-3"
+          className="grid  px-4 bg-white place-content-center   pb-3"
           style={{ height: "500px" }}
         >
           <div className="">

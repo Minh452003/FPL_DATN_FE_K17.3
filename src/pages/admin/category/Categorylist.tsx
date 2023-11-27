@@ -77,6 +77,7 @@ const Categorylist = () => {
       title: "STT",
       dataIndex: "STT",
       key: "STT",
+      width: 90,
       render: (index: number) => <a>{index}</a>,
       sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
       sortOrder: sortedInfo.columnKey === "STT" && sortedInfo.order,
@@ -84,11 +85,13 @@ const Categorylist = () => {
     },
     {
       title: "Ảnh ",
+      width: 120,
       dataIndex: "category_image",
       key: "category_image",
     },
     {
       title: "Danh Mục",
+      width: 200,
       dataIndex: "category_name",
       key: "category_name",
       sorter: (a: any, b: any) =>
@@ -98,6 +101,7 @@ const Categorylist = () => {
     },
     {
       title: "Tiền đặt cọc (%)",
+      width: 200,
       dataIndex: "price_increase_percent",
       key: "price_increase_percent",
       render: (index: string) => <a>{index}%</a>,
@@ -109,6 +113,7 @@ const Categorylist = () => {
     },
     {
       title: "Chức năng",
+      width: 170,
       render: ({ key: _id }: { key: string }) => (
         <div style={{ width: "150px" }}>
           <Button

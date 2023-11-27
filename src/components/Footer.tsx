@@ -58,8 +58,9 @@ const Footer = () => {
             <img src="https://res.cloudinary.com/dkvghcobl/image/upload/v1700053906/rw3dfdxjaknl7jlvnafj.png" alt="Logo Casa"
             />
           </div>
-          <p className="text-sm px-2">Công ty Cổ phần Đầu tư MewMew là nhà bán lẻ số 1 Việt Nam về doanh thu và lợi nhuận, với mạng lưới hơn 2200 cửa hàng trên toàn quốc. MewMew vận hành các chuỗi cửa hàng - nhà hàng MewFurniture, MewNature, MewINT , MewCoffee . Ngoài ra, MewMew đã mở rộng ra thị trường nước ngoài chuỗi nội thất Mew Furniture tại Các nước khu vực Đông Nam Á.</p>
-
+          <p className="text-sm px-2">Chúng tôi xây dựng Website Casa Furniture để mong rằng quý khách có trải nghiệm mua sắm trực tuyến đơn giản, tiện lợi.
+            Đặt niềm tin và sự tin tưởng để chúng tôi có động lực phát triển hơn từng ngày!</p>
+          <p>TRÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG RẤT NHIỀU!</p>
           <div className="mx-auto  space-x-4 my-5 border-b border-t  border-y-zinc-500  max-w-3xl">
             <div className="flex justify-center space-x-5 py-2">
               <img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/facebook.png?1693834920118" alt="" />

@@ -250,6 +250,7 @@ const DashBoardPage = () => {
             title: "STT",
             dataIndex: "STT",
             key: "STT",
+            width: 100,
             render: (index: any) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
@@ -259,6 +260,7 @@ const DashBoardPage = () => {
             title: "Name",
             dataIndex: "name",
             key: "name",
+            width: 250,
             render: (text: any) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.name.localeCompare(b.name), // Sắp xếp theo Name
             sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
@@ -268,11 +270,13 @@ const DashBoardPage = () => {
             title: "Ảnh",
             dataIndex: "image",
             key: "image",
+            width: 100,
         },
         {
             title: "Giá",
             dataIndex: "price",
             key: "price",
+            width: 100,
             render: (price: any) => (
                 <p className="text-red-700">{formatCurrency(price)}₫</p>
             ),
@@ -282,6 +286,7 @@ const DashBoardPage = () => {
         },
         {
             title: "Đã bán",
+            width: 100,
             dataIndex: "quantity",
             key: "quantity",
             render: (text: any) => <a>{text}</a>,
@@ -293,6 +298,7 @@ const DashBoardPage = () => {
             title: "Danh Mục",
             dataIndex: "category",
             key: "category",
+            width: 120,
             render: (record: any) => {
                 const catename = category?.find((cate: any) => cate._id === record);
                 return catename?.category_name;
@@ -302,6 +308,7 @@ const DashBoardPage = () => {
             title: "Chất liệu",
             dataIndex: "materials",
             key: "materials",
+            width: 120,
             render: (record: string) => {
                 const materialname = material?.find(
                     (materials: any) => materials._id === record
@@ -313,6 +320,7 @@ const DashBoardPage = () => {
             title: "Thương hiệu",
             dataIndex: "brand",
             key: "brand",
+            width: 150,
             render: (record: string) => {
                 const brandname = brand?.find((bra: any) => bra._id === record);
                 return brandname?.brand_name;

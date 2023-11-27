@@ -44,17 +44,20 @@ const Listcomments = () => {
             title: 'Sản Phẩm',
             dataIndex: 'product',
             key: 'product',
+            width: 200,
         },
         {
             title: 'Số lượng đánh giá',
             dataIndex: 'comments_count',
             key: 'comments_count',
+            width: 200,
             sorter: (a: any, b: any) => a.comments_count - b.comments_count,
             sortOrder: sortedInfo.columnKey === 'comments_count' && sortedInfo.order,
             ellipsis: true,
         },
         {
             title: 'Chức năng',
+            width: 120,
             render: ({ key: _id }: any) => (
                 <div>
                     <Button className="mr-5 text-blue-500">

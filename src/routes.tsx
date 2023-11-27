@@ -9,7 +9,6 @@ import PayPage from "./pages/view/Pay/PayPage";
 import ProductPage from "./pages/view/ProductPage/ProductPage";
 import Signup from "./pages/view/Auth/Signup";
 import Productlist from "./pages/admin/products/Productlist";
-import Productadd from "./pages/admin/products/Productadd";
 import Productupdate from "./pages/admin/products/Productupdate";
 import Categorylist from "./pages/admin/category/Categorylist";
 import Categoryadd from "./pages/admin/category/Categoryadd";
@@ -75,6 +74,7 @@ import ContactList from "./pages/admin/contact/ContactList";
 import ChangePassword from "./pages/view/User/Account/Changepassword";
 import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
 import ContactPage from "./pages/view/Contact/ContactPage";
+import Productadd from "./pages/admin/productchill/Productadd";
 
 
 

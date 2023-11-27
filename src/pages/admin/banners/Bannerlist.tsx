@@ -52,8 +52,6 @@ const Bannerlist = () => {
       }
     })
   }
-  
-
     const columns = [
         {
             title: 'STT',
@@ -68,11 +66,13 @@ const Bannerlist = () => {
         {
             title: 'Ảnh ',
             dataIndex: 'image',
-            key: 'image',
+          key: 'image',
+          width: 100,
         },
 
     {
       title: 'Chức năng',
+      width: 170,
       render: ({ key: _id }: { key: string }) => (
         <div style={{ width: '150px' }}>
           <Button className='mr-1 text-red-500' onClick={() => deleteBanner(_id)}>

@@ -70,9 +70,11 @@ const Sizeslist = () => {
             title: 'Tên',
             dataIndex: 'size_name',
             key: 'size_name',
+            width: 100,
         },
         {
             title: 'Chiều cao',
+            width: 120,
             dataIndex: 'size_height',
             key: 'size_height',
             sorter: (a: any, b: any) => a.size_height - b.size_height,
@@ -81,6 +83,7 @@ const Sizeslist = () => {
         },
         {
             title: 'Độ dài',
+            width: 120,
             dataIndex: 'size_length',
             key: 'size_length',
             sorter: (a: any, b: any) => a.size_length - b.size_length,
@@ -89,6 +92,7 @@ const Sizeslist = () => {
         },
         {
             title: 'Cân nặng',
+            width: 120,
             dataIndex: 'size_weight',
             key: 'size_weight',
             sorter: (a: any, b: any) => a.size_weight - b.size_weight,
@@ -97,6 +101,7 @@ const Sizeslist = () => {
         },
         {
             title: 'Chiều dài',
+            width: 120,
             dataIndex: 'size_width',
             key: 'size_width',
             sorter: (a: any, b: any) => a.size_width - b.size_width,
@@ -105,6 +110,7 @@ const Sizeslist = () => {
         },
         {
             title: 'Chức năng',
+            width: 170,
             render: ({ key: _id }: any) => {
                 return (
                     <div style={{ width: '150px' }}>
