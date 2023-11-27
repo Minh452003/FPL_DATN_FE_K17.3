@@ -1,4 +1,4 @@
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaCompress, FaExpand } from "react-icons/fa";
 import "./CustomizedProductAdd.css";
 import "./Responsive_CustomizedProductAdd.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
 import { Tab, initTE } from "tw-elements";
-
 import { getDecodedAccessToken } from "@/decoder";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useGetCategoryQuery } from "@/api/categoryApi";
@@ -58,11 +57,6 @@ const CustomizedProductAdd = () => {
     setShowAllMaterials(!showAllMaterials);
   };
 
-  const handleToggleHeight = () => {
-    setExpanded(!expanded);
-  };
-
-  // --------------------------
   const [addCustom, resultAdd]: any = useAddCustomProductMutation();
   const handleAddToCart = () => {
     if (data && id) {
@@ -169,23 +163,19 @@ const CustomizedProductAdd = () => {
 
   return (
     <div className={`container_swap ${expanded ? "expanded" : ""}`}>
-      <div className="container1">
-        <div className="flex items-center pt-2 px-2">
+      <div className="container">
+        <div className="flex items-center my-4 px-3">
           <div className="float-left font-bold">Trang Chủ</div>
           <FaArrowRight className="ml-2" />
-          <div className="pl-2 font-bold">{categoryLishOne}</div>
+          <div className="pl-2">{categoryLishOne}</div>
           <FaArrowRight className="ml-2" />
-          <div className="pl-2 font-bold">{listOneData?.product_name}</div>
+          <div className="pl-2">{listOneData?.product_name}</div>
         </div>
         <div className="content1">
-          <div className="flex">
-            <h3 className="font-bold pt-10 pl-32 iklm1">
-              {listOneData?.product_name}
-            </h3>
-            <p className="price1">
-              {formatCurrency(listOneData?.product_price)}₫
-            </p>
+          <div className=" flex flex-col items-end">
+            <h3 className="font-bold iklm mt-4 text-center ">{listOneData?.product_name}</h3>
           </div>
+          <p className="mt-2 text-red-500 text-lg text-center ml-20"> Giá : {formatCurrency(listOneData?.product_price)}₫</p>
           <div className="grid grid-cols-2 gap-2 np1">
             <div className="product-image1">
               <div className="mb-6s">
@@ -229,8 +219,8 @@ const CustomizedProductAdd = () => {
                     <Link
                       to={`#image-tab-${index}`}
                       className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
-                          ? "bg-primary-100 text-primary-700"
-                          : "bg-neutral-700 text-white"
+                        ? "bg-primary-100 text-primary-700"
+                        : "bg-neutral-700 text-white"
                         } md:mr-4 `}
                       id={`image-tab-${index}`}
                       data-te-toggle="tab"
@@ -276,18 +266,13 @@ const CustomizedProductAdd = () => {
                       .map((color: any, index: number) => {
                         const isActive = color._id === activeColor;
                         return (
-                          <div key={color._id} className="flex-row mb-2">
+                          <div key={color._id} className="flex-row mb-2 mr-2">
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={`btn2s btn-solid-primary2s btn-bs ${isActive ? "active1" : ""
+                              className={` ${isActive ? "active1" : ""} h-10 min-w-32 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
                               onClick={() => handleClickColor(color._id)}
-                              style={{
-                                height: "40px",
-                                width: "100px",
-                                fontSize: "12px",
-                              }}
                             >
                               {color.colors_name}
                             </button>
@@ -304,7 +289,8 @@ const CustomizedProductAdd = () => {
                     className={`btn-show-more ${showAllColors ? "collapses" : "expand"
                       }`}
                   >
-                    {showAllColors ? "Thu gọn" : "Xem thêm"}
+
+                    {showAllColors ? "-- Thu gọn --" : "Xem thêm ++"}
                   </button>
                 )}
               </div>
@@ -318,18 +304,13 @@ const CustomizedProductAdd = () => {
                       .map((size: any, index: number) => {
                         const isActive = size._id === activeSize;
                         return (
-                          <div key={size._id} className="flex-row mb-2">
+                          <div key={size._id} className="flex-row mb-2 mr-2">
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={`btn2s btn-solid-primary2s btn-bs ${isActive ? "active1" : ""
+                              className={` ${isActive ? "active1" : ""} h-10 min-w-32 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
                               onClick={() => handleClickSize(size._id)}
-                              style={{
-                                height: "40px",
-                                width: "100px",
-                                fontSize: "12px",
-                              }}
                             >
                               {size.size_name}
                             </button>
@@ -344,7 +325,7 @@ const CustomizedProductAdd = () => {
                       onClick={() => setShowAllSizes(!showAllSizes)}
                       className="btn-show-more"
                     >
-                      {showAllSizes ? "Thu gọn" : "Xem thêm"}
+                      {showAllSizes ? "-- Thu gọn --" : "Xem thêm ++"}
                     </button>
                   )}
                 </div>
@@ -365,18 +346,13 @@ const CustomizedProductAdd = () => {
                       .map((material: any, index: number) => {
                         const isActive = material._id === activeMaterial;
                         return (
-                          <div key={material._id} className="flex-row mb-2">
+                          <div key={material._id} className="flex-row mb-2 mr-2">
                             <button
                               aria-label="M"
                               aria-disabled="false"
-                              className={`btn2s btn-solid-primary2s btn-bs ${isActive ? "active1" : ""
+                              className={` ${isActive ? "active1" : ""} h-10 min-w-32 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
                               onClick={() => handleClickMaterial(material._id)}
-                              style={{
-                                height: "40px",
-                                width: "100px",
-                                fontSize: "12px",
-                              }}
                             >
                               {material.material_name}
                             </button>
@@ -390,10 +366,10 @@ const CustomizedProductAdd = () => {
                 {materials && materials.material.length > 3 && (
                   <button
                     onClick={handleToggleMaterials}
-                    className={`btn-show-more1 ${showAllMaterials ? "collapses" : "expand"
+                    className={`btn-show-more ${showAllMaterials ? "collapses" : "expand"
                       }`}
                   >
-                    {showAllMaterials ? "Thu gọn" : "Xem thêm"}
+                    {showAllMaterials ? "-- Thu gọn --" : "Xem thêm ++"}
                   </button>
                 )}
               </div>

@@ -329,7 +329,7 @@ const Product_Detail = () => {
           <FaArrowRight className="ml-2" />
           <div className="pl-2">{listOneData?.product_name}</div>
         </div>
-        <div className="">
+        <div>
           <div className="md:grid md:grid-cols-2 bg-white p-4 gap-2 justify-between px-3">
             <div className=" md:w-43% md:ml-53px md:h-106px">
               <div className="mb-6">

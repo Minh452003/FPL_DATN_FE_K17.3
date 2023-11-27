@@ -14,7 +14,7 @@ import { getDecodedAccessToken } from "@/decoder";
 
 
 const Custom_ProductDetail = () => {
-  const { id  } = useParams();
+  const { id } = useParams();
   const decodedToken: any = getDecodedAccessToken();
   const idUser = decodedToken ? decodedToken.id : null;
   const { data }: any = useGetCustomizedproductsByIdQuery(id || "");
@@ -50,16 +50,16 @@ const Custom_ProductDetail = () => {
       return "0"; // Giá trị mặc định hoặc xử lý khác
     }
   }
-  const [addCart, resultAdd] = useAddCartMutation();
-  
+  const [addCart] = useAddCartMutation();
+
 
   // ADD to cart custom-Product
   const handleAddToCart = () => {
-    if (customProducts  && idUser) {
+    if (customProducts && idUser) {
       const sizeId = customProducts.sizeId;
-      const colorId = customProducts.colorId; 
+      const colorId = customProducts.colorId;
       const materialId = customProducts.materialId;
-      const cartData : any  = {
+      const cartData: any = {
         productId: customProducts._id,
         product_name: customProducts.product_name,
         product_price: customProducts?.product_price,
@@ -200,9 +200,6 @@ const Custom_ProductDetail = () => {
                 <Button
                   aria-disabled={!id}
                   className="btn6s btn-solid-primary6s btn-fs hls"
-                  onClick={() => {
-
-                  }}
                 >
                   Thêm sản phẩm
                 </Button>
