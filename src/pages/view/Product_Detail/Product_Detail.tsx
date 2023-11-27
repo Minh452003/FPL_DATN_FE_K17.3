@@ -375,11 +375,10 @@ const Product_Detail = () => {
                                     <li className="ima" role="presentation" key={index}>
                                         <Link
                                             to={`#image-tab-${index}`}
-                                            className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${
-                                                selectedIndex === index
-                                                    ? 'bg-primary-100 text-primary-700'
-                                                    : 'bg-neutral-700 text-white'
-                                            } md:mr-4 `}
+                                            className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
+                                                ? 'bg-primary-100 text-primary-700'
+                                                : 'bg-neutral-700 text-white'
+                                                } md:mr-4 `}
                                             id={`image-tab-${index}`}
                                             data-te-toggle="tab"
                                             key={`tab-${index}`}
@@ -432,17 +431,17 @@ const Product_Detail = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className=" space-y-3 px-3">
+                            <div className="space-y-3">
                                 <div className="mt-3">
                                     {childProduct ? (
                                         <p className="text-red-700 text-2xl font-bold">
-                                            <span>đ</span>{' '}
                                             {formatCurrency(childProduct?.product?.product_price)}
+                                            <span>₫</span>
                                         </p>
                                     ) : (
                                         <p className="text-red-700 text-2xl font-bold">
-                                            <span>đ</span>{' '}
                                             {formatCurrency(listOneData?.product_price)}
+                                            <span>₫</span>
                                         </p>
                                     )}
                                 </div>
@@ -473,9 +472,8 @@ const Product_Detail = () => {
                                                     key={color.colorId}
                                                     aria-label="M"
                                                     aria-disabled="false"
-                                                    className={` border boder-1 text-sm font-bold rounded-lg py-1 px-2 ${
-                                                        isActive ? 'active1' : ''
-                                                    }`}
+                                                    className={` border boder-1 text-sm font-bold rounded-lg py-1 px-2 ${isActive ? 'active1' : ''
+                                                        }`}
                                                     onClick={() => handleClickColor(color.colorId)}
                                                 >
                                                     {colorname.colors_name}
@@ -501,9 +499,8 @@ const Product_Detail = () => {
                                                     key={size.sizeId}
                                                     aria-label="M"
                                                     aria-disabled="false"
-                                                    className={`text-sm border boder-1 rounded-lg px-2 py-1 ${
-                                                        isActive ? 'active1' : ''
-                                                    }`}
+                                                    className={`text-sm border boder-1 rounded-lg px-2 py-1 ${isActive ? 'active1' : ''
+                                                        }`}
                                                     onClick={() => handleClickSize(size.sizeId)}
                                                     type="submit"
                                                 >
@@ -624,9 +621,8 @@ const Product_Detail = () => {
                                     />
                                     <label
                                         htmlFor="chi-tiet"
-                                        className={` md:text-xl font-bold tab-link ${
-                                            activeTab === 'tab-1' ? 'active-tab' : ''
-                                        }`}
+                                        className={` md:text-xl font-bold tab-link ${activeTab === 'tab-1' ? 'active-tab' : ''
+                                            }`}
                                         data-tab="tab-1"
                                     >
                                         Thông tin chi tiết
@@ -643,9 +639,8 @@ const Product_Detail = () => {
                                     />
                                     <label
                                         htmlFor="binh-luan"
-                                        className={`md:text-xl font-bold tab-link ${
-                                            activeTab === 'tab-2' ? 'active-tab' : ''
-                                        }`}
+                                        className={`md:text-xl font-bold tab-link ${activeTab === 'tab-2' ? 'active-tab' : ''
+                                            }`}
                                         data-tab="tab-2"
                                     >
                                         Đánh giá
@@ -698,11 +693,10 @@ const Product_Detail = () => {
                                                     <button
                                                         key={rating}
                                                         onClick={() => handleRatingFilter(rating)}
-                                                        className={`rating-button py-1 px-2 ${
-                                                            selectedRating === rating
-                                                                ? 'selected'
-                                                                : ''
-                                                        }`}
+                                                        className={`rating-button py-1 px-2 ${selectedRating === rating
+                                                            ? 'selected'
+                                                            : ''
+                                                            }`}
                                                     >
                                                         {rating === 'Tất cả'
                                                             ? 'Tất cả'
@@ -724,10 +718,10 @@ const Product_Detail = () => {
                                                         <div className="evaluate">
                                                             <div className="inline-flex items-center mr-3 text-xs text-gray-900 dark:text-white font-semibold">
                                                                 {comment &&
-                                                                comment.userId.avatar ? (
+                                                                    comment?.userId?.avatar ? (
                                                                     <img
                                                                         src={
-                                                                            comment?.userId.avatar
+                                                                            comment?.userId?.avatar
                                                                                 ?.url
                                                                         }
                                                                         className="mr-2 w-8 h-8 rounded-full avatar"
@@ -748,7 +742,7 @@ const Product_Detail = () => {
                                                                     )}
                                                                 </a>
                                                                 {comment &&
-                                                                comment.userId._id == id ? (
+                                                                    comment?.userId?._id == id ? (
                                                                     <div className="button-wrapper float-right">
                                                                         <Button
                                                                             className="text-red-500 "
@@ -865,128 +859,127 @@ const Product_Detail = () => {
                                                 >
                                                     {similarProducts
                                                         ? similarProducts.map(
-                                                              (similar: any, index: any) => (
-                                                                  <SwiperSlide
-                                                                      style={{
-                                                                          width: '285px',
-                                                                          marginLeft: '27px',
-                                                                      }}
-                                                                      key={similar._id}
-                                                                  >
-                                                                      <div
-                                                                          className="items slick-slides slick-currents slick-actives"
-                                                                          tabIndex={-1}
-                                                                          role="option"
-                                                                          aria-describedby={`slick-slide${
-                                                                              index + 10
-                                                                          }`}
-                                                                          style={{
-                                                                              width: '235px',
-                                                                              marginLeft: '-18px',
-                                                                              // marginRight: "37px",
-                                                                          }}
-                                                                          data-slick-index={`${index}`}
-                                                                          aria-hidden="false"
-                                                                      >
-                                                                          <div className="col-item5s">
-                                                                              <div className="item-inners">
-                                                                                  <div className="product-wrappers">
-                                                                                      <div className="thumb-wrappers">
-                                                                                          <Link
-                                                                                              to={
-                                                                                                  ''
-                                                                                              }
-                                                                                              className="thumbs flips"
-                                                                                              title="Bàn trà gỗ tự nhiên 5CBT-136"
-                                                                                              tabIndex={
-                                                                                                  0
-                                                                                              }
-                                                                                          >
-                                                                                              <img
-                                                                                                  className="lazyloads loadeds"
-                                                                                                  src={
-                                                                                                      similar
-                                                                                                          .image[0]
-                                                                                                          .url
-                                                                                                  }
-                                                                                              />
-                                                                                          </Link>
-                                                                                      </div>
-                                                                                  </div>
-                                                                                  <div className="item-infos">
-                                                                                      <div className="info-inners">
-                                                                                          <h3 className="item-titles">
-                                                                                              {' '}
-                                                                                              <Link
-                                                                                                  to={
-                                                                                                      ''
-                                                                                                  }
-                                                                                                  tabIndex={
-                                                                                                      0
-                                                                                                  }
-                                                                                              >
-                                                                                                  {
-                                                                                                      similar.product_name
-                                                                                                  }{' '}
-                                                                                              </Link>{' '}
-                                                                                          </h3>
-                                                                                          <div className="item-contents">
-                                                                                              <div className="item-prices">
-                                                                                                  <div className="price-boxs">
-                                                                                                      <p className="special-prices">
-                                                                                                          <span className="prices">
-                                                                                                              {formatCurrency(
-                                                                                                                  similar?.product_price,
-                                                                                                              )}
+                                                            (similar: any, index: any) => (
+                                                                <SwiperSlide
+                                                                    style={{
+                                                                        width: '285px',
+                                                                        marginLeft: '27px',
+                                                                    }}
+                                                                    key={similar._id}
+                                                                >
+                                                                    <div
+                                                                        className="items slick-slides slick-currents slick-actives"
+                                                                        tabIndex={-1}
+                                                                        role="option"
+                                                                        aria-describedby={`slick-slide${index + 10
+                                                                            }`}
+                                                                        style={{
+                                                                            width: '235px',
+                                                                            marginLeft: '-18px',
+                                                                            // marginRight: "37px",
+                                                                        }}
+                                                                        data-slick-index={`${index}`}
+                                                                        aria-hidden="false"
+                                                                    >
+                                                                        <div className="col-item5s">
+                                                                            <div className="item-inners">
+                                                                                <div className="product-wrappers">
+                                                                                    <div className="thumb-wrappers">
+                                                                                        <Link
+                                                                                            to={
+                                                                                                ''
+                                                                                            }
+                                                                                            className="thumbs flips"
+                                                                                            title="Bàn trà gỗ tự nhiên 5CBT-136"
+                                                                                            tabIndex={
+                                                                                                0
+                                                                                            }
+                                                                                        >
+                                                                                            <img
+                                                                                                className="lazyloads loadeds"
+                                                                                                src={
+                                                                                                    similar
+                                                                                                        .image[0]
+                                                                                                        .url
+                                                                                                }
+                                                                                            />
+                                                                                        </Link>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="item-infos">
+                                                                                    <div className="info-inners">
+                                                                                        <h3 className="item-titles">
+                                                                                            {' '}
+                                                                                            <Link
+                                                                                                to={
+                                                                                                    ''
+                                                                                                }
+                                                                                                tabIndex={
+                                                                                                    0
+                                                                                                }
+                                                                                            >
+                                                                                                {
+                                                                                                    similar.product_name
+                                                                                                }{' '}
+                                                                                            </Link>{' '}
+                                                                                        </h3>
+                                                                                        <div className="item-contents">
+                                                                                            <div className="item-prices">
+                                                                                                <div className="price-boxs">
+                                                                                                    <p className="special-prices">
+                                                                                                        <span className="prices">
+                                                                                                            {formatCurrency(
+                                                                                                                similar?.product_price,
+                                                                                                            )}
 
-                                                                                                              ₫
-                                                                                                          </span>
-                                                                                                      </p>
-                                                                                                  </div>
-                                                                                              </div>
-                                                                                          </div>
-                                                                                      </div>
+                                                                                                            ₫
+                                                                                                        </span>
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
 
-                                                                                      <div className="actionss hidden-xs hidden-sm remove_html">
-                                                                                          <form>
-                                                                                              <input
-                                                                                                  type="hidden"
-                                                                                                  tabIndex={
-                                                                                                      0
-                                                                                                  }
-                                                                                              />
-                                                                                              <button
-                                                                                                  className="buttons btn-carts"
-                                                                                                  title="Mua hàng"
-                                                                                                  type="button"
-                                                                                                  tabIndex={
-                                                                                                      0
-                                                                                                  }
-                                                                                              >
-                                                                                                  <Link
-                                                                                                      onClick={
-                                                                                                          scrollToTop
-                                                                                                      }
-                                                                                                      to={`/products/${similar._id}`}
-                                                                                                  >
-                                                                                                      Chi
-                                                                                                      tiết
-                                                                                                  </Link>
-                                                                                              </button>
-                                                                                              <Model
-                                                                                                  products={
-                                                                                                      similar
-                                                                                                  }
-                                                                                              />
-                                                                                          </form>
-                                                                                      </div>
-                                                                                  </div>
-                                                                              </div>
-                                                                          </div>
-                                                                      </div>
-                                                                  </SwiperSlide>
-                                                              ),
-                                                          )
+                                                                                    <div className="actionss hidden-xs hidden-sm remove_html">
+                                                                                        <form>
+                                                                                            <input
+                                                                                                type="hidden"
+                                                                                                tabIndex={
+                                                                                                    0
+                                                                                                }
+                                                                                            />
+                                                                                            <button
+                                                                                                className="buttons btn-carts"
+                                                                                                title="Mua hàng"
+                                                                                                type="button"
+                                                                                                tabIndex={
+                                                                                                    0
+                                                                                                }
+                                                                                            >
+                                                                                                <Link
+                                                                                                    onClick={
+                                                                                                        scrollToTop
+                                                                                                    }
+                                                                                                    to={`/products/${similar._id}`}
+                                                                                                >
+                                                                                                    Chi
+                                                                                                    tiết
+                                                                                                </Link>
+                                                                                            </button>
+                                                                                            <Model
+                                                                                                products={
+                                                                                                    similar
+                                                                                                }
+                                                                                            />
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </SwiperSlide>
+                                                            ),
+                                                        )
                                                         : 'Không có sản phẩm liên quan'}
                                                 </div>
                                             </div>

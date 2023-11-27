@@ -13,7 +13,7 @@ import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
 import { getDecodedAccessToken } from "@/decoder";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGetChildProductPriceQuery } from "@/api/chilProductApi";
 const CartPage = () => {
   const decodedToken: any = getDecodedAccessToken();
@@ -169,7 +169,8 @@ const CartPage = () => {
             <input
               min="1"
               max={childProduct?.product.stock_quantity}
-              defaultValue={quantityInput[`${record.productId}_${record.sizeId}_${record.colorId}_${record.materialId}`] || text}
+              value={quantityInput[`${record.productId}_${record.sizeId}_${record.colorId}_${record.materialId}`] || text}
+              readOnly
             />
           )}
           <button
@@ -216,7 +217,33 @@ const CartPage = () => {
   if (!id) {
     return (
       <div>
-        <p>Bạn chưa đăng nhập</p>
+        <div
+          className="grid px-4 bg-white place-content-center  pb-3"
+          style={{ height: "500px" }}
+        >
+          <div className="">
+            <img
+              className="w-[400px]"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRllmpIxnyIgtYuaJhrUERHnONFy6GdgWfgbg&usqp=CAU"
+              alt=""
+            />
+
+            <h1
+              className="mt-6 font-bold tracking-tight text-gray-900 "
+              style={{ fontSize: "17px" }}
+            >
+              Bạn chưa đăng nhập, hãy tiến hành đăng nhập đã nhé !
+            </h1>
+
+            <Link
+              to="/signin"
+              className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+              style={{ background: "#ff7600", marginLeft: "90px" }}
+            >
+              Đăng nhập cùng Casa
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
