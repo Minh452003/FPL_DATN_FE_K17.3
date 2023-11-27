@@ -1067,7 +1067,7 @@ a {
 
 .thumb-wrapper .thumb img.loaded {
     min-height: unset;
-    height: unset;
+    height: 100vh;
 }
 
 .thumb-wrapper .thumb img {

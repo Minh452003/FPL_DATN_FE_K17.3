@@ -26,8 +26,8 @@ import { usePayMomoMutation, usePayPaypalMutation } from '@/api/paymentApi';
 import { useGetCouponByUserQuery } from '@/api/couponsApi';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './PayPage.css';
-import { AiFillCalendar } from "react-icons/ai";
 import { format } from 'date-fns';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 type TypeInputs = {
     couponId?: string;
 };
@@ -43,17 +43,19 @@ const PayPage = () => {
     const { data: dataCoupons }: any = useGetCouponByUserQuery(id);
     const coupons = dataCoupons?.validCoupons || [];
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCouponId, setSelectedCouponId] = useState('');
 
     const showModal = () => {
         setIsModalOpen(true);
     };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
+    const handleRadioChange = (e: any) => {
+        setSelectedCouponId(e.target.value);
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
+        setSelectedCouponId('')
     };
 
     const { data: city }: any = useGetCityQuery();
@@ -65,8 +67,8 @@ const PayPage = () => {
     const [removeAllCart] = useRemoveAllCartMutation();
     const [addMomo] = usePayMomoMutation();
     const [addPaypal] = usePayPaypalMutation();
-    const [applyCoupon] = useApplyCouponMutation();
-    const [removeCoupon] = useRemoveCouponMutation();
+    const [applyCoupon, resultAdd] = useApplyCouponMutation();
+    const [removeCoupon, resultRemove] = useRemoveCouponMutation();
 
     const { data: user } = useGetUserByIdQuery(id);
     const [district, setDistrict] = useState([]);
@@ -181,7 +183,6 @@ const PayPage = () => {
     const formatCurrency = (number: number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
-    console.log(carts?.data);
 
     const onFinish = ({ address, phone, notes }: any) => {
         const cartDataWithoutId = { ...carts?.data };
@@ -399,7 +400,7 @@ const PayPage = () => {
                 icon: 'error',
                 title: response.error.data.message,
                 showConfirmButton: true,
-                timer: 800,
+                timer: 1500,
             });
         } else {
             Swal.fire({
@@ -407,7 +408,7 @@ const PayPage = () => {
                 icon: 'success',
                 title: 'Sử dụng phiếu giảm giá thành công!',
                 showConfirmButton: true,
-                timer: 800,
+                timer: 1500,
             });
             setTotal(response.data.data.total);
         }
@@ -420,7 +421,7 @@ const PayPage = () => {
                 icon: 'error',
                 title: response.error.data.message,
                 showConfirmButton: true,
-                timer: 800,
+                timer: 1500,
             });
         } else {
             Swal.fire({
@@ -428,9 +429,10 @@ const PayPage = () => {
                 icon: 'success',
                 title: 'Huỷ phiếu giảm giá thành công!',
                 showConfirmButton: true,
-                timer: 700,
+                timer: 1500,
             });
         }
+        setIsModalOpen(false);
     };
 
     if (isLoading) return <Skeleton />;
@@ -628,9 +630,8 @@ const PayPage = () => {
                     <h3 className="pl-4 font-semibold pb-3">Thanh Toán</h3>
 
                     <div
-                        className={`border-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5 ${
-                            pay === 'cod' ? 'active' : ''
-                        }`}
+                        className={`border-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5 ${pay === 'cod' ? 'active' : ''
+                            }`}
                         onClick={() => setPay('cod')}
                     >
                         <label className="ml-3 mt-1">
@@ -648,9 +649,8 @@ const PayPage = () => {
                     </div>
 
                     <div
-                        className={`border-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5  ${
-                            pay === 'momo' ? 'active' : ''
-                        }`}
+                        className={`border-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5  ${pay === 'momo' ? 'active' : ''
+                            }`}
                         onClick={() => setPay('momo')}
                     >
                         <label className="ml-3 mt-1">
@@ -670,9 +670,8 @@ const PayPage = () => {
                     </div>
 
                     <div
-                        className={`border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5 ${
-                            pay === 'paypal' ? 'active' : ''
-                        }`}
+                        className={`border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5 ${pay === 'paypal' ? 'active' : ''
+                            }`}
                         onClick={() => setPay('paypal')}
                     >
                         <label className="ml-3 mt-1">
@@ -696,9 +695,8 @@ const PayPage = () => {
                             <h3 className="pl-4 font-semibold pb-3 pt-10">Cọc tiền</h3>
 
                             <div
-                                className={`order-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5 ${
-                                    type === 'momo' ? 'active' : ''
-                                }`}
+                                className={`order-solid border-2 rounded w-80 h-14 pl-2 pt-2 mb-5 ${type === 'momo' ? 'active' : ''
+                                    }`}
                                 onClick={() => setType('momo')}
                             >
                                 <label className="ml-3 mt-1">
@@ -722,9 +720,8 @@ const PayPage = () => {
                             </div>
 
                             <div
-                                className={`border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5 ${
-                                    type === 'paypal' ? 'active' : ''
-                                }`}
+                                className={`border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5 ${type === 'paypal' ? 'active' : ''
+                                    }`}
                                 onClick={() => setType('paypal')}
                             >
                                 <label className="ml-3 mt-1">
@@ -847,34 +844,45 @@ const PayPage = () => {
                                                     )}
                                                 </div>
                                             </div>
-                                            <button
-                                                className="rounded-md mr-4 w-32 h-10"
-                                                style={{
-                                                    background: '#31AC57',
-                                                    color: 'white',
-                                                    cursor: 'pointer',
-                                                }}
-                                            >
-                                                Huỷ
-                                            </button>
+                                            {resultRemove.isLoading ? (
+                                                <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                            ) : (
+                                                <button
+                                                    className="rounded-md mr-4 w-32 h-10"
+                                                    style={{
+                                                        background: '#31AC57',
+                                                        color: 'white',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                >
+                                                    Huỷ
+                                                </button>
+                                            )}
                                         </div>
                                     </form>
                                 </div>
                             ) : validCoupons && validCoupons.length > 0 ? (
                                 <div>
                                     <div className='flex justify-between px-2 '>
-                                         <div className='flex items-center'>
-                                         <p className=' mt-2'>Casa Voucher</p>
-                                         </div>
-                                         
-                                      
-                                         <button onClick={showModal} className='text-blue-800'>Chọn hoặc nhâp mã </button>
+                                        <div className='flex items-center'>
+                                            <p className=' mt-2'>Casa Voucher</p>
+                                        </div>
+                                        <button onClick={showModal} className='text-blue-800'>Chọn hoặc nhập mã </button>
                                     </div>
                                     <Modal
                                         title="Mã giảm giá hiện có "
                                         open={isModalOpen}
-                                        onOk={handleSubmit(onSubmit)}
                                         onCancel={handleCancel}
+                                        afterClose={handleCancel}
+                                        footer={[
+                                            resultAdd.isLoading ? (
+                                                <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                            ) : (
+                                                <Button key="ok" style={{ backgroundColor: 'brown', color: 'white' }} onClick={handleSubmit(onSubmit)}>
+                                                    Sử dụng
+                                                </Button>
+                                            )
+                                        ]}
                                     >
                                         {validCoupons &&
                                             validCoupons.map((coupon: any) => (
@@ -917,11 +925,12 @@ const PayPage = () => {
                                                         </div>
                                                         <div>
                                                             <input
-                                                                className="border rounded-full"
+                                                                className="larger-radio border rounded-full"
                                                                 type="radio"
-                                                                name="couponId"
                                                                 value={coupon._id}
                                                                 {...register('couponId')}
+                                                                checked={selectedCouponId === coupon._id}
+                                                                onChange={handleRadioChange}
                                                             />
                                                         </div>
                                                     </div>
