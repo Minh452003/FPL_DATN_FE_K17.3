@@ -1,4 +1,4 @@
-import { useGetCommentStatiscalQuery, useGetCountOrderQuery, useGetCountUserQuery, useGetOrderAccomplishedQuery, useGetOrderConfirmedQuery, useGetOrderUnconfirmedQuery, useGetProductSellQuery, useSellingProductsQuery, useStatisticalOrdersQuery, useTotalCreatedProductsQuery, useTotalSoldQuantityQuery, useViewedProductsQuery } from "@/api/statisticalApi";
+import { useGetCommentStatiscalQuery, useGetCountOrderQuery, useGetOrderAccomplishedQuery, useGetOrderCanceledQuery, useGetOrderConfirmedQuery, useGetOrderDeliveringQuery, useGetOrderUnconfirmedQuery, useGetProductSellQuery, useSellingProductsQuery, useStatisticalOrdersQuery, useTotalCreatedProductsQuery, useTotalSoldQuantityQuery, useViewedProductsQuery } from "@/api/statisticalApi";
 import { useEffect, useState } from "react";
 import { Bar, Doughnut } from 'react-chartjs-2';
 import 'chart.js';
@@ -9,6 +9,11 @@ import { useGetCategoryQuery } from "@/api/categoryApi";
 import { Skeleton, Table } from "antd";
 import { format } from "date-fns";
 import { AiFillStar, AiOutlineComment } from "react-icons/ai";
+import { FaCarSide, FaOpencart, FaProductHunt } from "react-icons/fa";
+import { SiQuantcast } from "react-icons/si";
+import { BiCartDownload } from "react-icons/bi";
+import { BsCartCheckFill, BsFillCartXFill } from "react-icons/bs";
+import { GiShoppingCart } from "react-icons/gi";
 
 const DashBoardPage = () => {
     const [month, setMonth] = useState(null);
@@ -49,10 +54,6 @@ const DashBoardPage = () => {
         month: month,
         year: year
     });
-    const { data: countUsers, isLoading: isLoadingUser } = useGetCountUserQuery<any>({
-        month: month,
-        year: year
-    });
     const { data: productSell, isLoading: isLoadingSell } = useGetProductSellQuery<any>({
         month: monthSta,
         year: yearSta
@@ -69,11 +70,15 @@ const DashBoardPage = () => {
         month: month,
         year: year
     });
-    const { data: orderAccomplished } = useGetOrderAccomplishedQuery<any>({
+    const { data: orderDelivering } = useGetOrderDeliveringQuery<any>({
         month: month,
         year: year
     });
-    const { data: comment, error } = useGetCommentStatiscalQuery<any>({
+    const { data: orderCanceled } = useGetOrderCanceledQuery<any>({
+        month: month,
+        year: year
+    });
+    const { data: orderAccomplished } = useGetOrderAccomplishedQuery<any>({
         month: month,
         year: year
     });
@@ -210,13 +215,16 @@ const DashBoardPage = () => {
             },
             title: {
                 display: true, // Hiển thị tiêu đề
-                text: 'Sản phẩm đã bán',
-                position: 'top'
+                text: 'Sản phẩm đã bán theo danh mục',
+                position: 'top',
+                font: {
+                    size: 18,
+                    weight: 'bold'
+                }
             },
             tooltip: {
                 callbacks: {
                     label: (context: any) => {
-                        const label = context.label || '';
                         const value = context.formattedValue || '';
                         return ` ${value} đã bán`;
                     },
@@ -227,6 +235,7 @@ const DashBoardPage = () => {
     // --------------------------------------------------
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const handleChange = (pagination: any, filters: any, sorter: any) => {
+        console.log(pagination, filters);
         setSortedInfo(sorter);
     };
     const data1 = sellProducts?.map((product: any, index: number) => {
@@ -334,10 +343,11 @@ const DashBoardPage = () => {
     const shouldSoldProducts = soldProducts && soldProducts.length > 0;
     const shouldCountProducts = countProducts && countProducts.length > 0;
     const shouldCountOrders = countOrders && countOrders.length > 0;
-    const shouldCountUsers = countUsers && countUsers.length > 0;
     const shouldOrderUnconfirmed = orderUnconfirmed && orderUnconfirmed.length > 0;
     const shouldOrderConfirmed = orderConfirmed && orderConfirmed.length > 0;
     const shouldOrderAccomplished = orderAccomplished && orderAccomplished.length > 0;
+    const shouldOrderDelivering = orderDelivering && orderDelivering.length > 0;
+    const shouldOrderCanceled = orderCanceled && orderCanceled.length > 0;
 
     if (isLoading) return <Skeleton />;
     if (isLoadingProducts) return <Skeleton />;
@@ -345,7 +355,6 @@ const DashBoardPage = () => {
     if (isLoadingSold) return <Skeleton />;
     if (isLoadingCount) return <Skeleton />;
     if (isLoadingOrder) return <Skeleton />;
-    if (isLoadingUser) return <Skeleton />;
     if (isLoadingSell) return <Skeleton />;
     if (isLoadingComment) return <Skeleton />;
 
@@ -360,47 +369,40 @@ const DashBoardPage = () => {
                             <p className="text-3xl font-bold">{shouldCountProducts ? countProducts[0]?.count : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            className="h-8 w-8 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            className="h-8 w-8 text-white text-2xl">
+                            <FaProductHunt />
                         </svg>
                     </div>
-
-
                     <div className="p-6 bg-blue-500 text-white rounded-lg shadow-md flex items-center justify-between">
                         <div>
                             <h3 className="text-xl font-semibold mb-2">Số Lượng Sản Phẩm Đã Bán</h3>
                             <p className="text-3xl font-bold">{shouldSoldProducts ? soldProducts[0]?.totalSoldQuantity : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            className="h-8 w-8 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            className="h-8 w-8 text-white text-2xl">
+                            <SiQuantcast />
                         </svg>
                     </div>
 
-
                     <div className="p-6 bg-green-500 text-white rounded-lg shadow-md flex items-center justify-between">
                         <div>
-                            <h3 className="text-xl font-semibold mb-2">Số Lượng Đánh Giá Mới</h3>
-                            <p className="text-3xl font-bold">{error?.status == 400 ? 0 : comment?.tongdanhgia}</p>
+                            <h3 className="text-xl font-semibold mb-2">Số Lượng Đơn Hàng</h3>
+                            <p className="text-3xl font-bold">{shouldCountOrders ? countOrders[0]?.count : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            className="h-8 w-8 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            className="h-8 w-8 text-white text-2xl">
+                            <BiCartDownload />
                         </svg>
                     </div>
 
                     <div className="p-6 bg-yellow-500 text-white rounded-lg shadow-md flex items-center justify-between">
                         <div>
-                            <h3 className="text-xl font-semibold mb-2">Số Lượng Khách Hàng</h3>
-                            <p className="text-3xl font-bold">{shouldCountUsers ? countUsers[0]?.count : 0}</p>
+                            <h3 className="text-xl font-semibold mb-2">Số Lượng Đơn Hàng Đã Huỷ</h3>
+                            <p className="text-3xl font-bold">{shouldOrderCanceled ? orderCanceled[0]?.count : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            className="h-8 w-8 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            className="h-8 w-8 text-white text-2xl">
+                            <BsFillCartXFill />
                         </svg>
                     </div>
                 </div>
@@ -408,24 +410,12 @@ const DashBoardPage = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div className="p-6 bg-cyan-500 text-white rounded-lg shadow-md flex items-center justify-between">
                         <div>
-                            <h3 className="text-xl font-semibold mb-2">Số Lượng Đơn Hàng</h3>
-                            <p className="text-3xl font-bold">{shouldCountOrders ? countOrders[0]?.count : 0}</p>
-                        </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            className="h-8 w-8 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                        </svg>
-                    </div>
-                    <div className="p-6 bg-pink-700 text-white rounded-lg shadow-md flex items-center justify-between">
-                        <div>
                             <h3 className="text-xl font-semibold mb-2">Đơn Hàng Chưa Xác Nhận</h3>
                             <p className="text-3xl font-bold">{shouldOrderUnconfirmed ? orderUnconfirmed[0]?.count : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            className="h-8 w-8 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            className="h-8 w-8 text-white text-2xl">
+                            <GiShoppingCart />
                         </svg>
                     </div>
                     <div className="p-6 bg-indigo-800 text-white rounded-lg shadow-md flex items-center justify-between">
@@ -434,9 +424,18 @@ const DashBoardPage = () => {
                             <p className="text-3xl font-bold">{shouldOrderConfirmed ? orderConfirmed[0]?.count : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            className="h-8 w-8 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            className="h-8 w-8 text-white text-2xl">
+                            <FaOpencart />
+                        </svg>
+                    </div>
+                    <div className="p-6 bg-pink-700 text-white rounded-lg shadow-md flex items-center justify-between">
+                        <div>
+                            <h3 className="text-xl font-semibold mb-2">Đơn Hàng Đang Giao</h3>
+                            <p className="text-3xl font-bold">{shouldOrderDelivering ? orderDelivering[0]?.count : 0}</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            className="h-8 w-8 text-white text-2xl">
+                            <FaCarSide />
                         </svg>
                     </div>
                     <div className="p-6 bg-cyan-600 text-white rounded-lg shadow-md flex items-center justify-between">
@@ -445,9 +444,8 @@ const DashBoardPage = () => {
                             <p className="text-3xl font-bold">{shouldOrderAccomplished ? orderAccomplished[0]?.count : 0}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            className="h-8 w-8 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            className="h-8 w-8 text-white text-2xl">
+                            <BsCartCheckFill />
                         </svg>
                     </div>
                 </div>

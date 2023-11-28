@@ -1,6 +1,6 @@
 import { useGetSizeQuery, useRemoveSizeMutation } from '@/api/sizeApi';
 import { ISize } from '@/interfaces/size';
-import { Button, Skeleton, Table, Alert, Input } from 'antd';
+import { Button, Skeleton, Table, Input } from 'antd';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
@@ -16,6 +16,10 @@ const Sizeslist = () => {
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
     const dataSource = size?.map(
         (

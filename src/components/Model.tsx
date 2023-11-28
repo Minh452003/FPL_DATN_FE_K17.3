@@ -29,6 +29,10 @@ const Model = ({ products }: any) => {
   const [filteredColors, setFilteredColors] = useState([]);
   const [uniqueSizes, setUniqueSizes] = useState(new Set());
   const [filteredSizes, setFilteredSizes] = useState([]);
+  if (false) {
+    console.log(uniqueColors);
+    console.log(uniqueSizes);
+  }
   // Sử dụng useEffect để cập nhật danh sách màu duy nhất từ danh sách childProducts
   useEffect(() => {
     const uniqueColorsSet = new Set();

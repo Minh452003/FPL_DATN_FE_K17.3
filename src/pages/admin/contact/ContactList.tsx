@@ -14,19 +14,23 @@ const ContactList = () => {
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
     const datacontact = isLoadingContact
         ? []
         : contacts?.map((contact: any, index: number) => {
-              return {
-                  key: contact._id,
-                  STT: index + 1,
-                  contact_name: contact.contact_name,
-                  contact_email: contact.contact_email,
-                  contact_phone: contact.contact_phone,
-                  contact_description: contact.contact_description,
-              };
-          });
+            return {
+                key: contact._id,
+                STT: index + 1,
+                contact_name: contact.contact_name,
+                contact_email: contact.contact_email,
+                contact_phone: contact.contact_phone,
+                contact_description: contact.contact_description,
+            };
+        });
 
     const deleteContact = (id: any) => {
         Swal.fire({
@@ -134,4 +138,3 @@ const ContactList = () => {
 };
 
 export default ContactList;
-         

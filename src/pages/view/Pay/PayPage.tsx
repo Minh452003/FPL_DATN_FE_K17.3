@@ -135,6 +135,9 @@ const PayPage = () => {
     }, [user, total]);
 
     const handleCityChange = async (value: any, option: any) => {
+        if (false) {
+            console.log(value);
+        }
         const id = Number(option.key); // Lấy id từ option.key
         addDistrict({ province_id: id }).then((response: any) => {
             setDistrict(response.data.data);
@@ -142,12 +145,18 @@ const PayPage = () => {
         });
     };
     const handleDistrictChange = async (value: any, option: any) => {
+        if (false) {
+            console.log(value);
+        }
         const id = Number(option.key); // Lấy id từ option.key
         addWard({ district_id: id }).then((response: any) => {
             setWard(response.data.data);
         });
     };
     const handleAvailableChange = async (value: any, option: any) => {
+        if (false) {
+            console.log(value);
+        }
         const id = option.key; // Lấy id từ option.key
         setwardCode(id);
         addAvailable({

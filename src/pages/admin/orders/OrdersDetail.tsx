@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2";
-import { Button, Form, Select, Image, Skeleton, Input } from 'antd';
+import { Button, Form, Select, Skeleton, Input } from 'antd';
 import { useGetStatusQuery } from "@/api/statusApi";
 import { useEffect } from "react";
 import { useGetOrderByIdQuery, useUpdateOrderMutation } from "@/api/orderApi";

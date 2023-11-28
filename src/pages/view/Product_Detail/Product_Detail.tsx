@@ -141,7 +141,7 @@ const Product_Detail = () => {
         (materialList: any) => materialList?._id === listOneData?.materialId,
     )?.material_name;
     // --------------------------
-    const { data: childProducts, isLoading: isLoadingChild }: any =
+    const { data: childProducts }: any =
         useGetChildProductByProductIdQuery(idProduct || '');
     const { data: childProduct }: any = useGetChildProductPriceQuery({
         productId: idProduct,
@@ -153,6 +153,11 @@ const Product_Detail = () => {
     const [filteredColors, setFilteredColors] = useState([]);
     const [uniqueSizes, setUniqueSizes] = useState(new Set());
     const [filteredSizes, setFilteredSizes] = useState([]);
+    if (false) {
+        console.log(productView);
+        console.log(uniqueColors);
+        console.log(uniqueSizes);
+    }
     // Sử dụng useEffect để cập nhật danh sách màu duy nhất từ danh sách childProducts
     useEffect(() => {
         const uniqueColorsSet = new Set();
@@ -534,7 +539,14 @@ const Product_Detail = () => {
                                         aria-live="assertive"
                                         aria-valuenow={1}
                                         value={quantity}
-                                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                        onChange={(e) => {
+                                            const value = parseInt(e.target.value);
+                                            if (isNaN(value)) {
+                                                setQuantity(1);
+                                            } else {
+                                                setQuantity(value);
+                                            }
+                                        }}
                                     />
                                     <button
                                         aria-label="Increase"
@@ -806,7 +818,7 @@ const Product_Detail = () => {
                                                 </article>
                                             ))
                                         ) : (
-                                            <p className="sp2 ">Không có binh luận</p>
+                                            <p className="sp2 ">Không có bình luận</p>
                                         )}
                                         <Pagination
                                             pageSize={PAGE_SIZE}
@@ -814,6 +826,9 @@ const Product_Detail = () => {
                                             total={commentProductDetail.length}
                                             onChange={(page, pageSize) => {
                                                 setPage(page);
+                                                if (false) {
+                                                    console.log(pageSize);
+                                                }
                                             }}
                                         />
                                     </div>

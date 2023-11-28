@@ -1,8 +1,8 @@
-import { useAddChildProductMutation, useGetChildProductByIdQuery, useUpdateChildProductMutation } from "@/api/chilProductApi";
+import { useGetChildProductByIdQuery, useUpdateChildProductMutation } from "@/api/chilProductApi";
 import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetProductsQuery } from "@/api/productApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
-import { Button, Form, Input, Upload, Select, Spin, InputNumber } from "antd";
+import { Button, Form, Input, Select, Spin, InputNumber } from "antd";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -68,7 +68,7 @@ const UpdateChildProduct = () => {
     sizeId?: string;
   };
   const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) < 0) {
+    if (parseFloat(value) < 0) {
       return Promise.reject("Giá trị phải là số dương");
     }
     return Promise.resolve();
@@ -108,7 +108,7 @@ const UpdateChildProduct = () => {
                   { required: true, message: "Please input your select!" },
                 ]}
                 hasFeedback
-                style={{ marginLeft: "20px",display:'none' }}
+                style={{ marginLeft: "20px", display: 'none' }}
               >
                 <Select>
                   {products.map((product: any) => (
@@ -127,10 +127,10 @@ const UpdateChildProduct = () => {
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                 rules={[{ required: true, message: "Giá sản phẩm không được để trống!" },
-                {validator: validatePositiveNumber},
+                { validator: validatePositiveNumber },
                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                 hasFeedback
-              
+
                 style={{ marginLeft: "20px" }}
               >
                 <InputNumber style={{ width: '100%' }} />
@@ -142,10 +142,10 @@ const UpdateChildProduct = () => {
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                 rules={[{ required: true, message: "Số lượng sản phẩm không được để trống!" },
-                {validator: validatePositiveNumber},
+                { validator: validatePositiveNumber },
                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
                 hasFeedback
-              
+
                 style={{ marginLeft: "20px" }}
               >
                 <InputNumber style={{ width: '100%' }} />

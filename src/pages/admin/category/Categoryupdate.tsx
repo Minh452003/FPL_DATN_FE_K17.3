@@ -45,19 +45,19 @@ const Categoryupdate = () => {
 
     const onFinish = async (values: ICategory) => {
         try {
-          if (Object.keys(imageUrl).length > 0) {
-            values.category_image = imageUrl;
-          }
-        const data:any =   await updateCategory(values);
-        if(data){
-            toast.success(`${data.data.message}`);
+            if (Object.keys(imageUrl).length > 0) {
+                values.category_image = imageUrl;
+            }
+            const data: any = await updateCategory(values);
+            if (data) {
+                toast.success(`${data.data.message}`);
+            }
+            navigate('/admin/categories');
+        } catch (error: any) {
+            toast.error(` ${error.data.message}`);
         }
-          navigate('/admin/categories');
-        } catch (error:any) {
-          toast.error(` ${error.data.message}`);
-        }
-      };
-      
+    };
+
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);

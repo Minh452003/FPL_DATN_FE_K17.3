@@ -9,8 +9,6 @@ import Swal from 'sweetalert2';
 
 const NewsTrash = () => {
   const { data }: any = useGetAllDeleteQuery();
-  console.log(data);
-  
   const news = data?.news;
   const [removeNew, { isLoading: isRemoveLoading }] = useRemoveForceNewMutation();
   const [restoreNew, { isLoading: isRestoreLoading }] = useRestoreNewMutation()
@@ -102,9 +100,9 @@ const NewsTrash = () => {
     {
       title: 'Chức năng',
       render: ({ key: _id }: { key: number | string }) => (
-        
+
         <div>
-           <Button className='mr-1 text-red-500' onClick={() => deleteNew(_id)}>
+          <Button className='mr-1 text-red-500' onClick={() => deleteNew(_id)}>
             {isRemoveLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />
             ) : (
