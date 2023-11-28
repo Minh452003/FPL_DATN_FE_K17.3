@@ -5,14 +5,14 @@ import { useGetMaterialByIdQuery, useUpdateMaterialMutation } from '@/api/materi
 import Swal from 'sweetalert2';
 
 
-type FieldType = {
-  _id?: string
+interface FieldType {
+  _id?: string;
   material_name?: string;
+}
 
-};
 const MaterialUpdate = () => {
   const { id }: any = useParams();
-  const { data: materialData, isLoading } = useGetMaterialByIdQuery<any>(id);
+  const { data: materialData, isLoading } = useGetMaterialByIdQuery<FieldType>(id);
   const [updateMaterial, resultAdd] = useUpdateMaterialMutation();
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const MaterialUpdate = () => {
       material_name: materialData?.material?.material_name
     });
   };
-  const onFinish = (values: any) => {
+  const onFinish = (values: FieldType) => {
     updateMaterial(values).then(() => {
       Swal.fire({
         position: 'center',

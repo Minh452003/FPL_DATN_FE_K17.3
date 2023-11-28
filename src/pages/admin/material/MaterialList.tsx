@@ -6,11 +6,17 @@ import { FaCirclePlus, FaTrashCan, FaWrench } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
+interface TableColumn {
+  key: string;
+  STT: number;
+  name: string;
+}
+
 const MaterialList = () => {
-  const { data, isLoading }: any = useGetMaterialQuery();
+  const { data, isLoading }: { data: { material: IMaterials[] }, isLoading: boolean } = useGetMaterialQuery();
   const [removeMaterial, { isLoading: isRemoveLoading }] = useRemoveMaterialMutation();
-  const material = data?.material;
-  const dataSource = isLoading
+  const material: IMaterial[] | undefined = data?.material;
+  const dataSource :TableColumn[]= isLoading
     ? []
     : material?.map(({ _id, material_name }: IMaterials, index: number) => {
       return {
@@ -20,7 +26,7 @@ const MaterialList = () => {
       };
     });
 
-  const deleteMaterial = (id: any) => {
+  const deleteMaterial = (id: string) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
       text: "Khi xoá không thể phục hồi lại!",
@@ -58,7 +64,7 @@ const MaterialList = () => {
     },
     {
       title: 'Chức năng',
-      render: ({ key: _id }: { key: number | string }) => (
+      render: ({ key: _id }: { key: string }) => (
         <div style={{ width: '150px' }}>
           <Button className='mr-1 text-red-500' onClick={() => deleteMaterial(_id)}>
             {isRemoveLoading ? (

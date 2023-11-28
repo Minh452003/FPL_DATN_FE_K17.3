@@ -8,12 +8,12 @@ import { IoSearchSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-const Sizeslist = () => {
-    const { data, error, isLoading }: any = useGetSizeQuery();
+const Sizeslist: React.FC<ISize> = () => {
+    const { data, error, isLoading } = useGetSizeQuery();
     const [searchText, setSearchText] = useState('');
     const [removeSize, { isLoading: isRemoveLoading }] = useRemoveSizeMutation();
     const size = isLoading ? [] : data?.size;
-    const [sortedInfo, setSortedInfo] = useState({} as any);
+    const [sortedInfo, setSortedInfo] = useState<any>({});
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
         if (false) {
@@ -37,7 +37,7 @@ const Sizeslist = () => {
             };
         },
     );
-    const deleteSize = (id: any) => {
+    const deleteSize = (id: string) => {
         Swal.fire({
             title: 'Bạn chắc chứ?',
             text: 'Khi xoá không thể phục hồi lại!',
