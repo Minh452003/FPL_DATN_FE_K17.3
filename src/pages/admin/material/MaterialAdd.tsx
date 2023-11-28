@@ -1,5 +1,5 @@
 import { useAddMaterialMutation } from '@/api/materialApi';
-import { Button, Form, Input, InputNumber } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -26,12 +26,12 @@ const MaterialAdd = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-    const validatePositiveNumber = (_: any, value: any) => {
-        if(parseFloat(value) < 0) {
-          return Promise.reject("Giá trị phải là số dương");
-        }
-        return Promise.resolve();
-      }
+    // const validatePositiveNumber = (_: any, value: any) => {
+    //     if(parseFloat(value) < 0) {
+    //       return Promise.reject("Giá trị phải là số dương");
+    //     }
+    //     return Promise.resolve();
+    //   }
     return (
         <div className="container-fluid">
             <div className="row">
