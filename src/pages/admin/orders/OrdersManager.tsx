@@ -16,13 +16,17 @@ const OrdersManager = () => {
     const decodedToken: any = getDecodedAccessToken();
     const id = decodedToken ? decodedToken.id : null;
     const [searchText, setSearchText] = useState('');
-    const { data: order, error, isLoading: isLoadingFetching } = useGetOrderQuery<any>(id);
+    const { data: order, isLoading: isLoadingFetching } = useGetOrderQuery<any>(id);
     const orders = isLoadingFetching ? [] : order?.order;
     const { data: status, isLoading: isLoadingStatus }: any = useGetStatusQuery();
     const Status = isLoadingStatus ? [] : status?.status;
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
     const handleFilterOrders = (status: string) => {
         setCurrentStatus(status);
@@ -51,19 +55,19 @@ const OrdersManager = () => {
     const data = isLoadingFetching
         ? []
         : filteredOrders.map((order: any, index: number) => {
-              const createdAtTimestamp = Date.parse(order.createdAt);
-              return {
-                  key: order._id,
-                  STT: index + 1,
-                  address: order.address,
-                  phone: order.phone,
-                  total: order.total,
-                  createAt: format(new Date(order.createdAt), 'HH:mm a dd/MM/yyyy'),
-                  createdAtTimestamp: createdAtTimestamp,
-                  image: <img width={50} src={order.products[0]?.image} alt="" />,
-                  userId: `${order.userId?.first_name} ${order.userId?.last_name}`,
-              };
-          });
+            const createdAtTimestamp = Date.parse(order.createdAt);
+            return {
+                key: order._id,
+                STT: index + 1,
+                address: order.address,
+                phone: order.phone,
+                total: order.total,
+                createAt: format(new Date(order.createdAt), 'HH:mm a dd/MM/yyyy'),
+                createdAtTimestamp: createdAtTimestamp,
+                image: <img width={50} src={order.products[0]?.image} alt="" />,
+                userId: `${order.userId?.first_name} ${order.userId?.last_name}`,
+            };
+        });
     // Xử lý filter..............
     const filteredData = data?.filter((item: any) => {
         const lowerCaseSearchText = searchText.toLowerCase();
@@ -153,9 +157,8 @@ const OrdersManager = () => {
                     <li>
                         <a
                             href=""
-                            className={`no-underline text-gray-700 ${
-                                currentStatus === 'all' ? 'font-medium active2' : ''
-                            }`}
+                            className={`no-underline text-gray-700 ${currentStatus === 'all' ? 'font-medium active2' : ''
+                                }`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 handleFilterOrders('all');
@@ -169,9 +172,8 @@ const OrdersManager = () => {
                         <li key={statusItem._id}>
                             <a
                                 href=""
-                                className={`no-underline text-gray-700 ${
-                                    currentStatus === statusItem._id ? 'font-medium active2' : ''
-                                }`}
+                                className={`no-underline text-gray-700 ${currentStatus === statusItem._id ? 'font-medium active2' : ''
+                                    }`}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleFilterOrders(statusItem._id);

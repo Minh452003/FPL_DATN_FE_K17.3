@@ -4,8 +4,7 @@ import { BsFillHouseDashFill, BsSearch } from 'react-icons/bs';
 import { TbBrandProducthunt } from 'react-icons/tb';
 import { MdCategory } from 'react-icons/md';
 import { FaAccusoft, FaRegImage } from "react-icons/fa";
-import { AiFillMessage, AiOutlineAntDesign, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
-import { RiLogoutCircleLine } from 'react-icons/ri';
+import { AiOutlineAntDesign, AiOutlineBranches, AiOutlineComment, AiOutlineFontColors, AiOutlineFontSize, AiOutlineMenu, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import '@/layouts/LayoutAdmin.css'
 import { BiNews, BiSolidCoupon } from 'react-icons/bi';
 import { IoMdContact } from "react-icons/io";
@@ -13,23 +12,23 @@ import { useSearchProductsQuery } from '@/api/productApi';
 import { checkAndRemoveExpiredData } from '@/checkAndRemoveExpiredData';
 import { getDecodedAccessToken } from '@/decoder';
 import { useGetUserByIdQuery } from '@/api/authApi';
+import { Skeleton } from 'antd';
 
 
 const LayoutAdmin = () => {
   const [isSidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [isLogout, setLogout] = useState(false);
   const decodedToken: any = getDecodedAccessToken();
   const iduser = decodedToken ? decodedToken.id : null;
-  const { data: user, isLoading, isError } = useGetUserByIdQuery(iduser);
+  const { data: user, isLoading } = useGetUserByIdQuery(iduser);
   const navigate = useNavigate()
   const logout = () => {
-    localStorage.removeItem("status");
     localStorage.removeItem("accessToken")
     navigate("/");
-    setLogout(true);
-
   };
+  useEffect(() => {
+    checkAndRemoveExpiredData();
+  }, []);
   const handleSearchChange = (event: any) => {
     event.preventDefault();
     setSearchKeyword(event.target.value);
@@ -90,6 +89,8 @@ const LayoutAdmin = () => {
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+  if (isLoading) return <Skeleton />;
+
   return (
     <div>
       <section id="sidebar" className={isSidebarHidden ? 'hide' : ''}>
@@ -135,6 +136,12 @@ const LayoutAdmin = () => {
             </Link>
           </li>
           <li>
+            <Link to={'coupons'} className="a">
+              <span className="icon"><BiSolidCoupon /></span>
+              <span className="text1">Phiếu giảm giá</span>
+            </Link>
+          </li>
+          <li>
             <Link to={'colors'} className="a">
               <span className="icon"><AiOutlineFontColors /></span>
               <span className="text1">Màu sắc</span>
@@ -147,23 +154,15 @@ const LayoutAdmin = () => {
             </Link>
           </li>
           <li>
-            <Link to={'coupons'} className="a">
-              <span className="icon"><BiSolidCoupon /></span>
-              <span className="text1">Phiếu giảm giá</span>
+            <Link to={'materials'} className="a">
+              <span className="icon"><FaAccusoft /></span>
+              <span className="text1">Chất liệu</span>
             </Link>
           </li>
-
           <li>
             <Link to={'orders'} className="a">
               <span className="icon"><AiOutlineShoppingCart /></span>
               <span className="text1">Đơn hàng</span>
-            </Link>
-          </li>
-
-          <li>
-            <Link to={'materials'} className="a">
-              <span className="icon"><FaAccusoft /></span>
-              <span className="text1">Chất liệu</span>
             </Link>
           </li>
           <li>

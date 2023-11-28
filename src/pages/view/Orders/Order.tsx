@@ -10,7 +10,6 @@ import { useGetStatusQuery } from '@/api/statusApi';
 import { Pagination } from '@mui/material';
 import Comment from '@/components/Comment';
 import Swal from 'sweetalert2';
-import { LiaCarSideSolid } from 'react-icons/lia';
 const Order = () => {
     const [currentStatus, setCurrentStatus] = useState('all'); // Mặc định hiển thị tất cả
     const [filteredOrders, setFilteredOrders] = useState([]);
@@ -34,6 +33,9 @@ const Order = () => {
     const itemsPerPage = 4;
     const handlePageChange = (event: any, page: any) => {
         setCurrentPage(page);
+        if (false) {
+            console.log(event);
+        }
     };
     const pageCount = Math.ceil(filteredOrders.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -185,14 +187,6 @@ const Order = () => {
                                 className="md:flex md:flex-row gap-5 border-solid boder-2 border-slate-400 bg-white shadow-lg border-0 rounded-md "
                                 key={order._id}
                             >
-                                {order && order.status._id == '64e8a93da63d2db5e8d8562b' ? (
-                                    <div className="absolute text-gray-800 p-2 rounded-sm icon-container text-white">
-                                        <LiaCarSideSolid className="animated-icon" />
-                                        Đang giao
-                                    </div>
-                                ) : (
-                                    ''
-                                )}
                                 <div className="flex justify-start md:top-0 py-2 pt-2 justify-center items-center mx-5">
                                     {order && order.hasReviewed === true ? (
                                         <div className="absolute bg-red-500 text-white p-2 rounded-sm text-sm">
@@ -253,7 +247,7 @@ const Order = () => {
                                         )}
                                         {order &&
                                             order.hasReviewed === false &&
-                                            order.status._id == '64e8a93da63d2db5e8d8562d' ? (
+                                            order.status._id == '656596893a59bec4e5baea02' ? (
                                             <Comment order={order} />
                                         ) : (
                                             ''

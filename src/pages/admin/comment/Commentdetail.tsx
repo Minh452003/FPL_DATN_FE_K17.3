@@ -13,37 +13,13 @@ const Commentdetail = () => {
   const [sortedInfo, setSortedInfo] = useState({} as any);
   const handleChange = (pagination: any, filters: any, sorter: any) => {
     setSortedInfo(sorter);
+    if (false) {
+      console.log(pagination);
+      console.log(filters);
+    }
   };
   const handleFilterChange = (newFilter: any) => {
     setFilter(newFilter);
-  };
-  const formatTimeAgo = (timestamp: any) => {
-    const now: any = new Date();
-    const commentTime: any = new Date(timestamp);
-
-    const timeDiff = now - commentTime;
-    const seconds = Math.floor(timeDiff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-
-    if (days > 0) {
-      return `${days} ngày trước`;
-    } else if (hours > 0) {
-      return `${hours} giờ trước`;
-    } else if (minutes > 0) {
-      return `${minutes} phút trước`;
-    } else {
-      return 'Vừa xong';
-    }
-  }
-  const parseTimeStringToDate = (timeString: string) => {
-    const [time, date] = timeString.split(' '); // Tách thời gian và ngày tháng
-    const [hours, minutes] = time.split(':'); // Tách giờ và phút
-    const [day, month, year] = date.split('/'); // Tách ngày, tháng, năm
-
-    // Tạo đối tượng Date từ các thành phần đã tách
-    return new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
   };
   const data1 = comments?.map((comment: any, index: number) => {
     return {
@@ -102,6 +78,9 @@ const Commentdetail = () => {
       ellipsis: true,
       width: 200,
       render: (rating: number, index: any) => {
+        if (false) {
+          console.log(index);
+        }
         const starIcons = [];
         for (let i = 1; i <= 5; i++) {
           starIcons.push(

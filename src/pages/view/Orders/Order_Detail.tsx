@@ -2,7 +2,7 @@
 import { useGetOrderByIdQuery } from '@/api/orderApi';
 import { format } from 'date-fns';
 import { getDecodedAccessToken } from '@/decoder';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useGetUserByIdQuery } from '@/api/authApi';
 import { Skeleton } from 'antd';
 import { useGetMaterialQuery } from '@/api/materialApi';

@@ -1,30 +1,24 @@
 import { useGetMaterialQuery, useRemoveMaterialMutation } from '@/api/materialApi';
 import { IMaterials } from '@/interfaces/materials';
-import { Table, Button, Skeleton, Input } from 'antd';
-import { useState } from 'react';
+import { Table, Button, Skeleton } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { FaCirclePlus, FaTrash, FaTrashCan, FaWrench } from "react-icons/fa6";
+import { FaCirclePlus, FaTrashCan, FaWrench } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const MaterialList = () => {
-    const { data, isLoading }: any = useGetMaterialQuery();
-    const [searchText, setSearchText] = useState('');
-    const [removeMaterial, { isLoading: isRemoveLoading }] = useRemoveMaterialMutation();
-    const material = data?.material;
-    const [sortedInfo, setSortedInfo] = useState({} as any);
-    const handleChange = (pagination: any, filters: any, sorter: any) => {
-        setSortedInfo(sorter);
-    };
-    const dataSource = isLoading
-        ? []
-        : material?.map(({ _id, material_name }: IMaterials, index: number) => {
-              return {
-                  key: _id,
-                  STT: index + 1,
-                  name: material_name,
-              };
-          });
+  const { data, isLoading }: any = useGetMaterialQuery();
+  const [removeMaterial, { isLoading: isRemoveLoading }] = useRemoveMaterialMutation();
+  const material = data?.material;
+  const dataSource = isLoading
+    ? []
+    : material?.map(({ _id, material_name }: IMaterials, index: number) => {
+      return {
+        key: _id,
+        STT: index + 1,
+        name: material_name,
+      };
+    });
 
   const deleteMaterial = (id: any) => {
     Swal.fire({

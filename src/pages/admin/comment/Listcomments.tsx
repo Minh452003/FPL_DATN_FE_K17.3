@@ -1,33 +1,31 @@
 import { useGetCommentsQuery } from '@/api/commentApi';
-
-import { Table, Button, Input } from 'antd';
+import { Table, Button, Input, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { BiDetail } from 'react-icons/bi';
-// import { useGetProductsQuery } from '@/api/productApi';
 import { useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
 
 const Listcomments = () => {
     const { data: comment, isloading: isLoadingComment, error } = useGetCommentsQuery<any>();
-    // const { data: product } = useGetProductsQuery<any>();
     const comments = comment?.products;
     const [searchText, setSearchText] = useState('');
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
-    // const products = product?.product.docs;
 
-    const dataComment = isLoadingComment
-        ? []
-        : comments?.map((comment: any, index: number) => {
-              return {
-                  key: comment._id,
-                  STT: index + 1,
-                  product: comment.product_name,
-                  comments_count: comment.comments_count,
-              };
-          });
+    const dataComment = comments?.map((comment: any, index: number) => {
+        return {
+            key: comment._id,
+            STT: index + 1,
+            product: comment.product_name,
+            comments_count: comment.comments_count,
+        };
+    });
 
     const columns = [
         {
@@ -72,7 +70,10 @@ const Listcomments = () => {
     const filteredData = dataComment?.filter((item: any) => {
         return item.product.toLowerCase().includes(searchText.toLowerCase());
     });
-    if (error) return;
+    if (isLoadingComment) return <Skeleton />;
+    if (error) {
+        return <div>Error: {error.message}</div>; // Hoặc hiển thị một thông báo lỗi khác
+    }
     return (
         <div>
             <div className="container">

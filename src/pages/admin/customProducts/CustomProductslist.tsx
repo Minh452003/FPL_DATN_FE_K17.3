@@ -8,7 +8,7 @@ import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
 import { useGetSizeQuery } from '@/api/sizeApi';
 import { Table, Button, Input } from 'antd';
-import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash, FaProductHunt } from 'react-icons/fa6';
+import { FaTrashCan, FaCirclePlus, FaTrash } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Swal from 'sweetalert2';
@@ -36,6 +36,10 @@ const CustomProductslist = () => {
     const sizes = size?.size;
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
     const dataProductCustom = productsCustomProducts?.map((product: any, index: number) => {
         return {

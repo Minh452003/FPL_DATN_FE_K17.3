@@ -35,13 +35,13 @@ const Productadd = () => {
     const navigate = useNavigate();
     const [productDescription, setProductDescription] = useState('');
 
-    
+
     const onFinish = (values: IProduct) => {
         values.description = productDescription
         if (imageUrl.length > 0) {
             values.image = imageUrl;
             addProduct(values).then((response) => {
-                console.log('Data after adding product:', response); 
+                console.log('Data after adding product:', response);
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -241,6 +241,7 @@ const Productadd = () => {
                                     }
                                 }}
                                 onChange={(event, editor) => {
+                                    console.log(event);
                                     const data = editor.getData();
                                     setProductDescription(data);
                                 }}

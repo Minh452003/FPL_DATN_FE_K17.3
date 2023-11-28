@@ -5,19 +5,14 @@ import { GrNext, GrPrevious } from "react-icons/gr";
 const News = () => {
   const { data } = useGetNewsQuery<any>();
   const newList = data?.news?.docs;
-  // console.log(newList);
-
   const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-
   // Tính chỉ số của tin tức đầu tiên và cuối cùng trên trang hiện tại
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = newList?.slice(indexOfFirstItem, indexOfLastItem);
-
   // Số lượng trang
   const pageNumbers = Math.ceil(newList?.length / itemsPerPage);
-
   // Mảng các số trang
   const pages = [];
   for (let i = 1; i <= pageNumbers; i++) {

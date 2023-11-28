@@ -2,7 +2,7 @@ import "../Home/Homepage.css";
 import "../Home/Responsive_homepage.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetProductSellQuery } from "@/api/productApi";
+import { useGetProductsQuery } from "@/api/productApi";
 import { useGetCategoryQuery } from "@/api/categoryApi";
 import { Pagination } from "@mui/material";
 import { Skeleton } from "antd";
@@ -34,7 +34,7 @@ const ProductPage = () => {
     data: products,
     error,
     isLoading: isLoadingFetching,
-  } = useGetProductSellQuery<any>();
+  } = useGetProductsQuery<any>();
   const { data: categories } = useGetCategoryQuery<any>();
   const { data: brands } = useGetBrandQuery<any>();
 
@@ -62,7 +62,7 @@ const ProductPage = () => {
     }
   }
 
-  const filteredProducts = products?.filter((product: Product) => {
+  const filteredProducts = products?.product?.docs?.filter((product: Product) => {
     const categoryMatches =
       selectedCategory === "all" || product.categoryId === selectedCategory;
     const brandMatches =

@@ -15,19 +15,23 @@ const Newslist = () => {
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
 
     const dataNews = isloadingNews
         ? []
         : news?.map((news: any, index: number) => {
-              return {
-                  key: news._id,
-                  STT: index + 1,
-                  new_name: news.new_name,
-                  new_description: news.new_description,
-                  new_image: <img width={50} src={news.new_image?.url} alt="" />,
-              };
-          });
+            return {
+                key: news._id,
+                STT: index + 1,
+                new_name: news.new_name,
+                new_description: news.new_description,
+                new_image: <img width={50} src={news.new_image?.url} alt="" />,
+            };
+        });
     const deleteNew = (_id: any) => {
         Swal.fire({
             title: 'Bạn chắc chứ?',

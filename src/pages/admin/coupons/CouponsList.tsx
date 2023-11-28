@@ -1,6 +1,6 @@
 import { useGetCouponQuery, useRemoveCouponMutation } from '@/api/couponsApi';
 import { ICoupon } from '@/interfaces/coupon';
-import { Button, Skeleton, Table, Alert, Input } from 'antd';
+import { Button, Skeleton, Table, Input } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
@@ -18,6 +18,10 @@ const CouponsList = () => {
 
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
     const dataSource = coupon?.map(
         (
@@ -83,7 +87,7 @@ const CouponsList = () => {
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
-            width: 90,
+            width: 80,
         },
         {
             title: 'Phiếu giảm giá',
@@ -132,7 +136,7 @@ const CouponsList = () => {
         },
         {
             title: 'Số tiền mua tối thiểu',
-            width: 200,
+            width: 150,
             dataIndex: 'min_purchase_amount',
             key: 'min_purchase_amount',
             render: (index: any) => <a>{formatCurrency(index)}đ</a>,
@@ -142,10 +146,10 @@ const CouponsList = () => {
         },
         {
             title: 'Chức năng',
-            width: 170,
+            width: 130,
             render: ({ key: _id }: any) => {
                 return (
-                    <div style={{ width: '150px' }}>
+                    <div style={{ width: '200px' }}>
                         <Button className="mr-1 text-red-500" onClick={() => deleteCoupon(_id)}>
                             {isRemoveLoading ? (
                                 <AiOutlineLoading3Quarters className="animate-spin" />

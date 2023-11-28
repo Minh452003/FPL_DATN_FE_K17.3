@@ -15,6 +15,10 @@ const Colorslist = () => {
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
     const color = isLoading ? [] : data?.color;
     const dataSource = color?.map(({ _id, colors_name }: IColor, index: number) => {

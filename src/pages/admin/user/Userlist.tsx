@@ -11,37 +11,41 @@ const Userlist = () => {
     const [searchText, setSearchText] = useState('');
     const [sortedInfo, setSortedInfo] = useState({} as any);
 
-    const handleChange = ( sorter: any) => {
+    const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
     const data1 = isloading
         ? []
         : user?.map((user: any, index: number) => {
-              return {
-                  key: user._id,
-                  STT: index + 1,
-                  name: user.first_name,
-                  email: user.email,
-                  phone: user.phone ? user.phone : 'Chưa có số điện thoại',
-                  address: user.address ? user.address : 'Chưa có địa chỉ',
-                  image: user.avatar ? (
-                      <Image width={80} height={80} src={user.avatar.url} />
-                  ) : (
-                      'Chưa có ảnh'
-                  ),
-                  role: user.role,
-              };
-          });
+            return {
+                key: user._id,
+                STT: index + 1,
+                name: user.first_name,
+                email: user.email,
+                phone: user.phone ? user.phone : 'Chưa có số điện thoại',
+                address: user.address ? user.address : 'Chưa có địa chỉ',
+                image: user.avatar ? (
+                    <Image width={80} height={80} src={user.avatar.url} />
+                ) : (
+                    'Chưa có ảnh'
+                ),
+                role: user.role,
+            };
+        });
     const columns = [
         {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: string| number) => <a>{index}</a>,
+            render: (index: string | number) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
-            width: 90, 
+            width: 90,
         },
         {
             title: 'Name',
@@ -94,7 +98,7 @@ const Userlist = () => {
                     <div style={{ width: '150px' }}>
                         <Button className="mr-1 text-blue-500">
                             <Link to={`/admin/users/edit/${_id}`}>
-                            <FaWrench />
+                                <FaWrench />
                             </Link>
                         </Button>
                     </div>
@@ -136,4 +140,3 @@ const Userlist = () => {
 
 export default Userlist;
 
-                    

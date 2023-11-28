@@ -117,6 +117,30 @@ const statisticalApi = createApi({
             },
             providesTags: ['Statistical']
         }),
+        getOrderDelivering: builder.query({
+            query: (query) => {
+                let url = `/statistical/order-delivering?year=${query.year}`;
+                if (query.month) {
+                    url += `&month=${query.month}`;
+                } else if (query.month == null) {
+                    return url;
+                }
+                return url;
+            },
+            providesTags: ['Statistical']
+        }),
+        getOrderCanceled: builder.query({
+            query: (query) => {
+                let url = `/statistical/order-canceled?year=${query.year}`;
+                if (query.month) {
+                    url += `&month=${query.month}`;
+                } else if (query.month == null) {
+                    return url;
+                }
+                return url;
+            },
+            providesTags: ['Statistical']
+        }),
         getCountUser: builder.query({
             query: (query) => {
                 let url = `/statistical/users?year=${query.year}`;
@@ -168,7 +192,9 @@ export const {
     useGetProductSellQuery,
     useGetOrderUnconfirmedQuery,
     useGetOrderConfirmedQuery,
-    useGetOrderAccomplishedQuery
+    useGetOrderAccomplishedQuery,
+    useGetOrderDeliveringQuery,
+    useGetOrderCanceledQuery
 } = statisticalApi;
 export const statisticalReducer = statisticalApi.reducer;
 export default statisticalApi

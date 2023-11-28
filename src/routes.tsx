@@ -55,7 +55,6 @@ import CustomProductsTrash from "./pages/admin/customProducts/CustomProductsTras
 import ListCustomizedProductTrash from "./pages/view/CustomizedProduct/ListCustomProductTrash";
 import ProfileUpdate from "./pages/view/User/Account/ProfileUpdate";
 import OrdersManager from "./pages/admin/orders/OrdersManager";
-import Listcomments from "./pages/admin/comment/Listcomments";
 import Commentdetail from "./pages/admin/comment/Commentdetail";
 import Category_Detail from "./pages/view/Category_Detail/Category_Detail";
 import Newslist from "./pages/admin/news/NewsList";
@@ -73,8 +72,9 @@ import NotFoundPage from "./pages/notfound/NotFoundPage";
 import ContactList from "./pages/admin/contact/ContactList";
 import ChangePassword from "./pages/view/User/Account/Changepassword";
 import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
-import ContactPage from "./pages/view/Contact/ContactPage";
 import Productadd from "./pages/admin/productchill/Productadd";
+import ContactPage from "./pages/view/contact/ContactPage";
+import Listcomments from "./pages/admin/comment/Listcomments";
 
 
 
