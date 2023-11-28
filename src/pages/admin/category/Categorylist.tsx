@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
+import { toast } from "react-toastify";
 interface Category {
   _id?: string;
   category_name: string;
@@ -27,6 +28,11 @@ const Categorylist = () => {
 
   const handleChange = (pagination: any, filters: any, sorter: any) => {
     setSortedInfo(sorter);
+    // eslint-disable-next-line no-constant-condition
+    if (false) {
+      console.log(pagination);
+      console.log(filters);
+    }
   };
 
   const data1 = categories?.map((category: Category, index: number) => {
@@ -45,32 +51,31 @@ const Categorylist = () => {
       .toLowerCase()
       .includes(searchText.toLowerCase());
   });
-  const deleteProduct = (id: string) => {
-    Swal.fire({
-      title: "Bạn chắc chứ?",
-      text: "Khi có thể vào thùng rác để khôi phục lại!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Vâng, tôi chắc chắn!",
-      cancelButtonText: "Huỷ",
-    }).then((result) => {
+
+  const deleteProduct = async (id: string) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
+  
       if (result.isConfirmed) {
-        removeCategory(id)
-          .unwrap()
-          .then(() => {
-            Swal.fire(
-              "Xoá thành công!",
-              "Danh mục của bạn đã được xoá.",
-              "success"
-            );
-          });
+        const data: any = await removeCategory(id).unwrap();
+        if (data) {
+          toast.success(`${data.message}`);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire("Đã huỷ", "Danh mục xoá thất bại.", "error");
+        toast.info('Hủy xoá danh mục');
       }
-    });
+    } catch (error:any) {
+      toast.error(error.message);
+    }
   };
   const columns = [
     {

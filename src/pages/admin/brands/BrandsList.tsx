@@ -1,11 +1,12 @@
 import { useGetBrandQuery, useRemoveBrandMutation } from '@/api/brandApi';
 import { IBrand } from '@/interfaces/brand';
-import { Button, Skeleton, Table, Alert, Input } from 'antd';
+import { Button, Skeleton, Table, Input } from 'antd';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { IoSearchSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 const BrandsList = () => {
@@ -16,6 +17,11 @@ const BrandsList = () => {
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        // eslint-disable-next-line no-constant-condition
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+          }
     };
     const dataSource = isLoading
         ? []
@@ -26,27 +32,30 @@ const BrandsList = () => {
                   name: brand_name,
               };
           });
-    const deleteBrand = (id: any) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: 'Khi xoá không thể phục hồi lại!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Xóa sản phẩm
-                removeBrand(id).then(() => {
-                    Swal.fire('Xoá thành công!', 'Thương hiệu của bạn đã được xoá.', 'success');
-                });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire('Đã huỷ', 'Thương hiệu xoá thất bại.', 'error');
-            }
-        });
+    const deleteBrand = async (id: any) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+              });
+              if(result.isConfirmed){
+                const data = await  removeBrand(id).unwrap();
+                if(data){
+                  toast.success(`${data.message}`)
+                }
+              }else if (result.dismiss === Swal.DismissReason.cancel) {
+                toast.info('Hủy xoá danh mục');
+              }
+       
+        } catch (error:any) {
+            toast.error(error.data.message)
+        }
     };
     const columns = [
         {

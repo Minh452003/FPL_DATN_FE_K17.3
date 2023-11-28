@@ -3,6 +3,7 @@ import { useGetBrandByIdQuery, useUpdateBrandMutation } from '@/api/brandApi';
 import { Button, Form, Input, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 type FieldType = {
@@ -29,17 +30,17 @@ const BrandUpdate = () => {
     });
   };
 
-  const onFinish = (values: any) => {
-    updateBrand(values).then(() => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Cập nhật thương hiệu thành công!',
-        showConfirmButton: true,
-        timer: 1500,
-      });
+  const onFinish = async(values: any) => {
+    try {
+      const data:any = await updateBrand(values).unwrap();
+      if(data){
+        toast.success(`${data.message}`)
+      }
       navigate('/admin/brands');
-    });
+    } catch (error:any) {
+      toast.error(error.data.message)
+    }
+     
   };
 
   const onFinishFailed = (errorInfo: any) => {

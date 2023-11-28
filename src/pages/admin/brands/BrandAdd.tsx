@@ -2,7 +2,8 @@
 import { useAddBrandMutation } from '@/api/brandApi';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
 
 
 type FieldType = {
@@ -12,18 +13,18 @@ type FieldType = {
 const BrandAdd = () => {
   const [addBrand, resultAdd] = useAddBrandMutation();
   const navigate = useNavigate();
-  const onFinish = (values: any) => {
-    addBrand(values).then(() => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Thêm danh mục thành công!',
-        showConfirmButton: true,
-        timer: 1500
-      });
-      navigate("/admin/brands");
-    })
-  };
+  const onFinish = async (values: any) => {
+     try {
+      const data :any = await addBrand(values).unwrap();
+      console.log(data);
+      if(data){
+       toast.success(`${data.message}`)
+      }
+      navigate('/admin/brands')
+     } catch (error:any) {
+      toast.error(error.data.message);
+     }
+  }
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
