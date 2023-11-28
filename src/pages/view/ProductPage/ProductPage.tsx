@@ -103,6 +103,9 @@ const ProductPage = () => {
   const handlePageChange = (event: any, page: number) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
+    if (false) {
+      console.log(event);
+    }
   };
   return (
     <div className="md:px-6 ml-5 md:ml-28">

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
@@ -34,7 +34,7 @@ const CouponsUpdate = () => {
 
   const init = {
     expiration_date: dayjs(),
-    };
+  };
 
   useEffect(() => {
     if (coupons) {
@@ -51,7 +51,7 @@ const CouponsUpdate = () => {
       coupon_quantity: coupons.coupon?.coupon_quantity,
       discount_amount: coupons.coupon?.discount_amount,
       expiration_date: coupons.coupon?.expiration_date
-        ? dayjs(coupons.coupon?.expiration_date) 
+        ? dayjs(coupons.coupon?.expiration_date)
         : null,
       min_purchase_amount: coupons.coupon?.min_purchase_amount,
     });
@@ -69,28 +69,28 @@ const CouponsUpdate = () => {
       });
       navigate('/admin/coupons');
     });
-    
+
   };
-  
+
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
   if (isLoading) return <Skeleton />;
   const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) < 0) {
+    if (parseFloat(value) < 0) {
       return Promise.reject("Giá trị phải là số dương");
     }
     return Promise.resolve();
   }
   return (
     <div className="container-fluid">
-    <div className="row">
-      <div className="card-body">
-        <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Cập nhật phiếu giảm giá</h5>
-        <div className="flex items-center ">
-        </div>
-      
-      <Form
+      <div className="row">
+        <div className="card-body">
+          <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Cập nhật phiếu giảm giá</h5>
+          <div className="flex items-center ">
+          </div>
+
+          <Form
             form={form}
             name="basic"
             labelCol={{ span: 8 }}
@@ -174,17 +174,17 @@ const CouponsUpdate = () => {
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
             >
-             <TextArea />
+              <TextArea />
             </Form.Item>
 
             <Form.Item<FieldType>
               label="Số lượng phiếu giảm giá"
               name="coupon_quantity"
               rules={[{ required: true, message: 'Số lượng phiếu giảm giá không được để trống!' },
-              {validator: validatePositiveNumber},
-            { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              { validator: validatePositiveNumber },
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
-              
+
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -196,38 +196,38 @@ const CouponsUpdate = () => {
               label="Số tiền chiết khấu"
               name="discount_amount"
               rules={[{ required: true, message: 'Số tiền chiết khấu không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
-              
+
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
             >
-              <InputNumber style={{ width: '100%' }}  />
+              <InputNumber style={{ width: '100%' }} />
             </Form.Item>
 
 
             <Form.Item<FieldType>
-          label="Ngày hết hạn"
-          name="expiration_date"
-          rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
-          hasFeedback
-          labelCol={{ span: 24 }}
-          wrapperCol={{ span: 24 }}
-          style={{ marginLeft: '20px' }}
-        >
-          <DatePicker style={{width: "100%"}} format={dateFormat} />
-        </Form.Item>
+              label="Ngày hết hạn"
+              name="expiration_date"
+              rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+              hasFeedback
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <DatePicker style={{ width: "100%" }} format={dateFormat} />
+            </Form.Item>
 
             <Form.Item<FieldType>
               label="Số tiền mua tối thiểu"
               name="min_purchase_amount"
               rules={[{ required: true, message: 'Số tiền mua tối thiểu không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
-              
+
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -246,8 +246,8 @@ const CouponsUpdate = () => {
               </Button>
             </Form.Item>
 
-  </Form>
-  </div>
+          </Form>
+        </div>
       </div>
     </div>
   )

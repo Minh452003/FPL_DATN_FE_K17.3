@@ -78,8 +78,8 @@ const Productupdate = () => {
                 navigate('/admin/products');
             });
         } catch (error) {
-        console.log(error);
-        
+            console.log(error);
+
         }
     };
 
@@ -90,7 +90,9 @@ const Productupdate = () => {
         name: 'image',
         fileList: fileList, // Sử dụng state fileList
         customRequest: async ({ file }) => {
-            console.log(file);    
+            if (false) {
+                console.log(file);
+            }
         },
         onChange(info: any) {
             if (info.file) {
@@ -300,6 +302,9 @@ const Productupdate = () => {
                                 onChange={(event, editor) => {
                                     const data = editor.getData();
                                     setProductDescription(data);
+                                    if (false) {
+                                        console.log(event);
+                                    }
                                 }}
                             />
                         </Form.Item>

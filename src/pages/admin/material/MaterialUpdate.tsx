@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
+import { Button, Form, Input, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMaterialByIdQuery, useUpdateMaterialMutation } from '@/api/materialApi';
@@ -47,12 +47,12 @@ const MaterialUpdate = () => {
   };
   if (isLoading) return <Skeleton />;
 
-  const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) < 0) {
-      return Promise.reject("Giá trị phải là số dương");
-    }
-    return Promise.resolve();
-  }
+  // const validatePositiveNumber = (_: any, value: any) => {
+  //   if (parseFloat(value) < 0) {
+  //     return Promise.reject("Giá trị phải là số dương");
+  //   }
+  //   return Promise.resolve();
+  // }
   return (
     <div className="container-fluid">
       <div className="row">
@@ -97,7 +97,7 @@ const MaterialUpdate = () => {
             >
               <Input />
             </Form.Item>
-            
+
             <Form.Item wrapperCol={{ span: 16 }}>
               <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
                 {resultAdd.isLoading ? <div className="spinner-border" role="status">

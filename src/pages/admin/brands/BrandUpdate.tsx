@@ -4,7 +4,6 @@ import { Button, Form, Input, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
 
 type FieldType = {
   _id?: string;
@@ -30,17 +29,17 @@ const BrandUpdate = () => {
     });
   };
 
-  const onFinish = async(values: any) => {
+  const onFinish = async (values: any) => {
     try {
-      const data:any = await updateBrand(values).unwrap();
-      if(data){
+      const data: any = await updateBrand(values).unwrap();
+      if (data) {
         toast.success(`${data.message}`)
       }
       navigate('/admin/brands');
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data.message)
     }
-     
+
   };
 
   const onFinishFailed = (errorInfo: any) => {

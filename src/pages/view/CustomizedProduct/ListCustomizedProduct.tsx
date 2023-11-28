@@ -19,8 +19,8 @@ const ListCustomizedProduct = () => {
   const [removeCustomizedProduct] = useRemoveCustomProductMutation();
   const CustomizedProduct = customProduct?.products || [];
   const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
-  
-  
+
+
   const deleteProduct = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
@@ -66,7 +66,7 @@ const ListCustomizedProduct = () => {
   });
   console.log(CustomizedProduct);
   console.log(selectedPriceFilter);
-  
+
   //  Phân trang........................
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -76,6 +76,9 @@ const ListCustomizedProduct = () => {
   const handlePageChange = (event: any, page: any) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
+    if (false) {
+      console.log(event);
+    }
   };
 
   const formatCurrency = (number: number) => {
@@ -105,7 +108,7 @@ const ListCustomizedProduct = () => {
 
   return (
     <div className="px-6 lg:px-0 ml-28 ">
-    <div className="flex items-center mb-20">
+      <div className="flex items-center mb-20">
         <div className="float-left py-2">
           <Link
             to="/"
@@ -121,7 +124,7 @@ const ListCustomizedProduct = () => {
         <div className="py-3">Sản phẩm tự thiết kế</div>
       </div>
       <div>
-      <select
+        <select
           id="small"
           value={selectedPriceFilter}
           onChange={(e) => setSelectedPriceFilter(e.target.value)}
@@ -138,9 +141,9 @@ const ListCustomizedProduct = () => {
           <h4>
             <a href="/">Sản phẩm thiết kế </a>
           </h4>
-          <Button className='m-2 ml-10  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }}  /></Link></Button>
+          <Button className='m-2 ml-10  float-right'><Link to={'trash'}><FaTrash style={{ fontSize: '20', display: 'block' }} /></Link></Button>
         </div>
-        
+
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
           {displayedProducts.length > 0 ? (
             displayedProducts.map((product: any, index: any) => (
@@ -241,7 +244,7 @@ const ListCustomizedProduct = () => {
         </div>
       </div>
       <div className="flex w-full py-4 justify-center ">
-      <Pagination
+        <Pagination
           count={Math.ceil(filteredProducts.length / itemsPerPage)}
           page={currentPage}
           onChange={handlePageChange}

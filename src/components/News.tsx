@@ -5,8 +5,7 @@ import './New.css';
 
 const NewsComponent = () => {
   const { data }: any = useGetNewsQuery();
-  const newList = data?.news?.docs;
-  const initialVisibleItems = 6; 
+  const initialVisibleItems = 6;
   const [visibleItems, setVisibleItems] = useState(initialVisibleItems);
 
   const handleToggle = () => {
