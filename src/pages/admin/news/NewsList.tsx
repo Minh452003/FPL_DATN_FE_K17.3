@@ -24,14 +24,14 @@ const Newslist = () => {
     const dataNews = isloadingNews
         ? []
         : news?.map((news: any, index: number) => {
-            return {
-                key: news._id,
-                STT: index + 1,
-                new_name: news.new_name,
-                new_description: news.new_description,
-                new_image: <img width={50} src={news.new_image?.url} alt="" />,
-            };
-        });
+              return {
+                  key: news._id,
+                  STT: index + 1,
+                  new_name: news.new_name,
+                  new_description: news.new_description,
+                  new_image: <img width={50} src={news.new_image?.url} alt="" />,
+              };
+          });
     const deleteNew = (_id: any) => {
         Swal.fire({
             title: 'Bạn chắc chứ?',
@@ -112,10 +112,13 @@ const Newslist = () => {
         },
     ];
     const filteredData = dataNews?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+        const lowerCaseItemName = item.new_name.toLowerCase().trim();
+        const lowerCaseItemDescription = item.new_description.toLowerCase().trim();
+
         return (
-            item.new_name.toLowerCase().includes(lowerCaseSearchText) ||
-            item.new_description.toLowerCase().includes(lowerCaseSearchText)
+            lowerCaseItemName.includes(lowerCaseSearchText) ||
+            lowerCaseItemDescription.includes(lowerCaseSearchText)
         );
     });
     return (

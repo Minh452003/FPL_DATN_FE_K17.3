@@ -21,7 +21,7 @@ const BrandsList = () => {
         if (false) {
             console.log(pagination);
             console.log(filters);
-          }
+        }
     };
     const dataSource = isLoading
         ? []
@@ -43,18 +43,17 @@ const BrandsList = () => {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Vâng, tôi chắc chắn!',
                 cancelButtonText: 'Huỷ',
-              });
-              if(result.isConfirmed){
-                const data = await  removeBrand(id).unwrap();
-                if(data){
-                  toast.success(`${data.message}`)
+            });
+            if (result.isConfirmed) {
+                const data = await removeBrand(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
                 }
-              }else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
                 toast.info('Hủy xoá danh mục');
-              }
-       
-        } catch (error:any) {
-            toast.error(error.data.message)
+            }
+        } catch (error: any) {
+            toast.error(error.data.message);
         }
     };
     const columns = [
@@ -109,8 +108,10 @@ const BrandsList = () => {
     }
 
     const filteredData = dataSource?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
-        return item.name.toLowerCase().includes(lowerCaseSearchText);
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+        const lowerCaseItemName = item.name.toLowerCase().trim();
+
+        return lowerCaseItemName.includes(lowerCaseSearchText);
     });
     return (
         <div className="container">

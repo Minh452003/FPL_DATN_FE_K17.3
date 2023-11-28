@@ -92,8 +92,10 @@ const Colorslist = () => {
     ];
     // Xử lý filter..............
     const filteredData = dataSource?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
-        return item.name.toLowerCase().includes(lowerCaseSearchText);
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+        const lowerCaseName = item.name.toLowerCase().trim();
+
+        return lowerCaseName.includes(lowerCaseSearchText);
     });
     if (isLoading) return <Skeleton />;
     if (error) {

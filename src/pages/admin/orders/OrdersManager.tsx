@@ -55,26 +55,32 @@ const OrdersManager = () => {
     const data = isLoadingFetching
         ? []
         : filteredOrders.map((order: any, index: number) => {
-            const createdAtTimestamp = Date.parse(order.createdAt);
-            return {
-                key: order._id,
-                STT: index + 1,
-                address: order.address,
-                phone: order.phone,
-                total: order.total,
-                createAt: format(new Date(order.createdAt), 'HH:mm a dd/MM/yyyy'),
-                createdAtTimestamp: createdAtTimestamp,
-                image: <img width={50} src={order.products[0]?.image} alt="" />,
-                userId: `${order.userId?.first_name} ${order.userId?.last_name}`,
-            };
-        });
+              const createdAtTimestamp = Date.parse(order.createdAt);
+              return {
+                  key: order._id,
+                  STT: index + 1,
+                  address: order.address,
+                  phone: order.phone,
+                  total: order.total,
+                  createAt: format(new Date(order.createdAt), 'HH:mm a dd/MM/yyyy'),
+                  createdAtTimestamp: createdAtTimestamp,
+                  image: <img width={50} src={order.products[0]?.image} alt="" />,
+                  userId: `${order.userId?.first_name} ${order.userId?.last_name}`,
+              };
+          });
     // Xử lý filter..............
     const filteredData = data?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
-        return (
-            item.address.toLowerCase().includes(lowerCaseSearchText) ||
-            item.userId.toLowerCase().includes(lowerCaseSearchText)
-        );
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+
+        const lowerCaseAddress = item.address.toLowerCase().trim();
+        const lowerCaseUserId = item.userId.toLowerCase().trim();
+        const lowerCasePhone = item.phone.toLowerCase().trim();
+
+        const addressMatches = lowerCaseAddress.includes(lowerCaseSearchText);
+        const userIdMatches = lowerCaseUserId.includes(lowerCaseSearchText);
+        const phoneMatches = lowerCasePhone.includes(lowerCaseSearchText);
+
+        return addressMatches || userIdMatches || phoneMatches;
     });
     const columns: ColumnsType<any> = [
         {
@@ -157,8 +163,9 @@ const OrdersManager = () => {
                     <li>
                         <a
                             href=""
-                            className={`no-underline text-gray-700 ${currentStatus === 'all' ? 'font-medium active2' : ''
-                                }`}
+                            className={`no-underline text-gray-700 ${
+                                currentStatus === 'all' ? 'font-medium active2' : ''
+                            }`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 handleFilterOrders('all');
@@ -172,8 +179,9 @@ const OrdersManager = () => {
                         <li key={statusItem._id}>
                             <a
                                 href=""
-                                className={`no-underline text-gray-700 ${currentStatus === statusItem._id ? 'font-medium active2' : ''
-                                    }`}
+                                className={`no-underline text-gray-700 ${
+                                    currentStatus === statusItem._id ? 'font-medium active2' : ''
+                                }`}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleFilterOrders(statusItem._id);
