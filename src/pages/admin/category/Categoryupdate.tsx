@@ -6,7 +6,8 @@ import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
 
 
 type FieldType = {
@@ -42,37 +43,21 @@ const Categoryupdate = () => {
         });
     };
 
-    const onFinish = (values: ICategory) => {
+    const onFinish = async (values: ICategory) => {
         try {
-            if (Object.keys(imageUrl).length > 0) {
-                values.category_image = imageUrl;
-                updateCategory(values).then(() => {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Cập nhật danh mục thành công!',
-                        showConfirmButton: true,
-                        timer: 1500,
-                    });
-                    navigate('/admin/categories');
-                });
-            } else {
-                updateCategory(values).then(() => {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Cập nhật danh mục thành công!',
-                        showConfirmButton: true,
-                        timer: 1500,
-                    });
-                    navigate('/admin/categories');
-                });
-            }
-
-        } catch (error) {
-
+          if (Object.keys(imageUrl).length > 0) {
+            values.category_image = imageUrl;
+          }
+        const data:any =   await updateCategory(values);
+        if(data){
+            toast.success(`${data.data.message}`);
         }
-    };
+          navigate('/admin/categories');
+        } catch (error:any) {
+          toast.error(` ${error.data.message}`);
+        }
+      };
+      
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -82,6 +67,10 @@ const Categoryupdate = () => {
         name: 'category_image',
         fileList: fileList, // Sử dụng state fileList
         customRequest: async ({ file }: any) => {
+            // eslint-disable-next-line no-constant-condition
+            if (false) {
+                console.log(file);
+            }
         },
         onChange(info: any) {
 

@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useGetBannerQuery, useRemoveBannerMutation } from '@/api/bannerApi';
 import { useState } from 'react';
-
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 const Bannerlist = () => {
   const { data }: any = useGetBannerQuery();
@@ -36,11 +37,7 @@ const Bannerlist = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         removeBanner(id).unwrap().then(() => {
-          Swal.fire(
-            'Xoá thành công!',
-            'Banner của bạn đã được xoá.',
-            'success'
-          )
+          toast.success('Xóa danh mục thành công!');
         })
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         //Hiển thị thông báo hủy xóa sản phẩm

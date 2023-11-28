@@ -6,7 +6,8 @@ import { RcFile } from 'antd/es/upload';
 import { useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
 
 type FieldType = {
     category_name?: string;
@@ -23,23 +24,31 @@ const Categoryadd = () => {
     const navigate = useNavigate();
 
 
-    const onFinish = (values: ICategory) => {
-        if (Object.keys(imageUrl).length > 0) {
+    
+    const onFinish = async (values: ICategory) => {
+        try {
+          if (Object.keys(imageUrl).length > 0) {
             values.category_image = imageUrl;
-            addCategory(values).then(() => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Thêm danh mục thành công!',
-                    showConfirmButton: true,
-                    timer: 1500
-                });
-                navigate("/admin/categories");
-            })
-        } else {
-            return
+           const data:any =  await addCategory(values).unwrap();
+    
+           if(data){ 
+            toast.success(`${data.message}`);
+           }else{
+            console.log(data);
+            
+           }
+              navigate("/admin/categories");
+          } else {
+            throw new Error('Ảnh danh mục không được để trống.');
+          }
+        } catch (error:any) {
+            console.log(error);
+            
+            toast.error(error.data.message);
         }
-    };
+      };
+
+
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
@@ -47,6 +56,10 @@ const Categoryadd = () => {
         name: 'category_image',
         fileList: fileList, // Sử dụng state fileList
         customRequest: async ({ file }: any) => {
+            // eslint-disable-next-line no-constant-condition
+            if (false) {
+                console.log(file);
+            }
         },
         onChange(info: any) {
             if (info.file) {
