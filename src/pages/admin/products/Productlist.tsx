@@ -28,8 +28,8 @@ interface IProduct {
     updatedAt: string;
     deleted: boolean;
     views: number;
-    key: string; 
-    
+    key: string;
+
 }
 
 
@@ -51,6 +51,10 @@ const Productlist = () => {
     const [searchText, setSearchText] = useState('');
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        if (false) {
+            console.log(pagination);
+            console.log(filters);
+        }
     };
     const filteredProducts = products.filter((product: IProduct) => {
         const categoryMatches =
@@ -70,13 +74,13 @@ const Productlist = () => {
                 product.product_price <= 10000000) ||
             (selectedPriceFilter === '10000000+' && product.product_price >= 10000000);
 
-        const searchMatches =searchText === '' || product.product_name.toLowerCase().includes(searchText.toLowerCase());
+        const searchMatches = searchText === '' || product.product_name.toLowerCase().includes(searchText.toLowerCase());
 
         return categoryMatches && brandMatches && priceFilterMatches && searchMatches;
-    });    
+    });
     const data1 = filteredProducts?.map((product: IProduct, index: number) => {
         return {
-            key: product._id,STT: index + 1,
+            key: product._id, STT: index + 1,
             name: product.product_name,
             price: product.product_price,
             category: product.categoryId,
@@ -86,7 +90,7 @@ const Productlist = () => {
             image: <img width={50} src={product.image[0]?.url} alt="" />,
         };
     });
-    
+
     const formatCurrency = (number: number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
@@ -120,7 +124,7 @@ const Productlist = () => {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: number ) => <a>{index}</a>,
+            render: (index: number) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
@@ -153,7 +157,7 @@ const Productlist = () => {
             ellipsis: true,
         },
         {
-            title: 'Đã bán',dataIndex: 'quantity',
+            title: 'Đã bán', dataIndex: 'quantity',
             key: 'quantity',
             width: 100, // Điều chỉnh chiều rộng của cột "quantity"
 
@@ -171,7 +175,7 @@ const Productlist = () => {
             render: (record: string) => {
                 const catename = category?.find((cate: ICategory) => cate._id === record);
                 console.log(category);
-                
+
                 return catename?.category_name;
             },
         },
@@ -193,14 +197,14 @@ const Productlist = () => {
             width: 100, // Điều chỉnh chiều rộng của cột "brand"
 
             render: (record: string) => {
-                const brandname = brand?.find((bra:IBrand) => bra._id === record);
+                const brandname = brand?.find((bra: IBrand) => bra._id === record);
                 return brandname?.brand_name;
             },
         },
         {
             title: 'Chức năng',
             width: 200, // Điều chỉnh chiều rộng của cột "chức năng"
-            render: ({ key: _id }: {key: any}) => (
+            render: ({ key: _id }: { key: any }) => (
                 <div style={{ width: '150px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteProduct(_id)}>
                         {isRemoveLoading ? (
@@ -223,7 +227,7 @@ const Productlist = () => {
             ),
         },
     ];
-    
+
     return (
         <div className="table-container">
             <h3 className="font-semibold">Danh sách sản phẩm </h3>
@@ -231,12 +235,12 @@ const Productlist = () => {
                 <select
                     id="small"
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    //...
+                    onChange={(e) => setSelectedCategory(e.target.value)} className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                //...
                 >
                     <option value="all">Tất cả danh mục</option>
                     {categories?.category?.docs.map((category: ICategory) => (
-                        
+
                         <option key={category._id} value={category._id}>
                             {category.category_name}
                         </option>
@@ -247,7 +251,7 @@ const Productlist = () => {
                     value={selectedBrand}
                     onChange={(e) => setSelectedBrand(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    //...
+                //...
                 >
                     <option value="all">Tất cả thương hiệu</option>
                     {brands?.brand?.map((brand: IBrand) => (
@@ -261,7 +265,7 @@ const Productlist = () => {
                     value={selectedPriceFilter}
                     onChange={(e) => setSelectedPriceFilter(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    //...
+                //...
                 >
                     <option value="all">Tất cả giá</option>
                     <option value="100000-1000000">100.000-1.000.000</option>
@@ -280,7 +284,7 @@ const Productlist = () => {
                 <Input
                     className="m-2"
                     prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-                    placeholder="Tìm kiếm tên sản phẩm..."onChange={(e) => setSearchText(e.target.value)}
+                    placeholder="Tìm kiếm tên sản phẩm..." onChange={(e) => setSearchText(e.target.value)}
                     style={{ marginBottom: '16px', borderRadius: '5px', width: '400px' }}
                 />
                 <Button className="ml-auto">

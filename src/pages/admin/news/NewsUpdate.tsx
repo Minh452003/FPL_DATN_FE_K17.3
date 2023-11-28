@@ -83,6 +83,9 @@ const NewsUpdate = () => {
         name: 'new_image',
         fileList: fileList, // Sử dụng state fileList
         customRequest: async ({ file }: any) => {
+            if (false) {
+                console.log(file);
+            }
         },
         onChange(info: any) {
 

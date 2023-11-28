@@ -19,36 +19,36 @@ const CategoryTrash = () => {
     const [restoreCategory, { isLoading: isRestoreLoading }] = useRestoreCategoryMutation();
 
     const deleteCategory = async (id: string) => {
-      try {
-        const result = await Swal.fire({
-          title: 'Bạn chắc chứ?',
-          text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Vâng, tôi chắc chắn!',
-          cancelButtonText: 'Huỷ',
-        });
-    
-        if (result.isConfirmed) {
-          const data: any = await removeCategory(id).unwrap();
-          if (data) {
-            toast.success(`${data.message}`);
-          }
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          toast.info('Hủy xoá danh mục');
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+            });
+
+            if (result.isConfirmed) {
+                const data: any = await removeCategory(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                toast.info('Hủy xoá danh mục');
+            }
+        } catch (error: any) {
+            toast.error(error.message);
         }
-      } catch (error:any) {
-        toast.error(error.message);
-      }
     };
     const restoreCategory1 = async (id: string) => {
         try {
             const data: any = await restoreCategory(id).unwrap();
             if (data) toast.success(`${data.message}`);
-        } catch (error) {
-            toast.error(error);
+        } catch (error: any) {
+            toast.error(error.message);
         }
     };
 

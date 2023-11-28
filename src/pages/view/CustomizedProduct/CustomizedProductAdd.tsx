@@ -1,4 +1,4 @@
-import { FaArrowRight, FaCompress, FaExpand } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import "./CustomizedProductAdd.css";
 import "./Responsive_CustomizedProductAdd.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -65,7 +65,7 @@ const CustomizedProductAdd = () => {
         productId: idProduct,
         categoryId: listOneData.categoryId,
         product_name: listOneData.product_name,
-      product_price:  Number(listOneData.product_price),
+        product_price: Number(listOneData.product_price),
         image: listOneData.image,
         stock_quantity: quantity,
         colorId: activeColor,
@@ -142,6 +142,7 @@ const CustomizedProductAdd = () => {
   if (isLoadingColor) return <Skeleton />;
   if (isLoadingSize) return <Skeleton />;
   if (isLoadingMaterial) return <Skeleton />;
+  if (isLoadingFetching) return <Skeleton />;
 
   if (error) {
     if ("data" in error && "status" in error) {
@@ -172,12 +173,12 @@ const CustomizedProductAdd = () => {
           <div className="pl-2">{listOneData?.product_name}</div>
         </div>
         <div className="content1 py-3 ">
-         
-          
+
+
           <div className="grid grid-cols-2 gap-2 ">
             <div className="px-3">
               <div className="mb-6s">
-                
+
                 {listOneData?.image?.map((img: any, index: any) => {
                   if (!selectedIndex && index === 0) {
                     return (
@@ -237,11 +238,11 @@ const CustomizedProductAdd = () => {
               </ul>
             </div>
             <div className="">
-            <div className=" flex  items-center justify-between ">
-            <h3 className="font-bold iklm   ">{listOneData?.product_name}</h3>    
-             </div>
-            <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price)}₫</p>
-           
+              <div className=" flex  items-center justify-between ">
+                <h3 className="font-bold iklm   ">{listOneData?.product_name}</h3>
+              </div>
+              <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price)}₫</p>
+
               <div
                 className="text-l font-bold py-2"
                 style={{ height: showAllColors ? "auto" : "" }}
@@ -251,7 +252,7 @@ const CustomizedProductAdd = () => {
                   {colors ? (
                     colors.color
                       .slice(0, showAllColors ? colors.color.length : 3)
-                      .map((color: any, index: number) => {
+                      .map((color: any) => {
                         const isActive = color._id === activeColor;
                         return (
                           <div key={color._id} className="flex-row mb-2 mr-2">
@@ -289,7 +290,7 @@ const CustomizedProductAdd = () => {
                   {sizes ? (
                     sizes.size
                       .slice(0, showAllSizes ? sizes.size.length : 3)
-                      .map((size: any, index: number) => {
+                      .map((size: any) => {
                         const isActive = size._id === activeSize;
                         return (
                           <div key={size._id} className="flex-row mb-2 mr-2">
@@ -331,7 +332,7 @@ const CustomizedProductAdd = () => {
                         0,
                         showAllMaterials ? materials.material.length : 3
                       )
-                      .map((material: any, index: number) => {
+                      .map((material: any) => {
                         const isActive = material._id === activeMaterial;
                         return (
                           <div key={material._id} className="flex-row mb-2 mr-2">

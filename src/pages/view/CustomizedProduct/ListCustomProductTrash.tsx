@@ -17,7 +17,7 @@ const ListCustomizedProductTrash = () => {
   } = useGetAllCustomProductDeleteQuery<any>(id);
   const [removeCustomizedProduct] = useRemoveForceCustomProductMutation();
   const [restoreCustomizedProduct] = useRestoreCustomProductMutation();
-  const CustomizedProduct = customProduct?.product || []; 
+  const CustomizedProduct = customProduct?.product || [];
   const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
 
   const restoreProduct = (id: any) => {
@@ -94,7 +94,7 @@ const ListCustomizedProductTrash = () => {
   });
   console.log(CustomizedProduct);
   console.log(selectedPriceFilter);
-  
+
   //  Phân trang........................
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -104,6 +104,9 @@ const ListCustomizedProductTrash = () => {
   const handlePageChange = (event: any, page: any) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
+    if (false) {
+      console.log(event);
+    }
   };
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -137,7 +140,7 @@ const ListCustomizedProductTrash = () => {
           <Link
             to="/"
             className="font-bold text-black no-underline"
-           
+
           >
             Trang Chủ
           </Link>
@@ -151,20 +154,20 @@ const ListCustomizedProductTrash = () => {
         </div>
         <div className="py-3 font-semibold ">Kho lưu trữ</div>
       </div>
-      
+
       <select
-          id="small"
-          value={selectedPriceFilter}
-          onChange={(e) => setSelectedPriceFilter(e.target.value)}
-          className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        //...
-        >
-          <option value="all">Tất cả giá</option>
-          <option value="100000-1000000">100.000-1.000.000</option>
-          <option value="1000000-5000000">1.000.0000-5.000.000</option>
-          <option value="5000000-10000000">5.000.000-10.000.000</option>
-          <option value="10000000+">10.000.000+</option>
-        </select>
+        id="small"
+        value={selectedPriceFilter}
+        onChange={(e) => setSelectedPriceFilter(e.target.value)}
+        className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      //...
+      >
+        <option value="all">Tất cả giá</option>
+        <option value="100000-1000000">100.000-1.000.000</option>
+        <option value="1000000-5000000">1.000.0000-5.000.000</option>
+        <option value="5000000-10000000">5.000.000-10.000.000</option>
+        <option value="10000000+">10.000.000+</option>
+      </select>
       <div>
         <div className="new_title lt clear_pd " style={{ width: "1255px" }}>
           <h4>
@@ -280,7 +283,7 @@ const ListCustomizedProductTrash = () => {
         </div>
       </div>
       <div className="flex w-full py-4 justify-center ">
-      <Pagination
+        <Pagination
           count={Math.ceil(filteredProducts.length / itemsPerPage)}
           page={currentPage}
           onChange={handlePageChange}
