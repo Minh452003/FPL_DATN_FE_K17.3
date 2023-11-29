@@ -5,18 +5,17 @@ import { Button, Form, Input, InputNumber } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-type FieldType = {
+interface FieldType  {
   size_name?: string;
   size_height?: number;
   size_length?: number;
   size_weight?: number;
   size_width?: number
-
-};
+}
 const SizesAdd = () => {
   const [addSize, resultAdd] = useAddSizeMutation();
   const navigate = useNavigate();
-  const onFinish = (values: any) => {
+  const onFinish = (values: FieldType) => {
     addSize(values).then(() => {
       Swal.fire({
         position: 'center',

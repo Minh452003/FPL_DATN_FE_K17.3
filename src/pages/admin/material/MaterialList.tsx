@@ -8,6 +8,12 @@ import { IoSearchSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
+interface TableColumn {
+  key: string;
+  STT: number;
+  name: string;
+}
+
 const MaterialList = () => {
     const { data, isLoading }: any = useGetMaterialQuery();
     const [searchText, setSearchText] = useState('');

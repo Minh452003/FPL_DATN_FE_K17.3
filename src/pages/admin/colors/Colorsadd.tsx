@@ -1,5 +1,6 @@
 
 import { useAddColorMutation } from '@/api/colorApi';
+import { IColor } from '@/interfaces/color';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -11,7 +12,7 @@ type FieldType = {
 const ColorsAdd = () => {
   const [addColor,resultAdd] = useAddColorMutation();
   const navigate = useNavigate();
-  const onFinish = (values: any) => {
+  const onFinish = (values: IColor) => {
     addColor(values).then(() => {
       Swal.fire({
         position: 'center',

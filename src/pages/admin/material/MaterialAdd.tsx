@@ -1,4 +1,5 @@
 import { useAddMaterialMutation } from '@/api/materialApi';
+import { IMaterials } from '@/interfaces/materials';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -10,7 +11,7 @@ type FieldType = {
 const MaterialAdd = () => {
     const [addMaterials, resultAdd] = useAddMaterialMutation();
     const navigate = useNavigate();
-    const onFinish = (values: any) => {
+    const onFinish = (values: IMaterials) => {
         addMaterials(values).then(() => {
             Swal.fire({
                 position: 'center',

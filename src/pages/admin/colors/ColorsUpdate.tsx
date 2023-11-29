@@ -7,14 +7,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 
-type FieldType = {
+interface Color {
   _id?: string;
   colors_name?: string;
-
-};
+}
 const ColorsUpdate = () => {
     const { idColor }: any = useParams();
-    const { data: colors, isLoading }: any = useGetColorByIdQuery(idColor || "");
+    const { data: colors, isLoading } = useGetColorByIdQuery<Color>(idColor);
     const [updateColor, resultAdd] = useUpdateColorMutation();
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -31,7 +30,7 @@ const setFields = () => {
     });
 };
 
-const onFinish = (values: any) => {
+const onFinish = (values: Color) => {
   updateColor(values).then(() => {
     Swal.fire({
       position: 'center',
@@ -69,7 +68,7 @@ if (isLoading) return <Skeleton />;
             <Form.Item label="" name="_id" style={{ display: 'none' }}>
               <Input />
             </Form.Item>
-            <Form.Item<FieldType>
+            <Form.Item<Color>
               label="Tên màu"
               name="colors_name"
               rules={[{ required: true, message: 'Tên màu không được để trống!' },
