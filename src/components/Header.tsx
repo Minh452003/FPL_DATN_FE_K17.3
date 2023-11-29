@@ -15,7 +15,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { data: carts } = useGetCartsQuery(iduser);
   const [cartItemCount, setCartItemCount] = useState(0);
-
   useEffect(() => {
     // Nếu dữ liệu giỏ hàng tồn tại, cập nhật số lượng sản phẩm
     if (carts?.data?.products) {
@@ -23,12 +22,9 @@ const Header = () => {
       setCartItemCount(totalProducts);
     }
   }, [carts]);
-
-
   const toggleMenu = () => {
     setIsMenuHidden(!isMenuHidden);
   };
-
   const logout = () => {
     Promise.resolve().then(() => {
       localStorage.removeItem("accessToken");
@@ -183,8 +179,6 @@ const Header = () => {
                           </Link>
                         </li>
                       </ul>
-
-
                     </div>
                   ) : (
                     <div className="mr-5 relative group">
@@ -214,15 +208,41 @@ const Header = () => {
 
                   )}
                 </div>
-
-
-                <div className="ml-3 items-center flex relative group">
+                {/* Giỏ hàng */}
+                <div className="ml-2 items-center flex relative group">
                   <Link to={"/carts"}>
                     <div className="relative">
                       <img
                         src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/cart.png?1693834920118"
                         width="30px"
-                        alt=""
+                        alt="Giỏ hàng"
+                      />
+                      {iduser && cartItemCount > 0 && (
+                        <div className="absolute top-0 bottom-8 right-0 mt-2 bg-orange-500 rounded-full h-6 w-6 text-white text-center text-sm">
+                          <strong>{cartItemCount}</strong>
+                        </div>
+                      )}
+                      {!iduser && cartItemCount === 0 && (
+                        <div className="absolute top-0 bottom-8 right-0 mt-2 bg-orange-500 rounded-full h-6 w-6 text-white text-center">
+                          0
+                        </div>
+                      )}
+                      {!iduser && cartItemCount === 0 && (
+                        <div className="absolute text-xs text-center mt-1 mnpq">
+                          Không có sản phẩm nào
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                </div>
+                {/* Sản phẩm tự thiết kế */}
+                <div className="ml-6 items-center flex relative group">
+                  <Link to={"/customizedProducts"}>
+                    <div className="relative">
+                      <img
+                        src="https://res.cloudinary.com/dkvghcobl/image/upload/v1701261988/jwjbsoiwfslskorccmij.png"
+                        width="30px"
+                        alt="Sản phẩm tự thiết kế"
                       />
                       {iduser && cartItemCount > 0 && (
                         <div className="absolute top-0 bottom-8 right-0 mt-2 bg-orange-500 rounded-full h-6 w-6 text-white text-center text-sm">
@@ -246,7 +266,6 @@ const Header = () => {
             </div>
           </div>
           <div className="flex justify-end pt-2">
-
             {!isMenuHidden && (
               <button onClick={toggleMenu} className="md:hidden ">
                 <svg

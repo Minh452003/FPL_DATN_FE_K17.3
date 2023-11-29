@@ -14,6 +14,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useGetCategoryQuery } from "@/api/categoryApi";
 import { useAddCustomProductMutation } from "@/api/CustomizedProductAPI";
 import Swal from "sweetalert2";
+import { IoIosAddCircle } from "react-icons/io";
+import { BiSolidMinusCircle } from "react-icons/bi";
 
 const CustomizedProductAdd = () => {
   const { idProduct }: any = useParams();
@@ -173,8 +175,6 @@ const CustomizedProductAdd = () => {
           <div className="pl-2">{listOneData?.product_name}</div>
         </div>
         <div className="content1 py-3 ">
-
-
           <div className="grid grid-cols-2 gap-2 ">
             <div className="px-3">
               <div className="mb-6s">
@@ -238,8 +238,8 @@ const CustomizedProductAdd = () => {
               </ul>
             </div>
             <div className="">
-              <div className=" flex  items-center justify-between ">
-                <h3 className="font-bold iklm   ">{listOneData?.product_name}</h3>
+              <div className=" flex items-center justify-between ">
+                <h3 className="font-bold iklm">{listOneData?.product_name}</h3>
               </div>
               <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price)}₫</p>
 
@@ -275,11 +275,11 @@ const CustomizedProductAdd = () => {
                 {colors && colors.color.length > 3 && (
                   <button
                     onClick={handleToggleColors}
-                    className={`btn-show-more ${showAllColors ? "collapses" : "expand"
-                      }`}
+                    className={`btn-show-more flex items-center ${showAllColors ? "collapses" : "expand"}`}
                   >
-
-                    {showAllColors ? "-- Thu gọn --" : "Xem thêm ++"}
+                    <span className={`${showAllColors ? "text-red-500 text-1xl" : "text-green-500 "} text-2xl mr-20`}>
+                      {showAllColors ? <BiSolidMinusCircle /> : <IoIosAddCircle />}
+                    </span>
                   </button>
                 )}
               </div>
@@ -312,9 +312,11 @@ const CustomizedProductAdd = () => {
                   {sizes && sizes.size.length > 3 && (
                     <button
                       onClick={() => setShowAllSizes(!showAllSizes)}
-                      className="btn-show-more"
+                      className={`btn-show-more flex items-center ${showAllColors ? "collapses" : "expand"}`}
                     >
-                      {showAllSizes ? "-- Thu gọn --" : "Xem thêm ++"}
+                      <span className={`${showAllSizes ? "text-red-500 text-1xl" : "text-green-500 "} text-2xl mr-20`}>
+                        {showAllSizes ? <BiSolidMinusCircle /> : <IoIosAddCircle />}
+                      </span>
                     </button>
                   )}
                 </div>
@@ -355,15 +357,16 @@ const CustomizedProductAdd = () => {
                 {materials && materials.material.length > 3 && (
                   <button
                     onClick={handleToggleMaterials}
-                    className={`btn-show-more ${showAllMaterials ? "collapses" : "expand"
-                      }`}
+                    className={`btn-show-more flex items-center ${showAllColors ? "collapses" : "expand"}`}
                   >
-                    {showAllMaterials ? "-- Thu gọn --" : "Xem thêm ++"}
+                    <span className={`${showAllMaterials ? "text-red-500 text-1xl" : "text-green-500 "} text-2xl mr-20`}>
+                      {showAllMaterials ? <BiSolidMinusCircle /> : <IoIosAddCircle />}
+                    </span>
                   </button>
                 )}
               </div>
 
-              <div className="flex button1">
+              <div className="flex button1 ">
                 <button
                   aria-label="Decrease"
                   className="btn3s btn-solid-primary3s btn-cs"
@@ -400,7 +403,7 @@ const CustomizedProductAdd = () => {
                       aria-disabled={
                         !id || !activeColor || !activeSize || !activeMaterial
                       }
-                      className="btn6s btn-solid-primary6s btn-fs hls"
+                      className="btn6s btn-solid-primary6s btn-fs"
                       onClick={() => {
                         if (id && activeColor && activeSize && activeMaterial) {
                           handleAddToCart();
