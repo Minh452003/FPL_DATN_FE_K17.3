@@ -209,13 +209,18 @@ const CustomProductslist = () => {
         const username = item.user
             ? user?.find((cate: any) => cate._id === item.user)?.first_name
             : null;
-
-        const lowerCaseSearchText = searchText.toLowerCase();
+    
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+    
+        const lowerCaseProductName = item.name.toLowerCase().trim();
+        const lowerCaseUsername = username ? username.toLowerCase().trim() : '';
+    
         return (
-            item.name.toLowerCase().includes(lowerCaseSearchText) ||
-            (username && username.toLowerCase().includes(lowerCaseSearchText))
+            lowerCaseProductName.includes(lowerCaseSearchText) ||
+            lowerCaseUsername.includes(lowerCaseSearchText)
         );
     });
+    
     return (
         <div className="container">
             <h3 className="font-semibold">Danh sách sản phẩm Thiết kế</h3>

@@ -168,16 +168,22 @@ const CouponsList = () => {
         },
     ];
     const filteredData = dataSource?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
         const numericSearchText = parseFloat(lowerCaseSearchText);
+
+        const lowerCaseCouponName = item.coupon_name.toLowerCase().trim();
+        const lowerCaseCouponCode = item.coupon_code.toLowerCase().trim();
+        const lowerCaseCouponContent = item.coupon_content.toLowerCase().trim();
+
         return (
-            item.coupon_name.toLowerCase().includes(lowerCaseSearchText) ||
-            item.coupon_code.toLowerCase().includes(lowerCaseSearchText) ||
-            item.coupon_content.toLowerCase().includes(lowerCaseSearchText) ||
+            lowerCaseCouponName.includes(lowerCaseSearchText) ||
+            lowerCaseCouponCode.includes(lowerCaseSearchText) ||
+            lowerCaseCouponContent.includes(lowerCaseSearchText) ||
             item.coupon_quantity === numericSearchText ||
             item.discount_amount === numericSearchText
         );
     });
+
     if (isLoading) return <Skeleton />;
     if (error) {
         if ('data' in error && 'status' in error) {

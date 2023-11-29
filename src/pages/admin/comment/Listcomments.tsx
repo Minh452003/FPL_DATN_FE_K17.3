@@ -68,7 +68,10 @@ const Listcomments = () => {
         },
     ];
     const filteredData = dataComment?.filter((item: any) => {
-        return item.product.toLowerCase().includes(searchText.toLowerCase());
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+        const lowerCaseProductName = item.product.toLowerCase().trim();
+        
+        return lowerCaseProductName.includes(lowerCaseSearchText);
     });
     if (isLoadingComment) return <Skeleton />;
     if (error) {
