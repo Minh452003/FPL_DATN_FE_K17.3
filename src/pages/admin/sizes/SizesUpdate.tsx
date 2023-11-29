@@ -1,11 +1,12 @@
 import { useGetSizeByIdQuery, useUpdateSizeMutation } from '@/api/sizeApi';
+import { ISize } from '@/interfaces/size';
 import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 
-type FieldType = {
+interface FieldType  {
     _id?: string;
     size_name?: string;
     size_height?: number;
@@ -13,10 +14,10 @@ type FieldType = {
     size_weight?: number;
     size_width?: number
 
-};
+}
 const SizesUpdate = () => {
-    const { idSize }: any = useParams();
-    const { data: sizes, isLoading }: any = useGetSizeByIdQuery(idSize || "");
+    const { idSize }: { idSize: string } = useParams();
+    const { data: sizes, isLoading } = useGetSizeByIdQuery<ISize>(idSize);
     const [updateSize, resultAdd] = useUpdateSizeMutation();
     const navigate = useNavigate();
     const [form] = Form.useForm();

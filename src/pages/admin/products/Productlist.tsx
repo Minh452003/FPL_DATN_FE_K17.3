@@ -14,7 +14,6 @@ import { ICategory } from '@/interfaces/category';
 import { IBrand } from '@/interfaces/brand';
 import { toast } from 'react-toastify';
 
-
 interface IProduct {
     _id: string;
     product_name: string;
@@ -30,10 +29,7 @@ interface IProduct {
     deleted: boolean;
     views: number;
     key: string;
-
 }
-
-
 
 const Productlist = () => {
     const { data, isLoading: isLoadingProducts } = useGetProductsQuery();
@@ -43,6 +39,7 @@ const Productlist = () => {
     const [selectedPriceFilter, setSelectedPriceFilter] = useState('all');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedBrand, setSelectedBrand] = useState('all');
+    const [selectedMaterial, setSelectedMaterial] = useState('all');
     const [removeProduct, { isLoading: isRemoveLoading }] = useRemoveProductMutation();
     const products = isLoadingProducts ? [] : data?.product.docs;
     const category = categories?.category?.docs;
@@ -61,6 +58,8 @@ const Productlist = () => {
         const categoryMatches =
             selectedCategory === 'all' || product.categoryId === selectedCategory;
         const brandMatches = selectedBrand === 'all' || product.brandId === selectedBrand;
+        const materialMatches =
+            selectedMaterial === 'all' || product.materialId === selectedMaterial;
 
         const priceFilterMatches =
             selectedPriceFilter === 'all' ||
@@ -75,13 +74,36 @@ const Productlist = () => {
                 product.product_price <= 10000000) ||
             (selectedPriceFilter === '10000000+' && product.product_price >= 10000000);
 
-        const searchMatches = searchText === '' || product.product_name.toLowerCase().includes(searchText.toLowerCase());
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+        const lowerCaseProductName = product.product_name.toLowerCase().trim();
+        const lowerCaseCategoryName = product.categoryId
+            ? category?.find((cate: ICategory) => cate._id === product.categoryId)?.category_name
+            : '';
+        const lowerCaseBrandName = product.brandId
+            ? brand?.find((bra: IBrand) => bra._id === product.brandId)?.brand_name
+            : '';
+        const lowerCaseMaterialName = product.materialId
+            ? material?.find((mat: any) => mat._id === product.materialId)?.material_name
+            : '';
 
-        return categoryMatches && brandMatches && priceFilterMatches && searchMatches;
+        const searchMatches =
+            lowerCaseProductName.includes(lowerCaseSearchText) ||
+            lowerCaseCategoryName?.toLowerCase().includes(lowerCaseSearchText) ||
+            lowerCaseBrandName?.toLowerCase().includes(lowerCaseSearchText) ||
+            lowerCaseMaterialName?.toLowerCase().includes(lowerCaseSearchText);
+
+        return (
+            categoryMatches &&
+            brandMatches &&
+            materialMatches &&
+            priceFilterMatches &&
+            searchMatches
+        );
     });
     const data1 = filteredProducts?.map((product: IProduct, index: number) => {
         return {
-            key: product._id, STT: index + 1,
+            key: product._id,
+            STT: index + 1,
             name: product.product_name,
             price: product.product_price,
             category: product.categoryId,
@@ -161,7 +183,8 @@ const Productlist = () => {
             ellipsis: true,
         },
         {
-            title: 'Đã bán', dataIndex: 'quantity',
+            title: 'Đã bán',
+            dataIndex: 'quantity',
             key: 'quantity',
             width: 100, // Điều chỉnh chiều rộng của cột "quantity"
 
@@ -178,8 +201,6 @@ const Productlist = () => {
 
             render: (record: string) => {
                 const catename = category?.find((cate: ICategory) => cate._id === record);
-                console.log(category);
-
                 return catename?.category_name;
             },
         },
@@ -239,12 +260,12 @@ const Productlist = () => {
                 <select
                     id="small"
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)} className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                //...
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    //...
                 >
                     <option value="all">Tất cả danh mục</option>
                     {categories?.category?.docs.map((category: ICategory) => (
-
                         <option key={category._id} value={category._id}>
                             {category.category_name}
                         </option>
@@ -255,7 +276,7 @@ const Productlist = () => {
                     value={selectedBrand}
                     onChange={(e) => setSelectedBrand(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                //...
+                    //...
                 >
                     <option value="all">Tất cả thương hiệu</option>
                     {brands?.brand?.map((brand: IBrand) => (
@@ -269,7 +290,7 @@ const Productlist = () => {
                     value={selectedPriceFilter}
                     onChange={(e) => setSelectedPriceFilter(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                //...
+                    //...
                 >
                     <option value="all">Tất cả giá</option>
                     <option value="100000-1000000">100.000-1.000.000</option>
@@ -288,7 +309,8 @@ const Productlist = () => {
                 <Input
                     className="m-2"
                     prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-                    placeholder="Tìm kiếm tên sản phẩm..." onChange={(e) => setSearchText(e.target.value)}
+                    placeholder="Tìm kiếm tên sản phẩm..."
+                    onChange={(e) => setSearchText(e.target.value)}
                     style={{ marginBottom: '16px', borderRadius: '5px', width: '400px' }}
                 />
                 <Button className="ml-auto">

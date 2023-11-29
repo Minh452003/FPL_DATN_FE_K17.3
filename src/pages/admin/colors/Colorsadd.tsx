@@ -1,5 +1,6 @@
 
 import { useAddColorMutation } from '@/api/colorApi';
+import { IColor } from '@/interfaces/color';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -12,6 +13,7 @@ type FieldType = {
 const ColorsAdd = () => {
   const [addColor,resultAdd] = useAddColorMutation();
   const navigate = useNavigate();
+
   const onFinish = async (values: any) => {
    try {
     const data = await addColor(values).unwrap();

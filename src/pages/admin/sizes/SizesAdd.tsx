@@ -5,17 +5,17 @@ import { Button, Form, Input, InputNumber } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-type FieldType = {
+interface FieldType  {
   size_name?: string;
   size_height?: number;
   size_length?: number;
   size_weight?: number;
   size_width?: number
-
-};
+}
 const SizesAdd = () => {
   const [addSize, resultAdd] = useAddSizeMutation();
   const navigate = useNavigate();
+
   const onFinish = async (values: any) => {
     try {
       const data = await addSize(values).unwrap();

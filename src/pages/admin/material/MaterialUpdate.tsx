@@ -5,14 +5,14 @@ import { useGetMaterialByIdQuery, useUpdateMaterialMutation } from '@/api/materi
 import { toast } from 'react-toastify';
 
 
-type FieldType = {
-  _id?: string
+interface FieldType {
+  _id?: string;
   material_name?: string;
+}
 
-};
 const MaterialUpdate = () => {
   const { id }: any = useParams();
-  const { data: materialData, isLoading } = useGetMaterialByIdQuery<any>(id);
+  const { data: materialData, isLoading } = useGetMaterialByIdQuery<FieldType>(id);
   const [updateMaterial, resultAdd] = useUpdateMaterialMutation();
   const navigate = useNavigate();
 
@@ -30,6 +30,7 @@ const MaterialUpdate = () => {
       material_name: materialData?.material?.material_name
     });
   };
+
   const onFinish = async (values: any) => {
     try {
       const data = await  updateMaterial(values).unwrap();

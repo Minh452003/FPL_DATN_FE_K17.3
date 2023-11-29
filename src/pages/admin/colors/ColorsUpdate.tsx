@@ -8,14 +8,13 @@ import { toast } from 'react-toastify';
 
 
 
-type FieldType = {
+interface Color {
   _id?: string;
   colors_name?: string;
-
-};
+}
 const ColorsUpdate = () => {
     const { idColor }: any = useParams();
-    const { data: colors, isLoading }: any = useGetColorByIdQuery(idColor || "");
+    const { data: colors, isLoading } = useGetColorByIdQuery<Color>(idColor);
     const [updateColor, resultAdd] = useUpdateColorMutation();
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -31,6 +30,7 @@ const setFields = () => {
         colors_name: colors.color?.colors_name,
     });
 };
+
 
 const onFinish = async (values: any) => {
   try {
@@ -70,7 +70,7 @@ if (isLoading) return <Skeleton />;
             <Form.Item label="" name="_id" style={{ display: 'none' }}>
               <Input />
             </Form.Item>
-            <Form.Item<FieldType>
+            <Form.Item<Color>
               label="Tên màu"
               name="colors_name"
               rules={[{ required: true, message: 'Tên màu không được để trống!' },

@@ -9,11 +9,19 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-const Colorslist = () => {
-    const { data, error, isLoading }: any = useGetColorsQuery();
+
+interface TableData {
+    key: string;
+    STT: number;
+    name: string;
+}
+
+const Colorslist: React.FC<IColor> = () => {
+    const { data, error, isLoading } = useGetColorsQuery();
     const [searchText, setSearchText] = useState('');
     const [removeColor, { isLoading: isRemoveLoading }] = useRemoveColorMutation();
-    const [sortedInfo, setSortedInfo] = useState({} as any);
+    const [sortedInfo, setSortedInfo] = useState<any>({});
+
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
         // eslint-disable-next-line no-constant-condition
@@ -23,13 +31,14 @@ const Colorslist = () => {
         }
     };
     const color = isLoading ? [] : data?.color;
-    const dataSource = color?.map(({ _id, colors_name }: IColor, index: number) => {
+    const dataSource: TableData[] | undefined = color?.map(({ _id, colors_name }: IColor, index: number) => {
         return {
             key: _id,
             STT: index + 1,
             name: colors_name,
         };
     });
+
     const deleteColor = async(id: any) => {
         try {
             const result = await Swal.fire({
@@ -60,8 +69,8 @@ const Colorslist = () => {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: any) => <a>{index}</a>,
-            sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
+            render: (index: number) => <a>{index}</a>,
+            sorter: (a: TableData, b: TableData) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
             width: 90,
@@ -75,7 +84,7 @@ const Colorslist = () => {
         {
             title: 'Chức năng',
             width: 170,
-            render: ({ key: _id }: any) => {
+            render: ({ key: _id }: TableData) => {
                 return (
                     <div style={{ width: '150px' }}>
                         <Button className="mr-1 text-red-500" onClick={() => deleteColor(_id)}>
@@ -97,8 +106,9 @@ const Colorslist = () => {
     ];
     // Xử lý filter..............
     const filteredData = dataSource?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
-        return item.name.toLowerCase().includes(lowerCaseSearchText);
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+        const lowerCaseName = item.name.toLowerCase().trim();
+        return lowerCaseName.includes(lowerCaseSearchText);
     });
     if (isLoading) return <Skeleton />;
     if (error) {

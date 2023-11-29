@@ -73,8 +73,8 @@ import ContactList from "./pages/admin/contact/ContactList";
 import ChangePassword from "./pages/view/User/Account/Changepassword";
 import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
 import Productadd from "./pages/admin/productchill/Productadd";
-import ContactPage from "./pages/view/contact/ContactPage";
 import Listcomments from "./pages/admin/comment/Listcomments";
+import ContactPage from "./pages/view/Contact/ContactPage";
 
 
 
@@ -89,10 +89,10 @@ export const router = createBrowserRouter([
             { path: 'category/:id', element: <Category_Detail /> },
             { path: 'products', element: <ProductPage /> },
             { path: 'products/:idProduct', element: <Product_Detail /> },
+            { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },
             { path: '/customized-products/:id', element: <CustomProductDetail /> },
             { path: 'customizedProducts', element: <ListCustomizedProduct /> },
             { path: 'customizedProducts/trash', element: <ListCustomizedProductTrash /> },
-            { path: 'customized/:idProduct/add', element: <CustomizedProductAdd /> },
             { path: 'review', element: <ReviewPage /> },
             { path: 'contact', element: <ContactPage /> },
             {

@@ -45,7 +45,6 @@ const Newslist = () => {
               confirmButtonText: 'Vâng, tôi chắc chắn!',
               cancelButtonText: 'Huỷ',
             });
-        
             if (result.isConfirmed) {
               const data: any = await removeNews(_id).unwrap();
               if (data) {
@@ -116,10 +115,13 @@ const Newslist = () => {
         },
     ];
     const filteredData = dataNews?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+        const lowerCaseItemName = item.new_name.toLowerCase().trim();
+        const lowerCaseItemDescription = item.new_description.toLowerCase().trim();
+
         return (
-            item.new_name.toLowerCase().includes(lowerCaseSearchText) ||
-            item.new_description.toLowerCase().includes(lowerCaseSearchText)
+            lowerCaseItemName.includes(lowerCaseSearchText) ||
+            lowerCaseItemDescription.includes(lowerCaseSearchText)
         );
     });
     return (

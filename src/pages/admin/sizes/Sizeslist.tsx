@@ -9,12 +9,12 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-const Sizeslist = () => {
-    const { data, error, isLoading }: any = useGetSizeQuery();
+const Sizeslist: React.FC<ISize> = () => {
+    const { data, error, isLoading } = useGetSizeQuery();
     const [searchText, setSearchText] = useState('');
     const [removeSize, { isLoading: isRemoveLoading }] = useRemoveSizeMutation();
     const size = isLoading ? [] : data?.size;
-    const [sortedInfo, setSortedInfo] = useState({} as any);
+    const [sortedInfo, setSortedInfo] = useState<any>({});
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
         if (false) {

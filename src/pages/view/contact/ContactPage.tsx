@@ -27,12 +27,10 @@ const ContactPage = () => {
 
     const validateNoSpaces = (_: any, value: any) => {
         if (!value.trim()) {
-            return Promise.reject('Vui lòng không nhập chỉ dấu cách!');
+            return Promise.reject('Vui lòng không nhập dấu cách!');
         }
         return Promise.resolve();
     };
-
-
     return (
         <div>
             <div className="App">

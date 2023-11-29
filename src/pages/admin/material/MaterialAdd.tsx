@@ -1,4 +1,5 @@
 import { useAddMaterialMutation } from '@/api/materialApi';
+import { IMaterials } from '@/interfaces/materials';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,6 +12,7 @@ type FieldType = {
 const MaterialAdd = () => {
     const [addMaterials, resultAdd] = useAddMaterialMutation();
     const navigate = useNavigate();
+
     const onFinish = async(values: any) => {
         try {
             const data = await addMaterials(values).unwrap();

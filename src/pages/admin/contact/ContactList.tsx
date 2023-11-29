@@ -113,12 +113,18 @@ const ContactList = () => {
         },
     ];
     const filteredData = datacontact?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+    
+        const lowerCaseContactEmail = item.contact_email.toLowerCase().trim();
+        const lowerCaseContactName = item.contact_name.toLowerCase().trim();
+        const lowerCaseContactPhone = item.contact_phone.toLowerCase().trim();
+        const lowerCaseContactDescription = item.contact_description.toLowerCase().trim();
+    
         return (
-            item.contact_email.toLowerCase().includes(lowerCaseSearchText) ||
-            item.contact_name.toLowerCase().includes(lowerCaseSearchText) ||
-            item.contact_phone.toLowerCase().includes(lowerCaseSearchText) ||
-            item.contact_description.toLowerCase().includes(lowerCaseSearchText)
+            lowerCaseContactEmail.includes(lowerCaseSearchText) ||
+            lowerCaseContactName.includes(lowerCaseSearchText) ||
+            lowerCaseContactPhone.includes(lowerCaseSearchText) ||
+            lowerCaseContactDescription.includes(lowerCaseSearchText)
         );
     });
     return (
