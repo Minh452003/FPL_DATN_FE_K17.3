@@ -6,7 +6,7 @@ import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 
 
@@ -37,35 +37,14 @@ const Bannerupdate = () => {
         });
     };
 
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
         try {
-            if (Object.keys(imageUrl).length > 0) {
-                values.image = imageUrl;
-                updateBanner(values).then(() => {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Cập nhật banner thành công!',
-                        showConfirmButton: true,
-                        timer: 1500,
-                    });
-                    navigate('/admin/banners');
-                });
-            } else {
-                updateBanner(values).then(() => {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Cập nhật banner thành công!',
-                        showConfirmButton: true,
-                        timer: 1500,
-                    });
-                    navigate('/admin/banners');
-                });
+            const data = await updateBanner(values).unwrap();
+            if(data){
+                toast.success(data.message);
             }
-
-        } catch (error) {
-            console.log(error);
+        } catch (error:any) {
+            toast.error(error.data.message);
 
         }
     };

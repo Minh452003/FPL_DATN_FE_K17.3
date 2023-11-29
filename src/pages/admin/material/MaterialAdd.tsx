@@ -2,7 +2,8 @@ import { useAddMaterialMutation } from '@/api/materialApi';
 import { IMaterials } from '@/interfaces/materials';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
 
 type FieldType = {
     material_name?: string;
@@ -11,17 +12,17 @@ type FieldType = {
 const MaterialAdd = () => {
     const [addMaterials, resultAdd] = useAddMaterialMutation();
     const navigate = useNavigate();
-    const onFinish = (values: IMaterials) => {
-        addMaterials(values).then(() => {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Thêm vật liệu thành công!',
-                showConfirmButton: true,
-                timer: 1500
-            });
+
+    const onFinish = async(values: any) => {
+        try {
+            const data = await addMaterials(values).unwrap();
+            if(data){
+                toast.success(data.message)
+            }
             navigate("/admin/materials");
-        })
+        } catch (error:any) {
+            toast.error(error.data.message);  
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {

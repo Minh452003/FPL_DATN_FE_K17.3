@@ -3,7 +3,7 @@
 import { useAddSizeMutation } from '@/api/sizeApi';
 import { Button, Form, Input, InputNumber } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 interface FieldType  {
   size_name?: string;
@@ -15,17 +15,18 @@ interface FieldType  {
 const SizesAdd = () => {
   const [addSize, resultAdd] = useAddSizeMutation();
   const navigate = useNavigate();
-  const onFinish = (values: FieldType) => {
-    addSize(values).then(() => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Thêm kích cỡ thành công!',
-        showConfirmButton: true,
-        timer: 1500
-      });
+
+  const onFinish = async (values: any) => {
+    try {
+      const data = await addSize(values).unwrap();
+      if(data){
+        toast.success(data.message);
+      }
       navigate("/admin/sizes");
-    })
+    } catch (error:any) {
+      toast.error(error.data.message);
+    }
+  
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);

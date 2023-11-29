@@ -6,6 +6,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from 'react-icons/fa6';
 import { IoSearchSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 
@@ -23,6 +24,7 @@ const Colorslist: React.FC<IColor> = () => {
 
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        // eslint-disable-next-line no-constant-condition
         if (false) {
             console.log(pagination);
             console.log(filters);
@@ -36,27 +38,31 @@ const Colorslist: React.FC<IColor> = () => {
             name: colors_name,
         };
     });
-    const deleteColor = (id: string) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: 'Khi xoá không thể phục hồi lại!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Xóa sản phẩm
-                removeColor(id).then(() => {
-                    Swal.fire('Xoá thành công!', 'Màu của bạn đã được xoá.', 'success');
-                });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire('Thất bại', 'Màu xoá thất bại.', 'error');
-            }
-        });
+
+    const deleteColor = async(id: any) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Màu sẽ bị xoá và không thể khôi phục!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+              });
+              if(result.isConfirmed){
+                const data = await  removeColor(id).unwrap();
+                if(data){
+                  toast.success(`${data.message}`)
+                }
+              }else if (result.dismiss === Swal.DismissReason.cancel) {
+                toast.info('Hủy Màu danh mục');
+              }
+        } catch (error:any) {
+            toast.error(error.data.message);
+        }
+        
     };
     const columns = [
         {

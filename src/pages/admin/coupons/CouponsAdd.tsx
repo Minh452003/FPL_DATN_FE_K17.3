@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import localeData from 'dayjs/plugin/localeData';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 
 type FieldType = {
@@ -26,17 +27,16 @@ const CouponsAdd = () => {
   const init = {
     expiration_date: dayjs(),
     };
-  const onFinish = (values: any) => {
-    addCoupon(values).then(() => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Thêm phiếu giảm giá thành công!',
-        showConfirmButton: true,
-        timer: 1500
-      });
+  const onFinish = async (values: any) => {
+    try {
+      const data = await addCoupon(values).unwrap();
+      if(data){
+        toast.success(data.message);
+      }
       navigate("/admin/coupons");
-    })
+    } catch (error:any) {
+      toast.error(error.message);
+    }
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);

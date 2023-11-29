@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { IProduct } from '@/interfaces/product';
+import { toast } from 'react-toastify';
 
 type FieldType = {
     product_name?: string;
@@ -36,25 +37,20 @@ const Productadd = () => {
     const [productDescription, setProductDescription] = useState('');
 
 
-    const onFinish = (values: IProduct) => {
+    const onFinish =async (values: IProduct) => {
+      try {
         values.description = productDescription
         if (imageUrl.length > 0) {
             values.image = imageUrl;
-            addProduct(values).then((response) => {
-                console.log('Data after adding product:', response);
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Thêm sản phẩm thành công!',
-                    showConfirmButton: true,
-                    timer: 1500
-                });
-                navigate("/admin/products");
-            })
-        } else {
-            message.error(`Thêm sản phẩm thất bại`);
-            return
-        }
+            const data:any =  await addProduct(values).unwrap();
+            if(data){
+                toast.success(data.message);
+            }
+            navigate("/admin/products");
+        } 
+      } catch (error:any) {
+        toast.error(error.message);
+      }
     };
 
     const onFinishFailed = (errorInfo: any) => {

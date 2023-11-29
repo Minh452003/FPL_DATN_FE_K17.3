@@ -7,7 +7,8 @@ import { RcFile } from 'antd/es/upload';
 import { useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
 
 
 const Banneradd = () => {
@@ -20,19 +21,14 @@ const Banneradd = () => {
     const [imageUrl, setImageUrl] = useState<IImage>({ url: '', publicId: '' });
     const navigate = useNavigate();
 
-    const onFinish = (values: IBanner) => {
+    const onFinish = async (values: IBanner) => {
         if (Object.keys(imageUrl).length > 0) {
             values.image = imageUrl;
-            addBanner(values).then(() => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Thêm Banner thành công!',
-                    showConfirmButton: true,
-                    timer: 1500
-                });
-                navigate("/admin/banners");
-            })
+          const data  = await addBanner(values).unwrap();
+          if(data){
+            toast.success(data.message);
+          }
+          navigate("/admin/banners");
         } else {
             return
         }

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useGetNewsQuery, useRemoveNewMutation } from '@/api/newsApi';
 import { IoSearchSharp } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 
 const Newslist = () => {
     const [searchText, setSearchText] = useState('');
@@ -24,36 +25,38 @@ const Newslist = () => {
     const dataNews = isloadingNews
         ? []
         : news?.map((news: any, index: number) => {
-              return {
-                  key: news._id,
-                  STT: index + 1,
-                  new_name: news.new_name,
-                  new_description: news.new_description,
-                  new_image: <img width={50} src={news.new_image?.url} alt="" />,
-              };
-          });
-    const deleteNew = (_id: any) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: 'Khi có thể vào thùng rác để khôi phục lại!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                removeNews(_id)
-                    .unwrap()
-                    .then(() => {
-                        Swal.fire('Xoá thành công!', 'Tin tức của bạn đã được xoá.', 'success');
-                    });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire('Đã huỷ', 'Tin tức xoá thất bại.', 'error');
-            }
+            return {
+                key: news._id,
+                STT: index + 1,
+                new_name: news.new_name,
+                new_description: news.new_description,
+                new_image: <img width={50} src={news.new_image?.url} alt="" />,
+            };
         });
+    const deleteNew = async  (_id: any) => {
+        try {
+            const result = await Swal.fire({
+              title: 'Bạn chắc chứ?',
+              text: 'Tin tức sẽ bị xoá và không thể khôi phục!',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Vâng, tôi chắc chắn!',
+              cancelButtonText: 'Huỷ',
+            });
+            if (result.isConfirmed) {
+              const data: any = await removeNews(_id).unwrap();
+              if (data) {
+                toast.success(`${data.message}`);
+              }
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              toast.info('Hủy xoá Tin tức');
+            }
+          } catch (error:any) {
+            toast.error(error.message);
+          }
+     
     };
     const columns = [
         {

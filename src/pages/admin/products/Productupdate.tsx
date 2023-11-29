@@ -7,13 +7,13 @@ import { Button, Form, Input, Upload, Select, InputNumber, message } from 'antd'
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { IProduct } from '@/interfaces/product';
 import { ICategory } from '@/interfaces/category';
 import { IBrand } from '@/interfaces/brand';
 import { IMaterials } from '@/interfaces/materials';
+import { toast } from 'react-toastify';
 type FieldType = {
     product_name?: string;
     product_price?: string;
@@ -61,24 +61,20 @@ const Productupdate = () => {
     };
 
 
-    const onFinish = (values: IProduct) => {
+    const onFinish = async (values: IProduct) => {
         values.description = productDescription
         console.log(productDescription);
 
         try {
             values.image = imageUrl
-            updateProduct(values).then(() => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Cập nhật sản phẩm thành công!',
-                    showConfirmButton: true,
-                    timer: 1500,
-                });
-                navigate('/admin/products');
-            });
-        } catch (error) {
-            console.log(error);
+            const data = await updateProduct(values).unwrap();
+            if(data){
+                toast.success(data.message);
+            }
+            navigate('/admin/products');
+          
+        } catch (error:any) {
+            toast.error(error.data.message);
 
         }
     };
@@ -90,6 +86,7 @@ const Productupdate = () => {
         name: 'image',
         fileList: fileList, // Sử dụng state fileList
         customRequest: async ({ file }) => {
+            // eslint-disable-next-line no-constant-condition
             if (false) {
                 console.log(file);
             }

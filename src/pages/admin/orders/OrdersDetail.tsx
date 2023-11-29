@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom"
-import Swal from "sweetalert2";
 import { Button, Form, Select, Skeleton, Input } from 'antd';
 import { useGetStatusQuery } from "@/api/statusApi";
 import { useEffect } from "react";
@@ -9,6 +8,7 @@ import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
 import "./OrdersDetail.css";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 const OrdersDetail = () => {
     const { id }: any = useParams()
@@ -41,19 +41,17 @@ const OrdersDetail = () => {
 
     const onFinish = async (values: any) => {
         try {
-            updateOrder(values).then(() => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Cập nhật trạng thái thành công!',
-                    showConfirmButton: true,
-                    timer: 1500
-                });
-                navigate("/admin/orders");
-            })
+            const data:any = await updateOrder(values).unwrap();
+            console.log(data);
+            
+            if(data){
+                toast.success(data.message);
+            }
+            navigate("/admin/orders");
+            
 
-        } catch (error) {
-            console.error('Lỗi:', error);
+        } catch (error:any) {
+            toast.error(error.data.message);
         }
 
     };

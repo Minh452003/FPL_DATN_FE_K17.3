@@ -24,30 +24,32 @@ const Bannerlist = () => {
       image: <img width={200} src={banner.image?.url} alt="404 Image" />,
     }
   });
-  const deleteBanner = (id: string) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: "Khi xóa bạn không thể khôi phục lại!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        removeBanner(id).unwrap().then(() => {
-          toast.success('Xóa danh mục thành công!');
-        })
+  const deleteBanner = async (id: string) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
+      if(result.isConfirmed){
+        const data :any= await removeBanner(id).unwrap();
+        console.log(data);
+        
+        if(data){
+          toast.success(data.message);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        //Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire(
-          'Thất bại',
-          'Banner xoá thất bại.',
-          'error'
-        )
+        toast.info('Hủy xoá banner');
       }
-    })
+    } catch (error:any) {
+      toast.error(error.data.message);
+    }
+  
   }
     const columns = [
         {

@@ -12,6 +12,7 @@ import { IProduct } from '@/interfaces/product';
 import { ICategory } from '@/interfaces/category';
 import { IMaterials } from '@/interfaces/materials';
 import { IBrand } from '@/interfaces/brand';
+import { toast } from 'react-toastify';
 
 const ProductTrash = () => {
     const { data }: any = useGetProductsDeleteQuery<IProduct[]>();
@@ -42,63 +43,56 @@ const ProductTrash = () => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    const deleteProduct = (id: number) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ ?',
-            text: "Khi xóa bạn không thể khôi phục lại!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ'
-        }).then((result) => {
+    const deleteProduct = async (id: number) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Khi xóa bạn không thể khôi phục lại',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+            });
+
             if (result.isConfirmed) {
-                removeProduct(id).unwrap().then(() => {
-                    Swal.fire(
-                        'Xoá thành công!',
-                        'Sản phẩm của bạn đã được xoá.',
-                        'success'
-                    )
-                })
+                const data: any = await  removeProduct(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire(
-                    'Thất bại',
-                    'Sản phẩm xoá thất bại :)',
-                    'error'
-                )
+                toast.info('Hủy xoá Sản phẩm');
             }
-        })
+        } catch (error: any) {
+            toast.error(error.message);
+        }
+        
     }
-    const restoreProduct1 = (id: string) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: "bạn có muốn khôi phục lại!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ'
-        }).then((result) => {
+    const restoreProduct1 = async (id: string) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Bạn có muốn khôi phục lại!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+            });
+      
             if (result.isConfirmed) {
-                restoreProduct(id).unwrap().then(() => {
-                    Swal.fire(
-                        'khôi phục thành công!',
-                        'Sản phẩm của bạn đã được khôi phục.',
-                        'success'
-                    )
-                })
+                const data: any = await restoreProduct(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire(
-                    'Thất bại',
-                    'Sản phẩm xoá thất bại :)',
-                    'error'
-                )
+                toast.info('Hủy Khôi Phục sản phẩm');
             }
-        })
+        } catch (error: any) {
+            toast.error(error.message);
+        }
     }
 
     const columns = [

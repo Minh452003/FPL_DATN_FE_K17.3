@@ -11,6 +11,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import { FaWindowRestore } from "react-icons/fa";
 import { BiFoodMenu } from "react-icons/bi";
+import { toast } from "react-toastify";
 const CustomProductsTrash = () => {
   const { data }: any = useGetAllDeleteQuery();
   const CustomProducts = data?.product
@@ -22,64 +23,58 @@ const CustomProductsTrash = () => {
   const [removeCustomProduct, resultAdd] = useRemoveForceCustomProductMutation();
   const [restoreCustomProduct, resultCustom] = useRestoreCustomProductMutation()
 
-  const deleteCustomproduct = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: "Khi xóa bạn không thể khôi phục lại!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        removeCustomProduct(id).unwrap().then(() => {
-          Swal.fire(
-            'Xoá thành công!',
-            'Sản phẩm tự thiết kế đã được xoá.',
-            'success'
-          )
-        })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire(
-          'Huỷ',
-          'Sản phẩm tự thiết kế chưa được xoá :)',
-          'error'
-        )
+  const deleteCustomproduct = async (id: any) => {
+    // Swal.fire({
+      try {
+        const result = await Swal.fire({
+          title: 'Bạn chắc chứ?',
+          text: 'Khi xóa Không thể khôi phục lại ',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Vâng, tôi chắc chắn!',
+          cancelButtonText: 'Huỷ',
+        });
+    
+        if (result.isConfirmed) {
+          const data: any = await removeCustomProduct(id).unwrap();
+          if (data) {
+            toast.success(`${data.message}`);
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          toast.info('Đã hủy xóa Sản phẩm ');
+        }
+      } catch (error:any) {
+        toast.error(error.message);
       }
-    })
   }
 
-  const restoreCustomProducts = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: "Bạn có muốn khôi phục lại!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ'
-    }).then((result) => {
+  const restoreCustomProducts = async(id: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'Khi xóa Không thể khôi phục lại ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
+  
       if (result.isConfirmed) {
-        restoreCustomProduct(id).unwrap().then(() => {
-          Swal.fire(
-            'Khôi thành công!',
-            'Sản phẩm tự thiết kế đã được khôi phuc',
-            'success'
-          )
-        })
+        const data: any = await restoreCustomProduct(id).unwrap();
+        if (data) {
+          toast.success(`${data.message}`);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire(
-          'Huỷ',
-          'Sản phẩm tự thiết kế chưa được khôi phục :)',
-          'error'
-        )
+        toast.info('Đã hủy khôi phục Sản phẩm ');
       }
-    })
+    } catch (error:any) {
+      toast.error(error.message);
+    }
+    
   }
 
   const color = colors?.color

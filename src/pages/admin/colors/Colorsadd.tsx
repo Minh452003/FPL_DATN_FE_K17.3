@@ -3,7 +3,8 @@ import { useAddColorMutation } from '@/api/colorApi';
 import { IColor } from '@/interfaces/color';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
 
 type FieldType = {
   colors_name?: string;
@@ -12,17 +13,17 @@ type FieldType = {
 const ColorsAdd = () => {
   const [addColor,resultAdd] = useAddColorMutation();
   const navigate = useNavigate();
-  const onFinish = (values: IColor) => {
-    addColor(values).then(() => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Thêm màu thành công!',
-        showConfirmButton: true,
-        timer: 1500
-      });
-      navigate("/admin/colors");
-    })
+
+  const onFinish = async (values: any) => {
+   try {
+    const data = await addColor(values).unwrap();
+    if (data){
+      toast.success(data.message);
+    }
+    navigate('/admin/colors');
+   } catch (error:any) {
+    toast.error(error.data.message);
+   }
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);

@@ -5,6 +5,7 @@ import { useGetSizeQuery } from "@/api/sizeApi";
 import { Button, Form, Input, Select, Spin, InputNumber } from "antd";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 const UpdateChildProduct = () => {
   const { id }: any = useParams();
@@ -41,18 +42,13 @@ const UpdateChildProduct = () => {
   };
   const onFinish = async (values: any) => {
     try {
-      await updateChildProduct(values).then((response: any) => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Cập nhật sản phẩm con thành công!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(`/admin/products/childProduct/${response.data.data.productId}`)
-      });
-    } catch (error) {
-      console.error("Đã xảy ra lỗi:", error);
+      const data = await updateChildProduct(values).unwrap();
+      if(data){
+        toast.success(data.message)
+      }
+     navigate(`/admin/products/childProduct/${data.data.productId}`)
+    } catch (error:any) {
+      toast.error(error.data.message)
     }
   };
 

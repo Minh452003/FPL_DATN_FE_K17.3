@@ -5,6 +5,7 @@ import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
 import { Button, Form, InputNumber, Select, Spin } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 const AddChildProduct = () => {
   const { productId }: any = useParams<string>();
@@ -20,18 +21,13 @@ const AddChildProduct = () => {
   const onFinish = async (values: any) => {
     try {
       const dataToSend = { ...values, productId };
-      await addChildProduct(dataToSend).then(() => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Thêm sản phẩm con thành công!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(`/admin/products/childProduct/${productId}`);
-      });
-    } catch (error) {
-      console.error("Đã xảy ra lỗi:", error);
+      const data =  await addChildProduct(dataToSend).unwrap();
+      if(data){
+        toast.success(data.message);
+      }
+      navigate(`/admin/products/childProduct/${productId}`);
+    } catch (error:any) {
+      toast.error(error.data.message)
     }
   };
 

@@ -2,7 +2,7 @@ import { Button, Form, Input, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMaterialByIdQuery, useUpdateMaterialMutation } from '@/api/materialApi';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 
 interface FieldType {
@@ -30,17 +30,17 @@ const MaterialUpdate = () => {
       material_name: materialData?.material?.material_name
     });
   };
-  const onFinish = (values: FieldType) => {
-    updateMaterial(values).then(() => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Cập nhật vật liệu thành công!',
-        showConfirmButton: true,
-        timer: 1500,
-      });
-      navigate('/admin/materials');
-    });
+
+  const onFinish = async (values: any) => {
+    try {
+      const data = await  updateMaterial(values).unwrap();
+      if (data){
+        toast.success(data.message);
+      }
+      navigate('/admin/colors');
+    } catch (error:any) {
+      toast.success(error.data.message);
+    }
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);

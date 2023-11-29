@@ -45,11 +45,29 @@ const CategoryTrash = () => {
     };
     const restoreCategory1 = async (id: string) => {
         try {
-            const data: any = await restoreCategory(id).unwrap();
-            if (data) toast.success(`${data.message}`);
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Bạn có muốn khôi phục lại!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+            });
+      
+            if (result.isConfirmed) {
+                const data: any = await restoreCategory(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                toast.info('Hủy Khôi Phục Danh mục');
+            }
         } catch (error: any) {
             toast.error(error.message);
         }
+        
     };
 
     const data1 = categories?.map((category: ICategory) => {
