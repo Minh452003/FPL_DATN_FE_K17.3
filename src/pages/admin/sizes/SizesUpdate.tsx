@@ -2,7 +2,7 @@ import { useGetSizeByIdQuery, useUpdateSizeMutation } from '@/api/sizeApi';
 import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 
 type FieldType = {
@@ -36,17 +36,17 @@ const setFields = () => {
         size_width: sizes.size?.size_width
     });
 };
-  const onFinish = (values: any) => {
-    updateSize(values).then(() => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Cập nhật kích cỡ thành công!',
-        showConfirmButton: true,
-        timer: 1500,
-      });
+  const onFinish = async (values: any) => {
+    try {
+      const data = await updateSize(values).unwrap();
+      if(data){
+        toast.success(data.message)
+      }
       navigate('/admin/sizes');
-    });
+    } catch (error:any) {
+      toast.error(error.data.message)
+    }
+  
   };
   
   const onFinishFailed = (errorInfo: any) => {

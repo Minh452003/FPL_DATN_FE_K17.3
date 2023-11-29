@@ -10,6 +10,7 @@ import {
 } from '@/api/couponsApi';
 import localeData from 'dayjs/plugin/localeData';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 
 type FieldType = {
@@ -57,18 +58,17 @@ const CouponsUpdate = () => {
     });
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
+   try {
     values.expiration_date = values.expiration_date ? values.expiration_date.toDate() : null;
-    updateCoupon(values).then(() => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Cập nhật phiếu giảm giá thành công!',
-        showConfirmButton: true,
-        timer: 1500,
-      });
-      navigate('/admin/coupons');
-    });
+    const data = await updateCoupon(values).unwrap();
+    if(data){
+      toast.success(data.message);
+    }
+    navigate("/admin/coupons");
+   } catch (error:any) {
+    toast.error(error.data.message);
+   }
 
   };
 

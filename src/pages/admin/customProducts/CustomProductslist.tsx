@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
 import { useGetBrandQuery } from '@/api/brandApi';
+import { toast } from 'react-toastify';
 const CustomProductslist = () => {
     const { data: listcustomProducts, isloading: isLoadingCustomProducts } =
         useGetCustomProductsQuery<any>();
@@ -36,6 +37,7 @@ const CustomProductslist = () => {
     const sizes = size?.size;
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
+        // eslint-disable-next-line no-constant-condition
         if (false) {
             console.log(pagination);
             console.log(filters);
@@ -61,28 +63,31 @@ const CustomProductslist = () => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
 
-    const deleteProduct = (id: any) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: 'Khi có thể vào thùng rác để khôi phục lại!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ',
-        }).then((result) => {
+    const deleteProduct = async (id: any) => {
+        try {
+            const result = await Swal.fire({
+              title: 'Bạn chắc chứ?',
+              text: 'Khi xóa có thể vào thùng rác để khôi phục lại',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Vâng, tôi chắc chắn!',
+              cancelButtonText: 'Huỷ',
+            });
+        
             if (result.isConfirmed) {
-                removeProduct(id)
-                    .unwrap()
-                    .then(() => {
-                        Swal.fire('Xoá thành công!', 'Danh mục của bạn đã được xoá.', 'success');
-                    });
+              const data: any = await removeProduct(id).unwrap();
+              if (data) {
+                toast.success(`${data.message}`);
+              }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire('Đã huỷ', 'Danh mục xoá thất bại.', 'error');
+              toast.info('Đã hủy xóa Sản phẩm ');
             }
-        });
+          } catch (error:any) {
+            toast.error(error.message);
+          }
+       
     };
 
     const columns = [

@@ -823,7 +823,7 @@ const Product_Detail = () => {
                                         <Pagination
                                             pageSize={PAGE_SIZE}
                                             defaultCurrent={1}
-                                            total={commentProductDetail.length}
+                                            total={commentProductDetail?.length}
                                             onChange={(page, pageSize) => {
                                                 setPage(page);
                                                 if (false) {

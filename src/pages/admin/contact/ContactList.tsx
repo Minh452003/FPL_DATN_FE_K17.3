@@ -5,6 +5,7 @@ import { useGetAllContactQuery, useRemoveForceContactMutation } from '@/api/cont
 import { FaTrashCan } from 'react-icons/fa6';
 import { useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 
 const ContactList = () => {
     const [removeContact, { isLoading: isRemoveLoading }] = useRemoveForceContactMutation();
@@ -32,26 +33,30 @@ const ContactList = () => {
             };
         });
 
-    const deleteContact = (id: any) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: 'Khi xoá không thể phục hồi lại!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Xóa sản phẩm
-                removeContact(id).then(() => {
-                    Swal.fire('Xoá thành công!', 'Liên hệ của bạn đã được xoá.', 'success');
-                });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('Thất bại', 'Liên hệ xóa thất bại.', 'error');
-            }
-        });
+    const deleteContact = async (id: any) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Liên hệ  sẽ bị xoá và không thể khôi phục!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+              });
+              if(result.isConfirmed){
+                const data :any = await  removeContact(id).unwrap();
+                if(data){
+                  toast.success(`${data.message}`)
+                }
+              }else if (result.dismiss === Swal.DismissReason.cancel) {
+                toast.info('Hủy xóa liên hệ  ');
+              }
+        } catch (error:any) {
+            toast.error(error.data.message);
+        }
+      
     };
 
     const columns = [

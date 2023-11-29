@@ -8,7 +8,8 @@ import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
 
 type FieldType = {
     new_name?: string;
@@ -24,22 +25,24 @@ const NewsAdd = () => {
     const navigate = useNavigate();
 
 
-    const onFinish = (values: INew) => {
-        if (Object.keys(imageUrl).length > 0) {
-            values.new_image = imageUrl;
-            addNew(values).then(() => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Thêm tin tức thành công!',
-                    showConfirmButton: true,
-                    timer: 1500
-                });
+    const onFinish = async (values: INew) => {
+        try {
+            if (Object.keys(imageUrl).length > 0) {
+                values.new_image = imageUrl;
+                const data = await addNew(values).unwrap();
+                if(data) {
+                    toast.success(data.message)
+                }
                 navigate("/admin/news");
-            })
-        } else {
-            return
+                
+            } else {
+                return
+            }
+            
+        } catch (error:any) {
+            toast.error(error.data.message)
         }
+       
     };
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -48,6 +51,7 @@ const NewsAdd = () => {
         name: 'new_image',
         fileList: fileList, // Sử dụng state fileList
         customRequest: async ({ file }: any) => {
+            // eslint-disable-next-line no-constant-condition
             if (false) {
                 console.log(file);
             }

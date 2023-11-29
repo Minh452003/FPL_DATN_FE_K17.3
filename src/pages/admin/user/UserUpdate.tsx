@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Select } from "antd";
+import { toast } from "react-toastify";
 
 type FieldType = {
   first_name?: string;
@@ -43,22 +44,16 @@ const UserUpdate = () => {
     });
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     try {
-      updateUser(values).then(() => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Cập nhật hồ sơ thành công!",
-          showConfirmButton: true,
-          timer: 1500,
-        });
-        navigate('/admin/users');
-      });
+      const data = await updateUser(values).unwrap();
+      if(data){
+        toast.success(data.message);
+      }
+      navigate('/admin/users');
     }
-    catch (error) {
-      console.log(error);
-
+    catch (error:any) {
+      toast.error(error.data.message)
     }
   };
 

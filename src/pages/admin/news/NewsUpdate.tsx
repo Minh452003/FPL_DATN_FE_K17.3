@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 
@@ -43,35 +44,19 @@ const NewsUpdate = () => {
         });
     };
 
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
+        console.log(values);
         try {
             if (Object.keys(imageUrl).length > 0) {
-                values.new_image = imageUrl;
-                updateNew(values).then(() => {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Cập nhật Tin tức thành công!',
-                        showConfirmButton: true,
-                        timer: 1500,
-                    });
-                    navigate('/admin/news');
-                });
-            } else {
-                updateNew(values).then(() => {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Cập nhật Tin tức thành công!',
-                        showConfirmButton: true,
-                        timer: 1500,
-                    });
-                    navigate('/admin/news');
-                });
+                values.category_image = imageUrl;
             }
-
-        } catch (error) {
-
+            const data: any = await updateNew(values).unwrap();
+            if (data) {
+                toast.success(`${data.data.message}`);
+            }
+            navigate("/admin/news");
+        } catch (error: any) {
+            toast.error(` ${error.data.message}`);
         }
     };
 

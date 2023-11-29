@@ -4,7 +4,8 @@ import { useGetColorByIdQuery, useUpdateColorMutation } from '@/api/colorApi';
 import {  Button, Form, Input, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
 
 
 type FieldType = {
@@ -31,17 +32,17 @@ const setFields = () => {
     });
 };
 
-const onFinish = (values: any) => {
-  updateColor(values).then(() => {
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Cập nhật màu thành công!',
-      showConfirmButton: true,
-      timer: 1500,
-    });
+const onFinish = async (values: any) => {
+  try {
+    const data = await  updateColor(values).unwrap();
+    if (data){
+      toast.success(data.message);
+    }
     navigate('/admin/colors');
-  });
+  } catch (error:any) {
+    toast.success(error.data.message);
+  }
+
 };
 
 const onFinishFailed = (errorInfo: any) => {

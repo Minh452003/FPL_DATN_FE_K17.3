@@ -12,6 +12,7 @@ import './productAdmin.css';
 import { IoSearchSharp } from 'react-icons/io5';
 import { ICategory } from '@/interfaces/category';
 import { IBrand } from '@/interfaces/brand';
+import { toast } from 'react-toastify';
 
 
 interface IProduct {
@@ -95,28 +96,31 @@ const Productlist = () => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
 
-    const deleteProduct = (id: number) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: 'Khi có thể vào thùng rác để khôi phục lại!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ',
-        }).then((result) => {
+    const deleteProduct = async (id: number) => {
+        try {
+            const result = await Swal.fire({
+              title: 'Bạn chắc chứ?',
+              text: 'bạn có chắc chắn muốn xóa',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Vâng, tôi chắc chắn!',
+              cancelButtonText: 'Huỷ',
+            });
+        
             if (result.isConfirmed) {
-                removeProduct(id)
-                    .unwrap()
-                    .then(() => {
-                        Swal.fire('Xoá thành công!', 'Sản phẩm của bạn đã được xoá.', 'success');
-                    });
+              const data: any = await removeProduct(id).unwrap();
+              if (data) {
+                toast.success(`${data.message}`);
+              }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire('Thất bại', 'Sản phẩm xoá thất bại.', 'error');
+              toast.info('Đã hủy xóa Sản phẩm ');
             }
-        });
+          } catch (error:any) {
+            toast.error(error.message);
+          }
+         
     };
 
     const columns = [

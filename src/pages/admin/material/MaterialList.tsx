@@ -4,6 +4,7 @@ import { Table, Button, Skeleton } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaCirclePlus, FaTrashCan, FaWrench } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 const MaterialList = () => {
@@ -20,35 +21,30 @@ const MaterialList = () => {
       };
     });
 
-  const deleteMaterial = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: "Khi xoá không thể phục hồi lại!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Xóa sản phẩm
-        removeMaterial(id).then(() => {
-          Swal.fire(
-            'Xoá thành công!',
-            'Vật liệu của bạn đã được xoá.',
-            'success'
-          )
-        })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire(
-          'Đã huỷ',
-          'Vật liệu xoá thất bại.',
-          'error'
-        )
-      }
-    })
+  const deleteMaterial = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+          title: 'Bạn chắc chứ?',
+          text: 'Chất liệu sẽ bị xoá và không thể khôi phục!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Vâng, tôi chắc chắn!',
+          cancelButtonText: 'Huỷ',
+        });
+        if(result.isConfirmed){
+          const data = await  removeMaterial(id).unwrap();
+          if(data){
+            toast.success(`${data.message}`)
+          }
+        }else if (result.dismiss === Swal.DismissReason.cancel) {
+          toast.info('Hủy chất liệu ');
+        }
+  } catch (error:any) {
+      toast.error(error.data.message);
+  }
+  
   }
   const columns = [
     {

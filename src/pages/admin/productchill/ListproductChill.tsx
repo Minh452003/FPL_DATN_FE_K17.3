@@ -8,6 +8,7 @@ import { Image, Table, Button } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaTrashCan, FaWrench, FaCirclePlus, FaTrash } from "react-icons/fa6";
 import { Link, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 const ListproductChill = () => {
   const { productId }: any = useParams<string>();
@@ -33,34 +34,31 @@ const ListproductChill = () => {
     }
   });
 
-  const deleteChillProduct = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: "Khi có thể vào thùng rác để khôi phục lại!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ'
-    }).then((result) => {
+  const deleteChillProduct = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'bạn có chắc chắn muốn xóa',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
+  
       if (result.isConfirmed) {
-        RemoveChillproduct(id).unwrap().then(() => {
-          Swal.fire(
-            'Xoá thành công!',
-            'Sản phẩm thiết kế của bạn đã được xoá.',
-            'success'
-          )
-        })
+        const data: any = await RemoveChillproduct(id).unwrap();
+        if (data) {
+          toast.success(`${data.message}`);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire(
-          'Đã huỷ',
-          'Sản phẩm thiết kế xoá thất bại.',
-          'error'
-        )
+        toast.info('Sản phẩm thiết kế xoá thất bại');
       }
-    })
+    } catch (error:any) {
+      toast.error(error.message);
+    }
+   
   }
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");

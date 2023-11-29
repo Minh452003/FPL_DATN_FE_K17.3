@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { format } from 'date-fns';
 import { IoSearchSharp } from 'react-icons/io5';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const CouponsList = () => {
     const { data, error, isLoading }: any = useGetCouponQuery();
@@ -56,27 +57,31 @@ const CouponsList = () => {
     const formatCurrency = (number: number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
-    const deleteCoupon = (id: any) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: 'Khi xoá không thể phục hồi lại!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ',
-        }).then((result) => {
+    const deleteCoupon = async (id: any) => {
+        try {
+            const result = await Swal.fire({
+              title: 'Bạn chắc chứ?',
+              text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Vâng, tôi chắc chắn!',
+              cancelButtonText: 'Huỷ',
+            });
+        
             if (result.isConfirmed) {
-                // Xóa sản phẩm
-                removeCoupon(id).then(() => {
-                    Swal.fire('Xoá thành công!', 'Phiếu giảm giá của bạn đã được xoá.', 'success');
-                });
+              const data: any = await removeCoupon(id).unwrap();
+              if (data) {
+                toast.success(`${data.message}`);
+              }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire('Thất bại', 'Phiếu giảm giá xoá thất bại.', 'error');
+              toast.info('Hủy xoá phiếu giảm giá');
             }
-        });
+          } catch (error:any) {
+            toast.error(error.message);
+          }
+       
     };
     const columns = [
         {

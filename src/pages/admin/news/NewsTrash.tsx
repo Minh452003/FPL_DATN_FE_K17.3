@@ -4,6 +4,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BiFoodMenu } from 'react-icons/bi';
 import { FaTrashCan, FaWindowRestore } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 
@@ -13,63 +14,55 @@ const NewsTrash = () => {
   const [removeNew, { isLoading: isRemoveLoading }] = useRemoveForceNewMutation();
   const [restoreNew, { isLoading: isRestoreLoading }] = useRestoreNewMutation()
 
-  const deleteNew = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: "Khi xóa bạn không thể khôi phục lại!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ'
-    }).then((result) => {
+  const deleteNew = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+          title: 'Bạn chắc chứ?',
+          text: 'Tin tức sẽ bị xoá và không thể khôi phục!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Vâng, tôi chắc chắn!',
+          cancelButtonText: 'Huỷ',
+      });
+
       if (result.isConfirmed) {
-        removeNew(id).unwrap().then(() => {
-          Swal.fire(
-            'Xoá thành công!',
-            'Tin tức của bạn đã được xoá.',
-            'success'
-          )
-        })
+          const data: any = await removeNew(id).unwrap();
+          if (data) {
+              toast.success(`${data.message}`);
+          }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire(
-          'Thất bại',
-          'Tin tức xoá thất bại.',
-          'error'
-        )
+          toast.info('Hủy xoá Tin tức');
       }
-    })
+  } catch (error: any) {
+      toast.error(error.message);
   }
-  const restoreNew1 = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: "Bạn có muốn khôi phục lại!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ'
-    }).then((result) => {
+  }
+  const restoreNew1 = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+          title: 'Bạn chắc chứ?',
+          text: 'Bạn có muốn khôi phục lại!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Vâng, tôi chắc chắn!',
+          cancelButtonText: 'Huỷ',
+      });
+
       if (result.isConfirmed) {
-        restoreNew(id).unwrap().then(() => {
-          Swal.fire(
-            'Khôi phục thành công!',
-            'Tin tức của bạn đã được khôi phục.',
-            'success'
-          )
-        })
+          const data: any = await restoreNew(id).unwrap();
+          if (data) {
+              toast.success(`${data.message}`);
+          }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire(
-          'Thất bại',
-          'Tin tức của bạn khôi phục thất bại.',
-          'error'
-        )
+          toast.info('Hủy Khôi Phục Tin tức');
       }
-    })
+  } catch (error: any) {
+      toast.error(error.message);
+  }
   }
 
   const data1 = news?.map((news: any) => {
