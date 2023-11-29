@@ -3,7 +3,6 @@ import { getDecodedAccessToken } from "@/decoder";
 import { Link } from "react-router-dom";
 import "./Profile.css"
 
-
 const Profile = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -55,7 +54,7 @@ const Profile = () => {
                 <td>
                   <label className="pl-4 pb-3 py-3">Email :</label>
                 </td>
-                <td className="flex">
+                <td>
                   <div className="py-4">
                     <input
                       type="text"
@@ -83,11 +82,9 @@ const Profile = () => {
               </tr>
               <tr>
                 <td>
-                  <div className="py-4">
-                    <label className="pl-4">Địa chỉ :</label>
-                  </div>
+                  <label className="pl-4 pb-3 py-3">Địa chỉ :</label>
                 </td>
-                <td className="flex  ">
+                <td>
                   <div className="py-4">
                     <input
                       type="text"
@@ -101,7 +98,7 @@ const Profile = () => {
 
             </table>
             <button className=" bg-green-500 rounded py-2 px-4 ml-4 mt-4">
-              <Link to={"/user/profile/edit"} style={{ textDecoration: "none", color: "white" }}>Cập Nhật</Link>
+              <Link to={"/user/profile/edit"} style={{ textDecoration: "none", color: "white" }}>Cập Nhật Hồ Sơ</Link>
             </button>
           </form>
         </div>

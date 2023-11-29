@@ -1,4 +1,4 @@
-import { useGetCustomizedproductsByUserIdQuery, useRemoveCustomProductMutation } from "@/api/CustomizedProductAPI";
+import { useGetCustomizedproductsByIdQuery, useGetCustomizedproductsByUserIdQuery, useRemoveCustomProductMutation } from "@/api/CustomizedProductAPI";
 import { getDecodedAccessToken } from "@/decoder";
 import Swal from 'sweetalert2';
 import { Pagination } from "@mui/material";
@@ -8,6 +8,7 @@ import { FaTrash } from 'react-icons/fa';
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import "./ListCustomizedProduct.css"
+import { useAddCartMutation } from "@/api/cartApi";
 const ListCustomizedProduct = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -19,7 +20,63 @@ const ListCustomizedProduct = () => {
   const [removeCustomizedProduct] = useRemoveCustomProductMutation();
   const CustomizedProduct = customProduct?.products || [];
   const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
+  const { data }: any = useGetCustomizedproductsByIdQuery(id || "");
+  const customProducts = data?.product;
+  const idUser = decodedToken ? decodedToken.id : null;
+  const [addCart, resultAdd] = useAddCartMutation();
 
+  // ADD to cart custom-Product
+  const handleAddToCart = () => {
+    if (customProducts && idUser) {
+      const sizeId = customProducts.sizeId;
+      const colorId = customProducts.colorId;
+      const materialId = customProducts.materialId;
+      const cartData: any = {
+        productId: customProducts._id,
+        product_name: customProducts.product_name,
+        product_price: customProducts?.product_price,
+        image: customProducts.image[0]?.url,
+        stock_quantity: customProducts.stock_quantity,
+        colorId: colorId,
+        sizeId: sizeId,
+        materialId: materialId,
+      };
+      Swal.fire({
+        title: "Bạn chắc chứ?",
+        text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Vâng, tôi chắc chắn!",
+        cancelButtonText: "Huỷ",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Xóa sản phẩm
+          addCart({ data: cartData, userId: idUser }).then((response: any) => {
+            if (response.error) {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: response.error.data.message,
+                showConfirmButton: true,
+                timer: 1500,
+              });
+            } else {
+              Swal.fire(
+                "Sản phẩm đã được thêm vào giỏ hàng",
+                "Bạn có thể vào giỏ hàng để xem.",
+                "success"
+              );
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // Hiển thị thông báo hủy xóa sản phẩm
+          Swal.fire("Huỷ", "Sản phẩm không được thêm vào giỏ hàng", "error");
+        }
+      });
+    }
+  };
 
   const deleteProduct = (id: any) => {
     Swal.fire({
@@ -76,9 +133,9 @@ const ListCustomizedProduct = () => {
   const handlePageChange = (event: any, page: any) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
-    if (false) {
-      console.log(event);
-    }
+    // if (false) {
+    //   console.log(event);
+    // }
   };
 
   const formatCurrency = (number: number) => {
@@ -108,20 +165,10 @@ const ListCustomizedProduct = () => {
 
   return (
     <div className="px-6 lg:px-0 ml-28 ">
-      <div className="flex items-center mb-20">
-        <div className="float-left py-2">
-          <Link
-            to="/"
-            className="font-bold text-black "
-            style={{ textDecoration: "none", color: "orange" }}
-          >
-            Trang Chủ
-          </Link>
-        </div>
-        <div className="px-2">
-          <FaArrowRight className="" />
-        </div>
-        <div className="py-3">Sản phẩm tự thiết kế</div>
+      <div className="flex items-center my-4 px-3">
+        <div className="float-left font-bold">Trang Chủ</div>
+        <FaArrowRight className="ml-2" />
+        <div className="pl-2">Sản phẩm tự thiết kế</div>
       </div>
       <div>
         <select
@@ -132,10 +179,10 @@ const ListCustomizedProduct = () => {
         //...
         >
           <option value="all">Tất cả giá</option>
-          <option value="100000-1000000">100.000-1.000.000</option>
-          <option value="1000000-5000000">1.000.0000-5.000.000</option>
-          <option value="5000000-10000000">5.000.000-10.000.000</option>
-          <option value="10000000+">10.000.000+</option>
+          <option value="100000-1000000">100.000đ - 1.000.000đ</option>
+          <option value="1000000-5000000">1.000.0000đ - 5.000.000đ</option>
+          <option value="5000000-10000000">5.000.000đ - 10.000.000đ</option>
+          <option value="10000000+">10.000.000đ </option>
         </select>
         <div className="new_title lt clear_pd " style={{ width: "1255px" }}>
           <h4>
@@ -197,7 +244,7 @@ const ListCustomizedProduct = () => {
                                 {" "}
                                 <span className="price">
                                   {formatCurrency(product?.product_price)}₫
-                                </span>{" "}
+                                </span>
                               </span>
                             </div>
                           </div>
@@ -219,17 +266,18 @@ const ListCustomizedProduct = () => {
                             title="Mua hàng"
                             type="button"
                             tabIndex={0}
+                            onClick={handleAddToCart}
                           >
-                            <Link to={""}>Mua hàng</Link>
+                            <Link to={`customized/${product?._id}/add`}>Mua hàng</Link>
                           </button>
                           <button
                             className="button btn-cart"
-                            title="xóa sản phẩm"
+                            title="Xóa sản phẩm"
                             type="button"
                             tabIndex={0}
                             onClick={() => deleteProduct(product._id)}
                           >
-                            <Link to={"/customizedProducts/trash"}>xóa sản phẩm</Link>
+                            <Link to={"/customizedProducts/trash"}>Xóa sản phẩm</Link>
                           </button>
                         </form>
                       </div>

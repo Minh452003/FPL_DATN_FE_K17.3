@@ -1,13 +1,10 @@
-
 const AddressPage = () => {
   return (
     <div className="container">
       <div className="header">
         <h1 className="text-2xl font-medium">Chỉnh sửa địa chỉ</h1>
-
       </div>
       <hr />
-
           <form action="">
             <table className="w-full border-collapse border-spacing-0 justify-center">
               <tr className="">

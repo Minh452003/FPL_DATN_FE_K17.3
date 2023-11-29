@@ -377,7 +377,7 @@ const ProfileUpdate = () => {
                     <span className="visually-hidden">Loading...</span>
                   </div>
                 ) : (
-                  " Cập nhật hồ sơ"
+                  "Xác nhận cập nhật hồ sơ"
                 )}
               </Button>
             </Form.Item>
