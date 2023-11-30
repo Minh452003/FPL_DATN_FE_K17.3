@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 
 type FieldType = {
     new_name?: string;
-    new_description?: String;
+    new_description?: string;
     new_image?: object;
 };
 const NewsAdd = () => {

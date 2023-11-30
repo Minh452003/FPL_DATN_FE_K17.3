@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import localeData from 'dayjs/plugin/localeData';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
+import { ICoupon } from '@/interfaces/coupon';
 
 
 type FieldType = {
@@ -27,7 +28,7 @@ const CouponsAdd = () => {
   const init = {
     expiration_date: dayjs(),
     };
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: ICoupon) => {
     try {
       const data = await addCoupon(values).unwrap();
       if(data){

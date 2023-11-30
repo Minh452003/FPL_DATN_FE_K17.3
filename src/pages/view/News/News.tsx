@@ -1,4 +1,5 @@
 import { useGetNewsQuery } from "@/api/newsApi";
+import { INew } from "@/interfaces/new";
 import { useState } from "react";
 import { GrNext, GrPrevious } from "react-icons/gr";
 
@@ -50,7 +51,7 @@ const News = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {currentItems &&
-          currentItems.map((newsItem: any, index: number) => (
+          currentItems.map((newsItem: INew, index: number) => (
             <div key={index} className="bg-white p-6 rounded shadow-md">
               <a href="#" className="group block">
                 <img

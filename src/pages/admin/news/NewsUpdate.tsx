@@ -1,6 +1,7 @@
 
 import { useGetNewByIdQuery, useUpdateNewMutation } from '@/api/newsApi';
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
+import { INew } from '@/interfaces/new';
 import { Button, Form, Input, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
@@ -13,7 +14,7 @@ import Swal from 'sweetalert2';
 
 type FieldType = {
     new_name?: string;
-    new_description?: String;
+    new_description?: string;
     new_image?: object;
 };
 
@@ -44,7 +45,7 @@ const NewsUpdate = () => {
         });
     };
 
-    const onFinish = async (values: any) => {
+    const onFinish = async (values: INew) => {
         console.log(values);
         try {
             if (Object.keys(imageUrl).length > 0) {
