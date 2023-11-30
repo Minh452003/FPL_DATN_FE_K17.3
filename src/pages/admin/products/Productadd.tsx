@@ -8,10 +8,10 @@ import { RcFile, UploadProps } from 'antd/es/upload';
 import { useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { IProduct } from '@/interfaces/product';
+import { toast } from 'react-toastify';
 
 type FieldType = {
     product_name?: string;
@@ -36,24 +36,19 @@ const Productadd = () => {
     const [productDescription, setProductDescription] = useState('');
 
 
-    const onFinish = (values: IProduct) => {
-        values.description = productDescription
-        if (imageUrl.length > 0) {
-            values.image = imageUrl;
-            addProduct(values).then((response) => {
-                console.log('Data after adding product:', response);
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Thêm sản phẩm thành công!',
-                    showConfirmButton: true,
-                    timer: 1500
-                });
+    const onFinish = async (values: IProduct) => {
+        try {
+            values.description = productDescription
+            if (imageUrl.length > 0) {
+                values.image = imageUrl;
+                const data: any = await addProduct(values).unwrap();
+                if (data) {
+                    toast.success(data.message);
+                }
                 navigate("/admin/products");
-            })
-        } else {
-            message.error(`Thêm sản phẩm thất bại`);
-            return
+            }
+        } catch (error: any) {
+            toast.error(error.message);
         }
     };
 
@@ -171,7 +166,19 @@ const Productadd = () => {
                             <Upload {...props} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
-                                    setFileList([...fileList, file]);
+                                    // Kiểm tra kích thước của tệp
+                                    const isLt2M = file.size / 1024 / 1024 < 2;
+                                    // Kiểm tra loại tệp
+                                    const isImage = file.type.startsWith('image/');
+                                    if (!isLt2M) {
+                                        message.error('Ảnh phải nhỏ hơn 2MB!');
+                                    } else if (!isImage) {
+                                        message.error('Chỉ được tải lên các tệp ảnh!');
+                                    } else {
+                                        setFileList([file]);
+                                    }
+                                    // Trả về false để ngăn chặn việc tải lên nếu kích thước tệp lớn hơn 2MB hoặc không phải là ảnh
+                                    return isLt2M && isImage;
                                 }}
 
                             >
@@ -241,9 +248,11 @@ const Productadd = () => {
                                     }
                                 }}
                                 onChange={(event, editor) => {
-                                    console.log(event);
                                     const data = editor.getData();
                                     setProductDescription(data);
+                                    if (false) {
+                                        console.log(event);
+                                    }
                                 }}
                             />
                         </Form.Item>
