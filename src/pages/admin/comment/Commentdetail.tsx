@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { StarOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
+import { IComment } from "@/interfaces/comment";
 
 const Commentdetail = () => {
   const { id }: any = useParams();
@@ -18,10 +19,10 @@ const Commentdetail = () => {
       console.log(filters);
     }
   };
-  const handleFilterChange = (newFilter: any) => {
+  const handleFilterChange = (newFilter: string) => {
     setFilter(newFilter);
   };
-  const data1 = comments?.map((comment: any, index: number) => {
+  const data1 = comments?.map((comment: IComment, index: number) => {
     return {
       STT: index + 1,
       key: comment._id,
@@ -34,16 +35,16 @@ const Commentdetail = () => {
   });
   const filteredData =
     filter === "positive"
-      ? data1.filter((comment: any) => comment.rating > 3)
+      ? data1.filter((comment: IComment) => comment.rating > 3)
       : filter === "negative"
-        ? data1.filter((comment: any) => comment.rating <= 3)
+        ? data1.filter((comment: IComment) => comment.rating <= 3)
         : data1;
   const columns = [
     {
       title: "STT",
       dataIndex: "STT",
       key: "STT",
-      render: (index: any) => <a>{index}</a>,
+      render: (index: number) => <a>{index}</a>,
       sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
       sortOrder: sortedInfo.columnKey === "STT" && sortedInfo.order,
       ellipsis: true,
@@ -77,7 +78,7 @@ const Commentdetail = () => {
       sortOrder: sortedInfo.columnKey === "rating" && sortedInfo.order,
       ellipsis: true,
       width: 200,
-      render: (rating: number, index: any) => {
+      render: (rating: number, record: any, index: number | string) => {
         if (false) {
           console.log(index);
         }

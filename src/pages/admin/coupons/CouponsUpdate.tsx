@@ -11,6 +11,7 @@ import {
 import localeData from 'dayjs/plugin/localeData';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
+import { ICoupon } from '@/interfaces/coupon';
 
 
 type FieldType = {
@@ -58,9 +59,12 @@ const CouponsUpdate = () => {
     });
   };
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: ICoupon) => {
    try {
-    values.expiration_date = values.expiration_date ? values.expiration_date.toDate() : null;
+    // values.expiration_date = values.expiration_date ? values.expiration_date.toDate() : null;
+    values.expiration_date = values.expiration_date !== null
+    ? new Date(values.expiration_date)
+    : new Date();
     const data = await updateCoupon(values).unwrap();
     if(data){
       toast.success(data.message);

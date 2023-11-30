@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { BiDetail } from 'react-icons/bi';
 import { useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
+import { IComment } from '@/interfaces/comment';
 
 const Listcomments = () => {
     const { data: comment, isloading: isLoadingComment, error } = useGetCommentsQuery<any>();
@@ -18,7 +19,7 @@ const Listcomments = () => {
         }
     };
 
-    const dataComment = comments?.map((comment: any, index: number) => {
+    const dataComment = comments?.map((comment: IComment, index: number) => {
         return {
             key: comment._id,
             STT: index + 1,
@@ -32,7 +33,7 @@ const Listcomments = () => {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: any) => <a>{index}</a>,
+            render: (index: number) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
@@ -56,7 +57,7 @@ const Listcomments = () => {
         {
             title: 'Chức năng',
             width: 120,
-            render: ({ key: _id }: any) => (
+            render: ({ key: _id }: IComment) => (
                 <div>
                     <Button className="mr-5 text-blue-500">
                         <Link to={`/admin/comments/${_id}`}>
@@ -67,7 +68,7 @@ const Listcomments = () => {
             ),
         },
     ];
-    const filteredData = dataComment?.filter((item: any) => {
+    const filteredData = dataComment?.filter((item: IComment) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();
         const lowerCaseProductName = item.product.toLowerCase().trim();
         
