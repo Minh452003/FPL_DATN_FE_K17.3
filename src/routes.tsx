@@ -74,7 +74,7 @@ import ChangePassword from "./pages/view/User/Account/Changepassword";
 import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail";
 import Productadd from "./pages/admin/productchill/Productadd";
 import Listcomments from "./pages/admin/comment/Listcomments";
-import ContactPage from "./pages/view/Contact/ContactPage";
+import ContactPage from "./pages/view/contact/ContactPage";
 
 
 

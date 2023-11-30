@@ -2,11 +2,10 @@ import { Button, Form, Input } from 'antd';
 import './contactPage.css'
 import { useAddContactMutation } from '@/api/contactApi';
 import Swal from 'sweetalert2';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 const ContactPage = () => {
-
-    const [addContact] = useAddContactMutation();
+    const [addContact, resultAdd] = useAddContactMutation();
     const [form] = Form.useForm();
-
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 22 },
@@ -86,9 +85,14 @@ const ContactPage = () => {
                             <Input.TextArea placeholder="Mô tả" style={{ width: '100%', resize: 'vertical', height: '100' }} />
                         </Form.Item>
                         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                            <Button style={{ background: "orange", float: 'right', marginRight: '60px', color: 'white', width: '150px', height: '40px' }} htmlType="submit" >
-                                Gửi Tin Nhắn
-                            </Button>
+                            {resultAdd.isLoading ? (
+                                <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                            ) : (
+                                <Button style={{ background: "orange", float: 'right', marginRight: '60px', color: 'white', width: '150px', height: '40px' }} htmlType="submit" >
+                                    Gửi Tin Nhắn
+                                </Button>
+                            )}
+
                         </Form.Item>
                     </Form>
                 </div>

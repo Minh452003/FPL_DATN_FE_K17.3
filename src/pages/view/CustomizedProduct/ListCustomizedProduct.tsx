@@ -9,6 +9,7 @@ import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import "./ListCustomizedProduct.css"
 import { useAddCartMutation } from "@/api/cartApi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const ListCustomizedProduct = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -133,9 +134,9 @@ const ListCustomizedProduct = () => {
   const handlePageChange = (event: any, page: any) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
-    // if (false) {
-    //   console.log(event);
-    // }
+    if (false) {
+      console.log(event);
+    }
   };
 
   const formatCurrency = (number: number) => {
@@ -261,15 +262,20 @@ const ListCustomizedProduct = () => {
                             <Link to={`/customized-products/${product?._id}`}>Chi tiết</Link>
                           </button>
                           <input type="hidden" tabIndex={0} />
-                          <button
-                            className="button btn-cart"
-                            title="Mua hàng"
-                            type="button"
-                            tabIndex={0}
-                            onClick={handleAddToCart}
-                          >
-                            <Link to={`customized/${product?._id}/add`}>Mua hàng</Link>
-                          </button>
+                          {resultAdd.isLoading ? (
+                            <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                          ) : (
+                            <button
+                              className="button btn-cart"
+                              title="Mua hàng"
+                              type="button"
+                              tabIndex={0}
+                              onClick={handleAddToCart}
+                            >
+                              <Link to={`customized/${product?._id}/add`}>Mua hàng</Link>
+                            </button>
+                          )}
+
                           <button
                             className="button btn-cart"
                             title="Xóa sản phẩm"

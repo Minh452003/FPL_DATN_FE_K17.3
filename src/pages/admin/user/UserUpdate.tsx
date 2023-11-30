@@ -2,7 +2,6 @@ import { useGetUserByIdQuery, useUpdateUserByAdminMutation } from "@/api/authApi
 import { Button, Form, Input, Skeleton } from "antd";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Swal from "sweetalert2";
 import { Select } from "antd";
 import { toast } from "react-toastify";
 
@@ -47,12 +46,12 @@ const UserUpdate = () => {
   const onFinish = async (values: any) => {
     try {
       const data = await updateUser(values).unwrap();
-      if(data){
+      if (data) {
         toast.success(data.message);
       }
       navigate('/admin/users');
     }
-    catch (error:any) {
+    catch (error: any) {
       toast.error(error.data.message)
     }
   };

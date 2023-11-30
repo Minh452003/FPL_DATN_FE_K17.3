@@ -17,7 +17,7 @@ interface TableData {
 }
 
 const Colorslist: React.FC<IColor> = () => {
-    const { data, error, isLoading } = useGetColorsQuery();
+    const { data, error, isLoading } = useGetColorsQuery<any>();
     const [searchText, setSearchText] = useState('');
     const [removeColor, { isLoading: isRemoveLoading }] = useRemoveColorMutation();
     const [sortedInfo, setSortedInfo] = useState<any>({});
@@ -39,7 +39,7 @@ const Colorslist: React.FC<IColor> = () => {
         };
     });
 
-    const deleteColor = async(id: any) => {
+    const deleteColor = async (id: any) => {
         try {
             const result = await Swal.fire({
                 title: 'Bạn chắc chứ?',
@@ -50,19 +50,19 @@ const Colorslist: React.FC<IColor> = () => {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Vâng, tôi chắc chắn!',
                 cancelButtonText: 'Huỷ',
-              });
-              if(result.isConfirmed){
-                const data = await  removeColor(id).unwrap();
-                if(data){
-                  toast.success(`${data.message}`)
+            });
+            if (result.isConfirmed) {
+                const data = await removeColor(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`)
                 }
-              }else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
                 toast.info('Hủy Màu ');
-              }
-        } catch (error:any) {
+            }
+        } catch (error: any) {
             toast.error(error.data.message);
         }
-        
+
     };
     const columns = [
         {

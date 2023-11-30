@@ -9,7 +9,6 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
 
 
 type FieldType = {
@@ -46,7 +45,6 @@ const NewsUpdate = () => {
     };
 
     const onFinish = async (values: INew) => {
-        console.log(values);
         try {
             if (Object.keys(imageUrl).length > 0) {
                 values.category_image = imageUrl;

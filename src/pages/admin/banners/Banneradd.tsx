@@ -24,11 +24,11 @@ const Banneradd = () => {
     const onFinish = async (values: IBanner) => {
         if (Object.keys(imageUrl).length > 0) {
             values.image = imageUrl;
-          const data  = await addBanner(values).unwrap();
-          if(data){
-            toast.success(data.message);
-          }
-          navigate("/admin/banners");
+            const data = await addBanner(values).unwrap();
+            if (data) {
+                toast.success(data.message);
+            }
+            navigate("/admin/banners");
         } else {
             return
         }
@@ -85,7 +85,7 @@ const Banneradd = () => {
         <div className="container-fluid">
             <div className="row">
                 <div className="card-body">
-                    <h5 className="card-title fw-semibold mb-4 pl-5 text-3xl">Thêm </h5>
+                    <h5 className="card-title fw-semibold mb-4 pl-5 text-3xl">Thêm ảnh quảng cáo</h5>
                     <div className="flex items-center ">
                     </div>
                     <Form

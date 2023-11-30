@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { DatePicker } from 'antd';
-import Swal from 'sweetalert2';
 import {
   useGetCouponByIdQuery,
   useUpdateCouponMutation,
@@ -65,19 +64,19 @@ const CouponsUpdate = () => {
   };
 
   const onFinish = async (values: ICoupon) => {
-   try {
-    // values.expiration_date = values.expiration_date ? values.expiration_date.toDate() : null;
-    values.expiration_date = values.expiration_date !== null
-    ? new Date(values.expiration_date)
-    : new Date();
-    const data = await updateCoupon(values).unwrap();
-    if(data){
-      toast.success(data.message);
+    try {
+      // values.expiration_date = values.expiration_date ? values.expiration_date.toDate() : null;
+      values.expiration_date = values.expiration_date !== null
+        ? new Date(values.expiration_date)
+        : new Date();
+      const data = await updateCoupon(values).unwrap();
+      if (data) {
+        toast.success(data.message);
+      }
+      navigate("/admin/coupons");
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
-    navigate("/admin/coupons");
-   } catch (error:any) {
-    toast.error(error.data.message);
-   }
 
   };
 

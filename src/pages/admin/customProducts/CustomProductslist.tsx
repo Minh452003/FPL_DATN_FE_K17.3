@@ -14,14 +14,12 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
-import { useGetBrandQuery } from '@/api/brandApi';
 import { toast } from 'react-toastify';
 const CustomProductslist = () => {
     const { data: listcustomProducts, isloading: isLoadingCustomProducts } =
         useGetCustomProductsQuery<any>();
     const [searchText, setSearchText] = useState('');
     const { data: colors } = useGetColorsQuery<any>();
-    const { data: brands } = useGetBrandQuery<any>();
     const { data: materials } = useGetMaterialQuery<any>();
     const { data: users } = useGetUsersQuery<any>();
     const { data: categories } = useGetCategoryQuery<any>();
@@ -30,7 +28,6 @@ const CustomProductslist = () => {
     const [sortedInfo, setSortedInfo] = useState({} as any);
     const productsCustomProducts = isLoadingCustomProducts ? [] : listcustomProducts?.customProduct;
     const color = colors?.color;
-    const brand = brands?.brand;
     const material = materials?.material;
     const user = users?.data;
     const categorie = categories?.category?.docs;
@@ -66,28 +63,28 @@ const CustomProductslist = () => {
     const deleteProduct = async (id: any) => {
         try {
             const result = await Swal.fire({
-              title: 'Bạn chắc chứ?',
-              text: 'Khi xóa có thể vào thùng rác để khôi phục lại',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Vâng, tôi chắc chắn!',
-              cancelButtonText: 'Huỷ',
+                title: 'Bạn chắc chứ?',
+                text: 'Khi xóa có thể vào thùng rác để khôi phục lại',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
             });
-        
+
             if (result.isConfirmed) {
-              const data: any = await removeProduct(id).unwrap();
-              if (data) {
-                toast.success(`${data.message}`);
-              }
+                const data: any = await removeProduct(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-              toast.info('Đã hủy xóa Sản phẩm ');
+                toast.info('Đã hủy xóa Sản phẩm ');
             }
-          } catch (error:any) {
+        } catch (error: any) {
             toast.error(error.message);
-          }
-       
+        }
+
     };
 
     const columns = [
@@ -104,7 +101,7 @@ const CustomProductslist = () => {
         {
             title: 'Tên khách hàng ',
             dataIndex: 'user',
-            width: 150,
+            width: 120,
             key: 'user',
             render: (record: any) => {
                 const username = user?.find((cate: any) => cate._id === record);
@@ -114,7 +111,7 @@ const CustomProductslist = () => {
         {
             title: 'Tên sản phẩm ',
             dataIndex: 'name',
-            width: 200,
+            width: 150,
             key: 'name',
             render: (text: any) => <a>{text}</a>,
         },
@@ -138,7 +135,7 @@ const CustomProductslist = () => {
             title: 'Đã bán',
             dataIndex: 'quantity',
             key: 'quantity',
-            width: 120,
+            width: 110,
             render: (text: any) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.price - b.price, // Sắp xếp theo giá
             sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
@@ -146,7 +143,7 @@ const CustomProductslist = () => {
         },
         {
             title: 'Danh Mục',
-            width: 200,
+            width: 120,
             dataIndex: 'category',
             key: 'category',
             render: (record: any) => {
@@ -156,7 +153,7 @@ const CustomProductslist = () => {
         },
         {
             title: 'Chất liệu',
-            width: 120,
+            width: 100,
             dataIndex: 'materials',
             key: 'materials',
             render: (record: any) => {
@@ -165,18 +162,8 @@ const CustomProductslist = () => {
             },
         },
         {
-            title: 'Thương hiệu',
-            dataIndex: 'brand',
-            width: 120,
-            key: 'brand',
-            render: (record: any) => {
-                const brandname = brand?.find((cate: any) => cate._id === record);
-                return brandname?.brand_name;
-            },
-        },
-        {
             title: 'Kích cỡ ',
-            width: 120,
+            width: 110,
             dataIndex: 'sizes',
             key: 'sizes',
             render: (record: any) => {
@@ -186,7 +173,7 @@ const CustomProductslist = () => {
         },
         {
             title: 'Màu ',
-            width: 120,
+            width: 100,
             dataIndex: 'color',
             key: 'color',
             render: (record: any) => {
@@ -196,9 +183,9 @@ const CustomProductslist = () => {
         },
         {
             title: 'Chức năng',
-            width: 170,
+            width: 80,
             render: ({ key: _id }: any) => (
-                <div style={{ width: '150px' }}>
+                <div style={{ width: '250px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteProduct(_id)}>
                         {isRemoveLoading ? (
                             <AiOutlineLoading3Quarters className="animate-spin" />
@@ -214,18 +201,18 @@ const CustomProductslist = () => {
         const username = item.user
             ? user?.find((cate: any) => cate._id === item.user)?.first_name
             : null;
-    
+
         const lowerCaseSearchText = searchText.toLowerCase().trim();
-    
+
         const lowerCaseProductName = item.name.toLowerCase().trim();
         const lowerCaseUsername = username ? username.toLowerCase().trim() : '';
-    
+
         return (
             lowerCaseProductName.includes(lowerCaseSearchText) ||
             lowerCaseUsername.includes(lowerCaseSearchText)
         );
     });
-    
+
     return (
         <div className="container">
             <h3 className="font-semibold">Danh sách sản phẩm Thiết kế</h3>

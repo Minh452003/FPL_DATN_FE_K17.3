@@ -1,20 +1,23 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { useGetOrderByUserIdQuery, useRemoveOrderMutation } from '@/api/orderApi';
+import { useGetOrderByUserIdQuery, useRemoveOrderMutation, useUpdateOrderStatusMutation } from '@/api/orderApi';
 import { getDecodedAccessToken } from '@/decoder';
 import { format } from 'date-fns';
-import { Skeleton } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useGetStatusQuery } from '@/api/statusApi';
 import { Pagination } from '@mui/material';
 import Comment from '@/components/Comment';
 import Swal from 'sweetalert2';
+import { Skeleton } from 'antd';
+import { toast } from 'react-toastify';
+
 const Order = () => {
     const [currentStatus, setCurrentStatus] = useState('all'); // Mặc định hiển thị tất cả
     const [filteredOrders, setFilteredOrders] = useState([]);
     const decodedToken: any = getDecodedAccessToken();
     const [removeOrder] = useRemoveOrderMutation();
+    const [updateOrderStatus] = useUpdateOrderStatusMutation();
     const id = decodedToken ? decodedToken.id : null;
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -86,6 +89,31 @@ const Order = () => {
                 Swal.fire('Không huỷ', 'Đơn hàng vẫn tồn tại.', 'error');
             }
         });
+    };
+    // -------------------------------------------
+    const updateOrder = async (id: any) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Nếu cọc rồi thì sẽ mất tiền cọc!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+            });
+            if (result.isConfirmed) {
+                const data = await updateOrderStatus({ _id: id, status: '6565969f3a59bec4e5baea03' }).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`)
+                }
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                toast.info('Không huỷ');
+            }
+        } catch (error: any) {
+            toast.error(error.data.message);
+        }
     };
     // -------------------------------------------
     const formatCurrency = (number: number) => {
@@ -238,9 +266,19 @@ const Order = () => {
                                         {order && order.status._id == '64e8a93da63d2db5e8d8562a' ? (
                                             <button
                                                 className="text-white bg-amber-500 border-solid rounded border-1 py-1 px-3 text-white"
-                                                onClick={() => deleteOrder(order._id)}
+                                                onClick={() => updateOrder(order._id)}
                                             >
                                                 Hủy đơn hàng
+                                            </button>
+                                        ) : (
+                                            ''
+                                        )}
+                                        {order && order.status._id == '6565969f3a59bec4e5baea03' ? (
+                                            <button
+                                                className="text-white bg-amber-500 border-solid rounded border-1 py-1 px-3 text-white"
+                                                onClick={() => deleteOrder(order._id)}
+                                            >
+                                                Xoá bỏ
                                             </button>
                                         ) : (
                                             ''

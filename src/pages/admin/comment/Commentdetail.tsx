@@ -39,7 +39,7 @@ const Commentdetail = () => {
       : filter === "negative"
         ? data1.filter((comment: IComment) => comment.rating <= 3)
         : data1;
-  const columns = [
+  const columns: any = [
     {
       title: "STT",
       dataIndex: "STT",
@@ -78,7 +78,7 @@ const Commentdetail = () => {
       sortOrder: sortedInfo.columnKey === "rating" && sortedInfo.order,
       ellipsis: true,
       width: 200,
-      render: (rating: number, record: any, index: number | string) => {
+      render: (rating: number | any, index: number | string) => {
         if (false) {
           console.log(index);
         }

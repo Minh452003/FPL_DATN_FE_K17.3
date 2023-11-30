@@ -12,7 +12,7 @@ interface FieldType {
 
 const MaterialUpdate = () => {
   const { id }: any = useParams();
-  const { data: materialData, isLoading } = useGetMaterialByIdQuery<FieldType>(id);
+  const { data: materialData, isLoading } = useGetMaterialByIdQuery<any>(id);
   const [updateMaterial, resultAdd] = useUpdateMaterialMutation();
   const navigate = useNavigate();
 
@@ -33,12 +33,12 @@ const MaterialUpdate = () => {
 
   const onFinish = async (values: any) => {
     try {
-      const data = await  updateMaterial(values).unwrap();
-      if (data){
+      const data = await updateMaterial(values).unwrap();
+      if (data) {
         toast.success(data.message);
       }
       navigate("/admin/materials");
-    } catch (error:any) {
+    } catch (error: any) {
       toast.success(error.data.message);
     }
   };

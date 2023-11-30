@@ -36,38 +36,38 @@ const Bannerlist = () => {
         confirmButtonText: 'Vâng, tôi chắc chắn!',
         cancelButtonText: 'Huỷ',
       });
-      if(result.isConfirmed){
-        const data :any= await removeBanner(id).unwrap();
+      if (result.isConfirmed) {
+        const data: any = await removeBanner(id).unwrap();
         console.log(data);
-        
-        if(data){
+
+        if (data) {
           toast.success(data.message);
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         toast.info('Hủy xoá banner');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data.message);
     }
-  
+
   }
-    const columns = [
-        {
-            title: 'STT',
-            dataIndex: 'STT',
-            key: 'STT',
-            render: (index: number | string) => <a>{index}</a>,
-            sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
-            sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
-            ellipsis: true,
-            width: 90,
-        },
-        {
-            title: 'Ảnh ',
-            dataIndex: 'image',
-          key: 'image',
-          width: 100,
-        },
+  const columns = [
+    {
+      title: 'STT',
+      dataIndex: 'STT',
+      key: 'STT',
+      render: (index: number | string) => <a>{index}</a>,
+      sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
+      sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
+      ellipsis: true,
+      width: 90,
+    },
+    {
+      title: 'Ảnh ',
+      dataIndex: 'image',
+      key: 'image',
+      width: 100,
+    },
 
     {
       title: 'Chức năng',
@@ -92,7 +92,7 @@ const Bannerlist = () => {
   ];
   return (
     <div className="container">
-      <h3 className="font-semibold">Danh sách Banner</h3>
+      <h3 className="font-semibold">Danh sách ảnh quảng cáo</h3>
       <Button className='text-blue-500'>
         <Link to="/admin/banners/add"><FaCirclePlus style={{ fontSize: '24', display: 'block' }} /></Link>
       </Button>
@@ -102,6 +102,6 @@ const Bannerlist = () => {
 
   )
 }
-   
+
 
 export default Bannerlist;

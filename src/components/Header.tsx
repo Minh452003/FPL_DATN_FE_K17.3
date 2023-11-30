@@ -35,7 +35,7 @@ const Header = () => {
 
   return (
     <div>
-      <header className=" mx-auto shadow-lg z-50 top-0">
+      <header className="header mx-auto shadow-lg z-50 top-0">
         <section className="py-2 bg-white">
           <div className="md:grid md:grid-cols-[30%,70%] max-w-7xl mx-auto p-0 m-0 ">
             <div className="md:flex items-center ">
@@ -244,21 +244,6 @@ const Header = () => {
                         width="30px"
                         alt="Sản phẩm tự thiết kế"
                       />
-                      {iduser && cartItemCount > 0 && (
-                        <div className="absolute top-0 bottom-8 right-0 mt-2 bg-orange-500 rounded-full h-6 w-6 text-white text-center text-sm">
-                          <strong>{cartItemCount}</strong>
-                        </div>
-                      )}
-                      {!iduser && cartItemCount === 0 && (
-                        <div className="absolute top-0 bottom-8 right-0 mt-2 bg-orange-500 rounded-full h-6 w-6 text-white text-center">
-                          0
-                        </div>
-                      )}
-                      {!iduser && cartItemCount === 0 && (
-                        <div className="absolute text-xs text-center mt-1 mnpq">
-                          Không có sản phẩm nào
-                        </div>
-                      )}
                     </div>
                   </Link>
                 </div>

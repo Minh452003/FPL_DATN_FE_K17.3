@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 const Sizeslist: React.FC<ISize> = () => {
-    const { data, error, isLoading } = useGetSizeQuery();
+    const { data, error, isLoading } = useGetSizeQuery<any>();
     const [searchText, setSearchText] = useState('');
     const [removeSize, { isLoading: isRemoveLoading }] = useRemoveSizeMutation();
     const size = isLoading ? [] : data?.size;
@@ -38,7 +38,7 @@ const Sizeslist: React.FC<ISize> = () => {
             };
         },
     );
-    const deleteSize = async(id: any) => {
+    const deleteSize = async (id: any) => {
         try {
             const result = await Swal.fire({
                 title: 'Bạn chắc chứ?',
@@ -49,19 +49,19 @@ const Sizeslist: React.FC<ISize> = () => {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Vâng, tôi chắc chắn!',
                 cancelButtonText: 'Huỷ',
-              });
-              if(result.isConfirmed){
-                const data = await  removeSize(id).unwrap();
-                if(data){
-                  toast.success(`${data.message}`)
+            });
+            if (result.isConfirmed) {
+                const data = await removeSize(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`)
                 }
-              }else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
                 toast.info('Hủy xoá kích cỡ');
-              }
-        } catch (error:any) {
+            }
+        } catch (error: any) {
             toast.error(error.data.message);
         }
-       
+
     };
     const columns = [
         {

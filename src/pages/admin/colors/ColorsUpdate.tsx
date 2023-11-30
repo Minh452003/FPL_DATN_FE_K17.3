@@ -1,7 +1,7 @@
 
 
 import { useGetColorByIdQuery, useUpdateColorMutation } from '@/api/colorApi';
-import {  Button, Form, Input, Skeleton } from 'antd';
+import { Button, Form, Input, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -13,42 +13,42 @@ interface Color {
   colors_name?: string;
 }
 const ColorsUpdate = () => {
-    const { idColor }: any = useParams();
-    const { data: colors, isLoading } = useGetColorByIdQuery<Color>(idColor);
-    const [updateColor, resultAdd] = useUpdateColorMutation();
-    const navigate = useNavigate();
-    const [form] = Form.useForm();
+  const { idColor }: any = useParams();
+  const { data: colors, isLoading }: any = useGetColorByIdQuery(idColor);
+  const [updateColor, resultAdd] = useUpdateColorMutation();
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (colors) {
-        setFields();
+      setFields();
     }
-}, [colors]);
-const setFields = () => {
+  }, [colors]);
+  const setFields = () => {
     form.setFieldsValue({
-        _id: colors.color?._id,
-        colors_name: colors.color?.colors_name,
+      _id: colors.color?._id,
+      colors_name: colors.color?.colors_name,
     });
-};
+  };
 
 
-const onFinish = async (values: any) => {
-  try {
-    const data = await  updateColor(values).unwrap();
-    if (data){
-      toast.success(data.message);
+  const onFinish = async (values: any) => {
+    try {
+      const data = await updateColor(values).unwrap();
+      if (data) {
+        toast.success(data.message);
+      }
+      navigate('/admin/colors');
+    } catch (error: any) {
+      toast.success(error.data.message);
     }
-    navigate('/admin/colors');
-  } catch (error:any) {
-    toast.success(error.data.message);
-  }
 
-};
+  };
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
-if (isLoading) return <Skeleton />;
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
+  if (isLoading) return <Skeleton />;
   return (
     <div className="container-fluid">
       <div className="row">
@@ -105,7 +105,7 @@ if (isLoading) return <Skeleton />;
               </Button>
             </Form.Item>
           </Form>
-  </div>
+        </div>
       </div>
     </div>
   )
