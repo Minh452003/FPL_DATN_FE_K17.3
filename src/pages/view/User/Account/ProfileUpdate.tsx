@@ -348,9 +348,20 @@ const ProfileUpdate = () => {
                 listType="picture"
                 multiple
                 fileList={fileList}
-                beforeUpload={(file) => {
-                  setFileList([file]);
-                }}
+                beforeUpload={file => {
+                  // Kiểm tra kích thước của tệp
+                  const isLt2M = file.size / 1024 / 1024 < 2;
+                  // Kiểm tra loại tệp
+                  const isImage = file.type.startsWith('image/');
+                  if (!isLt2M) {
+                      message.error('Ảnh phải nhỏ hơn 2MB!');
+                  } else if (!isImage) {
+                      message.error('Chỉ được tải lên các tệp ảnh!');
+                  } else {
+                      setFileList([file]);
+                  }
+                  return isLt2M && isImage;
+              }}
               >
                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
               </Upload>
