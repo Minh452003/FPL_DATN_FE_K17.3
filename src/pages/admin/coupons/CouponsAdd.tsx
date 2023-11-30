@@ -28,6 +28,10 @@ const CouponsAdd = () => {
   const init = {
     expiration_date: dayjs(),
     };
+    const isPastDate = (selectedDate: dayjs.Dayjs) => {
+      const currentDate = dayjs();
+      return selectedDate.isBefore(currentDate, 'day');
+    };
   const onFinish = async (values: ICoupon) => {
     try {
       const data = await addCoupon(values).unwrap();
@@ -172,13 +176,24 @@ const CouponsAdd = () => {
             <Form.Item<FieldType>
               label="Ngày hết hạn"
               name="expiration_date"
-              rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+              rules={[
+                { required: true, message: 'Ngày hết hạn không được để trống!' },
+                {
+                  validator: (_, value) => {
+                    const selectedDate = dayjs(value);
+                    if (isPastDate(selectedDate)) {
+                      return Promise.reject('Không được chọn ngày quá khứ!');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
               hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
             >
-              <DatePicker style={{width: "100%"}} format={dateFormat} />
+              <DatePicker style={{ width: "100%" }} format={dateFormat} />
             </Form.Item>
 
             <Form.Item<FieldType>
