@@ -37,7 +37,7 @@ const MaterialUpdate = () => {
       if (data){
         toast.success(data.message);
       }
-      navigate('/admin/colors');
+      navigate("/admin/materials");
     } catch (error:any) {
       toast.success(error.data.message);
     }
