@@ -38,6 +38,11 @@ const CouponsUpdate = () => {
     expiration_date: dayjs(),
   };
 
+  const isPastDate = (selectedDate: dayjs.Dayjs) => {
+    const currentDate = dayjs();
+    return selectedDate.isBefore(currentDate, 'day');
+  };
+
   useEffect(() => {
     if (coupons) {
       setFields();
@@ -215,7 +220,18 @@ const CouponsUpdate = () => {
             <Form.Item<FieldType>
               label="Ngày hết hạn"
               name="expiration_date"
-              rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+              rules={[
+                { required: true, message: 'Ngày hết hạn không được để trống!' },
+                {
+                  validator: (_, value) => {
+                    const selectedDate = dayjs(value);
+                    if (isPastDate(selectedDate)) {
+                      return Promise.reject('Không được chọn ngày quá khứ!');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
               hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
