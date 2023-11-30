@@ -57,7 +57,7 @@ const Colorslist: React.FC<IColor> = () => {
                   toast.success(`${data.message}`)
                 }
               }else if (result.dismiss === Swal.DismissReason.cancel) {
-                toast.info('Hủy Màu danh mục');
+                toast.info('Hủy Màu ');
               }
         } catch (error:any) {
             toast.error(error.data.message);

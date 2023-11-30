@@ -42,7 +42,7 @@ const MaterialList = () => {
     try {
       const result = await Swal.fire({
           title: 'Bạn chắc chứ?',
-          text: 'Chất liệu sẽ bị xoá và không thể khôi phục!',
+          text: 'Vật liệu sẽ bị xoá và không thể khôi phục!',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -56,7 +56,7 @@ const MaterialList = () => {
             toast.success(`${data.message}`)
           }
         }else if (result.dismiss === Swal.DismissReason.cancel) {
-          toast.info('Hủy chất liệu ');
+          toast.info('Hủy vật liệu ');
         }
   } catch (error:any) {
       toast.error(error.data.message);
