@@ -6,7 +6,6 @@ import { Button, Form, Input, Select, Spin, InputNumber } from "antd";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
 const UpdateChildProduct = () => {
   const { id }: any = useParams();
   const { data: childProducts, isLoading: isLoadingChildProducts }: any = useGetChildProductByIdQuery(id || "");
@@ -43,11 +42,11 @@ const UpdateChildProduct = () => {
   const onFinish = async (values: any) => {
     try {
       const data = await updateChildProduct(values).unwrap();
-      if(data){
+      if (data) {
         toast.success(data.message)
       }
-     navigate(`/admin/products/childProduct/${data.data.productId}`)
-    } catch (error:any) {
+      navigate(`/admin/products/childProduct/${data.data.productId}`)
+    } catch (error: any) {
       toast.error(error.data.message)
     }
   };

@@ -9,11 +9,6 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-interface TableColumn {
-  key: string;
-  STT: number;
-  name: string;
-}
 
 const MaterialList = () => {
     const { data, isLoading }: any = useGetMaterialQuery();
@@ -31,38 +26,38 @@ const MaterialList = () => {
     const dataSource = isLoading
         ? []
         : material?.map(({ _id, material_name }: IMaterials, index: number) => {
-              return {
-                  key: _id,
-                  STT: index + 1,
-                  name: material_name,
-              };
-          });
-
-  const deleteMaterial = async (id: any) => {
-    try {
-      const result = await Swal.fire({
-          title: 'Bạn chắc chứ?',
-          text: 'Vật liệu sẽ bị xoá và không thể khôi phục!',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Vâng, tôi chắc chắn!',
-          cancelButtonText: 'Huỷ',
+            return {
+                key: _id,
+                STT: index + 1,
+                name: material_name,
+            };
         });
-        if(result.isConfirmed){
-          const data = await  removeMaterial(id).unwrap();
-          if(data){
-            toast.success(`${data.message}`)
-          }
-        }else if (result.dismiss === Swal.DismissReason.cancel) {
-          toast.info('Hủy vật liệu ');
+
+    const deleteMaterial = async (id: any) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Vật liệu sẽ bị xoá và không thể khôi phục!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+            });
+            if (result.isConfirmed) {
+                const data = await removeMaterial(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`)
+                }
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                toast.info('Hủy vật liệu ');
+            }
+        } catch (error: any) {
+            toast.error(error.data.message);
         }
-  } catch (error:any) {
-      toast.error(error.data.message);
-  }
-  
-  }
+
+    }
     const columns = [
         {
             title: 'STT',
@@ -101,11 +96,11 @@ const MaterialList = () => {
     ];
     if (isLoading) return <Skeleton />;
     const filteredData = dataSource?.filter((item: any) => {
-      const lowerCaseSearchText = searchText.toLowerCase().trim();
-      const lowerCaseName = item.name.toLowerCase().trim();
-      const nameMatches = lowerCaseName.includes(lowerCaseSearchText);
-      return nameMatches;
-  });
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
+        const lowerCaseName = item.name.toLowerCase().trim();
+        const nameMatches = lowerCaseName.includes(lowerCaseSearchText);
+        return nameMatches;
+    });
     return (
         <div className="container">
             <h3 className="font-semibold">Danh sách vật liệu</h3>

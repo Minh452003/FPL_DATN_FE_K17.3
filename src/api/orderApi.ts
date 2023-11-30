@@ -54,6 +54,14 @@ const orderApi = createApi({
                 body: order
             }),
             invalidatesTags: ['Order']
+        }),
+        updateOrderStatus: builder.mutation({
+            query: (order: any) => ({
+                url: `/order-status/${order._id}`,
+                method: 'PATCH',
+                body: order
+            }),
+            invalidatesTags: ['Order']
         })
     })
 });
@@ -64,7 +72,8 @@ export const {
     useGetOrderByUserIdQuery,
     useAddOrderMutation,
     useRemoveOrderMutation,
-    useUpdateOrderMutation
+    useUpdateOrderMutation,
+    useUpdateOrderStatusMutation
 } = orderApi;
 export const orderReducer = orderApi.reducer;
 export default orderApi

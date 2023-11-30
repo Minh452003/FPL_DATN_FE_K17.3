@@ -12,7 +12,7 @@ import { useState } from 'react';
 const Login = () => {
     const [signIn, resultAdd] = useSignInMutation();
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>()
-    
+
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
@@ -60,9 +60,9 @@ const Login = () => {
                 navigate(`/signup/verifyOTP/${response?.error?.data?.otpResponse?.data?.userId}`);
             }
         } else {
-    
+
             const accessToken: IUser = response.data.accessToken;
-            const expirationTime = new Date().getTime() + 2 * 60 * 60 * 1000; // 2 giờ
+            const expirationTime = new Date().getTime() + 5 * 60 * 60 * 1000; // 2 giờ
             const dataToStore = { accessToken, expirationTime };
             localStorage.setItem('accessToken', JSON.stringify(dataToStore));
             Swal.fire({

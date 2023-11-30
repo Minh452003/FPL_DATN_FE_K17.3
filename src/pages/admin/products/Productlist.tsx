@@ -52,6 +52,7 @@ const Productlist = () => {
         if (false) {
             console.log(pagination);
             console.log(filters);
+            setSelectedMaterial('')
         }
     };
     const filteredProducts = products.filter((product: IProduct) => {
@@ -121,28 +122,28 @@ const Productlist = () => {
     const deleteProduct = async (id: number) => {
         try {
             const result = await Swal.fire({
-              title: 'Bạn chắc chứ?',
-              text: 'bạn có chắc chắn muốn xóa',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Vâng, tôi chắc chắn!',
-              cancelButtonText: 'Huỷ',
+                title: 'Bạn chắc chứ?',
+                text: 'bạn có chắc chắn muốn xóa',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
             });
-        
+
             if (result.isConfirmed) {
-              const data: any = await removeProduct(id).unwrap();
-              if (data) {
-                toast.success(`${data.message}`);
-              }
+                const data: any = await removeProduct(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-              toast.info('Đã hủy xóa Sản phẩm ');
+                toast.info('Đã hủy xóa Sản phẩm ');
             }
-          } catch (error:any) {
+        } catch (error: any) {
             toast.error(error.message);
-          }
-         
+        }
+
     };
 
     const columns = [
@@ -262,7 +263,7 @@ const Productlist = () => {
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    //...
+                //...
                 >
                     <option value="all">Tất cả danh mục</option>
                     {categories?.category?.docs.map((category: ICategory) => (
@@ -276,7 +277,7 @@ const Productlist = () => {
                     value={selectedBrand}
                     onChange={(e) => setSelectedBrand(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    //...
+                //...
                 >
                     <option value="all">Tất cả thương hiệu</option>
                     {brands?.brand?.map((brand: IBrand) => (
@@ -290,7 +291,7 @@ const Productlist = () => {
                     value={selectedPriceFilter}
                     onChange={(e) => setSelectedPriceFilter(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    //...
+                //...
                 >
                     <option value="all">Tất cả giá</option>
                     <option value="100000-1000000">100.000-1.000.000</option>

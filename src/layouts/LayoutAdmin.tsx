@@ -97,21 +97,21 @@ const LayoutAdmin = () => {
         <Link className="brand text-center" to={'/'}>
           {user && (
             <div >
-               <div className='flex justify-center'>
-               <><img
-              className=" block rounded-full img  items-center "
-              src={user.avatar?.url ||
-                `https://res.cloudinary.com/dndyxqosg/image/upload/v1699260603/hhegkbrro5wwaxpjkuwx.png`}
-              alt="" />
-              </>
-               </div>
-               <div className='text-center'>
-               <span >{user.first_name } {user.last_name}</span>
-               </div>
+              <div className='flex justify-center'>
+                <><img
+                  className=" block rounded-full img  items-center "
+                  src={user.avatar?.url ||
+                    `https://res.cloudinary.com/dndyxqosg/image/upload/v1699260603/hhegkbrro5wwaxpjkuwx.png`}
+                  alt="" />
+                </>
+              </div>
+              <div className='text-center'>
+                <span >{user.first_name} {user.last_name}</span>
+              </div>
             </div>
           )
-       }
-        
+          }
+
         </Link>
         <ul className="side-menu top">
           <li className="active">

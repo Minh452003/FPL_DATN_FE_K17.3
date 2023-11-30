@@ -8,7 +8,6 @@ import { RcFile, UploadProps } from 'antd/es/upload';
 import { useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { IProduct } from '@/interfaces/product';
@@ -37,20 +36,20 @@ const Productadd = () => {
     const [productDescription, setProductDescription] = useState('');
 
 
-    const onFinish =async (values: IProduct) => {
-      try {
-        values.description = productDescription
-        if (imageUrl.length > 0) {
-            values.image = imageUrl;
-            const data:any =  await addProduct(values).unwrap();
-            if(data){
-                toast.success(data.message);
+    const onFinish = async (values: IProduct) => {
+        try {
+            values.description = productDescription
+            if (imageUrl.length > 0) {
+                values.image = imageUrl;
+                const data: any = await addProduct(values).unwrap();
+                if (data) {
+                    toast.success(data.message);
+                }
+                navigate("/admin/products");
             }
-            navigate("/admin/products");
-        } 
-      } catch (error:any) {
-        toast.error(error.message);
-      }
+        } catch (error: any) {
+            toast.error(error.message);
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {

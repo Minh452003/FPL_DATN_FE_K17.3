@@ -18,8 +18,9 @@ const Bannerupdate = () => {
     const [updateImage, resultImage] = useUpdateImageMutation();
     const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]); // Khai báo state để lưu danh sách tệp đã chọn
-    const [imageUrl, setImageUrl] = useState<IImage>({ url: '', publicId: '' });
+    const [imageUrl, setImageUrl] = useState<any>({});
     const navigate = useNavigate();
+    console.log(Object.keys(imageUrl).length);
 
     useEffect(() => {
         if (banners) {
@@ -32,20 +33,22 @@ const Bannerupdate = () => {
     const setFields = () => {
         form.setFieldsValue({
             _id: banners.banner?._id,
-
             image: banners.banner?.image ? banners.banner.image : {}, // Nếu có ảnh, thêm vào mảng để hiển thị
         });
     };
 
     const onFinish = async (values: any) => {
         try {
+            if (Object.keys(imageUrl).length > 0) {
+                values.image = imageUrl;
+            }
             const data = await updateBanner(values).unwrap();
-            if(data){
+            if (data) {
                 toast.success(data.message);
             }
-        } catch (error:any) {
-            toast.error(error.data.message);
-
+            navigate('/admin/banners');
+        } catch (error: any) {
+            toast.error(` ${error.data.message}`);
         }
     };
 
@@ -109,7 +112,7 @@ const Bannerupdate = () => {
         <div className="container-fluid">
             <div className="row">
                 <div className="card-body">
-                    <h5 className="card-title fw-semibold mb-4 pl-5">Cập Nhật Banner</h5>
+                    <h5 className="card-title fw-semibold mb-4 pl-5">Cập nhật ảnh quảng cáo</h5>
                     <Form
                         form={form}
                         name="basic"
@@ -120,7 +123,7 @@ const Bannerupdate = () => {
                         onFinish={onFinish}
                         autoComplete="off"
                     >
-                        <Form.Item label="" name="_id" style={{ display: 'none' }}>
+                        <Form.Item name="_id" style={{ display: 'none' }}>
                             <Input />
                         </Form.Item>
 
@@ -137,9 +140,9 @@ const Bannerupdate = () => {
                                 }}>
                                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
                             </Upload>
-                            {Object.keys(imageUrl).length <= 0 && banners.banner.image && banners.banner.image.url && (
+                            {Object.keys(imageUrl).length <= 0 && banners?.banner.image && banners.banner.image.url && (
                                 <div className="mt-3">
-                                    <img src={banners.banner.image.url} alt="Ảnh danh mục hiện tại" style={{ maxWidth: '100px' }} />
+                                    <img src={banners?.banner?.image?.url} alt="Ảnh danh mục hiện tại" style={{ maxWidth: '100px' }} />
                                 </div>
                             )}
                         </Form.Item>
@@ -150,10 +153,10 @@ const Bannerupdate = () => {
                                 htmlType="submit">
                                 {resultUpdate.isLoading ? <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
-                                </div> : " Cập nhật banner"}
+                                </div> : " Cập nhật ảnh quảng cáo"}
                             </Button>
                             <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/banners")} htmlType="submit">
-                                Danh sách banner
+                                Danh sách ảnh quảng cáo
                             </Button>
                         </Form.Item>
                     </Form>

@@ -1,5 +1,4 @@
 import { useAddMaterialMutation } from '@/api/materialApi';
-import { IMaterials } from '@/interfaces/materials';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -13,15 +12,15 @@ const MaterialAdd = () => {
     const [addMaterials, resultAdd] = useAddMaterialMutation();
     const navigate = useNavigate();
 
-    const onFinish = async(values: any) => {
+    const onFinish = async (values: any) => {
         try {
             const data = await addMaterials(values).unwrap();
-            if(data){
+            if (data) {
                 toast.success(data.message)
             }
             navigate("/admin/materials");
-        } catch (error:any) {
-            toast.error(error.data.message);  
+        } catch (error: any) {
+            toast.error(error.data.message);
         }
     };
 
@@ -59,24 +58,24 @@ const MaterialAdd = () => {
                             rules={[{ required: true, message: 'Tên vật liệu không được để trống!' },
                             {
                                 validator: (_, value) => {
-                                  if (!value) {
+                                    if (!value) {
+                                        return Promise.resolve();
+                                    }
+                                    if (/ {2,}/.test(value)) {
+                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
+                                    }
                                     return Promise.resolve();
-                                  }
-                                  if (/ {2,}/.test(value)) {
-                                    return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                  }
-                                  return Promise.resolve();
                                 },
-                              },
+                            },
                             { min: 2, message: "Nhập ít nhất 2 ký tự" }
-                        ]}
-                        hasFeedback
+                            ]}
+                            hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <Input />
                         </Form.Item>
 
-                        
+
 
                         <Form.Item wrapperCol={{ span: 16 }}>
 

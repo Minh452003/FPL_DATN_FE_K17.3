@@ -6,50 +6,50 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 
-interface FieldType  {
-    _id?: string;
-    size_name?: string;
-    size_height?: number;
-    size_length?: number;
-    size_weight?: number;
-    size_width?: number
+interface FieldType {
+  _id?: string;
+  size_name?: string;
+  size_height?: number;
+  size_length?: number;
+  size_weight?: number;
+  size_width?: number
 
 }
 const SizesUpdate = () => {
-    const { idSize }: { idSize: string } = useParams();
-    const { data: sizes, isLoading } = useGetSizeByIdQuery<ISize>(idSize);
-    const [updateSize, resultAdd] = useUpdateSizeMutation();
-    const navigate = useNavigate();
-    const [form] = Form.useForm();
+  const { idSize }: string | any = useParams();
+  const { data: sizes, isLoading } = useGetSizeByIdQuery<ISize | any>(idSize);
+  const [updateSize, resultAdd] = useUpdateSizeMutation();
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (sizes) {
-        setFields();
+      setFields();
     }
-}, [sizes]);
-const setFields = () => {
+  }, [sizes]);
+  const setFields = () => {
     form.setFieldsValue({
-        _id: sizes.size?._id,
-        size_name: sizes.size?.size_name,
-        size_height: sizes.size?.size_height,
-        size_length: sizes.size?.size_length,
-        size_weight: sizes.size?.size_weight,
-        size_width: sizes.size?.size_width
+      _id: sizes.size?._id,
+      size_name: sizes.size?.size_name,
+      size_height: sizes.size?.size_height,
+      size_length: sizes.size?.size_length,
+      size_weight: sizes.size?.size_weight,
+      size_width: sizes.size?.size_width
     });
-};
+  };
   const onFinish = async (values: any) => {
     try {
       const data = await updateSize(values).unwrap();
-      if(data){
+      if (data) {
         toast.success(data.message)
       }
       navigate('/admin/sizes');
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data.message)
     }
-  
+
   };
-  
+
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
@@ -57,7 +57,7 @@ const setFields = () => {
   if (isLoading) return <Skeleton />;
 
   const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) < 0) {
+    if (parseFloat(value) < 0) {
       return Promise.reject("Giá trị phải là số dương");
     }
     return Promise.resolve();
@@ -69,20 +69,20 @@ const setFields = () => {
           <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Cập nhật kích cỡ</h5>
           <div className="flex items-center ">
           </div>
-      
-          <Form
-          form={form}
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 1000 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
 
-        <Form.Item<FieldType> label="" name="_id" style={{ display: 'none' }}>
+          <Form
+            form={form}
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 1000 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+
+            <Form.Item<FieldType> label="" name="_id" style={{ display: 'none' }}>
               <Input />
             </Form.Item>
             <Form.Item<FieldType>
@@ -108,13 +108,13 @@ const setFields = () => {
             >
               <Input />
             </Form.Item>
-            
+
 
             <Form.Item<FieldType>
               label="Chiều cao kích cỡ"
               name="size_height"
               rules={[{ required: true, message: 'Chiều cao kích cỡ không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
               labelCol={{ span: 24 }}
@@ -128,7 +128,7 @@ const setFields = () => {
               label="Độ dài kích cỡ"
               name="size_length"
               rules={[{ required: true, message: 'Độ dài kích cỡ không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
               labelCol={{ span: 24 }}
@@ -142,7 +142,7 @@ const setFields = () => {
               label="Cân nặng kích cỡ"
               name="size_weight"
               rules={[{ required: true, message: 'Cân nặng kích cỡ không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
               labelCol={{ span: 24 }}
@@ -156,7 +156,7 @@ const setFields = () => {
               label="Chiều dài kích cỡ"
               name="size_width"
               rules={[{ required: true, message: 'Chiều dài kích cỡ không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
               labelCol={{ span: 24 }}
@@ -177,8 +177,8 @@ const setFields = () => {
               </Button>
             </Form.Item>
 
-  </Form>
-  </div>
+          </Form>
+        </div>
       </div>
     </div>
   )

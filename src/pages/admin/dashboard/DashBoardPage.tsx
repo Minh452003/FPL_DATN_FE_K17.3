@@ -482,7 +482,27 @@ const DashBoardPage = () => {
                     </select>
                 </div>
                 <div className="flex flex-row">
-                    {shouldRenderChart ? <Bar data={chartData} options={options} /> : ''}
+                    {shouldRenderChart ? <Bar data={chartData} options={options} /> : <div>
+                        <div
+                            className="grid px-4 bg-white place-content-center  pb-3"
+                            style={{ height: "400px" }}
+                        >
+                            <div className="">
+                                <img
+                                    className="w-[400px]"
+                                    src="https://sme.misa.vn/wp-content/uploads/2020/10/5f24e89085f87e3454540862.jpg"
+                                    alt=""
+                                />
+
+                                <h1
+                                    className="mt-6  font-bold tracking-tight text-gray-900 "
+                                    style={{ fontSize: "17px" }}
+                                >
+                                    Không có doanh thu, hãy chọn tháng hoặc năm khác nhé !
+                                </h1>
+                            </div>
+                        </div>
+                    </div>}
                 </div>
 
                 <div className="mt-8">
@@ -524,7 +544,27 @@ const DashBoardPage = () => {
                         columns={columns}
                         pagination={{ defaultPageSize: 6 }}
                         rowKey="key"
-                    /> : ''}
+                    /> : <div>
+                        <div
+                            className="grid px-4 bg-white place-content-center  pb-3"
+                            style={{ height: "300px" }}
+                        >
+                            <div className="">
+                                <img
+                                    className="w-[400px]"
+                                    src="https://zenbooks.vn/assets/images/empty-cart.png"
+                                    alt=""
+                                />
+
+                                <h1
+                                    className="mt-6  font-bold tracking-tight text-gray-900 "
+                                    style={{ fontSize: "17px" }}
+                                >
+                                    Không có sản phẩm, hãy chọn tháng hoặc năm khác !
+                                </h1>
+                            </div>
+                        </div>
+                    </div>}
                     {/*  */}
                     <div className="mt-2 p-2 flex ">
                         <select
@@ -559,11 +599,35 @@ const DashBoardPage = () => {
                     </div>
                     <div className="flex flex-wrap">
                         <div className="basis-1/2">
-                            <Doughnut data={chartData1} options={options1} style={{ height: '150px' }} />
+                            {productSell?.length > 0 ? <Doughnut data={chartData1} options={options1} style={{ height: '150px' }} /> : <div>
+                                <div
+                                    className="grid px-4 bg-white place-content-center  pb-3"
+                                    style={{ height: "300px" }}
+                                >
+                                    <div className="">
+                                        <img
+                                            className="w-[400px]"
+                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHiWyno4xewgf8S1xrhqC3Z_TwDOGH1S5Q9g&usqp=CAU"
+                                            alt=""
+                                        />
+
+                                        <h1
+                                            className="mt-6  font-bold tracking-tight text-gray-900 "
+                                            style={{ fontSize: "17px" }}
+                                        >
+                                            Không có sản phẩm đã bán theo danh mục !
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>}
                         </div>
                         <div className="basis-1/2">
+                            <h3 style={{
+                                textAlign: 'center', color: '#6C6C6C', fontSize: '18px'
+                                , fontWeight: 'bold', marginTop: '10px'
+                            }}>Tổng đánh giá sản phẩm </h3>
                             <div className="p-6 bg-orange-500 text-white rounded-lg shadow-md flex items-center justify-between mt-28 ml-20">
-                                <div>
+                                < div >
                                     <h3 className="text-xl font-semibold mb-2">Tổng đánh giá:</h3>
                                     <p className="text-3xl font-bold">{commentSta ? <span>
                                         <span className="mr-1 text-xl">{commentSta?.tongdanhgia} đánh giá</span>
@@ -650,12 +714,32 @@ const DashBoardPage = () => {
                             ))}
                         </ul>
                     ) : (
-                        ''
+                        <div>
+                            <div
+                                className="grid px-4 bg-white place-content-center  pb-3"
+                                style={{ height: "300px" }}
+                            >
+                                <div className="">
+                                    <img
+                                        className="w-[400px]"
+                                        src="https://zenbooks.vn/assets/images/empty-cart.png"
+                                        alt=""
+                                    />
+
+                                    <h1
+                                        className="mt-6  font-bold tracking-tight text-gray-900 "
+                                        style={{ fontSize: "17px" }}
+                                    >
+                                        Không có sản phẩm, hãy chọn tháng hoặc năm khác !
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
                     )}
 
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
