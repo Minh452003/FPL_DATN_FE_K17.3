@@ -63,10 +63,10 @@ const PayPage = () => {
     const [addWard] = useGetWardMutation<any>();
     const [addAvailable] = useGetAvailableMutation();
     const [addShipping] = useGetShippingMutation();
-    const [addOrder] = useAddOrderMutation();
+    const [addOrder, resultOrder] = useAddOrderMutation();
     const [removeAllCart] = useRemoveAllCartMutation();
-    const [addMomo] = usePayMomoMutation();
-    const [addPaypal] = usePayPaypalMutation();
+    const [addMomo, resultMomo] = usePayMomoMutation();
+    const [addPaypal, resultPaypal] = usePayPaypalMutation();
     const [applyCoupon, resultAdd] = useApplyCouponMutation();
     const [removeCoupon, resultRemove] = useRemoveCouponMutation();
 
@@ -671,28 +671,37 @@ const PayPage = () => {
                             <div className="submit h-20">
                                 {pay == 'cod' && total > 5000000 ? (
                                     <Tooltip title={type ? '' : 'Bạn phải chọn phương thức cọc'}>
-                                        <Button
-                                            className="rounded-md  w-36 h-12  float-right font-semibold"
-                                            htmlType="submit"
-                                            style={{
-                                                background: 'rgb(74, 74, 170)',
-                                                color: 'white',
-                                            }}
-                                        >
-                                            Cọc tiền
-                                        </Button>
+                                        {resultOrder.isLoading ? (
+                                            <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                        ) : (
+                                            <Button
+                                                className="rounded-md  w-36 h-12  float-right font-semibold"
+                                                htmlType="submit"
+                                                style={{
+                                                    background: 'rgb(74, 74, 170)',
+                                                    color: 'white',
+                                                }}
+                                            >
+                                                Cọc tiền
+                                            </Button>
+                                        )}
+
                                     </Tooltip>
                                 ) : (
                                     <Tooltip
                                         title={pay ? '' : 'Bạn phải chọn phương thức thanh toán'}
                                     >
-                                        <Button
-                                            className="rounded-md  w-36 h-12   float-right font-semibold"
-                                            htmlType="submit"
-                                            style={{ background: '#316595', color: 'white' }}
-                                        >
-                                            Đặt hàng
-                                        </Button>
+                                        {resultOrder.isLoading || resultMomo.isLoading || resultPaypal.isLoading ? (
+                                            <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                        ) : (
+                                            <Button
+                                                className="rounded-md  w-36 h-12   float-right font-semibold"
+                                                htmlType="submit"
+                                                style={{ background: '#316595', color: 'white' }}
+                                            >
+                                                Đặt hàng
+                                            </Button>
+                                        )}
                                     </Tooltip>
                                 )}
                             </div>

@@ -40,7 +40,7 @@ const ColorsUpdate = () => {
       }
       navigate('/admin/colors');
     } catch (error: any) {
-      toast.success(error.data.message);
+      toast.error(error.data.message);
     }
 
   };
