@@ -162,7 +162,7 @@ const Model = ({ products }: any) => {
   return (
     <>
       <Button onClick={showModal} className="button btn-cart rounded-none">
-        Mua hàng
+        Thêm hàng
       </Button>
       <Modal
         title="Mua ngay"
@@ -285,14 +285,14 @@ const Model = ({ products }: any) => {
               ) : (
                 <Button
                   disabled={childProduct?.product.stock_quantity <= 0}
-                  className="btn6 btn-solid-primary6 btn-x hl mt-4 ml-16"
+                  className="btn6 btn-solid-primary6 btn-x hl mt-4 ml-12"
                   onClick={() => {
                     if (id && activeColor && activeSize) {
                       handleAddToCart();
                     }
                   }}
                 >
-                  MUA HÀNG
+                  Thêm vào giỏ hàng
                 </Button>
               )}
             </Tooltip>
