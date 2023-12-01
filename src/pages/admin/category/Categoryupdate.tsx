@@ -4,11 +4,9 @@ import { ICategory } from '@/interfaces/category';
 import { Button, Form, Input, InputNumber, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
-import { FaUpload } from "react-icons/fa6";
+import { FaUpload } from 'react-icons/fa6';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-
 
 type FieldType = {
     category_name?: string;
@@ -39,7 +37,9 @@ const Categoryupdate = () => {
             _id: categories.category?._id,
             category_name: categories.category?.category_name,
             price_increase_percent: categories.category?.price_increase_percent,
-            category_image: categories.category?.category_image ? categories.category.category_image : {}, // Nếu có ảnh, thêm vào mảng để hiển thị
+            category_image: categories.category?.category_image
+                ? categories.category.category_image
+                : {}, // Nếu có ảnh, thêm vào mảng để hiển thị
         });
     };
 
@@ -58,7 +58,6 @@ const Categoryupdate = () => {
         }
     };
 
-
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
@@ -73,26 +72,25 @@ const Categoryupdate = () => {
             }
         },
         onChange(info: any) {
-
             if (info.file) {
                 const formData = new FormData();
                 formData.append('images', info.file.originFileObj);
                 try {
                     (async () => {
                         if (info.file.status === 'uploading') {
-                            const response: any = await updateImage(({
+                            const response: any = await updateImage({
                                 publicId: categories.category?.category_image?.publicId,
                                 files: formData,
-                            } as any));
+                            } as any);
                             if (response.data && response.data.publicId) {
-                                info.file.status = 'done'
+                                info.file.status = 'done';
                                 setFileList(info.fileList);
                                 const publicId = response.data.publicId;
                                 const url = response.data.url;
-                                setImageUrl({ url: url, publicId: publicId })
+                                setImageUrl({ url: url, publicId: publicId });
                             }
                         }
-                    })()
+                    })();
                 } catch (error) {
                     console.error(error);
                 }
@@ -103,11 +101,14 @@ const Categoryupdate = () => {
                     (async () => {
                         await deleteImage(publicId);
                         const removedFile = info.file;
-                        const updatedFileList = fileList.filter(item => item.uid !== removedFile.uid);
+                        const updatedFileList = fileList.filter(
+                            (item) => item.uid !== removedFile.uid,
+                        );
                         setFileList(updatedFileList);
                         setImageUrl({});
                     })();
-                } if (info.fileList.length > 1) {
+                }
+                if (info.fileList.length > 1) {
                     const updatedFileList: any = [info.fileList[0]];
                     setFileList(updatedFileList);
                 }
@@ -117,15 +118,14 @@ const Categoryupdate = () => {
 
     if (isLoading) return <Skeleton />;
     if (isError || !categories || !categories.category) {
-
         return <div>Error: Unable to fetch category data.</div>;
     }
     const validatePositiveNumber = (_: any, value: any) => {
         if (parseFloat(value) < 0) {
-            return Promise.reject("Giá trị phải là số dương");
+            return Promise.reject('Giá trị phải là số dương');
         }
         return Promise.resolve();
-    }
+    };
     return (
         <div className="container-fluid">
             <div className="row">
@@ -136,7 +136,7 @@ const Categoryupdate = () => {
                         name="basic"
                         labelCol={{ span: 8 }}
                         wrapperCol={{ span: 16 }}
-                        style={{ maxWidth: 1000, }}
+                        style={{ maxWidth: 1000 }}
                         initialValues={{ remember: true }}
                         onFinish={onFinish}
                         onFinishFailed={onFinishFailed}
@@ -151,19 +151,22 @@ const Categoryupdate = () => {
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                             style={{ marginLeft: '20px' }}
-                            rules={[{ required: true, message: 'Tên danh mục không được để trống!' },
-                            { min: 2, message: "Nhập ít nhất 2 ký tự" },
-                            {
-                                validator: (_, value) => {
-                                    if (!value) {
+                            rules={[
+                                { required: true, message: 'Tên danh mục không được để trống!' },
+                                { min: 2, message: 'Nhập ít nhất 2 ký tự' },
+                                {
+                                    validator: (_, value) => {
+                                        if (!value) {
+                                            return Promise.resolve();
+                                        }
+                                        if (/ {2,}/.test(value)) {
+                                            return Promise.reject(
+                                                'Không được nhập liên tiếp các khoảng trắng!',
+                                            );
+                                        }
                                         return Promise.resolve();
-                                    }
-                                    if (/ {2,}/.test(value)) {
-                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                    }
-                                    return Promise.resolve();
+                                    },
                                 },
-                            },
                             ]}
                             hasFeedback
                         >
@@ -176,11 +179,12 @@ const Categoryupdate = () => {
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                             style={{ marginLeft: '20px' }}
-                            rules={[{ required: true, message: 'Tiền đặt cọc không được để trống!' },
-                            { validator: validatePositiveNumber },
-                            { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+                            rules={[
+                                { required: true, message: 'Tiền đặt cọc không được để trống!' },
+                                { validator: validatePositiveNumber },
+                                { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
+                            ]}
                             hasFeedback
-
                         >
                             <InputNumber style={{ width: '100%' }} />
                         </Form.Item>
@@ -189,32 +193,68 @@ const Categoryupdate = () => {
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                             style={{ marginLeft: '20px' }}
-                            id="images" name="category_image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
+                            id="images"
+                            name="category_image"
+                            label="Ảnh"
+                            rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
                             hasFeedback
                         >
-                            <Upload {...props} maxCount={1} listType="picture" multiple
+                            <Upload
+                                {...props}
+                                maxCount={1}
+                                listType="picture"
+                                multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
-                                    setFileList([file]);
-                                }}>
+                                    // Kiểm tra kích thước của tệp
+                                    const isLt2M = file.size / 1024 / 1024 < 2;
+                                    // Kiểm tra loại tệp
+                                    const isImage = file.type.startsWith('image/');
+                                    if (!isLt2M) {
+                                        message.error('Ảnh phải nhỏ hơn 2MB!');
+                                    } else if (!isImage) {
+                                        message.error('Chỉ được tải lên các tệp ảnh!');
+                                    } else {
+                                        setFileList([file]);
+                                    }
+                                    // Trả về false để ngăn chặn việc tải lên nếu kích thước tệp lớn hơn 2MB hoặc không phải là ảnh
+                                    return isLt2M && isImage;
+                                }}
+                            >
                                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
                             </Upload>
-                            {Object.keys(imageUrl).length <= 0 && categories.category.category_image && categories.category.category_image.url && (
-                                <div className="mt-3">
-                                    <img src={categories.category.category_image.url} alt="Ảnh danh mục hiện tại" style={{ maxWidth: '100px' }} />
-                                </div>
-                            )}
+                            {Object.keys(imageUrl).length <= 0 &&
+                                categories.category.category_image &&
+                                categories.category.category_image.url && (
+                                    <div className="mt-3">
+                                        <img
+                                            src={categories.category.category_image.url}
+                                            alt="Ảnh danh mục hiện tại"
+                                            style={{ maxWidth: '100px' }}
+                                        />
+                                    </div>
+                                )}
                         </Form.Item>
 
                         <Form.Item wrapperCol={{ span: 16 }}>
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                            <Button
+                                className=" h-10 bg-red-500 text-xs text-white ml-5"
                                 disabled={resultImage.isLoading || resultDelete.isLoading}
-                                htmlType="submit">
-                                {resultUpdate.isLoading ? <div className="spinner-border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </div> : " Cập nhật danh mục"}
+                                htmlType="submit"
+                            >
+                                {resultUpdate.isLoading ? (
+                                    <div className="spinner-border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                ) : (
+                                    ' Cập nhật danh mục'
+                                )}
                             </Button>
-                            <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/categories")} htmlType="submit">
+                            <Button
+                                className=" h-10 bg-blue-500 text-xs text-white ml-5"
+                                onClick={() => navigate('/admin/categories')}
+                                htmlType="submit"
+                            >
                                 Danh sách danh mục
                             </Button>
                         </Form.Item>
@@ -222,7 +262,7 @@ const Categoryupdate = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Categoryupdate
+export default Categoryupdate;
