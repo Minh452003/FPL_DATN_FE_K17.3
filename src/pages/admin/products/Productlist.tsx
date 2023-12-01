@@ -52,7 +52,7 @@ const Productlist = () => {
         if (false) {
             console.log(pagination);
             console.log(filters);
-            setSelectedMaterial('')
+            setSelectedMaterial('');
         }
     };
     const filteredProducts = products.filter((product: IProduct) => {
@@ -143,7 +143,6 @@ const Productlist = () => {
         } catch (error: any) {
             toast.error(error.message);
         }
-
     };
 
     const columns = [
@@ -188,7 +187,6 @@ const Productlist = () => {
             dataIndex: 'quantity',
             key: 'quantity',
             width: 100, // Điều chỉnh chiều rộng của cột "quantity"
-
             render: (text: number) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.quantity - b.quantity, // Sắp xếp theo số lượng đã bán
             sortOrder: sortedInfo.columnKey === 'quantity' && sortedInfo.order,
@@ -199,33 +197,54 @@ const Productlist = () => {
             dataIndex: 'category',
             key: 'category',
             width: 100, // Điều chỉnh chiều rộng của cột "category"
-
             render: (record: string) => {
                 const catename = category?.find((cate: ICategory) => cate._id === record);
                 return catename?.category_name;
             },
+            filters:
+                category?.map((cate: ICategory) => ({
+                    text: cate.category_name,
+                    value: cate._id,
+                })) || [],
+            filterSearch: true,
+            onFilter: (value: string | number | boolean, record: any) =>
+                record.category.startsWith(value),
         },
         {
             title: 'Chất liệu',
             dataIndex: 'materials',
             key: 'materials',
-            width: 100, // Điều chỉnh chiều rộng của cột "materials"
-
+            width: 100,
             render: (record: string) => {
                 const materialname = material?.find((materials: any) => materials._id === record);
                 return materialname?.material_name;
             },
+            filters:
+                material?.map((mat: any) => ({
+                    text: mat.material_name,
+                    value: mat._id,
+                })) || [],
+            filterSearch: true,
+            onFilter: (value: string | number | boolean, record: any) =>
+                record.materials.startsWith(value),
         },
         {
             title: 'Thương hiệu',
             dataIndex: 'brand',
             key: 'brand',
-            width: 100, // Điều chỉnh chiều rộng của cột "brand"
-
+            width: 100,
             render: (record: string) => {
                 const brandname = brand?.find((bra: IBrand) => bra._id === record);
                 return brandname?.brand_name;
             },
+            filters:
+                brand?.map((bra: IBrand) => ({
+                    text: bra.brand_name,
+                    value: bra._id,
+                })) || [],
+            filterSearch: true,
+            onFilter: (value: string | number | boolean, record: any) =>
+                record.brand.startsWith(value),
         },
         {
             title: 'Chức năng',
@@ -263,7 +282,7 @@ const Productlist = () => {
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                //...
+                    //...
                 >
                     <option value="all">Tất cả danh mục</option>
                     {categories?.category?.docs.map((category: ICategory) => (
@@ -277,7 +296,7 @@ const Productlist = () => {
                     value={selectedBrand}
                     onChange={(e) => setSelectedBrand(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                //...
+                    //...
                 >
                     <option value="all">Tất cả thương hiệu</option>
                     {brands?.brand?.map((brand: IBrand) => (
@@ -291,7 +310,7 @@ const Productlist = () => {
                     value={selectedPriceFilter}
                     onChange={(e) => setSelectedPriceFilter(e.target.value)}
                     className="block mr-4 p-2.5 mb-6 text-sm text-gray-900 border border-orange-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                //...
+                    //...
                 >
                     <option value="all">Tất cả giá</option>
                     <option value="100000-1000000">100.000-1.000.000</option>
