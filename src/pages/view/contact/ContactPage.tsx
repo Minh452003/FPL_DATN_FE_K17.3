@@ -1,12 +1,11 @@
 import { Button, Form, Input } from 'antd';
-import './contactPage.css'
+import './contactPage.css';
 import { useAddContactMutation } from '@/api/contactApi';
 import Swal from 'sweetalert2';
-const ContactPage = () => {
 
+const ContactPage = () => {
     const [addContact] = useAddContactMutation();
     const [form] = Form.useForm();
-
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 22 },
@@ -17,20 +16,22 @@ const ContactPage = () => {
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Gửi thông tin phản hồi thành công!',
+                title: 'Gửi phản hồi thành công!',
                 showConfirmButton: true,
-                timer: 2000
-            })
+                timer: 1500
+            });
             form.resetFields();
-        })
-    }
+        });
+    };
 
     const validateNoSpaces = (_: any, value: any) => {
-        if (!value.trim()) {
+        if (value && value.trim()) {
+            return Promise.resolve();
+        } else {
             return Promise.reject('Vui lòng không nhập dấu cách!');
         }
-        return Promise.resolve();
     };
+
     return (
         <div>
             <div className="App">

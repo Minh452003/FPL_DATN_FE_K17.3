@@ -28,7 +28,7 @@ const Bannerlist = () => {
     try {
       const result = await Swal.fire({
         title: 'Bạn chắc chứ?',
-        text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+        text: 'Banner sẽ bị xoá và không thể khôi phục!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -36,38 +36,36 @@ const Bannerlist = () => {
         confirmButtonText: 'Vâng, tôi chắc chắn!',
         cancelButtonText: 'Huỷ',
       });
-      if(result.isConfirmed){
-        const data :any= await removeBanner(id).unwrap();
-        console.log(data);
-        
-        if(data){
+      if (result.isConfirmed) {
+        const data: any = await removeBanner(id).unwrap();
+        if (data) {
           toast.success(data.message);
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         toast.info('Hủy xoá banner');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data.message);
     }
-  
+
   }
-    const columns = [
-        {
-            title: 'STT',
-            dataIndex: 'STT',
-            key: 'STT',
-            render: (index: number | string) => <a>{index}</a>,
-            sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
-            sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
-            ellipsis: true,
-            width: 90,
-        },
-        {
-            title: 'Ảnh ',
-            dataIndex: 'image',
-          key: 'image',
-          width: 100,
-        },
+  const columns = [
+    {
+      title: 'STT',
+      dataIndex: 'STT',
+      key: 'STT',
+      render: (index: number | string) => <a>{index}</a>,
+      sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
+      sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
+      ellipsis: true,
+      width: 90,
+    },
+    {
+      title: 'Ảnh ',
+      dataIndex: 'image',
+      key: 'image',
+      width: 100,
+    },
 
     {
       title: 'Chức năng',
@@ -102,6 +100,6 @@ const Bannerlist = () => {
 
   )
 }
-   
+
 
 export default Bannerlist;
