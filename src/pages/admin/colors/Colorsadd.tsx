@@ -1,6 +1,5 @@
 
 import { useAddColorMutation } from '@/api/colorApi';
-import { IColor } from '@/interfaces/color';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,41 +10,41 @@ type FieldType = {
 
 };
 const ColorsAdd = () => {
-  const [addColor,resultAdd] = useAddColorMutation();
+  const [addColor, resultAdd] = useAddColorMutation();
   const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
-   try {
-    const data = await addColor(values).unwrap();
-    if (data){
-      toast.success(data.message);
+    try {
+      const data = await addColor(values).unwrap();
+      if (data) {
+        toast.success(data.message);
+      }
+      navigate('/admin/colors');
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
-    navigate('/admin/colors');
-   } catch (error:any) {
-    toast.error(error.data.message);
-   }
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-  return ( 
+  return (
     <div className="container-fluid">
-    <div className="row">
-      <div className="card-body">
-        <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm màu</h5>
-        <div className="flex items-center ">
-        </div>
-    <Form
-    name="basic"
-    labelCol={{ span: 8 }}
-    wrapperCol={{ span: 16 }}
-    style={{ maxWidth: 1000 }}
-    initialValues={{ remember: true }}
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
-    autoComplete="off"
-  >
-     <Form.Item<FieldType>
+      <div className="row">
+        <div className="card-body">
+          <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm màu</h5>
+          <div className="flex items-center ">
+          </div>
+          <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 1000 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item<FieldType>
               label="Tên màu"
               name="colors_name"
               rules={[{ required: true, message: 'Tên màu không được để trống!' },
@@ -79,8 +78,8 @@ const ColorsAdd = () => {
                 Danh sách màu
               </Button>
             </Form.Item>
-  </Form>
-  </div>
+          </Form>
+        </div>
       </div>
     </div>
   )

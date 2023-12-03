@@ -57,7 +57,7 @@ const CouponsList = () => {
     const formatCurrency = (number: number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
-    const deleteCoupon = async (id: any) => {
+    const deleteCoupon = async (id: number | string) => {
         try {
             const result = await Swal.fire({
               title: 'Bạn chắc chứ?',
@@ -88,7 +88,7 @@ const CouponsList = () => {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: any) => <a>{index}</a>,
+            render: (index: number) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
@@ -126,7 +126,7 @@ const CouponsList = () => {
             width: 120,
             dataIndex: 'discount_amount',
             key: 'discount_amount',
-            render: (index: any) => <a>{index}%</a>,
+            render: (index: string | number) => <a>{index}%</a>,
             sorter: (a: any, b: any) => a.discount_amount - b.discount_amount, // Sắp xếp theo discount_amount
             sortOrder: sortedInfo.columnKey === 'discount_amount' && sortedInfo.order,
             ellipsis: true,
@@ -144,7 +144,7 @@ const CouponsList = () => {
             width: 150,
             dataIndex: 'min_purchase_amount',
             key: 'min_purchase_amount',
-            render: (index: any) => <a>{formatCurrency(index)}đ</a>,
+            render: (index: number) => <a>{formatCurrency(index)}đ</a>,
             sorter: (a: any, b: any) => a.min_purchase_amount - b.min_purchase_amount, // Sắp xếp theo min_purchase_amount
             sortOrder: sortedInfo.columnKey === 'min_purchase_amount' && sortedInfo.order,
             ellipsis: true,
@@ -152,7 +152,7 @@ const CouponsList = () => {
         {
             title: 'Chức năng',
             width: 130,
-            render: ({ key: _id }: any) => {
+            render: ({ key: _id }: { key: string }) => {
                 return (
                     <div style={{ width: '200px' }}>
                         <Button className="mr-1 text-red-500" onClick={() => deleteCoupon(_id)}>
@@ -172,7 +172,7 @@ const CouponsList = () => {
             },
         },
     ];
-    const filteredData = dataSource?.filter((item: any) => {
+    const filteredData = dataSource?.filter((item: ICoupon) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();
         const numericSearchText = parseFloat(lowerCaseSearchText);
 

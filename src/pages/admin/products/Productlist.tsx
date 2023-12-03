@@ -52,6 +52,7 @@ const Productlist = () => {
         if (false) {
             console.log(pagination);
             console.log(filters);
+            setSelectedMaterial('');
         }
     };
     const filteredProducts = products.filter((product: IProduct) => {
@@ -121,28 +122,27 @@ const Productlist = () => {
     const deleteProduct = async (id: number) => {
         try {
             const result = await Swal.fire({
-              title: 'Bạn chắc chứ?',
-              text: 'bạn có chắc chắn muốn xóa',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Vâng, tôi chắc chắn!',
-              cancelButtonText: 'Huỷ',
+                title: 'Bạn chắc chứ?',
+                text: 'bạn có chắc chắn muốn xóa',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
             });
-        
+
             if (result.isConfirmed) {
-              const data: any = await removeProduct(id).unwrap();
-              if (data) {
-                toast.success(`${data.message}`);
-              }
+                const data: any = await removeProduct(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-              toast.info('Đã hủy xóa Sản phẩm ');
+                toast.info('Đã hủy xóa Sản phẩm ');
             }
-          } catch (error:any) {
+        } catch (error: any) {
             toast.error(error.message);
-          }
-         
+        }
     };
 
     const columns = [
@@ -187,7 +187,6 @@ const Productlist = () => {
             dataIndex: 'quantity',
             key: 'quantity',
             width: 100, // Điều chỉnh chiều rộng của cột "quantity"
-
             render: (text: number) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.quantity - b.quantity, // Sắp xếp theo số lượng đã bán
             sortOrder: sortedInfo.columnKey === 'quantity' && sortedInfo.order,
@@ -198,33 +197,54 @@ const Productlist = () => {
             dataIndex: 'category',
             key: 'category',
             width: 100, // Điều chỉnh chiều rộng của cột "category"
-
             render: (record: string) => {
                 const catename = category?.find((cate: ICategory) => cate._id === record);
                 return catename?.category_name;
             },
+            filters:
+                category?.map((cate: ICategory) => ({
+                    text: cate.category_name,
+                    value: cate._id,
+                })) || [],
+            filterSearch: true,
+            onFilter: (value: string | number | boolean, record: any) =>
+                record.category.startsWith(value),
         },
         {
             title: 'Chất liệu',
             dataIndex: 'materials',
             key: 'materials',
-            width: 100, // Điều chỉnh chiều rộng của cột "materials"
-
+            width: 100,
             render: (record: string) => {
                 const materialname = material?.find((materials: any) => materials._id === record);
                 return materialname?.material_name;
             },
+            filters:
+                material?.map((mat: any) => ({
+                    text: mat.material_name,
+                    value: mat._id,
+                })) || [],
+            filterSearch: true,
+            onFilter: (value: string | number | boolean, record: any) =>
+                record.materials.startsWith(value),
         },
         {
             title: 'Thương hiệu',
             dataIndex: 'brand',
             key: 'brand',
-            width: 100, // Điều chỉnh chiều rộng của cột "brand"
-
+            width: 100,
             render: (record: string) => {
                 const brandname = brand?.find((bra: IBrand) => bra._id === record);
                 return brandname?.brand_name;
             },
+            filters:
+                brand?.map((bra: IBrand) => ({
+                    text: bra.brand_name,
+                    value: bra._id,
+                })) || [],
+            filterSearch: true,
+            onFilter: (value: string | number | boolean, record: any) =>
+                record.brand.startsWith(value),
         },
         {
             title: 'Chức năng',

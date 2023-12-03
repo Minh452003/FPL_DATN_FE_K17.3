@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useGetNewsQuery, useRemoveNewMutation } from '@/api/newsApi';
 import { IoSearchSharp } from 'react-icons/io5';
 import { toast } from 'react-toastify';
+import { INew } from '@/interfaces/new';
 
 const Newslist = () => {
     const [searchText, setSearchText] = useState('');
@@ -24,7 +25,7 @@ const Newslist = () => {
 
     const dataNews = isloadingNews
         ? []
-        : news?.map((news: any, index: number) => {
+        : news?.map((news: INew, index: number) => {
             return {
                 key: news._id,
                 STT: index + 1,
@@ -33,7 +34,7 @@ const Newslist = () => {
                 new_image: <img width={50} src={news.new_image?.url} alt="" />,
             };
         });
-    const deleteNew = async  (_id: any) => {
+    const deleteNew = async  (_id: string) => {
         try {
             const result = await Swal.fire({
               title: 'Bạn chắc chứ?',
@@ -63,7 +64,7 @@ const Newslist = () => {
             title: 'STT',
             dataIndex: 'STT',
             key: 'STT',
-            render: (index: any) => <a>{index}</a>,
+            render: (index: number) => <a>{index}</a>,
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
@@ -96,7 +97,7 @@ const Newslist = () => {
         {
             title: 'Chức năng',
             width: 170,
-            render: ({ key: _id }: { key: number | string }) => (
+            render: ({ key: _id }: { key: string }) => (
                 <div style={{ width: '150px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteNew(_id)}>
                         {isRemoveLoading ? (
@@ -114,7 +115,7 @@ const Newslist = () => {
             ),
         },
     ];
-    const filteredData = dataNews?.filter((item: any) => {
+    const filteredData = dataNews?.filter((item: INew) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();
         const lowerCaseItemName = item.new_name.toLowerCase().trim();
         const lowerCaseItemDescription = item.new_description.toLowerCase().trim();

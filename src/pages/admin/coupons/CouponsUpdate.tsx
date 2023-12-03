@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { DatePicker } from 'antd';
-import Swal from 'sweetalert2';
 import {
   useGetCouponByIdQuery,
   useUpdateCouponMutation,
@@ -11,6 +10,7 @@ import {
 import localeData from 'dayjs/plugin/localeData';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
+import { ICoupon } from '@/interfaces/coupon';
 
 
 type FieldType = {
@@ -37,6 +37,11 @@ const CouponsUpdate = () => {
     expiration_date: dayjs(),
   };
 
+  const isPastDate = (selectedDate: dayjs.Dayjs) => {
+    const currentDate = dayjs();
+    return selectedDate.isBefore(currentDate, 'day');
+  };
+
   useEffect(() => {
     if (coupons) {
       setFields();
@@ -58,17 +63,20 @@ const CouponsUpdate = () => {
     });
   };
 
-  const onFinish = async (values: any) => {
-   try {
-    values.expiration_date = values.expiration_date ? values.expiration_date.toDate() : null;
-    const data = await updateCoupon(values).unwrap();
-    if(data){
-      toast.success(data.message);
+  const onFinish = async (values: ICoupon) => {
+    try {
+      // values.expiration_date = values.expiration_date ? values.expiration_date.toDate() : null;
+      values.expiration_date = values.expiration_date !== null
+        ? new Date(values.expiration_date)
+        : new Date();
+      const data = await updateCoupon(values).unwrap();
+      if (data) {
+        toast.success(data.message);
+      }
+      navigate("/admin/coupons");
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
-    navigate("/admin/coupons");
-   } catch (error:any) {
-    toast.error(error.data.message);
-   }
 
   };
 
@@ -211,7 +219,18 @@ const CouponsUpdate = () => {
             <Form.Item<FieldType>
               label="Ngày hết hạn"
               name="expiration_date"
-              rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+              rules={[
+                { required: true, message: 'Ngày hết hạn không được để trống!' },
+                {
+                  validator: (_, value) => {
+                    const selectedDate = dayjs(value);
+                    if (isPastDate(selectedDate)) {
+                      return Promise.reject('Không được chọn ngày quá khứ!');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
               hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}

@@ -2,20 +2,20 @@ import { useAddCouponMutation } from '@/api/couponsApi';
 import { Button, DatePicker, Form, Input, InputNumber } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import localeData from 'dayjs/plugin/localeData';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
+import { ICoupon } from '@/interfaces/coupon';
 
 
 type FieldType = {
-    coupon_name?: string,
-    coupon_code?: string,
-    coupon_content?: string,
-    coupon_quantity?: number,
-    discount_amount?: number,
-    expiration_date?: Date,
-    min_purchase_amount?: number
+  coupon_name?: string,
+  coupon_code?: string,
+  coupon_content?: string,
+  coupon_quantity?: number,
+  discount_amount?: number,
+  expiration_date?: Date,
+  min_purchase_amount?: number
 
 };
 const CouponsAdd = () => {
@@ -26,15 +26,19 @@ const CouponsAdd = () => {
 
   const init = {
     expiration_date: dayjs(),
-    };
-  const onFinish = async (values: any) => {
+  };
+  const isPastDate = (selectedDate: dayjs.Dayjs) => {
+    const currentDate = dayjs();
+    return selectedDate.isBefore(currentDate, 'day');
+  };
+  const onFinish = async (values: ICoupon) => {
     try {
       const data = await addCoupon(values).unwrap();
-      if(data){
+      if (data) {
         toast.success(data.message);
       }
       navigate("/admin/coupons");
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.message);
     }
   };
@@ -42,19 +46,19 @@ const CouponsAdd = () => {
     console.log('Failed:', errorInfo);
   };
   const validatePositiveNumber = (_: any, value: any) => {
-    if(parseFloat(value) < 0) {
+    if (parseFloat(value) < 0) {
       return Promise.reject("Giá trị phải là số dương");
     }
     return Promise.resolve();
   }
-  return ( 
+  return (
     <div className="container-fluid">
       <div className="row">
         <div className="card-body">
           <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm phiếu giảm giá</h5>
           <div className="flex items-center ">
           </div>
-            <Form
+          <Form
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
@@ -142,10 +146,10 @@ const CouponsAdd = () => {
               label="Số lượng phiếu giảm giá"
               name="coupon_quantity"
               rules={[{ required: true, message: 'Số lượng phiếu giảm giá không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
-             
+
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -157,10 +161,10 @@ const CouponsAdd = () => {
               label="Số tiền chiết khấu"
               name="discount_amount"
               rules={[{ required: true, message: 'Số tiền chiết khấu không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
-             
+
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -171,23 +175,34 @@ const CouponsAdd = () => {
             <Form.Item<FieldType>
               label="Ngày hết hạn"
               name="expiration_date"
-              rules={[{ required: true, message: 'Ngày hết hạn không được để trống!' }]}
+              rules={[
+                { required: true, message: 'Ngày hết hạn không được để trống!' },
+                {
+                  validator: (_, value) => {
+                    const selectedDate = dayjs(value);
+                    if (isPastDate(selectedDate)) {
+                      return Promise.reject('Không được chọn ngày quá khứ!');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
               hasFeedback
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
             >
-              <DatePicker style={{width: "100%"}} format={dateFormat} />
+              <DatePicker style={{ width: "100%" }} format={dateFormat} />
             </Form.Item>
 
             <Form.Item<FieldType>
               label="Số tiền mua tối thiểu"
               name="min_purchase_amount"
               rules={[{ required: true, message: 'Số tiền mua tối thiểu không được để trống!' },
-              {validator: validatePositiveNumber},
+              { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               hasFeedback
-             
+
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}

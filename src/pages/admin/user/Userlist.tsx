@@ -89,6 +89,13 @@ const Userlist = () => {
             dataIndex: 'role',
             key: 'role',
             width: 100,
+            filters: [
+                { text: 'Admin', value: 'admin' },
+                { text: 'Member', value: 'member' },
+            ],
+            filterSearch: true,
+            onFilter: (value: string | number | boolean, record: any) => record.role.startsWith(value),
+            
         },
         {
             title: 'Chức năng',

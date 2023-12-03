@@ -14,7 +14,7 @@ const Comment = ({ order }: any) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const decodedToken: any = getDecodedAccessToken();
     const id = decodedToken ? decodedToken.id : null;
-    const [addComment, resultAdd] = useAddCommentMutation();
+    const [addComment, resultAdd] = useAddCommentMutation<any>();
     const [addImage, resultImage] = useAddImageMutation();
     const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]);
@@ -40,13 +40,6 @@ const Comment = ({ order }: any) => {
                 image: values.image,
                 orderId: order._id
             }).then(() => {
-                // Swal.fire({
-                //     position: 'center',
-                //     icon: 'success',
-                //     title: 'Đánh giá thành công thành công!',
-                //     showConfirmButton: true,
-                //     timer: 1500
-                // });
                 navigate('/user/orders?commentAdded=true')
             })
         })

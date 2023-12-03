@@ -62,7 +62,7 @@ const Login = () => {
         } else {
 
             const accessToken: IUser = response.data.accessToken;
-            const expirationTime = new Date().getTime() + 2 * 60 * 60 * 1000; // 2 giờ
+            const expirationTime = new Date().getTime() + 5 * 60 * 60 * 1000; // 2 giờ
             const dataToStore = { accessToken, expirationTime };
             localStorage.setItem('accessToken', JSON.stringify(dataToStore));
             Swal.fire({

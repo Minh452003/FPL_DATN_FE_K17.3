@@ -1,6 +1,7 @@
 
 import { useGetNewByIdQuery, useUpdateNewMutation } from '@/api/newsApi';
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
+import { INew } from '@/interfaces/new';
 import { Button, Form, Input, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
@@ -8,12 +9,11 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
 
 
 type FieldType = {
     new_name?: string;
-    new_description?: String;
+    new_description?: string;
     new_image?: object;
 };
 
@@ -44,8 +44,7 @@ const NewsUpdate = () => {
         });
     };
 
-    const onFinish = async (values: any) => {
-        console.log(values);
+    const onFinish = async (values: INew) => {
         try {
             if (Object.keys(imageUrl).length > 0) {
                 values.category_image = imageUrl;

@@ -43,7 +43,7 @@ const Productupdate = () => {
     useEffect(() => {
         if (productData) {
             setFields();
-            setImageUrl(productData?.product?.image)
+            setImageUrl(productData?.product?.image);
         }
     }, [productData]);
     const [form] = Form.useForm();
@@ -60,22 +60,19 @@ const Productupdate = () => {
         });
     };
 
-
     const onFinish = async (values: IProduct) => {
-        values.description = productDescription
+        values.description = productDescription;
         console.log(productDescription);
 
         try {
-            values.image = imageUrl
+            values.image = imageUrl;
             const data = await updateProduct(values).unwrap();
-            if(data){
+            if (data) {
                 toast.success(data.message);
             }
             navigate('/admin/products');
-          
-        } catch (error:any) {
+        } catch (error: any) {
             toast.error(error.data.message);
-
         }
     };
 
@@ -98,26 +95,28 @@ const Productupdate = () => {
                 try {
                     (async () => {
                         if (info.file.status === 'uploading') {
-                            const response: any = await updateImage(({
+                            const response: any = await updateImage({
                                 publicId: publicId,
                                 files: formData,
-                            } as any));
+                            } as any);
                             if (response.data && response.data.publicId) {
-                                info.file.status = 'done'
-                                info.file.uid = response.data.publicId
+                                info.file.status = 'done';
+                                info.file.uid = response.data.publicId;
                                 const publicId1 = response.data.publicId;
                                 const url = response.data.url;
                                 const updatedImage = { url: url, publicId: publicId1 };
                                 setFileList(info.fileList);
-                                setImageUrl((prevUrls: any) => prevUrls.map((item: any) => {
-                                    if (item.publicId === publicId) {
-                                        return updatedImage; // Thay thế ảnh có publicId tương ứng
-                                    }
-                                    return item;
-                                }));
+                                setImageUrl((prevUrls: any) =>
+                                    prevUrls.map((item: any) => {
+                                        if (item.publicId === publicId) {
+                                            return updatedImage; // Thay thế ảnh có publicId tương ứng
+                                        }
+                                        return item;
+                                    }),
+                                );
                             }
                         }
-                    })()
+                    })();
                 } catch (error) {
                     console.error(error);
                 }
@@ -128,9 +127,13 @@ const Productupdate = () => {
                     (async () => {
                         await deleteImage(publicId);
                         const removedFile = info.file;
-                        const updatedFileList = fileList.filter(item => item.uid !== removedFile.uid);
+                        const updatedFileList = fileList.filter(
+                            (item) => item.uid !== removedFile.uid,
+                        );
                         setFileList(updatedFileList);
-                        const updateImage = imageUrl.filter((item: any) => item.publicId !== removedFile.uid);
+                        const updateImage = imageUrl.filter(
+                            (item: any) => item.publicId !== removedFile.uid,
+                        );
                         setImageUrl(updateImage);
                     })();
                 }
@@ -146,19 +149,21 @@ const Productupdate = () => {
     const handleImageUpdate = (index: number) => {
         const selectedImage = imageUrl[index];
         setpublicId(selectedImage.publicId);
-    }
+    };
 
     const validatePositiveNumber = (_: any, value: any) => {
         if (parseFloat(value) < 0) {
-            return Promise.reject("Giá trị phải là số dương");
+            return Promise.reject('Giá trị phải là số dương');
         }
         return Promise.resolve();
-    }
+    };
     return (
         <div className="container-fluid mb-7">
             <div className="row">
                 <div className="card-body">
-                    <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Cập nhật Sản Phẩm</h5>
+                    <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">
+                        Cập nhật Sản Phẩm
+                    </h5>
                     <Form
                         form={form}
                         name="basic"
@@ -170,7 +175,6 @@ const Productupdate = () => {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-
                         <Form.Item<FieldType> name="_id" style={{ display: 'none' }}>
                             <Input />
                         </Form.Item>
@@ -179,33 +183,38 @@ const Productupdate = () => {
                             name="product_name"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Tên sản phẩm không được để trống!' },
-                            {
-                                validator: (_, value) => {
-                                    if (!value) {
+                            rules={[
+                                { required: true, message: 'Tên sản phẩm không được để trống!' },
+                                {
+                                    validator: (_, value) => {
+                                        if (!value) {
+                                            return Promise.resolve();
+                                        }
+                                        if (/ {2,}/.test(value)) {
+                                            return Promise.reject(
+                                                'Không được nhập liên tiếp các khoảng trắng!',
+                                            );
+                                        }
                                         return Promise.resolve();
-                                    }
-                                    if (/ {2,}/.test(value)) {
-                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                    }
-                                    return Promise.resolve();
+                                    },
                                 },
-                            },
-                            { min: 2, message: "Nhập ít nhất 2 ký tự" }
+                                { min: 2, message: 'Nhập ít nhất 2 ký tự' },
                             ]}
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
-                            <Input placeholder='Tên sản phẩm' />
+                            <Input placeholder="Tên sản phẩm" />
                         </Form.Item>
                         <Form.Item<FieldType>
                             label="Giá Niêm Yết"
                             name="product_price"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Trường giá không được để trống!' },
-                            { validator: validatePositiveNumber },
-                            { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+                            rules={[
+                                { required: true, message: 'Trường giá không được để trống!' },
+                                { validator: validatePositiveNumber },
+                                { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
+                            ]}
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
@@ -215,23 +224,45 @@ const Productupdate = () => {
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
-                            label="Ảnh" rules={[{ required: true, message: 'Ảnh không được để trống' }]}
+                            label="Ảnh"
+                            rules={[{ required: true, message: 'Ảnh không được để trống' }]}
                             hasFeedback
                         >
-                            {imageUrl && imageUrl?.map((img: any, index: any) => (
-                                <Upload
-                                    {...props}
-                                    key={img?.publicId}
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    beforeUpload={() => handleImageUpdate(index)}
-                                >
-                                    {img ? <img src={img?.url} alt="avatar" style={{ width: '100px', height: "100px" }} /> :
-                                        uploadButton
-                                    }
-                                </Upload>
-                            ))}
+                            {imageUrl &&
+                                imageUrl?.map((img: any, index: any) => (
+                                    <Upload
+                                        {...props}
+                                        key={img?.publicId}
+                                        listType="picture-card"
+                                        className="avatar-uploader"
+                                        showUploadList={false}      
+                                        beforeUpload={file => {
+                                            // Kiểm tra kích thước của tệp
+                                            const isLt2M = file.size / 1024 / 1024 < 2;
+                                            // Kiểm tra loại tệp
+                                            const isImage = file.type.startsWith('image/');
+                                            if (!isLt2M) {
+                                                message.error('Ảnh phải nhỏ hơn 2MB!');
+                                            } else if (!isImage) {
+                                                message.error('Chỉ được tải lên các tệp ảnh!');
+                                            } else {
+                                                handleImageUpdate(index)
+                                            }
+                                            // Trả về false để ngăn chặn việc tải lên nếu kích thước tệp lớn hơn 2MB hoặc không phải là ảnh
+                                            return isLt2M && isImage;
+                                        }} 
+                                    >
+                                        {img ? (
+                                            <img
+                                                src={img?.url}
+                                                alt="avatar"
+                                                style={{ width: '100px', height: '100px' }}
+                                            />
+                                        ) : (
+                                            uploadButton
+                                        )}
+                                    </Upload>
+                                ))}
                         </Form.Item>
                         <Form.Item<FieldType>
                             label="Danh mục"
@@ -242,25 +273,37 @@ const Productupdate = () => {
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
                         >
-                            <Select >
-                                {categories && categories?.category.docs?.map((category: ICategory) => {
-                                    return <Select.Option key={category?._id} value={category._id}>{category.category_name}</Select.Option>
-                                })}
+                            <Select>
+                                {categories &&
+                                    categories?.category.docs?.map((category: ICategory) => {
+                                        return (
+                                            <Select.Option key={category?._id} value={category._id}>
+                                                {category.category_name}
+                                            </Select.Option>
+                                        );
+                                    })}
                             </Select>
                         </Form.Item>
                         <Form.Item<FieldType>
                             label="Thương hiệu"
                             name="brandId"
-                            rules={[{ required: true, message: 'Thương hiệu không được để trống!' }]}
+                            rules={[
+                                { required: true, message: 'Thương hiệu không được để trống!' },
+                            ]}
                             hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
                         >
-                            <Select >
-                                {brands && brands?.brand?.map((brand: IBrand) => {
-                                    return <Select.Option key={brand?._id} value={brand._id}>{brand.brand_name}</Select.Option>
-                                })}
+                            <Select>
+                                {brands &&
+                                    brands?.brand?.map((brand: IBrand) => {
+                                        return (
+                                            <Select.Option key={brand?._id} value={brand._id}>
+                                                {brand.brand_name}
+                                            </Select.Option>
+                                        );
+                                    })}
                             </Select>
                         </Form.Item>
                         <Form.Item<FieldType>
@@ -272,10 +315,15 @@ const Productupdate = () => {
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
                         >
-                            <Select >
-                                {materials && materials?.material?.map((mate: IMaterials) => {
-                                    return <Select.Option key={mate?._id} value={mate._id}>{mate.material_name}</Select.Option>
-                                })}
+                            <Select>
+                                {materials &&
+                                    materials?.material?.map((mate: IMaterials) => {
+                                        return (
+                                            <Select.Option key={mate?._id} value={mate._id}>
+                                                {mate.material_name}
+                                            </Select.Option>
+                                        );
+                                    })}
                             </Select>
                         </Form.Item>
 
@@ -293,8 +341,8 @@ const Productupdate = () => {
                                 data={productData?.product?.description}
                                 config={{
                                     mediaEmbed: {
-                                        previewsInData: true
-                                    }
+                                        previewsInData: true,
+                                    },
                                 }}
                                 onChange={(event, editor) => {
                                     const data = editor.getData();
@@ -306,22 +354,32 @@ const Productupdate = () => {
                             />
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                            <Button
+                                className=" h-10 bg-red-500 text-xs text-white ml-5"
                                 disabled={resultImage.isLoading || resultDelete.isLoading}
-                                htmlType="submit">
-                                {resultUpdate.isLoading ? <div className="spinner-border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </div> : " Cập nhật sản phẩm"}
+                                htmlType="submit"
+                            >
+                                {resultUpdate.isLoading ? (
+                                    <div className="spinner-border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                ) : (
+                                    ' Cập nhật sản phẩm'
+                                )}
                             </Button>
-                            <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/products")} htmlType="submit">
+                            <Button
+                                className=" h-10 bg-blue-500 text-xs text-white ml-5"
+                                onClick={() => navigate('/admin/products')}
+                                htmlType="submit"
+                            >
                                 Danh sách sản phẩm
                             </Button>
                         </Form.Item>
                     </Form>
                 </div>
             </div>
-        </div >
-    )
-}
+        </div>
+    );
+};
 
-export default Productupdate
+export default Productupdate;

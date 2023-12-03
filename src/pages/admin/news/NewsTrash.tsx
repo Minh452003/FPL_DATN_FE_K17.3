@@ -1,4 +1,5 @@
 import { useGetAllDeleteQuery, useRemoveForceNewMutation, useRestoreNewMutation } from '@/api/newsApi';
+import { INew } from '@/interfaces/new';
 import { Table, Button } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BiFoodMenu } from 'react-icons/bi';
@@ -14,7 +15,7 @@ const NewsTrash = () => {
   const [removeNew, { isLoading: isRemoveLoading }] = useRemoveForceNewMutation();
   const [restoreNew, { isLoading: isRestoreLoading }] = useRestoreNewMutation()
 
-  const deleteNew = async (id: any) => {
+  const deleteNew = async (id: number | string) => {
     try {
       const result = await Swal.fire({
           title: 'Bạn chắc chứ?',
@@ -39,7 +40,7 @@ const NewsTrash = () => {
       toast.error(error.message);
   }
   }
-  const restoreNew1 = async (id: any) => {
+  const restoreNew1 = async (id: number | string) => {
     try {
       const result = await Swal.fire({
           title: 'Bạn chắc chứ?',
@@ -65,7 +66,7 @@ const NewsTrash = () => {
   }
   }
 
-  const data1 = news?.map((news: any) => {
+  const data1 = news?.map((news: INew) => {
     return {
       key: news._id,
       name: news.new_name,

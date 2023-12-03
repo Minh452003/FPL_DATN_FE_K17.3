@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 
 type FieldType = {
     new_name?: string;
-    new_description?: String;
+    new_description?: string;
     new_image?: object;
 };
 const NewsAdd = () => {
@@ -172,7 +172,19 @@ const NewsAdd = () => {
                             <Upload {...props} maxCount={1} listType="picture" multiple
                                 fileList={fileList}
                                 beforeUpload={file => {
-                                    setFileList([file]);
+                                    // Kiểm tra kích thước của tệp
+                                    const isLt2M = file.size / 1024 / 1024 < 2;
+                                    // Kiểm tra loại tệp
+                                    const isImage = file.type.startsWith('image/');
+                                    if (!isLt2M) {
+                                        message.error('Ảnh phải nhỏ hơn 2MB!');
+                                    } else if (!isImage) {
+                                        message.error('Chỉ được tải lên các tệp ảnh!');
+                                    } else {
+                                        setFileList([file]);
+                                    }
+                                    // Trả về false để ngăn chặn việc tải lên nếu kích thước tệp lớn hơn 2MB hoặc không phải là ảnh
+                                    return isLt2M && isImage;
                                 }}
                             >
                                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
