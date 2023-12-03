@@ -4,7 +4,8 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
-import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+
 
 
 const ResetPassword = () => {
@@ -31,29 +32,24 @@ const ResetPassword = () => {
 
 
     const onSubmit: SubmitHandler<IResetPassword> = async (data: IResetPassword) => {
+    try {
         const response: any = await resetPassword({
             userId,
             newPassword: data.newPassword,
             confirmPassword: data.confirmPassword,
-        });
-        if (response.error) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: response.error.data.message,
-                showConfirmButton: true,
-                timer: 1500
-            });
-        } else {
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Đặt mật khẩu mới thành công, vui lòng đăng nhập!",
-                showConfirmButton: true,
-                timer: 1500
-            });
+        }).unwrap();
+        console.log(response);
+        
+        if(response){
+            toast.success(response.message);
             navigate("/signin");
         }
+    } catch (error:any) {
+        console.log(error);
+        
+        toast.error(error.data?.message[0]);
+    }
+    
     };
 
 

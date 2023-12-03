@@ -3,9 +3,10 @@ import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineGoogle, AiOutlineLoading3
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '@/api/authApi';
 import { useForm, SubmitHandler } from 'react-hook-form'
-import Swal from 'sweetalert2';
+
 import { IUser } from '@/interfaces/auth';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 
 
@@ -37,28 +38,28 @@ const Signup = () => {
     const eyeIcon = showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />;
     const confirmEyeIcon = showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />;
 
-
     const onSubmit: SubmitHandler<IUser> = async (data: IUser) => {
-        const response: any = await signUp(data)
-        if (response.error) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: response.error.data.message,
-                showConfirmButton: true,
-                timer: 1500
-            })
-        } else {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Vui lòng xác minh tài khoản!',
-                showConfirmButton: true,
-                timer: 1500
-            });
-            navigate(`/signup/verifyOTP/${response?.data?.user?._id}`);
+        try {
+            const response: any = await signUp(data);
+           
+            if (response.error) {
+                toast.error(response.error.data.messsage);
+            } else {
+                if (response.data?.user?.confirmed) {
+                    
+                    toast.success('Tài khoản đã được xác nhận!');
+                } else {
+                   
+                    toast.success('Vui lòng xác minh tài khoản!');
+    
+                    navigate(`/signup/verifyOTP/${response?.data?.user?._id}`);
+                }
+            }
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error.data.message);
         }
-    }
+    };
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,

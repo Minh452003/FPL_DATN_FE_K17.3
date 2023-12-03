@@ -1,6 +1,7 @@
 import { useVerifyOTPMutation } from "@/api/authApi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 type TypeInputs = {
@@ -21,26 +22,18 @@ const VerifyOTP = () => {
 
     const onSubmit: SubmitHandler<TypeInputs> = async data => {
 
-        const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
-        const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
-        const response: any = await verifyOTPRequest({ userId, otp: combinedOTP })
-        if (response.error) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: response.error.data.message,
-                timer: 1500
-            });
-        } else {
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Xác minh tài khoản thành công!",
-                showConfirmButton: true,
-                timer: 1500
-            })
+        try {
+          const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
+           const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
+           const response: any = await verifyOTPRequest({ userId, otp: combinedOTP }).unwrap();
+           if(response){
+            toast.success(response.message);
             navigate("/signin")
+           }
+        } catch (error:any) {
+            toast.error(error.data.message);
         }
+       
     }
 
     return (
