@@ -1,5 +1,5 @@
 import { Button, Form, Input } from 'antd';
-import './contactPage.css'
+import './contactPage.css';
 import { useAddContactMutation } from '@/api/contactApi';
 import Swal from 'sweetalert2';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
@@ -16,20 +16,22 @@ const ContactPage = () => {
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Gửi thông tin phản hồi thành công!',
+                title: 'Gửi phản hồi thành công!',
                 showConfirmButton: true,
-                timer: 2000
-            })
+                timer: 1500
+            });
             form.resetFields();
-        })
-    }
+        });
+    };
 
     const validateNoSpaces = (_: any, value: any) => {
-        if (!value.trim()) {
+        if (value && value.trim()) {
+            return Promise.resolve();
+        } else {
             return Promise.reject('Vui lòng không nhập dấu cách!');
         }
-        return Promise.resolve();
     };
+
     return (
         <div>
             <div className="App">

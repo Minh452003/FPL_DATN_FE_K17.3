@@ -39,7 +39,7 @@ const VerifyOTPForgotPassword = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center h-screen">
-            <h3 className="pt-4 text-3xl text-center mb-4">Nhập mã OTP</h3>
+            <h3 className="pt-4 text-3xl text-center mb-4">Nhập mã OTP để đổi mật kh</h3>
             <div className="flex space-x-4">
                 <input
                     type="text"

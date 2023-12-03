@@ -72,6 +72,15 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
+        // ResendOTP
+        resendNewOTP: builder.mutation({
+            query: (user: IUser) => ({
+                url: '/sendnewOTP',
+                method: 'POST',
+                body: user
+            }),
+            invalidatesTags: ['User']
+        }),
         // Đăng nhập
         signIn: builder.mutation({
             query: (user: IUser) => ({
@@ -139,7 +148,8 @@ export const {
     useRemoveUserByAdminMutation,
     useUpdateUserByAdminMutation,
     useForgotPasswordMutation,
-    useChangePasswordMutation
+    useChangePasswordMutation,
+    useResendNewOTPMutation
 } = userApi;
 export const userReducer = userApi.reducer;
 export default userApi

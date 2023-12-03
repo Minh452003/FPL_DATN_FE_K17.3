@@ -45,13 +45,15 @@
     "swal": "^0.1.0",
     "sweetalert2": "^11.7.10",
     "swiper": "^10.3.0",
-    "tw-elements": "^1.0.0"
+    "tw-elements": "^1.0.0",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.16",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
+    "@types/validator": "^13.11.7",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "@vitejs/plugin-react": "^4.0.0",

@@ -64,7 +64,7 @@ const CustomProductslist = () => {
         try {
             const result = await Swal.fire({
                 title: 'Bạn chắc chứ?',
-                text: 'Khi xóa có thể vào thùng rác để khôi phục lại',
+                text: 'Xóa sản phẩm tự thiết kế, có thể vào thùng rác để khôi phục lại',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -79,7 +79,7 @@ const CustomProductslist = () => {
                     toast.success(`${data.message}`);
                 }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                toast.info('Đã hủy xóa Sản phẩm ');
+                toast.info('Đã hủy xóa sản phẩm tự thiết kế.');
             }
         } catch (error: any) {
             toast.error(error.message);
