@@ -28,7 +28,7 @@ const Bannerlist = () => {
     try {
       const result = await Swal.fire({
         title: 'Bạn chắc chứ?',
-        text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+        text: 'Banner sẽ bị xoá và không thể khôi phục!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -38,8 +38,6 @@ const Bannerlist = () => {
       });
       if (result.isConfirmed) {
         const data: any = await removeBanner(id).unwrap();
-        console.log(data);
-
         if (data) {
           toast.success(data.message);
         }
