@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useGetUserByIdQuery, useResendNewOTPMutation, useVerifyOTPMutation } from "@/api/authApi";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import Swal from "sweetalert2";
 import { SiMinutemailer } from 'react-icons/si';
 
@@ -40,40 +43,22 @@ const VerifyOTP = () => {
     }, [resendEnabled]);
 
     const startResendTimer = async () => {
-        if (!resendEnabled) {
-            setResendEnabled(true);
-            try {
-                await resendNewOTP({ userId, email: email });
-            } catch (error) {
-                console.error("Error Resend OTP:", error);
-            }
-            // Reset the timer after sending a new OTP
-            setTimer(30);
+      
+        try {
+          const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
+           const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
+           const response: any = await verifyOTPRequest({ userId, otp: combinedOTP }).unwrap();
+           if(response){
+            toast.success(response.message);
+            navigate("/signin")
+           }
+        } catch (error:any) {
+            toast.error(error.data.message);
         }
-    };
+       
+    }
 
-    const onSubmit: SubmitHandler<TypeInputs> = async (data) => {
-        const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
-        const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
-        const response: any = await verifyOTPRequest({ userId, otp: combinedOTP });
-        if (response.error) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: response.error.data.message,
-                timer: 1500
-            });
-        } else {
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Xác minh tài khoản thành công!",
-                showConfirmButton: true,
-                timer: 1500
-            });
-            navigate("/signin");
-        }
-    };
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center h-screen">
             <h3 className="pt-4 text-3xl text-center mb-4">Nhập mã OTP xác minh tài khoản</h3>

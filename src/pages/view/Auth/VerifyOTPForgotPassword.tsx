@@ -1,6 +1,7 @@
 import { useVerifyOTPResetPasswordMutation } from "@/api/authApi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 type TypeInputs = {
@@ -19,28 +20,21 @@ const VerifyOTPForgotPassword = () => {
     const [verifyOTPResetPassword] = useVerifyOTPResetPasswordMutation();
 
     const onSubmit: SubmitHandler<TypeInputs> = async data => {
-        const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
-        const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
-
-        const response: any = await verifyOTPResetPassword({ userId, otp : combinedOTP })
-        if (response.error) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: response.error.data.message,
-                showCancelButton: true,
-                timer: 2000
-            });
-        } else {
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Xác minh tài khoản thành công, vui lòng đặt lại mật khẩu!",
-                showConfirmButton: true,
-                timer: 2000
-            })
-            navigate(`/forgotpassword/resetPassword/${response.data.user._id}`)
-        }
+        
+        try {
+            const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
+             const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
+             const response: any = await verifyOTPResetPassword({ userId, otp : combinedOTP }).unwrap();
+             if(response){
+                console.log(response);
+                
+              toast.success(response.message);
+              navigate(`/forgotpassword/resetPassword/${response.user._id}`)
+             }
+          } catch (error:any) {
+              toast.error(error.data.message);
+          }
+   
     }
 
     return (

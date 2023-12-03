@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 
@@ -13,26 +14,22 @@ const ForgotPassword = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<IUser>();
 
   const onSubmit: SubmitHandler<IUser> = async data => {
-    const response: any = await forgotPassword(data)
-
-    if (response.error) {
-      Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: response.error.data.message,
-        showConfirmButton: true,
-        timer: 1000
-      });
-    } else {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Vui lòng xác minh tài khoản để lấy lại mật khẩu!',
-        showConfirmButton: true,
-        timer: 1000
-      });
-      navigate(`/forgotpassword/verifyOTPForgotPassword/${response?.data.otpResponse.data.userId}`);
+    try {
+      const response: any = await forgotPassword(data).unwrap();
+      console.log(response.otpResponse.message);
+      
+      if(response){
+        toast.success(response.otpResponse.message)
+        navigate(`/forgotpassword/verifyOTPForgotPassword/${response?.otpResponse.data.userId}`);
+      }
+    } catch (error:any) {
+      console.log(error);
+      
+      toast.error(error.data.message)
     }
+    
+
+    
   }
 
   const scrollToTop = () => {
