@@ -265,7 +265,7 @@ const ProductPage = () => {
                 <div className="">
                   <img
                     className="w-[400px]"
-                    src="https://bizweb.dktcdn.net/100/333/755/themes/688335/assets/empty_cart.png?1647314197820"
+                    src="https://etecvn.com/default/template/img/cart-empty.png"
                   />
 
                   <h1
