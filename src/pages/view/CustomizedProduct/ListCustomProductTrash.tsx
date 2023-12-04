@@ -92,9 +92,6 @@ const ListCustomizedProductTrash = () => {
       return product.product_price >= 10000000;
     }
   });
-  console.log(CustomizedProduct);
-  console.log(selectedPriceFilter);
-
   //  Phân trang........................
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -115,12 +112,68 @@ const ListCustomizedProductTrash = () => {
   if (!id) {
     return (
       <div>
-        <p>Bạn chưa đăng nhập</p>
+        <div
+          className="grid px-4 bg-white place-content-center  pb-3"
+          style={{ height: "500px" }}
+        >
+          <div className="">
+            <img
+              className="w-[400px]"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRllmpIxnyIgtYuaJhrUERHnONFy6GdgWfgbg&usqp=CAU"
+              alt=""
+            />
+
+            <h1
+              className="mt-6 font-bold tracking-tight text-gray-900 "
+              style={{ fontSize: "17px" }}
+            >
+              Bạn chưa đăng nhập, hãy tiến hành đăng nhập đã nhé !
+            </h1>
+
+            <Link
+              to="/signin"
+              className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+              style={{ background: "#ff7600", marginLeft: "90px" }}
+            >
+              Đăng nhập cùng Casa
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
   if (!customProduct) {
-    return <p>Không có sản phẩm </p>;
+    return (
+      <div>
+        <div
+          className="grid  px-4 bg-white place-content-center  pb-3"
+          style={{ height: "500px" }}
+        >
+          <div className="">
+            <img
+              className="w-[400px] ml-5"
+              src="https://etecvn.com/default/template/img/cart-empty.png"
+              alt=""
+            />
+
+            <h1
+              className="mt-6   font-bold tracking-tight text-gray-900 "
+              style={{ fontSize: "17px" }}
+            >
+              Bạn không có sản phẩm tự thiết kế nào, hãy thiết kế ngay nhé !
+            </h1>
+
+            <Link
+              to="/"
+              className="inline-block px-5 py-3 mt-6  text-sm font-medium text-white   focus:outline-none focus:ring no-underline "
+              style={{ background: "#ff7600", marginLeft: "115px" }}
+            >
+              Mua sắm cùng Casa
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
@@ -278,7 +331,33 @@ const ListCustomizedProductTrash = () => {
               </div>
             ))
           ) : (
-            <p>Không có sản phẩm nào.</p>
+            <div
+              className="grid px-4 bg-white place-content-center pb-3"
+              style={{ height: "500px", width: '87.5%' }}
+            >
+              <div className="">
+                <img
+                  className="w-[400px] ml-5"
+                  src="https://etecvn.com/default/template/img/cart-empty.png"
+                  alt=""
+                />
+
+                <h1
+                  className="mt-6 font-bold tracking-tight text-gray-900 "
+                  style={{ fontSize: "17px" }}
+                >
+                  Bạn không có sản phẩm tự thiết kế nào, hãy thiết kế ngay nhé !
+                </h1>
+
+                <Link
+                  to="/"
+                  className="inline-block px-5 py-3 mt-6  text-sm font-medium text-white   focus:outline-none focus:ring no-underline "
+                  style={{ background: "#ff7600", marginLeft: "115px" }}
+                >
+                  Mua sắm cùng Casa
+                </Link>
+              </div>
+            </div>
           )}
         </div>
       </div>

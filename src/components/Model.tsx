@@ -127,6 +127,8 @@ const Model = ({ products }: any) => {
                 "Bạn có thể vào giỏ hàng để xem.",
                 "success"
               );
+              setIsModalOpen(false);
+
             }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
