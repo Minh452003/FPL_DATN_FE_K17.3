@@ -2,100 +2,87 @@ import { useVerifyOTPResetPasswordMutation } from "@/api/authApi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
-
-type TypeInputs = {
-    OTP1: string,
-    OTP2: string,
-    OTP3: string,
-    OTP4: string,
-    OTP5: string,
-    OTP6: string,
-}
+import { Form, Input, Button } from 'antd';
 
 const VerifyOTPForgotPassword = () => {
     const navigate = useNavigate();
-    const { userId }  = useParams();
-    const { register, handleSubmit } = useForm<TypeInputs>();
+    const { userId } = useParams();
     const [verifyOTPResetPassword] = useVerifyOTPResetPasswordMutation();
+    const [form] = Form.useForm();
 
-    const onSubmit: SubmitHandler<TypeInputs> = async data => {
-        
+    const handleContainerPaste = async (e: any) => {
+        e.preventDefault();
         try {
-            const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = data;
-             const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
-             const response: any = await verifyOTPResetPassword({ userId, otp : combinedOTP }).unwrap();
-             if(response){
-                console.log(response);
-                
-              toast.success(response.message);
-              navigate(`/forgotpassword/resetPassword/${response.user._id}`)
-             }
-          } catch (error:any) {
-              toast.error(error.data.message);
-          }
-   
-    }
+            const clipboardText = await navigator.clipboard.readText();
+            const otpArray = clipboardText.slice(0, 6).split('');
+            otpArray.forEach((value, index) => {
+                form.setFieldsValue({ [`OTP${index + 1}`]: value });
+            });
+        } catch (error) {
+            console.error('Error reading from clipboard: ', error);
+        }
+    };
+
+    const onFinish = async (values: any) => {
+        try {
+            const { OTP1, OTP2, OTP3, OTP4, OTP5, OTP6 } = values;
+            const combinedOTP = `${OTP1}${OTP2}${OTP3}${OTP4}${OTP5}${OTP6}`;
+            const response: any = await verifyOTPResetPassword({ userId, otp: combinedOTP }).unwrap();
+            if (response) {
+                toast.success(response.message);
+                navigate(`/forgotpassword/resetPassword/${response.user._id}`)
+            }
+        } catch (error: any) {
+            toast.error(error.data.message);
+        }
+    };
+
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center h-screen">
-            <h3 className="pt-4 text-3xl text-center mb-4">Nhập mã OTP để đổi mật kh</h3>
-            <div className="flex space-x-4">
-                <input
-                    type="text"
-                    className="w-12 h-12 text-center text-3xl border rounded"
-                    maxLength={1}
-                    id="OTP1"
-                    {...register("OTP1")}
-
-                />
-                <input
-                    type="text"
-                    className="w-12 h-12 text-center text-3xl border rounded"
-                    maxLength={1}
-                    id="OTP2"
-                    {...register("OTP2")}
-                />
-                <input
-                    type="text"
-                    className="w-12 h-12 text-center text-3xl border rounded"
-                    maxLength={1}
-                    id="OTP3"
-                    {...register("OTP3")}
-                />
-                <input
-                    type="text"
-                    className="w-12 h-12 text-center text-3xl border rounded"
-                    maxLength={1}
-                    id="OTP4"
-                    {...register("OTP4")}
-                />
-                <input
-                    type="text"
-                    className="w-12 h-12 text-center text-3xl border rounded"
-                    maxLength={1}
-                    id="OTP5"
-                    {...register("OTP5")}
-                />
-                <input
-                    type="text"
-                    className="w-12 h-12 text-center text-3xl border rounded"
-                    maxLength={1}
-                    id="OTP6"
-                    {...register("OTP6")}
-                />
-            </div>
-            <p className="mt-4">Mã xác nhận đã được gửi đến gmail của bạn</p>
-            <p className="mt-2">Bạn chưa nhận được mã? <Link to={""}>Gửi lại</Link></p>
-            <div className="mt-4 text-center">
-                <button
-                    className="w-full px-4 py-2 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-600 focus:outline-none focus:shadow-outline"
-                    type="submit"
+        <div className='h-80'>
+            <Form onFinish={onFinish} form={form} layout="vertical">
+                <h3 className="pt-4 text-3xl text-center mb-4">Nhập mã OTP</h3>
+                <div
+                    style={{ display: 'flex', justifyContent: 'center' }}
+                    onPaste={handleContainerPaste}
                 >
-                    Xác nhận
-                </button>
-            </div>
-        </form>
+                    <div className="flex space-x-4">
+                        {[...Array(6).keys()].map((index) => (
+                            <Form.Item
+                                key={index}
+                                name={`OTP${index + 1}`}
+                                rules={[{ required: true, message: 'Nhập mã' }]}
+                            >
+                                <Input
+                                    type="text"
+                                    maxLength={1}
+                                    style={{ width: '40px', textAlign: 'center' }}
+                                    onChange={(e) => {
+                                        const { value } = e.target;
+                                        if (value && index < 5) {
+                                            form.setFieldsValue({ [`OTP${index + 2}`]: '' });
+                                            form.getFieldInstance(`OTP${index + 2}`)?.focus();
+                                        }
+                                    }}
+                                />
+                            </Form.Item>
+                        ))}
+                    </div>
+                </div>
+                <p className="mt-4 text-center">Mã xác nhận đã được gửi đến gmail của bạn</p>
+                <p className="mt-2 text-center">
+                    Bạn chưa nhận được mã? <Link to={""}>Gửi lại</Link>
+                </p>
+                <div className="mt-4 text-center">
+                    <Button
+                        htmlType="submit"
+                        className="w-80 font-bold text-white bg-orange-500 rounded-full hover:bg-orange-600 focus:outline-none focus:shadow-outline"
+                    >
+                        Xác nhận
+                    </Button>
+                </div>
+            </Form>
+        </div>
     );
 }
 

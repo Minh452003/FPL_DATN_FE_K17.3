@@ -2,6 +2,23 @@
     overflow-x: auto;
 }
 
+.ant-table-column-sorter-up.active svg {
+    fill: black;
+}
+
+.ant-table-column-sorter-down.active svg {
+    fill: black;
+}
+
+.ant-table-filter-trigger.active svg {
+    fill: black;
+}
+
+.ant-table-filter-dropdown-btns .ant-btn-sm {
+    background-color: darkblue;
+    color: white;
+}
+
 @media (max-width: 739px) {
     .table-container {
         overflow-x: auto !important;

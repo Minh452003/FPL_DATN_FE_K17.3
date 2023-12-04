@@ -3,32 +3,24 @@ import { IChangPassword, IUser } from "@/interfaces/auth";
 import { Button, Form, Input } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const ChangePassword = () => {
   const [updatePassword, resultUpdate] = useChangePasswordMutation();
   const navigate = useNavigate();
   const onFinish = async (values: IUser) => {
-    const response: any = await updatePassword(values);
-    if (response.error) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: response.error.data.message,
-        showConfirmButton: true,
-        timer: 1500,
-      });
-    } else {
-      updatePassword(values).then(() => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Cập nhật mật khẩu thành công!",
-          showConfirmButton: true,
-          timer: 1500,
-        });
-      });
-      navigate(`/`);
+    try {
+      const response: any = await updatePassword(values);
+      if (response.error) {
+        toast.error(response.error.data.message);
+      } else {
+        if (response) {
+          toast.success(response.data.message)
+          navigate("/")
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
   };
   return (
