@@ -2,7 +2,6 @@ import { BiLogoFacebookCircle } from 'react-icons/bi';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineGoogle, AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '@/api/authApi';
-import Swal from 'sweetalert2';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IUser } from '@/interfaces/auth';
 import { useState } from 'react';
@@ -13,7 +12,6 @@ import { toast } from 'react-toastify';
 const Login = () => {
     const [signIn, resultAdd] = useSignInMutation();
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>()
-
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
@@ -32,32 +30,24 @@ const Login = () => {
 
     const onSubmit: SubmitHandler<IUser> = async (data: IUser) => {
         try {
-        const response: any = await signIn(data).unwrap();
-
-        
-        if (response) {
-            toast.success(response.message)   
-            navigate("/")
-        }  
-        const accessToken: IUser = response.accessToken;
-        const expirationTime = new Date().getTime() + 5 * 60 * 60 * 1000; // 2 giờ
-        const dataToStore = { accessToken, expirationTime };
-        localStorage.setItem('accessToken', JSON.stringify(dataToStore));
-        
-        
-        } catch (error:any) {  
+            const response: any = await signIn(data).unwrap();
+            if (response) {
+                toast.success(response.message)
+                navigate("/")
+            }
+            const accessToken: IUser = response.accessToken;
+            const expirationTime = new Date().getTime() + 5 * 60 * 60 * 1000; // 2 giờ
+            const dataToStore = { accessToken, expirationTime };
+            localStorage.setItem('accessToken', JSON.stringify(dataToStore));
+        } catch (error: any) {
             console.log(error);
-            
-
-        if (error.data && error.data.message === 'Vui lòng xác minh tài khoản trước khi đăng nhập') {
-          
-            toast.error(error.data.message);
-            navigate(`/signup/verifyOTP/${error.data?.otpResponse?.data?.userId}`);
-        } else {
-            toast.error(error.data?.message );
+            if (error.data && error.data.message === 'Vui lòng xác minh tài khoản trước khi đăng nhập') {
+                toast.error(error.data.message);
+                navigate(`/signup/verifyOTP/${error.data?.otpResponse?.data?.userId}`);
+            } else {
+                toast.error(error.data?.message);
+            }
         }
-        }
-        
     }
     const scrollToTop = () => {
         window.scrollTo({

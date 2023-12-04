@@ -15,7 +15,7 @@ import { RcFile, UploadProps } from "antd/es/upload";
 import { useEffect, useState } from "react";
 import { FaUpload } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 type FieldType = {
   first_name?: string;
@@ -29,10 +29,8 @@ type FieldType = {
 const ProfileUpdate = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
-
-  const { data: user, isLoading, isError } : any = useGetUserByIdQuery(id);
+  const { data: user, isLoading, isError }: any = useGetUserByIdQuery(id);
   const { data: city } = useGetCityQuery();
-
   const [updateUser, resultUpdate] = useUpdateUserMutation();
   const [updateImage] = useUpdateImageMutation();
   const [deleteImage] = useDeleteImageMutation();
@@ -46,6 +44,7 @@ const ProfileUpdate = () => {
   const [addWard] = useGetWardMutation<any>();
   const [district, setDistrict] = useState([]);
   const [ward, setWard] = useState<any>([]);
+
   useEffect(() => {
     if (user) {
       setFields();
@@ -75,19 +74,28 @@ const ProfileUpdate = () => {
       avatar: user?.avatar ? user?.avatar : {},
     });
   };
-  const handleCityChange = async (option: any) => {
+  const handleCityChange = async (value: any, option: any) => {
+    if (false) {
+      console.log(value);
+    }
     const id = Number(option.key); // Lấy id từ option.key
     addDistrict({ province_id: id }).then((response: any) => {
       setDistrict(response.data.data);
     });
   };
-  const handleDistrictChange = async (option: any) => {
+  const handleDistrictChange = async (value: any, option: any) => {
+    if (false) {
+      console.log(value);
+    }
     const id = Number(option.key); // Lấy id từ option.key
     addWard({ district_id: id }).then((response: any) => {
       setWard(response.data.data);
     });
   };
-  const handleAvailableChange = async (option: any) => {
+  const handleAvailableChange = async (value: any, option: any) => {
+    if (false) {
+      console.log(value);
+    }
     const id = Number(option.key); // Lấy id từ option.key
     setwardCode(id);
     addAvailable({
@@ -98,25 +106,24 @@ const ProfileUpdate = () => {
       setAvailable(response.data.data);
     });
   };
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     try {
       const formattedAddress = `${values.address?.ward}, ${values.address?.district}, ${values.address?.street}`;
       values.address = formattedAddress;
       if (Object.keys(imageUrl).length > 0) {
         values.avatar = imageUrl;
       }
-      updateUser(values).then(() => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Cập nhật hồ sơ thành công!",
-          showConfirmButton: true,
-          timer: 1500,
-        });
-        navigate("/user/profile");
-      });
-    } catch (error) {
-      message.error("An error occurred while updating the profile");
+      const response: any = await updateUser(values);
+      if (response.error) {
+        toast.error(response.error.data.message);
+      } else {
+        if (response) {
+          toast.success(response.data.message)
+          navigate("/user/profile");
+        }
+      }
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
   };
 
@@ -124,6 +131,12 @@ const ProfileUpdate = () => {
   const props: UploadProps = {
     name: "category_image",
     fileList: fileList, // Sử dụng state fileList
+    customRequest: async ({ file }: any) => {
+      // eslint-disable-next-line no-constant-condition
+      if (false) {
+        console.log(file);
+      }
+    },
     onChange(info: any) {
       if (info.file) {
         const formData = new FormData();
@@ -190,10 +203,9 @@ const ProfileUpdate = () => {
             style={{ maxWidth: 1000 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-
             autoComplete="off"
           >
-            <Form.Item label="" name="_id" style={{ display: "none" }}>
+            <Form.Item name="_id" style={{ display: "none" }}>
               <Input />
             </Form.Item>
             <Form.Item<FieldType>
@@ -242,12 +254,12 @@ const ProfileUpdate = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please input your phone!",
+                  message: "Vui lòng nhập số điện thoại!",
                 },
                 {
                   pattern: /^[0-9]{10,11}$/, // Sử dụng biểu thức chính quy để kiểm tra số điện thoại
                   message:
-                    "Please enter a valid phone number with 10 to 11 digits!",
+                    "Vui lòng nhập số điện thoại hợp lệ có 10 đến 11 chữ số!",
                 },
               ]}
             >
@@ -354,14 +366,14 @@ const ProfileUpdate = () => {
                   // Kiểm tra loại tệp
                   const isImage = file.type.startsWith('image/');
                   if (!isLt2M) {
-                      message.error('Ảnh phải nhỏ hơn 2MB!');
+                    message.error('Ảnh phải nhỏ hơn 2MB!');
                   } else if (!isImage) {
-                      message.error('Chỉ được tải lên các tệp ảnh!');
+                    message.error('Chỉ được tải lên các tệp ảnh!');
                   } else {
-                      setFileList([file]);
+                    setFileList([file]);
                   }
                   return isLt2M && isImage;
-              }}
+                }}
               >
                 <Button icon={<FaUpload />}>Chọn ảnh</Button>
               </Upload>

@@ -17,7 +17,6 @@ import Order from "./pages/view/Orders/Order";
 import ForgotPassword from "./pages/view/Auth/ForgotPassword";
 import SignIn from "./pages/view/Auth/SignIn";
 import Profile from "./pages/view/User/Account/Profile";
-import AddressPage from "./pages/view/User/Account/address";
 import Purchase from "./pages/view/User/purchase";
 import Voucher from "./pages/view/User/voucher";
 import Userlist from "./pages/admin/user/Userlist";
@@ -111,9 +110,7 @@ export const router = createBrowserRouter([
                             { path: ':id/orderdetail', element: <OrderDetail /> }
                         ],
                     },
-                    { path: "address", element: <AddressPage /> },
                     { path: "changepasswordnew", element: <ChangePassword /> }
-
                 ]
             },
             { path: 'products', element: <ProductPage /> },

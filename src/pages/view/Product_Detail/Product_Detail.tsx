@@ -53,7 +53,7 @@ const Product_Detail = () => {
     const [quantity, setQuantity] = useState(1);
     const [activeColor, setActiveColor] = useState(null);
     const [activeSize, setActiveSize] = useState(null);
-    const [selectedIndex, setSelectedIndex] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(0);
     const [selectedRating, setSelectedRating] = useState('Tất cả');
     const [activeTab, setActiveTab] = useState('tab-1');
     const handleTabClick = (tab: any) => {
@@ -337,68 +337,39 @@ const Product_Detail = () => {
                 </div>
                 <div className="">
                     <div className="md:grid md:grid-cols-2 bg-white p-4 gap-2 justify-between px-3">
-                        <div className=" md:w-43% md:ml-53px md:h-106px">
+                        <div className="md:w-43% md:ml-53px md:h-106px">
                             <div className="mb-6">
-                                {listOneData?.image?.map((img: any, index: any) => {
-                                    if (!selectedIndex && index === 0) {
-                                        return (
-                                            <div
-                                                className="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-                                                id={`image-tab-${index}`}
-                                                role="tabpanel"
-                                                aria-labelledby={`tab-${index}`}
-                                                key={`image-content-${index}`}
-                                                data-te-tab-active
-                                            >
-                                                <img
-                                                    src={img?.url}
-                                                    className={`object-cover object-cover md:w-[250] md:h-[180]  `}
-                                                />
-                                            </div>
-                                        );
-                                    } else {
-                                        return (
-                                            <div
-                                                className="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-                                                id={`image-tab-${index}`}
-                                                role="tabpanel"
-                                                aria-labelledby={`tab-${index}`}
-                                                key={`image-content-${index}`}
-                                            >
-                                                <img
-                                                    src={img?.url}
-                                                    className={`object-cover object-cover md:w-[250] md:h-[180]  `}
-                                                />
-                                            </div>
-                                        );
-                                    }
-                                })}
+                                {listOneData?.image?.map((img: any, index: any) => (
+                                    <div
+                                        className={`data-[te-tab-active] ${selectedIndex === index ? 'block' : 'hidden'}`}
+                                        id={`image-tab-${index}`}
+                                        role="tabpanel"
+                                        aria-labelledby={`tab-${index}`}
+                                        key={`image-content-${index}`}
+                                    >
+                                        <img
+                                            src={img?.url}
+                                            className="object-cover object-cover md:w-[250] md:h-[180]"
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                            <ul
-                                className="mb-5 flex list-none flex-wrap pl-0 md:flex-row"
-                                id="pills-tab"
-                                role="tablist"
-                                data-te-nav-ref
-                            >
+                            <ul className="mb-5 flex list-none flex-wrap pl-0 md:flex-row" id="pills-tab" role="tablist" data-te-nav-ref>
                                 {listOneData?.image?.map((img: any, index: any) => (
                                     <li className="ima" role="presentation" key={index}>
-                                        <Link
-                                            to={`#image-tab-${index}`}
-                                            className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
-                                                ? 'bg-primary-100 text-primary-700'
-                                                : 'bg-neutral-700 text-white'
+                                        <button
+                                            onClick={() => setSelectedIndex(index)}
+                                            className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index ? 'bg-primary-100 text-primary-700' : 'bg-neutral-700 text-white'
                                                 } md:mr-4 `}
                                             id={`image-tab-${index}`}
                                             data-te-toggle="tab"
-                                            key={`tab-${index}`}
-                                            data-te-tab-active={index === 0 ? 'true' : 'false'}
+                                            data-te-tab-active={selectedIndex === index ? 'true' : 'false'}
                                             role="tab"
                                             aria-controls={`image-tab-${index}`}
-                                            aria-selected="false"
-                                            onClick={() => setSelectedIndex(true)}
+                                            aria-selected={selectedIndex === index ? 'true' : 'false'}
                                         >
                                             <img src={img?.url} className="pill-img" />
-                                        </Link>
+                                        </button>
                                     </li>
                                 ))}
                             </ul>

@@ -5,7 +5,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
 
 
 const ForgotPassword = () => {
@@ -17,19 +16,19 @@ const ForgotPassword = () => {
     try {
       const response: any = await forgotPassword(data).unwrap();
       console.log(response.otpResponse.message);
-      
-      if(response){
+
+      if (response) {
         toast.success(response.otpResponse.message)
         navigate(`/forgotpassword/verifyOTPForgotPassword/${response?.otpResponse.data.userId}`);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error);
-      
+
       toast.error(error.data.message)
     }
-    
 
-    
+
+
   }
 
   const scrollToTop = () => {
@@ -65,7 +64,7 @@ const ForgotPassword = () => {
                     type="email"
                     placeholder="Email"
                     required
-                    {...register('email', { required: true,  pattern: /^[^\s].*[^\s]$/ })}
+                    {...register('email', { required: true, pattern: /^[^\s].*[^\s]$/ })}
                   />
                   {errors.email && errors.email.type === 'pattern' && (
                     <p className="text-red-500 text-xs italic">Email không được chứa dấu cách.</p>
