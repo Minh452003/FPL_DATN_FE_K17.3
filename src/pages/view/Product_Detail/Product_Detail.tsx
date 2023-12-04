@@ -851,10 +851,6 @@ const Product_Detail = () => {
                                                         ? similarProducts.map(
                                                             (similar: any, index: any) => (
                                                                 <SwiperSlide
-                                                                    style={{
-                                                                        width: '285px',
-                                                                        marginLeft: '27px',
-                                                                    }}
                                                                     key={similar._id}
                                                                 >
                                                                     <div
@@ -864,9 +860,7 @@ const Product_Detail = () => {
                                                                         aria-describedby={`slick-slide${index + 10
                                                                             }`}
                                                                         style={{
-                                                                            width: '235px',
-                                                                            marginLeft: '-18px',
-                                                                            // marginRight: "37px",
+                                                                            width: '270px',
                                                                         }}
                                                                         data-slick-index={`${index}`}
                                                                         aria-hidden="false"

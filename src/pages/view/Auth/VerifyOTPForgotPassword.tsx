@@ -1,5 +1,4 @@
 import { useVerifyOTPResetPasswordMutation } from "@/api/authApi";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Form, Input, Button } from 'antd';
