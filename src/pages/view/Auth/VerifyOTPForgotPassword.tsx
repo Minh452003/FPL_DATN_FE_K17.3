@@ -1,5 +1,6 @@
 import { useGetUserByIdQuery, useResendNewForgotOTPMutation, useVerifyOTPResetPasswordMutation } from "@/api/authApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Form, Input, Button } from 'antd';
 import { useEffect, useState } from "react";

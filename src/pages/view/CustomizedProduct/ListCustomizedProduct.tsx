@@ -1,4 +1,4 @@
-import { useGetCustomizedproductsByIdQuery, useGetCustomizedproductsByUserIdQuery, useRemoveCustomProductMutation } from "@/api/CustomizedProductAPI";
+import { useGetCustomizedproductsByUserIdQuery, useRemoveCustomProductMutation } from "@/api/CustomizedProductAPI";
 import { getDecodedAccessToken } from "@/decoder";
 import Swal from 'sweetalert2';
 import { Pagination } from "@mui/material";
@@ -8,8 +8,7 @@ import { FaTrash } from 'react-icons/fa';
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import "./ListCustomizedProduct.css"
-import { useAddCartMutation } from "@/api/cartApi";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import ProductCustom from "@/components/ProductCustom";
 const ListCustomizedProduct = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -21,63 +20,6 @@ const ListCustomizedProduct = () => {
   const [removeCustomizedProduct] = useRemoveCustomProductMutation();
   const CustomizedProduct = customProduct?.products || [];
   const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
-  const { data }: any = useGetCustomizedproductsByIdQuery(id || "");
-  const customProducts = data?.product;
-  const idUser = decodedToken ? decodedToken.id : null;
-  const [addCart, resultAdd] = useAddCartMutation();
-
-  // ADD to cart custom-Product
-  const handleAddToCart = () => {
-    if (customProducts && idUser) {
-      const sizeId = customProducts.sizeId;
-      const colorId = customProducts.colorId;
-      const materialId = customProducts.materialId;
-      const cartData: any = {
-        productId: customProducts._id,
-        product_name: customProducts.product_name,
-        product_price: customProducts?.product_price,
-        image: customProducts.image[0]?.url,
-        stock_quantity: customProducts.stock_quantity,
-        colorId: colorId,
-        sizeId: sizeId,
-        materialId: materialId,
-      };
-      Swal.fire({
-        title: "Bạn chắc chứ?",
-        text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Vâng, tôi chắc chắn!",
-        cancelButtonText: "Huỷ",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Xóa sản phẩm
-          addCart({ data: cartData, userId: idUser }).then((response: any) => {
-            if (response.error) {
-              Swal.fire({
-                position: "center",
-                icon: "error",
-                title: response.error.data.message,
-                showConfirmButton: true,
-                timer: 1500,
-              });
-            } else {
-              Swal.fire(
-                "Sản phẩm đã được thêm vào giỏ hàng",
-                "Bạn có thể vào giỏ hàng để xem.",
-                "success"
-              );
-            }
-          });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          // Hiển thị thông báo hủy xóa sản phẩm
-          Swal.fire("Huỷ", "Sản phẩm không được thêm vào giỏ hàng", "error");
-        }
-      });
-    }
-  };
 
   const deleteProduct = (id: any) => {
     Swal.fire({
@@ -122,9 +64,6 @@ const ListCustomizedProduct = () => {
       return product.product_price >= 10000000;
     }
   });
-  console.log(CustomizedProduct);
-  console.log(selectedPriceFilter);
-
   //  Phân trang........................
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -146,7 +85,33 @@ const ListCustomizedProduct = () => {
   if (!id) {
     return (
       <div>
-        <p>Bạn chưa đăng nhập</p>
+        <div
+          className="grid px-4 bg-white place-content-center  pb-3"
+          style={{ height: "500px" }}
+        >
+          <div className="">
+            <img
+              className="w-[400px]"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRllmpIxnyIgtYuaJhrUERHnONFy6GdgWfgbg&usqp=CAU"
+              alt=""
+            />
+
+            <h1
+              className="mt-6 font-bold tracking-tight text-gray-900 "
+              style={{ fontSize: "17px" }}
+            >
+              Bạn chưa đăng nhập, hãy tiến hành đăng nhập đã nhé !
+            </h1>
+
+            <Link
+              to="/signin"
+              className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-  focus:outline-none focus:ring no-underline "
+              style={{ background: "#ff7600", marginLeft: "90px" }}
+            >
+              Đăng nhập cùng Casa
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
@@ -167,7 +132,7 @@ const ListCustomizedProduct = () => {
             <h1
               className="mt-6   font-bold tracking-tight text-gray-900 "
               style={{ fontSize: "17px" }}
-            > 
+            >
               Bạn không có sản phẩm tự thiết kế nào, hãy thiết kế ngay nhé !
             </h1>
 
@@ -223,7 +188,7 @@ const ListCustomizedProduct = () => {
         </div>
 
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
-          {displayedProducts.length > 0 ? (
+          {displayedProducts?.length > 0 ? (
             displayedProducts.map((product: any, index: any) => (
               <div
                 key={product?._id}
@@ -292,20 +257,7 @@ const ListCustomizedProduct = () => {
                             <Link to={`/customized-products/${product?._id}`}>Chi tiết</Link>
                           </button>
                           <input type="hidden" tabIndex={0} />
-                          {resultAdd.isLoading ? (
-                            <AiOutlineLoading3Quarters className="animate-spin m-auto" />
-                          ) : (
-                            <button
-                              className="button btn-cart"
-                              title="Mua hàng"
-                              type="button"
-                              tabIndex={0}
-                              onClick={handleAddToCart}
-                            >
-                              <Link to={`customized/${product?._id}/add`}>Mua hàng</Link>
-                            </button>
-                          )}
-
+                          <ProductCustom products={product} />
                           <button
                             className="button btn-cart"
                             title="Xóa sản phẩm"
