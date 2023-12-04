@@ -13,7 +13,7 @@ const VerifyOTP = () => {
     const { data } = useGetUserByIdQuery(userId || "");
     const email = data?.email
     const [resendEnabled, setResendEnabled] = useState(false);
-    const [timer, setTimer] = useState(30); // 2 phút = 120 giây
+    const [timer, setTimer] = useState(180); // 3 phút = 180 giây
     const [form] = Form.useForm();
 
     // Set thời gian
@@ -38,7 +38,7 @@ const VerifyOTP = () => {
                 console.error("Error Resend OTP:", error);
             }
             // Reset the timer after sending a new OTP
-            setTimer(30);
+            setTimer(180);
         }
     };
 
@@ -71,7 +71,7 @@ const VerifyOTP = () => {
     return (
         <div className='h-80'>
             <Form onFinish={onFinish} form={form} layout="vertical" style={{ paddingTop: '30px' }}>
-                <h3 className="pt-4 text-3xl text-center mb-4">Nhập mã OTP</h3>
+                <h3 className="pt-4 text-3xl text-center mb-4">Nhập mã OTP xác minh tài khoản</h3>
                 <div
                     style={{ display: 'flex', justifyContent: 'center' }}
                     onPaste={handleContainerPaste}
@@ -82,11 +82,12 @@ const VerifyOTP = () => {
                                 key={index}
                                 name={`OTP${index + 1}`}
                                 rules={[{ required: true, message: 'Nhập mã' }]}
+                                style={{ textAlign: 'center' }}
                             >
                                 <Input
                                     type="text"
                                     maxLength={1}
-                                    style={{ width: '40px', textAlign: 'center' }}
+                                    style={{ width: '40px', height: '40px', textAlign: 'center' }}
                                     onChange={(e) => {
                                         const { value } = e.target;
                                         if (value && index < 5) {
