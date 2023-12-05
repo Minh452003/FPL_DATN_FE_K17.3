@@ -252,6 +252,10 @@ const DashBoardPage = () => {
         };
     });
     const formatCurrency = (number: number) => {
+        if (typeof number !== 'number') {
+            // Xử lý khi number không phải là số
+            return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+        }
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
     const columns = [

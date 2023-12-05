@@ -55,33 +55,37 @@ const CouponsList = () => {
         },
     );
     const formatCurrency = (number: number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        if (typeof number !== 'number') {
+            // Xử lý khi number không phải là số
+            return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+        }
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
     const deleteCoupon = async (id: number | string) => {
         try {
             const result = await Swal.fire({
-              title: 'Bạn chắc chứ?',
-              text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Vâng, tôi chắc chắn!',
-              cancelButtonText: 'Huỷ',
+                title: 'Bạn chắc chứ?',
+                text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
             });
-        
+
             if (result.isConfirmed) {
-              const data: any = await removeCoupon(id).unwrap();
-              if (data) {
-                toast.success(`${data.message}`);
-              }
+                const data: any = await removeCoupon(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-              toast.info('Hủy xoá phiếu giảm giá');
+                toast.info('Hủy xoá phiếu giảm giá');
             }
-          } catch (error:any) {
+        } catch (error: any) {
             toast.error(error.message);
-          }
-       
+        }
+
     };
     const columns = [
         {

@@ -34,7 +34,7 @@ const CustomizedProductAdd = () => {
   const [activeColor, setActiveColor] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
   const [activeMaterial, setActiveMaterial] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const listOneData = data?.product;
   const navigate = useNavigate();
 
@@ -46,7 +46,8 @@ const CustomizedProductAdd = () => {
   const categoryLish = catgory?.category.docs;
   const categoryLishOne = categoryLish?.find(
     (categoryLish: any) => categoryLish?._id === listOneData?.categoryId
-  )?.category_name;
+  )?.price_increase_percent;
+  const priceCustom = Math.floor(listOneData?.product_price / (1 * categoryLishOne))
   useEffect(() => {
     initTE({ Tab });
   }, [selectedIndex]);
@@ -179,34 +180,20 @@ const CustomizedProductAdd = () => {
             <div className="px-3">
               <div className="mb-6s">
 
-                {listOneData?.image?.map((img: any, index: any) => {
-                  if (!selectedIndex && index === 0) {
-                    return (
-                      <div
-                        className="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-                        id={`image-tab-${index}`}
-                        role="tabpanel"
-                        aria-labelledby={`tab-${index}`}
-                        key={`image-content-${index}`}
-                        data-te-tab-active
-                      >
-                        <img src={img?.url} className={`object-cover img1`} />
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div
-                        className="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-                        id={`image-tab-${index}`}
-                        role="tabpanel"
-                        aria-labelledby={`tab-${index}`}
-                        key={`image-content-${index}`}
-                      >
-                        <img src={img?.url} className={`object-cover img1`} />
-                      </div>
-                    );
-                  }
-                })}
+                {listOneData?.image?.map((img: any, index: any) => (
+                  <div
+                    className={`data-[te-tab-active] ${selectedIndex === index ? 'block' : 'hidden'}`}
+                    id={`image-tab-${index}`}
+                    role="tabpanel"
+                    aria-labelledby={`tab-${index}`}
+                    key={`image-content-${index}`}
+                  >
+                    <img
+                      src={img?.url}
+                      className="object-cover object-cover md:w-[250] md:h-[180]"
+                    />
+                  </div>
+                ))}
               </div>
               <ul
                 className="mb-5s flex list-none flex-col flex-wrap pl-0 md:flex-row"
@@ -215,24 +202,20 @@ const CustomizedProductAdd = () => {
                 data-te-nav-ref
               >
                 {listOneData?.image?.map((img: any, index: any) => (
-                  <li role="presentation">
-                    <Link
-                      to={`#image-tab-${index}`}
-                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index
-                        ? "bg-primary-100 text-primary-700"
-                        : "bg-neutral-700 text-white"
+                  <li className="ima" role="presentation" key={index}>
+                    <button
+                      onClick={() => setSelectedIndex(index)}
+                      className={`test my-2 block rounded bg-neutral-100 text-xs font-medium uppercase leading-tight text-neutral-500 ${selectedIndex === index ? 'bg-primary-100 text-primary-700' : 'bg-neutral-700 text-white'
                         } md:mr-4 `}
                       id={`image-tab-${index}`}
                       data-te-toggle="tab"
-                      key={`tab-${index}`}
-                      data-te-tab-active={index === 0 ? "true" : "false"}
+                      data-te-tab-active={selectedIndex === index ? 'true' : 'false'}
                       role="tab"
                       aria-controls={`image-tab-${index}`}
-                      aria-selected="false"
-                      onClick={() => setSelectedIndex(true)}
+                      aria-selected={selectedIndex === index ? 'true' : 'false'}
                     >
-                      <img src={img?.url} className="pill-img1" />
-                    </Link>
+                      <img src={img?.url} className="pill-img" />
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -241,8 +224,7 @@ const CustomizedProductAdd = () => {
               <div className=" flex items-center justify-between ">
                 <h3 className="font-bold iklm">{listOneData?.product_name}</h3>
               </div>
-              <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price)}₫</p>
-
+              <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price + priceCustom)}₫</p>
               <div
                 className="text-l font-bold py-2"
                 style={{ height: showAllColors ? "auto" : "" }}

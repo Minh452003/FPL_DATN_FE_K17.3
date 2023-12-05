@@ -4,6 +4,7 @@ import {
 import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
 import { Button, Form, InputNumber, Select, Spin } from "antd";
+import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 const AddChildProduct = () => {
@@ -14,6 +15,7 @@ const AddChildProduct = () => {
   const colors = isLoadingColors ? [] : Colors?.color;
   const sizes = isLoadingSizes ? [] : Sizes?.size;
   const navigate = useNavigate();
+  const formRef: any = useRef(null);
 
   const onFinish = async (values: any) => {
     try {
@@ -22,6 +24,7 @@ const AddChildProduct = () => {
       if (data) {
         toast.success(data.message);
       }
+      formRef.current.resetFields();
       navigate(`/admin/products/childProduct/${productId}`);
     } catch (error: any) {
       toast.error(error.data.message)
@@ -49,9 +52,9 @@ const AddChildProduct = () => {
     <div className="container-fluid mb-7">
       <div className="row">
         <div className="card-body">
-          <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">
+          <p className="card-title fw-semibold mb-4 pl-5 text-xl">
             Thêm Sản Phẩm Con
-          </h5>
+          </p>
           {resultAdd.isLoading && isLoadingColors && isLoadingSizes ? (
             <Spin className="pt-5" tip="Loading" size="large">
               <div></div>
@@ -64,6 +67,7 @@ const AddChildProduct = () => {
               style={{ maxWidth: 1000, height: 1000 }}
               initialValues={{ remember: true }}
               onFinish={onFinish}
+              ref={formRef}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
@@ -117,7 +121,7 @@ const AddChildProduct = () => {
 
               <Form.Item
                 name="sizeId"
-                label="Danh sách sizes"
+                label="Danh sách kích cỡ"
                 labelCol={{ span: 24 }} // Đặt chiều rộng của label
                 wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                 rules={[
