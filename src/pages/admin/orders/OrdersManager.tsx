@@ -49,25 +49,29 @@ const OrdersManager = () => {
     }, [isLoadingFetching, currentStatus, orders]);
 
     const formatCurrency = (number: number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        if (typeof number !== 'number') {
+            // Xử lý khi number không phải là số
+            return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+        }
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     const data = isLoadingFetching
         ? []
         : filteredOrders.map((order: any, index: number) => {
-              const createdAtTimestamp = Date.parse(order.createdAt);
-              return {
-                  key: order._id,
-                  STT: index + 1,
-                  address: order.address,
-                  phone: order.phone,
-                  total: order.total,
-                  createAt: format(new Date(order.createdAt), 'HH:mm a dd/MM/yyyy'),
-                  createdAtTimestamp: createdAtTimestamp,
-                  image: <img width={50} src={order.products[0]?.image} alt="" />,
-                  userId: `${order.userId?.first_name} ${order.userId?.last_name}`,
-              };
-          });
+            const createdAtTimestamp = Date.parse(order.createdAt);
+            return {
+                key: order._id,
+                STT: index + 1,
+                address: order.address,
+                phone: order.phone,
+                total: order.total,
+                createAt: format(new Date(order.createdAt), 'HH:mm a dd/MM/yyyy'),
+                createdAtTimestamp: createdAtTimestamp,
+                image: <img width={50} src={order.products[0]?.image} alt="" />,
+                userId: `${order.userId?.first_name} ${order.userId?.last_name}`,
+            };
+        });
     // Xử lý filter..............
     const filteredData = data?.filter((item: any) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();
@@ -163,9 +167,8 @@ const OrdersManager = () => {
                     <li>
                         <a
                             href=""
-                            className={`no-underline text-gray-700 ${
-                                currentStatus === 'all' ? 'font-medium active2' : ''
-                            }`}
+                            className={`no-underline text-gray-700 ${currentStatus === 'all' ? 'font-medium active2' : ''
+                                }`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 handleFilterOrders('all');
@@ -179,9 +182,8 @@ const OrdersManager = () => {
                         <li key={statusItem._id}>
                             <a
                                 href=""
-                                className={`no-underline text-gray-700 ${
-                                    currentStatus === statusItem._id ? 'font-medium active2' : ''
-                                }`}
+                                className={`no-underline text-gray-700 ${currentStatus === statusItem._id ? 'font-medium active2' : ''
+                                    }`}
                                 onClick={(e) => {
                                     e.preventDefault();
                                     handleFilterOrders(statusItem._id);

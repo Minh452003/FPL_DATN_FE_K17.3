@@ -6,9 +6,8 @@ import {
 import { ICategory } from '@/interfaces/category';
 import { Table, Button } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { BiFoodMenu } from 'react-icons/bi';
 import { FaTrashCan, FaWindowRestore } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 
@@ -17,6 +16,7 @@ const CategoryTrash = () => {
     const categories = data?.category;
     const [removeCategory, { isLoading: isRemoveLoading }] = useRemoveForceCategoryMutation();
     const [restoreCategory, { isLoading: isRestoreLoading }] = useRestoreCategoryMutation();
+    const navigate = useNavigate();
 
     const deleteCategory = async (id: string) => {
         try {
@@ -55,7 +55,7 @@ const CategoryTrash = () => {
                 confirmButtonText: 'Vâng, tôi chắc chắn!',
                 cancelButtonText: 'Huỷ',
             });
-      
+
             if (result.isConfirmed) {
                 const data: any = await restoreCategory(id).unwrap();
                 if (data) {
@@ -67,7 +67,7 @@ const CategoryTrash = () => {
         } catch (error: any) {
             toast.error(error.message);
         }
-        
+
     };
 
     const data1 = categories?.map((category: ICategory) => {
@@ -119,11 +119,9 @@ const CategoryTrash = () => {
     ];
     return (
         <div className="container">
-            <h3 className="font-semibold">Danh sách danh mục</h3>
-            <Button className="text-blue-500">
-                <Link to="/admin/categories">
-                    <BiFoodMenu style={{ fontSize: '24', display: 'block' }} />
-                </Link>
+            <h3 className="font-semibold">Danh sách danh mục đã bị xoá</h3>
+            <Button className="h-10 bg-blue-500 text-xs text-white mt-2 mb-2" onClick={() => navigate("/admin/categories")} htmlType="submit">
+                Danh sách danh mục
             </Button>
             <Table dataSource={data1} columns={columns} />
         </div>

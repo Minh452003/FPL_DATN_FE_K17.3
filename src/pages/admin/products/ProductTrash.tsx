@@ -1,13 +1,12 @@
 import { useGetProductsDeleteQuery, useRemoveForceProductMutation, useRestoreProductMutation } from '@/api/productApi';
 import { Table, Button } from 'antd';
 import { FaTrashCan, FaWindowRestore } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetBrandQuery } from '@/api/brandApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
 import Swal from 'sweetalert2';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { BiFoodMenu } from 'react-icons/bi';
 import { IProduct } from '@/interfaces/product';
 import { ICategory } from '@/interfaces/category';
 import { IMaterials } from '@/interfaces/materials';
@@ -21,6 +20,7 @@ const ProductTrash = () => {
     const { data: materials } = useGetMaterialQuery<any>();
     const [removeProduct, { isLoading: isRemoveLoading }] = useRemoveForceProductMutation();
     const [restoreProduct, { isLoading: isRestoreLoading }] = useRestoreProductMutation()
+    const navigate = useNavigate();
 
     const products = data?.product;
     const category = categories?.category?.docs;
@@ -40,8 +40,12 @@ const ProductTrash = () => {
         }
     });
     const formatCurrency = (number: number) => {
+        if (typeof number !== 'number') {
+            // Xử lý khi number không phải là số
+            return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+        }
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
+    };
 
     const deleteProduct = async (id: number) => {
         try {
@@ -57,7 +61,7 @@ const ProductTrash = () => {
             });
 
             if (result.isConfirmed) {
-                const data: any = await  removeProduct(id).unwrap();
+                const data: any = await removeProduct(id).unwrap();
                 if (data) {
                     toast.success(`${data.message}`);
                 }
@@ -67,7 +71,7 @@ const ProductTrash = () => {
         } catch (error: any) {
             toast.error(error.message);
         }
-        
+
     }
     const restoreProduct1 = async (id: string) => {
         try {
@@ -81,7 +85,7 @@ const ProductTrash = () => {
                 confirmButtonText: 'Vâng, tôi chắc chắn!',
                 cancelButtonText: 'Huỷ',
             });
-      
+
             if (result.isConfirmed) {
                 const data: any = await restoreProduct(id).unwrap();
                 if (data) {
@@ -182,7 +186,9 @@ const ProductTrash = () => {
         <div className="container">
             <h3 className="font-semibold">Danh sách sản phẩm đã xóa </h3>
             <div className="overflow-x-auto drop-shadow-xl rounded-lg">
-                <Button className='m-2  float-left'><Link to={'/admin/products'}><BiFoodMenu style={{ fontSize: '20', display: 'block' }} /></Link></Button>
+                <Button className="h-10 bg-blue-500 text-xs text-white mt-2 mb-2" onClick={() => navigate("/admin/products")} htmlType="submit">
+                    Danh sách sản phẩm
+                </Button>
                 <Table dataSource={data1} columns={columns} pagination={{ defaultPageSize: 6 }} rowKey="key" />
             </div>
         </div>

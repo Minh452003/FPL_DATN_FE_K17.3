@@ -25,32 +25,6 @@ const CustomProductsTrash = () => {
 
   const deleteCustomproduct = async (id: any) => {
     // Swal.fire({
-      try {
-        const result = await Swal.fire({
-          title: 'Bạn chắc chứ?',
-          text: 'Khi xóa Không thể khôi phục lại ',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Vâng, tôi chắc chắn!',
-          cancelButtonText: 'Huỷ',
-        });
-    
-        if (result.isConfirmed) {
-          const data: any = await removeCustomProduct(id).unwrap();
-          if (data) {
-            toast.success(`${data.message}`);
-          }
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          toast.info('Đã hủy xóa Sản phẩm ');
-        }
-      } catch (error:any) {
-        toast.error(error.message);
-      }
-  }
-
-  const restoreCustomProducts = async(id: any) => {
     try {
       const result = await Swal.fire({
         title: 'Bạn chắc chứ?',
@@ -62,7 +36,33 @@ const CustomProductsTrash = () => {
         confirmButtonText: 'Vâng, tôi chắc chắn!',
         cancelButtonText: 'Huỷ',
       });
-  
+
+      if (result.isConfirmed) {
+        const data: any = await removeCustomProduct(id).unwrap();
+        if (data) {
+          toast.success(`${data.message}`);
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        toast.info('Đã hủy xóa Sản phẩm ');
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }
+
+  const restoreCustomProducts = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'Khi xóa Không thể khôi phục lại ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
+
       if (result.isConfirmed) {
         const data: any = await restoreCustomProduct(id).unwrap();
         if (data) {
@@ -71,10 +71,10 @@ const CustomProductsTrash = () => {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         toast.info('Đã hủy khôi phục Sản phẩm ');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.message);
     }
-    
+
   }
 
   const color = colors?.color
@@ -100,8 +100,12 @@ const CustomProductsTrash = () => {
     }
   });
   const formatCurrency = (number: number) => {
+    if (typeof number !== 'number') {
+      // Xử lý khi number không phải là số
+      return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+    }
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+  };
 
   const columns = [
     {

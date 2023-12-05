@@ -57,7 +57,11 @@ const CustomProductslist = () => {
         };
     });
     const formatCurrency = (number: number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        if (typeof number !== 'number') {
+            // Xử lý khi number không phải là số
+            return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+        }
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     const deleteProduct = async (id: any) => {

@@ -5,7 +5,7 @@ import { Pagination } from "@mui/material";
 import { Button, Skeleton } from "antd";
 import { Link } from "react-router-dom";
 import { FaTrash } from 'react-icons/fa';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import "./ListCustomizedProduct.css"
 import ProductCustom from "@/components/ProductCustom";
@@ -16,11 +16,14 @@ const ListCustomizedProduct = () => {
     data: customProduct,
     error,
     isLoading: isLoadingFetching,
+    refetch
   } = useGetCustomizedproductsByUserIdQuery<any>(id);
-  const [removeCustomizedProduct] = useRemoveCustomProductMutation();
+  const [removeCustomizedProduct, resultRemove] = useRemoveCustomProductMutation();
   const CustomizedProduct = customProduct?.products || [];
   const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
-
+  useEffect(() => {
+    refetch()
+  }, [resultRemove.isLoading])
   const deleteProduct = (id: any) => {
     Swal.fire({
       title: 'Bạn chắc chứ?',
@@ -36,6 +39,7 @@ const ListCustomizedProduct = () => {
         // Assuming your delete mutation is asynchronous and successful
         removeCustomizedProduct(id).unwrap().then(() => {
           // Remove the deleted product from the cache and refetch data
+          refetch()
           Swal.fire(
             'Xoá thành công!',
             'Sản phẩm của bạn đã được xoá.',
@@ -188,7 +192,7 @@ const ListCustomizedProduct = () => {
         </div>
 
         <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
-          {displayedProducts?.length > 0 ? (
+          {!error && displayedProducts?.length > 0 ? (
             displayedProducts.map((product: any, index: any) => (
               <div
                 key={product?._id}
@@ -259,13 +263,13 @@ const ListCustomizedProduct = () => {
                           <input type="hidden" tabIndex={0} />
                           <ProductCustom products={product} />
                           <button
-                            className="button btn-cart"
+                            className="button btn-cart centered-icon"
                             title="Xóa sản phẩm"
                             type="button"
                             tabIndex={0}
                             onClick={() => deleteProduct(product._id)}
                           >
-                            <Link to={"/customizedProducts/trash"}>Xóa sản phẩm</Link>
+                            <FaTrash className="delete-icon" />
                           </button>
                         </form>
                       </div>
@@ -275,7 +279,35 @@ const ListCustomizedProduct = () => {
               </div>
             ))
           ) : (
-            <p>Không có sản phẩm nào.</p>
+            <div>
+              <div
+                className="grid  px-4 bg-white place-content-center  pb-3"
+                style={{ height: "500px", width: '87.5%' }}
+              >
+                <div className="">
+                  <img
+                    className="w-[400px] ml-5"
+                    src="https://etecvn.com/default/template/img/cart-empty.png"
+                    alt=""
+                  />
+
+                  <h1
+                    className="mt-6   font-bold tracking-tight text-gray-900 "
+                    style={{ fontSize: "17px" }}
+                  >
+                    Bạn không có sản phẩm tự thiết kế nào, hãy thiết kế ngay nhé !
+                  </h1>
+
+                  <Link
+                    to="/"
+                    className="inline-block px-5 py-3 mt-6  text-sm font-medium text-white   focus:outline-none focus:ring no-underline "
+                    style={{ background: "#ff7600", marginLeft: "115px" }}
+                  >
+                    Mua sắm cùng Casa
+                  </Link>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
