@@ -23,7 +23,6 @@ const Signup = () => {
         window.location.href = "http://localhost:8088/api/auth/facebook";
     }
 
-
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     }
