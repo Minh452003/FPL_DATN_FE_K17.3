@@ -1,8 +1,8 @@
 import { Button, Form, Input } from 'antd';
 import './contactPage.css';
 import { useAddContactMutation } from '@/api/contactApi';
-import Swal from 'sweetalert2';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 const ContactPage = () => {
     const [addContact, resultAdd] = useAddContactMutation();
     const [form] = Form.useForm();
@@ -11,17 +11,15 @@ const ContactPage = () => {
         wrapperCol: { span: 22 },
     };
 
-    const onFinish = (values: any) => {
-        addContact(values).then(() => {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Gửi phản hồi thành công!',
-                showConfirmButton: true,
-                timer: 1500
-            });
-            form.resetFields();
-        });
+    const onFinish = async (values: any) => {
+        try {
+            const data:any = await addContact(values).unwrap();
+            if(data){
+                toast.success(data.message);
+            }
+        } catch (error:any) {
+            toast.error(error.data.message);
+        }
     };
 
     const validateNoSpaces = (_: any, value: any) => {

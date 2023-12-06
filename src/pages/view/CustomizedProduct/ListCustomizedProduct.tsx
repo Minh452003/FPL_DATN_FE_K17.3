@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import "./ListCustomizedProduct.css"
 import ProductCustom from "@/components/ProductCustom";
+import { toast } from "react-toastify";
 const ListCustomizedProduct = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -24,36 +25,31 @@ const ListCustomizedProduct = () => {
   useEffect(() => {
     refetch()
   }, [resultRemove.isLoading])
-  const deleteProduct = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: 'Khi có thể vào thùng rác để khôi phục lại!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ',
-    }).then((result) => {
+
+  const deleteProduct = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'Khi có thể vào thùng rác để khôi phục lại!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
       if (result.isConfirmed) {
-        // Assuming your delete mutation is asynchronous and successful
-        removeCustomizedProduct(id).unwrap().then(() => {
-          // Remove the deleted product from the cache and refetch data
-          refetch()
-          Swal.fire(
-            'Xoá thành công!',
-            'Sản phẩm của bạn đã được xoá.',
-            'success'
-          );
-        });
+          const data = await removeCustomizedProduct(id).unwrap();
+          if (data) {
+              toast.success(`${data.message}`);
+          }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Thất bại',
-          'Sản phẩm xoá thất bại.',
-          'error'
-        );
+          toast.info('Hủy xoá Sản phẩm');
       }
-    });
+  } catch (error: any) {
+      toast.error(error.data.message);
+  }
+  
   };
   const filteredProducts = CustomizedProduct.filter((product: any) => {
     if (selectedPriceFilter === "all") {

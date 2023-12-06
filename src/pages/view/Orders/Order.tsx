@@ -68,27 +68,30 @@ const Order = () => {
         }
     }, [isLoadingFetching, currentStatus, orders, commentAdded]);
     // -------------------------------------------
-    const deleteOrder = (id: any) => {
-        Swal.fire({
-            title: 'Bạn chắc chứ?',
-            text: 'Nếu cọc rồi thì sẽ mất tiền cọc!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, tôi chắc chắn!',
-            cancelButtonText: 'Huỷ',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Xóa sản phẩm
-                removeOrder(id).then(() => {
-                    Swal.fire('Huỷ thành công!', 'Đơn hàng của bạn đã được huỷ.', 'success');
-                });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy xóa sản phẩm
-                Swal.fire('Không huỷ', 'Đơn hàng vẫn tồn tại.', 'error');
-            }
-        });
+    const deleteOrder = async (id: any) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Bạn chắc chứ?',
+                text: 'Banner sẽ bị xoá và không thể khôi phục!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
+              });
+              if (result.isConfirmed) {
+                const data: any = await removeOrder(id).unwrap();
+                if (data) {
+                  toast.success(data.message);
+                }
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                toast.info('Hủy xoá Đơn hàng ');
+              }
+        } catch (error:any) {
+            toast.error(error.data.message);
+        }
+       
     };
     // -------------------------------------------
     const updateOrder = async (id: any) => {

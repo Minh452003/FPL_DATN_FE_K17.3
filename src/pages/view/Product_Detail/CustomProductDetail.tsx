@@ -15,6 +15,7 @@ import { useAddCartMutation } from '@/api/cartApi';
 import Swal from 'sweetalert2';
 import { Button } from 'antd';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 
 
 const CustomProductDetail = () => {
@@ -58,56 +59,50 @@ const CustomProductDetail = () => {
 
   const [addCart, resultAdd] = useAddCartMutation();
 
-  // ADD to cart custom-Product
-  const handleAddToCart = () => {
-    if (customProducts && idUser) {
-      const sizeId = customProducts.sizeId;
-      const colorId = customProducts.colorId;
-      const materialId = customProducts.materialId;
-      const cartData: any = {
-        productId: customProducts._id,
-        product_name: customProducts.product_name,
-        product_price: customProducts?.product_price,
-        image: customProducts.image[0]?.url,
-        stock_quantity: customProducts.stock_quantity,
-        colorId: colorId,
-        sizeId: sizeId,
-        materialId: materialId,
-      };
-      Swal.fire({
-        title: "Bạn chắc chứ?",
-        text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Vâng, tôi chắc chắn!",
-        cancelButtonText: "Huỷ",
-      }).then((result) => {
+  
+  const handleAddToCart = async () => {
+    try {
+      if (customProducts && idUser) {
+            const sizeId = customProducts.sizeId;
+            const colorId = customProducts.colorId;
+            const materialId = customProducts.materialId;
+            const cartData: any = {
+              productId: customProducts._id,
+              product_name: customProducts.product_name,
+              product_price: customProducts?.product_price,
+              image: customProducts.image[0]?.url,
+              stock_quantity: customProducts.stock_quantity,
+              colorId: colorId,
+              sizeId: sizeId,
+              materialId: materialId,
+         };
+        const result = await Swal.fire({
+          title: "Bạn chắc chứ?",
+          text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Vâng, tôi chắc chắn!",
+          cancelButtonText: "Huỷ",
+        });
+  
         if (result.isConfirmed) {
-          // Xóa sản phẩm
-          addCart({ data: cartData, userId: idUser }).then((response: any) => {
-            if (response.error) {
-              Swal.fire({
-                position: "center",
-                icon: "error",
-                title: response.error.data.message,
-                showConfirmButton: true,
-                timer: 1500,
-              });
-            } else {
-              Swal.fire(
-                "Sản phẩm đã được thêm vào giỏ hàng",
-                "Bạn có thể vào giỏ hàng để xem.",
-                "success"
-              );
-            }
-          });
+ 
+          const response :any= await addCart({ data: cartData, userId: idUser } as any);
+           console.log(response);
+           
+          if (response) {
+             toast.success(response.data.message);
+            
+          }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          // Hiển thị thông báo hủy xóa sản phẩm
-          Swal.fire("Huỷ", "Sản phẩm không được thêm vào giỏ hàng", "error");
+    
+          toast.info("Huỷ Sản phẩm không được thêm vào giỏ hàng ");
         }
-      });
+      }
+    } catch (error:any) {
+        toast.error(error.data.message);
     }
   };
 
