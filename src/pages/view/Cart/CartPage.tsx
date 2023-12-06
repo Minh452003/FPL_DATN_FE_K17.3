@@ -15,6 +15,7 @@ import { useGetMaterialQuery } from "@/api/materialApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { useState } from "react";
 import { useGetChildProductPriceQuery } from "@/api/chilProductApi";
+import { toast } from "react-toastify";
 const CartPage = () => {
   const decodedToken: any = getDecodedAccessToken();
   const id = decodedToken ? decodedToken.id : null;
@@ -69,37 +70,36 @@ const CartPage = () => {
 
   };
 
-  const deleteCart = ({ productId, sizeId, colorId, materialId }: any) => {
-    Swal.fire({
-      title: "Bạn chắc chứ?",
-      text: "Sản phẩm sẽ được xoá khỏi giỏ hàng!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Vâng, tôi chắc chắn!",
-      cancelButtonText: "Huỷ",
-    }).then((result) => {
+  const deleteCart = async ({ productId, sizeId, colorId, materialId }: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'Banner sẽ bị xoá và không thể khôi phục!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
       if (result.isConfirmed) {
-        // Xóa sản phẩm
-        removeProductInCart({
-          userId: id,
-          productId: productId,
-          colorId: colorId,
-          sizeId: sizeId,
-          materialId: materialId,
-        }).then(() => {
-          Swal.fire(
-            "Xoá thành công!",
-            "Sản phẩm đã được xoá khỏi giỏ hàng.",
-            "success"
-          );
-        });
+        const data: any = await   removeProductInCart({
+                userId: id,
+                productId: productId,
+                colorId: colorId,
+                sizeId: sizeId,
+                materialId: materialId,
+              }).unwrap();
+        if (data) {
+          toast.success(data.message);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Hiển thị thông báo hủy xóa sản phẩm
-        Swal.fire("Đã hủy", "Không xoá sản phẩm khỏi giỏ hàng :)", "error");
+        toast.info('Hủy Sản phẩm  xoá khỏi giỏ hàng');
       }
-    });
+    } catch (error:any) {
+      toast.error(error.data.message);
+    }
+   
   };
   const formatCurrency = (number: number | undefined) => {
     if (number !== undefined) {

@@ -16,6 +16,7 @@ import { useAddCustomProductMutation } from "@/api/CustomizedProductAPI";
 import Swal from "sweetalert2";
 import { IoIosAddCircle } from "react-icons/io";
 import { BiSolidMinusCircle } from "react-icons/bi";
+import { toast } from "react-toastify";
 
 const CustomizedProductAdd = () => {
   const { idProduct }: any = useParams();
@@ -59,60 +60,54 @@ const CustomizedProductAdd = () => {
   const handleToggleMaterials = () => {
     setShowAllMaterials(!showAllMaterials);
   };
-
   const [addCustom, resultAdd]: any = useAddCustomProductMutation();
-  const handleAddToCart = () => {
-    if (data && id) {
-      const data: any = {
-        userId: id,
-        productId: idProduct,
-        categoryId: listOneData.categoryId,
-        product_name: listOneData.product_name,
-        product_price: Number(listOneData.product_price),
-        image: listOneData.image,
-        stock_quantity: quantity,
-        colorId: activeColor,
-        sizeId: activeSize,
-        materialId: activeMaterial,
-      };
-
-      Swal.fire({
-        title: "Bạn chắc chứ?",
-        text: "",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Vâng,tôi chắc chắn!",
-        cancelButtonText: "Huỷ",
-      }).then((result) => {
+  
+  const handleAddToCart = async () => {
+    try {
+      if (data && id) {
+            const data: any = {
+              userId: id,
+              productId: idProduct,
+              categoryId: listOneData.categoryId,
+              product_name: listOneData.product_name,
+              product_price: Number(listOneData.product_price),
+              image: listOneData.image,
+              stock_quantity: quantity,
+              colorId: activeColor,
+              sizeId: activeSize,
+              materialId: activeMaterial,
+            };
+        const result = await Swal.fire({
+          title: "Bạn chắc chứ?",
+          text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Vâng, tôi chắc chắn!",
+          cancelButtonText: "Huỷ",
+        });
+  
         if (result.isConfirmed) {
-          // Xóa sản phẩm
-          addCustom(data).then((response: any) => {
-            if (response.error) {
-              Swal.fire({
-                position: "center",
-                icon: "error",
-                title: response.error.data.message,
-                showConfirmButton: true,
-                timer: 1500,
-              });
-            } else {
-              Swal.fire(
-                "Thành công!",
-                "Thêm sản phẩm tự thiết kế thành công.",
-                "success"
-              );
-              navigate("/customizedProducts");
-            }
-          });
+          // Thực hiện thêm vào giỏ hàng
+          const response :any= await addCustom(data).unwrap();
+           console.log(response);
+           
+          if (response) {
+             toast.success(response.message);
+             navigate("/customizedProducts");
+          }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          // Hiển thị thông báo hủy xóa sản phẩm
-          Swal.fire("Huỷ", "Thêm sản phẩm tự thiết kế thất bại", "error");
+          // Hiển thị thông báo hủy thêm vào giỏ hàng
+          toast.info("Đã hủy thêm sản phẩm tự thiết kế ");
         }
-      });
+      }
+    } catch (error:any) {
+        toast.error(error.data.message);
     }
   };
+
+ 
 
   const formatCurrency = (number: { toString: () => string }) => {
     if (number) {

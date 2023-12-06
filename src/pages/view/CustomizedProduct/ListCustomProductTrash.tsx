@@ -3,9 +3,10 @@ import { getDecodedAccessToken } from "@/decoder";
 import Swal from 'sweetalert2';
 import { Pagination } from "@mui/material";
 import { Skeleton } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa6";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const ListCustomizedProductTrash = () => {
   const decodedToken: any = getDecodedAccessToken();
@@ -19,64 +20,57 @@ const ListCustomizedProductTrash = () => {
   const [restoreCustomizedProduct] = useRestoreCustomProductMutation();
   const CustomizedProduct = customProduct?.product || [];
   const [selectedPriceFilter, setSelectedPriceFilter] = useState("all");
-
-  const restoreProduct = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: 'Bạn có chắc muốn khôi phục lại!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ',
-    }).then((result) => {
+   const navigate = useNavigate()
+  const restoreProduct =async (id: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'Bạn có chắc muốn khôi phục lại!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
       if (result.isConfirmed) {
-        restoreCustomizedProduct(id).unwrap().then(() => {
-          Swal.fire(
-            'khôi phục thành công!',
-            'Sản phẩm của bạn đã được khôi phục.',
-            'success'
-          );
-        });
+          const data = await restoreCustomizedProduct(id).unwrap();
+          if (data) {
+              toast.success(`${data.message}`);
+              navigate("/customizedProducts")
+          }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Thất bại',
-          'Sản phẩm khôi phục thất bại.',
-          'error'
-        );
+          toast.info('Đã hủy khôi phục Sản phẩm');
       }
-    });
+  } catch (error: any) {
+      toast.error(error.data.message);
+  }
+   
   };
-  const deleteProduct = (id: any) => {
-    Swal.fire({
-      title: 'Bạn chắc chứ?',
-      text: 'Khi xóa bạn không thể khôi phục lại!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Vâng, tôi chắc chắn!',
-      cancelButtonText: 'Huỷ',
-    }).then((result) => {
+  const deleteProduct = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Bạn chắc chứ?',
+        text: 'Khi xóa bạn không thể khôi phục lại!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, tôi chắc chắn!',
+        cancelButtonText: 'Huỷ',
+      });
       if (result.isConfirmed) {
-        // Assuming your delete mutation is asynchronous and successful
-        removeCustomizedProduct(id).unwrap().then(() => {
-          // Remove the deleted product from the cache and refetch data
-          Swal.fire(
-            'Xoá thành công!',
-            'Sản phẩm của bạn đã được xoá.',
-            'success'
-          );
-        });
+          const data = await removeCustomizedProduct(id).unwrap();
+          if (data) {
+              toast.success(`${data.message}`);
+              navigate("/customizedProducts")
+          }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Thất bại',
-          'Sản phẩm xoá thất bại.',
-          'error'
-        );
+          toast.info('Đã hủy xóa Sản phẩm');
       }
-    });
+  } catch (error: any) {
+      toast.error(error.data.message);
+  }
   };
 
   const filteredProducts = CustomizedProduct.filter((product: any) => {
@@ -312,7 +306,7 @@ const ListCustomizedProductTrash = () => {
                             tabIndex={0}
                             onClick={() => deleteProduct(product._id)}
                           >
-                            <Link to={""}>xóa sản phẩm</Link>
+                           xóa sản phẩm
                           </button>
                           <button
                             className="button btn-cart"
@@ -321,7 +315,7 @@ const ListCustomizedProductTrash = () => {
                             tabIndex={0}
                             onClick={() => restoreProduct(product._id)}
                           >
-                            <Link to={"/customizedProducts"}>khôi phục</Link>
+                            khôi phục
                           </button>
                         </form>
                       </div>
