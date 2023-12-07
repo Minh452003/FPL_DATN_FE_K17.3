@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
 import { toast } from 'react-toastify';
+import { ICategory } from '@/interfaces/category';
 const CustomProductslist = () => {
     const { data: listcustomProducts, isloading: isLoadingCustomProducts } =
         useGetCustomProductsQuery<any>();
@@ -61,7 +62,7 @@ const CustomProductslist = () => {
             // Xử lý khi number không phải là số
             return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
         }
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
 
     const deleteProduct = async (id: any) => {
@@ -88,7 +89,6 @@ const CustomProductslist = () => {
         } catch (error: any) {
             toast.error(error.message);
         }
-
     };
 
     const columns = [
@@ -133,7 +133,7 @@ const CustomProductslist = () => {
             render: (text: any) => <p className="text-red-700">{formatCurrency(text)}₫</p>,
             sorter: (a: any, b: any) => a.price - b.price, // Sắp xếp theo giá
             sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
-            ellipsis: true
+            ellipsis: true,
         },
         {
             title: 'Đã bán',
@@ -143,7 +143,7 @@ const CustomProductslist = () => {
             render: (text: any) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.price - b.price, // Sắp xếp theo giá
             sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
-            ellipsis: true
+            ellipsis: true,
         },
         {
             title: 'Danh Mục',
@@ -154,6 +154,14 @@ const CustomProductslist = () => {
                 const catename = categorie?.find((cate: any) => cate._id === record);
                 return catename?.category_name;
             },
+            filters:
+                categorie?.map((cate: ICategory) => ({
+                    text: cate.category_name,
+                    value: cate._id,
+                })) || [],
+            filterSearch: true,
+            onFilter: (value: string | number | boolean, record: any) =>
+                record.category.startsWith(value),
         },
         {
             title: 'Chất liệu',

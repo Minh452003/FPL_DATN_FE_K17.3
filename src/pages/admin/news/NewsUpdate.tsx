@@ -47,11 +47,11 @@ const NewsUpdate = () => {
     const onFinish = async (values: INew) => {
         try {
             if (Object.keys(imageUrl).length > 0) {
-                values.category_image = imageUrl;
+                values.new_image = imageUrl;
             }
             const data: any = await updateNew(values).unwrap();
             if (data) {
-                toast.success(`${data.data.message}`);
+                toast.success(`${data.message}`);
             }
             navigate("/admin/news");
         } catch (error: any) {
@@ -171,18 +171,8 @@ const NewsUpdate = () => {
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                             style={{ marginLeft: '20px' }}
                             rules={[{ required: true, message: 'Mô tả không được để trống!' },
-                            { min: 10, message: "Nhập ít nhất 10 ký tự" },
-                            {
-                                validator: (_, value) => {
-                                    if (!value) {
-                                        return Promise.resolve();
-                                    }
-                                    if (/ {2,}/.test(value)) {
-                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                    }
-                                    return Promise.resolve();
-                                },
-                            },
+                            { min: 10, message: "Nhập ít nhất 10 ký tự" },{whitespace:true,message:"không được nhập các khoảng trắng"}
+                            
                             ]}
                             hasFeedback
                         >
