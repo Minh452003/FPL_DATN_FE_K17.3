@@ -45,7 +45,7 @@ const UserUpdate = () => {
 
   const onFinish = async (values: any) => {
     try {
-      const data = await updateUser(values).unwrap();
+      const data = await updateUser({_id:values._id,role:values.role}).unwrap();
       if (data) {
         toast.success(data.message);
       }

@@ -129,7 +129,7 @@ const Userlist = () => {
             <h3 className="font-semibold">Danh sách khách hàng </h3>
             <Input
                 prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-                placeholder="Tìm kiếm ..."
+                placeholder="Tìm kiếm theo email ..."
                 onChange={(e) => setSearchText(e.target.value)}
                 style={{ marginBottom: '16px', borderRadius: '5px', width: '400px' }}
             />

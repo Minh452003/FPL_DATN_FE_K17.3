@@ -140,7 +140,7 @@ const Sizeslist: React.FC<ISize> = () => {
         },
     ];
     const filteredData = dataSource?.filter((item: any) => {
-        const lowerCaseSearchText = searchText.toLowerCase();
+        const lowerCaseSearchText = searchText.toLowerCase().trim();
         const numericSearchText = parseFloat(lowerCaseSearchText);
         return (
             item.size_name.toLowerCase().includes(lowerCaseSearchText) ||
@@ -172,7 +172,7 @@ const Sizeslist: React.FC<ISize> = () => {
                 <Input
                     className="ml-4"
                     prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-                    placeholder="Tìm kiếm ..."
+                    placeholder="Tìm kiếm kích cỡ..."
                     onChange={(e) => setSearchText(e.target.value)}
                     style={{ marginBottom: '16px', borderRadius: '5px', width: '400px' }}
                 />

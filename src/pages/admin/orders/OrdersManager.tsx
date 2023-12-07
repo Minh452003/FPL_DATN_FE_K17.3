@@ -197,7 +197,7 @@ const OrdersManager = () => {
             </div>
             <Input
                 prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-                placeholder="Tìm kiếm ..."
+                placeholder="Tìm kiếm theo tên và địa chỉ ..."
                 onChange={(e) => setSearchText(e.target.value)}
                 style={{ marginBottom: '16px', borderRadius: '5px', width: '400px' }}
             />

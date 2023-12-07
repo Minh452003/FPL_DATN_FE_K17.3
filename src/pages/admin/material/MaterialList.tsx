@@ -113,7 +113,7 @@ const MaterialList = () => {
                 <Input
                     className="ml-4"
                     prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}
-                    placeholder="Tìm kiếm ..."
+                    placeholder="Tìm kiếm tên vật liệu ..."
                     onChange={(e) => setSearchText(e.target.value)}
                     style={{ marginBottom: '16px', borderRadius: '5px', width: '400px' }}
                 />
