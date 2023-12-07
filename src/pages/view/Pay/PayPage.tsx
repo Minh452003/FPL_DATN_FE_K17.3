@@ -28,6 +28,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import './PayPage.css';
 import { format } from 'date-fns';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { toast } from 'react-toastify';
 type TypeInputs = {
     couponId?: string;
 };
@@ -191,7 +192,7 @@ const PayPage = () => {
         return ''; // Trả về một giá trị mặc định hoặc xử lý sao cho phù hợp với ứng dụng của bạn
     };
 
-    const onFinish = ({ address, phone, notes }: any) => {
+    const onFinish = async ({ address, phone, notes }: any) => {
         const cartDataWithoutId = { ...carts?.data };
         delete cartDataWithoutId._id;
         delete cartDataWithoutId.createdAt;
@@ -221,13 +222,16 @@ const PayPage = () => {
                                         shipping: ship.total,
                                         type: type,
                                     });
+                                    if (response.error) {
+                                        toast.error(response.error.data.message);
+                                    }
                                     if (response) {
                                         window.location.href = response.data.payUrl;
                                     }
                                 })();
                             } else if (result.dismiss === Swal.DismissReason.cancel) {
                                 // Hiển thị thông báo hủy xóa sản phẩm
-                                Swal.fire('Huỷ', 'Đơn hàng chưa được cọc :)', 'error');
+                                toast.info("Đơn hàng chưa được cọc :)");
                             }
                         });
                     } catch (error) {
@@ -255,58 +259,61 @@ const PayPage = () => {
                                         shipping: ship.total,
                                         type: type,
                                     });
+                                    if (response.error) {
+                                        toast.error(response.error.data.message);
+                                    }
                                     if (response) {
                                         window.location.href = response.data.approval_url;
                                     }
                                 })();
                             } else if (result.dismiss === Swal.DismissReason.cancel) {
                                 // Hiển thị thông báo hủy xóa sản phẩm
-                                Swal.fire('Huỷ', 'Đơn hàng chưa được cọc :)', 'error');
+                                toast.info("Đơn hàng chưa được cọc :)");
                             }
                         });
-                    } catch (error) {
-                        console.log(error);
+                    } catch (error: any) {
+                        toast.error(error?.data?.message);
                     }
                 }
             } else {
                 try {
                     cartDataWithoutId.total = carts.data.total + ship.total;
-                    Swal.fire({
-                        title: 'Bạn chắc chứ?',
-                        text: 'Đơn hàng này sẽ được đặt!',
-                        icon: 'warning',
+                    const result = await Swal.fire({
+                        title: "Bạn chắc chứ?",
+                        text: "Đơn hàng này sẽ được đặt!",
+                        icon: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Vâng, tôi chắc chắn!',
-                        cancelButtonText: 'Huỷ',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            (async () => {
-                                await addOrder({
-                                    ...cartDataWithoutId,
-                                    address,
-                                    phone,
-                                    notes,
-                                    shipping: ship.total,
-                                })
-                                    .then(() => {
-                                        Swal.fire(
-                                            'Thành công!',
-                                            'Đơn hàng của bạn đã được đặt.',
-                                            'success',
-                                        );
-                                    })
-                                    .then(() => removeAllCart(id));
-                                navigate('/user/orders');
-                            })();
-                        } else if (result.dismiss === Swal.DismissReason.cancel) {
-                            // Hiển thị thông báo hủy xóa sản phẩm
-                            Swal.fire('Huỷ', 'Đơn hàng chưa được mua :)', 'error');
-                        }
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Vâng, tôi chắc chắn!",
+                        cancelButtonText: "Huỷ",
                     });
-                } catch (error) {
-                    console.log(error);
+
+                    if (result.isConfirmed) {
+                        // Thực hiện thêm vào giỏ hàng
+                        const response: any = await addOrder({
+                            ...cartDataWithoutId,
+                            address,
+                            phone,
+                            notes,
+                            shipping: ship.total,
+                        }).unwrap();
+                        if (response.error) {
+                            toast.error(response.error.data.message);
+                        }
+                        if (response) {
+                            toast.success(response.message);
+                            removeAllCart(id)
+                            setIsModalOpen(false);
+                            navigate('/user/orders');
+                        }
+                        setIsModalOpen(false);
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Hiển thị thông báo hủy thêm vào giỏ hàng
+                        toast.info("Đơn hàng chưa được mua :)");
+                    }
+                } catch (error: any) {
+                    toast.error(error?.data?.message);
                 }
             }
         } else if (pay && pay == 'momo') {
@@ -330,17 +337,20 @@ const PayPage = () => {
                                 notes,
                                 shipping: ship.total,
                             });
+                            if (response.error) {
+                                toast.error(response.error.data.message);
+                            }
                             if (response) {
                                 window.location.href = response.data.payUrl;
                             }
                         })();
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         // Hiển thị thông báo hủy xóa sản phẩm
-                        Swal.fire('Huỷ', 'Đơn hàng chưa được mua :)', 'error');
+                        toast.info("Đơn hàng chưa được mua :)");
                     }
                 });
-            } catch (error) {
-                console.log(error);
+            } catch (error: any) {
+                toast.error(error?.data?.message);
             }
         } else if (pay && pay == 'paypal') {
             try {
@@ -363,17 +373,20 @@ const PayPage = () => {
                                 notes,
                                 shipping: ship.total,
                             });
+                            if (response.error) {
+                                toast.error(response.error.data.message);
+                            }
                             if (response) {
                                 window.location.href = response.data.approval_url;
                             }
                         })();
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         // Hiển thị thông báo hủy xóa sản phẩm
-                        Swal.fire('Huỷ', 'Đơn hàng chưa được mua :)', 'error');
+                        toast.info("Đơn hàng chưa được mua :)");
                     }
                 });
-            } catch (error) {
-                console.log(error);
+            } catch (error: any) {
+                toast.error(error?.data?.message);
             }
         }
     };

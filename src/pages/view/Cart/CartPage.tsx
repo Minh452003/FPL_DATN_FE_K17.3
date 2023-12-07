@@ -83,23 +83,23 @@ const CartPage = () => {
         cancelButtonText: 'Huỷ',
       });
       if (result.isConfirmed) {
-        const data: any = await   removeProductInCart({
-                userId: id,
-                productId: productId,
-                colorId: colorId,
-                sizeId: sizeId,
-                materialId: materialId,
-              }).unwrap();
+        const data: any = await removeProductInCart({
+          userId: id,
+          productId: productId,
+          colorId: colorId,
+          sizeId: sizeId,
+          materialId: materialId,
+        }).unwrap();
         if (data) {
           toast.success(data.message);
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         toast.info('Hủy Sản phẩm  xoá khỏi giỏ hàng');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data.message);
     }
-   
+
   };
   const formatCurrency = (number: number | undefined) => {
     if (number !== undefined) {
@@ -109,7 +109,7 @@ const CartPage = () => {
     }
   };
 
-  const columns = [
+  const columns: any = [
     {
       title: "Ảnh sản phẩm",
       dataIndex: "image",
@@ -152,6 +152,13 @@ const CartPage = () => {
       },
     },
     {
+      title: "Giá sản phẩm",
+      dataIndex: "product_price",
+      key: "product_price",
+      className: "custom-total",
+      render: (price: any) => <p>{formatCurrency(price)}₫</p>,
+    },
+    {
       title: "Số lượng",
       dataIndex: "stock_quantity",
       key: "stock_quantity",
@@ -183,11 +190,11 @@ const CartPage = () => {
       ),
     },
     {
-      title: "Giá Sản phẩm",
+      title: "Tạm tính",
       dataIndex: "product_price",
-      key: "product_price",
+      key: "total",
       className: "custom-total",
-      render: (price: any) => <p>{formatCurrency(price)}₫</p>,
+      render: (price: any, quantity: any) => <p>{formatCurrency(price * quantity.stock_quantity)}₫</p>,
     },
     {
       title: "Chức năng",

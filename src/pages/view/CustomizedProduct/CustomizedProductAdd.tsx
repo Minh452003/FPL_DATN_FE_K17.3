@@ -1,7 +1,7 @@
 import { FaArrowRight } from "react-icons/fa";
 import "./CustomizedProductAdd.css";
 import "./Responsive_CustomizedProductAdd.css";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "@/api/productApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
 import { Button, Skeleton, Tooltip } from "antd";
@@ -61,22 +61,22 @@ const CustomizedProductAdd = () => {
     setShowAllMaterials(!showAllMaterials);
   };
   const [addCustom, resultAdd]: any = useAddCustomProductMutation();
-  
+
   const handleAddToCart = async () => {
     try {
       if (data && id) {
-            const data: any = {
-              userId: id,
-              productId: idProduct,
-              categoryId: listOneData.categoryId,
-              product_name: listOneData.product_name,
-              product_price: Number(listOneData.product_price),
-              image: listOneData.image,
-              stock_quantity: quantity,
-              colorId: activeColor,
-              sizeId: activeSize,
-              materialId: activeMaterial,
-            };
+        const data: any = {
+          userId: id,
+          productId: idProduct,
+          categoryId: listOneData.categoryId,
+          product_name: listOneData.product_name,
+          product_price: Number(listOneData.product_price),
+          image: listOneData.image,
+          stock_quantity: quantity,
+          colorId: activeColor,
+          sizeId: activeSize,
+          materialId: activeMaterial,
+        };
         const result = await Swal.fire({
           title: "Bạn chắc chứ?",
           text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
@@ -87,27 +87,27 @@ const CustomizedProductAdd = () => {
           confirmButtonText: "Vâng, tôi chắc chắn!",
           cancelButtonText: "Huỷ",
         });
-  
+
         if (result.isConfirmed) {
           // Thực hiện thêm vào giỏ hàng
-          const response :any= await addCustom(data).unwrap();
-           console.log(response);
-           
+          const response: any = await addCustom(data).unwrap();
+          console.log(response);
+
           if (response) {
-             toast.success(response.message);
-             navigate("/customizedProducts");
+            toast.success(response.message);
+            navigate("/customizedProducts");
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           // Hiển thị thông báo hủy thêm vào giỏ hàng
           toast.info("Đã hủy thêm sản phẩm tự thiết kế ");
         }
       }
-    } catch (error:any) {
-        toast.error(error.data.message);
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
   };
 
- 
+
 
   const formatCurrency = (number: { toString: () => string }) => {
     if (number) {

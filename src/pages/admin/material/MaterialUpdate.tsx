@@ -39,7 +39,7 @@ const MaterialUpdate = () => {
       }
       navigate("/admin/materials");
     } catch (error: any) {
-      toast.success(error.data.message);
+      toast.error(error.data.message);
     }
   };
   const onFinishFailed = (errorInfo: any) => {

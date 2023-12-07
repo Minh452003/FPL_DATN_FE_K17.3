@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '@/api/authApi';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { IUser } from '@/interfaces/auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 
@@ -21,6 +21,14 @@ const Login = () => {
     const handleFacebookLogin = () => {
         window.location.href = "http://localhost:8088/api/auth/facebook";
     }
+    useEffect(() => {
+        const currentURL = window.location.href;
+        const url = new URL(currentURL);
+        const type = url.searchParams.get("signin");
+        if (type && type == 'failure') {
+            toast.error("Gmail đã được đăng ký ở dạng thường!");
+        }
+    }, []);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -40,7 +48,6 @@ const Login = () => {
             const dataToStore = { accessToken, expirationTime };
             localStorage.setItem('accessToken', JSON.stringify(dataToStore));
         } catch (error: any) {
-            console.log(error);
             if (error.data && error.data.message === 'Vui lòng xác minh tài khoản trước khi đăng nhập') {
                 toast.error(error.data.message);
                 navigate(`/signup/verifyOTP/${error.data?.otpResponse?.data?.userId}`);

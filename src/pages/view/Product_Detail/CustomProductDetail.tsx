@@ -19,7 +19,7 @@ import { toast } from 'react-toastify';
 
 
 const CustomProductDetail = () => {
-  const { id } = useParams();
+  const { id }: any = useParams();
   const decodedToken: any = getDecodedAccessToken();
   const idUser = decodedToken ? decodedToken.id : null;
   const { data }: any = useGetCustomizedproductsByIdQuery(id || "");
@@ -55,27 +55,24 @@ const CustomProductDetail = () => {
       return "0"; // Giá trị mặc định hoặc xử lý khác
     }
   }
+  const [addCart, resultAdd] = useAddCartMutation<any>();
 
-
-  const [addCart, resultAdd] = useAddCartMutation();
-
-  
   const handleAddToCart = async () => {
     try {
       if (customProducts && idUser) {
-            const sizeId = customProducts.sizeId;
-            const colorId = customProducts.colorId;
-            const materialId = customProducts.materialId;
-            const cartData: any = {
-              productId: customProducts._id,
-              product_name: customProducts.product_name,
-              product_price: customProducts?.product_price,
-              image: customProducts.image[0]?.url,
-              stock_quantity: customProducts.stock_quantity,
-              colorId: colorId,
-              sizeId: sizeId,
-              materialId: materialId,
-         };
+        const sizeId = customProducts.sizeId;
+        const colorId = customProducts.colorId;
+        const materialId = customProducts.materialId;
+        const cartData: any = {
+          productId: customProducts._id,
+          product_name: customProducts.product_name,
+          product_price: customProducts?.product_price,
+          image: customProducts.image[0]?.url,
+          stock_quantity: customProducts.stock_quantity,
+          colorId: colorId,
+          sizeId: sizeId,
+          materialId: materialId,
+        };
         const result = await Swal.fire({
           title: "Bạn chắc chứ?",
           text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
@@ -86,23 +83,21 @@ const CustomProductDetail = () => {
           confirmButtonText: "Vâng, tôi chắc chắn!",
           cancelButtonText: "Huỷ",
         });
-  
+
         if (result.isConfirmed) {
- 
-          const response :any= await addCart({ data: cartData, userId: idUser } as any);
-           console.log(response);
-           
+          const response: any = await addCart({ data: cartData, userId: idUser } as any);
+          if (response.error) {
+            toast.error(response.error.data.message);
+          }
           if (response) {
-             toast.success(response.data.message);
-            
+            toast.success(response.data.message);
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-    
           toast.info("Huỷ Sản phẩm không được thêm vào giỏ hàng ");
         }
       }
-    } catch (error:any) {
-        toast.error(error.data.message);
+    } catch (error: any) {
+      toast.error(error?.data?.message);
     }
   };
 
@@ -176,6 +171,7 @@ const CustomProductDetail = () => {
                     aria-live="assertive"
                     aria-valuenow={1}
                     value={customProducts?.stock_quantity}
+                    readOnly
                   />
                 </div>
                 <div className=" pl-0 flex md:mt-0 items-center mt-2 ml-2">

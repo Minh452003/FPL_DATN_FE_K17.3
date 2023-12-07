@@ -123,7 +123,7 @@ const OrdersManager = () => {
         },
         {
             title: 'Tổng đơn hàng',
-            width: 200,
+            width: 150,
             dataIndex: 'total',
             key: 'total',
             render: (total: any) => <span className="text-red-700">{formatCurrency(total)}₫</span>,

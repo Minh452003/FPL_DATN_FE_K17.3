@@ -86,7 +86,7 @@ const Product_Detail = () => {
         })
         .slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     const roundedAverageRating: number = Number(averageRating.toFixed(1));
-    const deleteComment = async ({ id, userId }: any): any => {
+    const deleteComment = async ({ id, userId }: any) => {
         try {
             const result = await Swal.fire({
                 title: 'Bạn chắc chứ?',
@@ -105,12 +105,12 @@ const Product_Detail = () => {
                     toast.success(data.message);
                 }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                toast.info('Đã hủy xóa Bình luận');
+                toast.info('Đã hủy xóa bình luận');
             }
         } catch (error: any) {
             toast.error(error.message);
         }
-        
+
     };
 
     //
@@ -187,47 +187,47 @@ const Product_Detail = () => {
     }, [childProducts]);
     // --------------------------
     const userId: string = id;
-    const handleAddToCart =async () => {
+    const handleAddToCart = async () => {
         try {
             if (data && userId) {
-                    const data: any = {
-                        productId: listOneData._id,
-                        product_name: listOneData.product_name,
-                        product_price: childProduct?.product?.product_price,
-                        image: listOneData.image[0]?.url,
-                        stock_quantity: quantity,
-                        colorId: activeColor,
-                        sizeId: activeSize,
-                        materialId: listOneData.materialId,
-                    };
-        
-              const result = await Swal.fire({
-                title: "Bạn chắc chứ?",
-                text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Vâng, tôi chắc chắn!",
-                cancelButtonText: "Huỷ",
-              });
-        
-              if (result.isConfirmed) {
-                // Thực hiện thêm vào giỏ hàng
-                const response :any= await addCart({ data, userId }).unwrap();
-                if (response) {
-                   toast.success(response.message);
-                  
+                const data: any = {
+                    productId: listOneData._id,
+                    product_name: listOneData.product_name,
+                    product_price: childProduct?.product?.product_price,
+                    image: listOneData.image[0]?.url,
+                    stock_quantity: quantity,
+                    colorId: activeColor,
+                    sizeId: activeSize,
+                    materialId: listOneData.materialId,
+                };
+
+                const result = await Swal.fire({
+                    title: "Bạn chắc chứ?",
+                    text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Vâng, tôi chắc chắn!",
+                    cancelButtonText: "Huỷ",
+                });
+
+                if (result.isConfirmed) {
+                    // Thực hiện thêm vào giỏ hàng
+                    const response: any = await addCart({ data, userId }).unwrap();
+                    if (response) {
+                        toast.success(response.message);
+
+                    }
+
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Hiển thị thông báo hủy thêm vào giỏ hàng
+                    toast.info("Huỷ Sản phẩm không được thêm vào giỏ hàng ! ");
                 }
-                 
-              } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Hiển thị thông báo hủy thêm vào giỏ hàng
-                toast.info("Huỷ Sản phẩm không được thêm vào giỏ hàng ! ");
-              }
             }
-          } catch (error:any) {
-              toast.error(error.data.message);
-          }
+        } catch (error: any) {
+            toast.error(error.data.message);
+        }
     };
 
     const formatCurrency = (number: number) => {
