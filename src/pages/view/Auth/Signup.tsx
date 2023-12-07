@@ -41,6 +41,12 @@ const Signup = () => {
             const response: any = await signUp(data);
             if (response.error) {
                 toast.error(response.error.data.messsage);
+                if (response.error && response.error.data && response.error.data.message[0]) {
+                    const messages = response.error.data.message;
+                    messages.forEach((message: any) => {
+                        toast.error(message);
+                    });
+                }
             } else {
                 if (response.data?.user?.confirmed) {
                     toast.success('Tài khoản đã được xác nhận!');
@@ -50,6 +56,8 @@ const Signup = () => {
                 }
             }
         } catch (error: any) {
+            console.log(error);
+
             toast.error(error.data.message);
         }
     };

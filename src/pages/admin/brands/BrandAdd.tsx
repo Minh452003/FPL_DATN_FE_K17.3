@@ -14,16 +14,15 @@ const BrandAdd = () => {
   const [addBrand, resultAdd] = useAddBrandMutation();
   const navigate = useNavigate();
   const onFinish = async (values: any) => {
-     try {
-      const data :any = await addBrand(values).unwrap();
-      console.log(data);
-      if(data){
-       toast.success(`${data.message}`)
+    try {
+      const data: any = await addBrand(values).unwrap();
+      if (data) {
+        toast.success(`${data.message}`)
       }
       navigate('/admin/brands')
-     } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data.message);
-     }
+    }
   }
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);

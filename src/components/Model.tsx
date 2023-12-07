@@ -102,7 +102,7 @@ const Model = ({ products }: any) => {
           sizeId: activeSize,
           materialId: products.materialId,
         };
-  
+
         const result = await Swal.fire({
           title: "Bạn chắc chứ?",
           text: "Sản phẩm sẽ được thêm vào giỏ hàng!",
@@ -113,23 +113,26 @@ const Model = ({ products }: any) => {
           confirmButtonText: "Vâng, tôi chắc chắn!",
           cancelButtonText: "Huỷ",
         });
-  
+
         if (result.isConfirmed) {
           // Thực hiện thêm vào giỏ hàng
-          const response :any= await addCart({ data, userId } as any).unwrap();
-          if (response) {
-             toast.success(response.data.message);
-             setIsModalOpen(false);
+          const response: any = await addCart({ data, userId } as any).unwrap();
+          if (response.error) {
+            toast.error(response.error.data.message);
           }
-  
+          if (response) {
+            toast.success(response.message);
+            setIsModalOpen(false);
+          }
+
           setIsModalOpen(false);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           // Hiển thị thông báo hủy thêm vào giỏ hàng
           toast.info("Huỷ Sản phẩm không được thêm vào giỏ hàng ");
         }
       }
-    } catch (error:any) {
-        toast.error(error.data.message);
+    } catch (error: any) {
+      toast.error(error.data.message);
     }
   };
 

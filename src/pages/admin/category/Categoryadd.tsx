@@ -29,7 +29,6 @@ const Categoryadd = () => {
             if (Object.keys(imageUrl).length > 0) {
                 values.category_image = imageUrl;
                 const data: any = await addCategory(values).unwrap();
-
                 if (data) {
                     toast.success(`${data.message}`);
                 } else {
@@ -40,8 +39,6 @@ const Categoryadd = () => {
                 throw new Error('Ảnh danh mục không được để trống.');
             }
         } catch (error: any) {
-            console.log(error);
-
             toast.error(error.data.message);
         }
     };
