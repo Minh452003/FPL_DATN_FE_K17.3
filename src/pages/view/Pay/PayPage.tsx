@@ -888,17 +888,17 @@ const PayPage = () => {
                                     </div>
                                     <div className="col-span-2 flex ef">
                                         <div className="text-xs">
-                                            màu sắc: {colorname.colors_name}
+                                            Màu sắc: {colorname.colors_name}
                                         </div>
                                     </div>
                                     <div className="col-span-2 flex ef">
                                         <div className="text-xs">
-                                            kích cỡ: {sizesname.size_name}{' '}
+                                            Kích cỡ: {sizesname.size_name}{' '}
                                         </div>
                                     </div>
                                     <div className="col-span-2 flex ef">
                                         <div className="text-xs">
-                                            chất liệu: {materialsname.material_name}{' '}
+                                            Chất liệu: {materialsname.material_name}{' '}
                                         </div>
                                     </div>
                                 </div>
@@ -1036,8 +1036,7 @@ const PayPage = () => {
                                 </div>
                             ) : (
                                 <p className="text-red-600 font-bold ml-4 ">
-                                    không có phiếu giảm giá nào có thể áp dụng cho đơn hàng của bạn
-                                    !
+                                    Không có phiếu giảm giá nào có thể áp dụng cho đơn hàng của bạn !
                                 </p>
                             )}
                         </div>
