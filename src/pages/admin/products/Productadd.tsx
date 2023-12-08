@@ -216,7 +216,7 @@ const Productadd = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item
-                            label="Chất liệu"
+                            label="Vật liệu"
                             name="materialId"
                             rules={[{ required: true, message: 'Chất liệu không được để trống!' }]}
                             hasFeedback

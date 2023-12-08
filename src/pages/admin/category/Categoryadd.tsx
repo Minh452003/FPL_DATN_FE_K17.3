@@ -153,6 +153,7 @@ const Categoryadd = () => {
                                 { required: true, message: 'Tiền đặt cọc bắt buộc nhập!' },
                                 { validator: validatePositiveNumber },
                                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
+                                { max: 100,type: 'number', message:'Không được vượt quá 100%'}
                             ]}
                             hasFeedback
                             style={{ marginLeft: '20px' }}

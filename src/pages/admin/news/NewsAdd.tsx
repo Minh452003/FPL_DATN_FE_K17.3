@@ -1,15 +1,14 @@
-
 import { useAddNewMutation } from '@/api/newsApi';
 import { useAddImageMutation, useDeleteImageMutation } from '@/api/uploadApi';
 import { INew } from '@/interfaces/new';
 import { Button, Form, Input, Upload, UploadProps, message } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 import { RcFile } from 'antd/es/upload';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { FaUpload } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { FaUpload } from 'react-icons/fa6';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 
 type FieldType = {
     new_name?: string;
@@ -24,25 +23,21 @@ const NewsAdd = () => {
     const [imageUrl, setImageUrl] = useState<any>({});
     const navigate = useNavigate();
 
-
     const onFinish = async (values: INew) => {
         try {
             if (Object.keys(imageUrl).length > 0) {
                 values.new_image = imageUrl;
                 const data = await addNew(values).unwrap();
-                if(data) {
-                    toast.success(data.message)
+                if (data) {
+                    toast.success(data.message);
                 }
-                navigate("/admin/news");
-                
+                navigate('/admin/news');
             } else {
-                return
+                return;
             }
-            
-        } catch (error:any) {
-            toast.error(error.data.message)
+        } catch (error: any) {
+            toast.error(error.data.message);
         }
-       
     };
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -65,12 +60,12 @@ const NewsAdd = () => {
                         if (info.file.status === 'uploading') {
                             const response: any = await addImage(formData);
                             if (response.data && response.data.urls) {
-                                info.file.status = 'done'
+                                info.file.status = 'done';
                                 setFileList(info.fileList);
-                                setImageUrl(response.data.urls[0])
+                                setImageUrl(response.data.urls[0]);
                             }
                         }
-                    })()
+                    })();
                 } catch (error) {
                     console.error(error);
                 }
@@ -81,11 +76,14 @@ const NewsAdd = () => {
                     (async () => {
                         await deleteImage(publicId);
                         const removedFile = info.file;
-                        const updatedFileList = fileList.filter(item => item.uid !== removedFile.uid);
+                        const updatedFileList = fileList.filter(
+                            (item) => item.uid !== removedFile.uid,
+                        );
                         setFileList(updatedFileList);
                         setImageUrl({});
                     })();
-                } if (info.fileList.length > 1) {
+                }
+                if (info.fileList.length > 1) {
                     const updatedFileList: any = [info.fileList[0]];
                     setFileList(updatedFileList);
                 }
@@ -98,8 +96,7 @@ const NewsAdd = () => {
             <div className="row">
                 <div className="card-body">
                     <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">Thêm tin tức</h5>
-                    <div className="flex items-center ">
-                    </div>
+                    <div className="flex items-center "></div>
                     <Form
                         name="basic"
                         labelCol={{ span: 8 }}
@@ -115,22 +112,23 @@ const NewsAdd = () => {
                             name="new_name"
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Tiêu đề bắt buộc nhập!' },
-                            { min: 2, message: "Nhập ít nhất 2 ký tự" },
-                            {
-                                validator: (_, value) => {
-                                    if (!value) {
+                            rules={[
+                                { required: true, message: 'Tiêu đề bắt buộc nhập!' },
+                                { min: 2, message: 'Nhập ít nhất 2 ký tự' },
+                                {
+                                    validator: (_, value) => {
+                                        if (!value) {
+                                            return Promise.resolve();
+                                        }
+                                        if (/ {2,}/.test(value)) {
+                                            return Promise.reject(
+                                                'Không được nhập liên tiếp các khoảng trắng!',
+                                            );
+                                        }
                                         return Promise.resolve();
-                                    }
-                                    if (/ {2,}/.test(value)) {
-                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                    }
-                                    return Promise.resolve();
+                                    },
                                 },
-                            },
-
                             ]}
-
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
@@ -140,38 +138,46 @@ const NewsAdd = () => {
                             label="Mô tả"
                             name="new_description"
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[{ required: true, message: 'Mô tả bắt buộc nhập!' },
-                            { min: 10, message: "Nhập ít nhất 10 ký tự" },
-                            {
-                                validator: (_, value) => {
-                                    if (!value) {
+                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input (tăng giá trị span)
+                            rules={[
+                                { required: true, message: 'Mô tả bắt buộc nhập!' },
+                                { min: 10, message: 'Nhập ít nhất 10 ký tự' },
+                                {
+                                    validator: (_, value) => {
+                                        if (!value) {
+                                            return Promise.resolve();
+                                        }
+                                        if (/ {2,}/.test(value)) {
+                                            return Promise.reject(
+                                                'Không được nhập liên tiếp các khoảng trắng!',
+                                            );
+                                        }
                                         return Promise.resolve();
-                                    }
-                                    if (/ {2,}/.test(value)) {
-                                        return Promise.reject('Không được nhập liên tiếp các khoảng trắng!');
-                                    }
-                                    return Promise.resolve();
+                                    },
                                 },
-                            },
-
                             ]}
-
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
-                            <Input />
+                            <TextArea rows={4} />
                         </Form.Item>
                         <Form.Item
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
-                            id="images" name="new_image" label="Ảnh" rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
+                            id="images"
+                            name="new_image"
+                            label="Ảnh"
+                            rules={[{ required: true, message: 'Trường ảnh không được để trống' }]}
                             hasFeedback
                         >
-                            <Upload {...props} maxCount={1} listType="picture" multiple
+                            <Upload
+                                {...props}
+                                maxCount={1}
+                                listType="picture"
+                                multiple
                                 fileList={fileList}
-                                beforeUpload={file => {
+                                beforeUpload={(file) => {
                                     // Kiểm tra kích thước của tệp
                                     const isLt2M = file.size / 1024 / 1024 < 2;
                                     // Kiểm tra loại tệp
@@ -191,13 +197,22 @@ const NewsAdd = () => {
                             </Upload>
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 16 }}>
-                            <Button className=" h-10 bg-red-500 text-xs text-white ml-5"
+                            <Button
+                                className=" h-10 bg-red-500 text-xs text-white ml-5"
                                 disabled={resultImage.isLoading || resultDelete.isLoading}
-                                htmlType="submit">
-                                {resultAdd.isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" />
-                                    : " Thêm tin tức"}
+                                htmlType="submit"
+                            >
+                                {resultAdd.isLoading ? (
+                                    <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                                ) : (
+                                    ' Thêm tin tức'
+                                )}
                             </Button>
-                            <Button className=" h-10 bg-blue-500 text-xs text-white ml-5" onClick={() => navigate("/admin/news")} htmlType="submit">
+                            <Button
+                                className=" h-10 bg-blue-500 text-xs text-white ml-5"
+                                onClick={() => navigate('/admin/news')}
+                                htmlType="submit"
+                            >
                                 Danh sách tin tức
                             </Button>
                         </Form.Item>
@@ -205,7 +220,7 @@ const NewsAdd = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default NewsAdd
+export default NewsAdd;
