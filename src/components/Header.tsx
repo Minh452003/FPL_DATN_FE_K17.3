@@ -155,6 +155,14 @@ const Header = () => {
                         </li>
                         <li>
                           <Link
+                            to="/products/favorite"
+                            className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
+                          >
+                            Sản phẩm yêu thích
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
                             to="/signup"
                             className="text-[12px] no-underline text-[#000] hover:text-[#ff7600]"
                           >

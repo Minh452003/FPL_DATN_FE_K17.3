@@ -62,7 +62,7 @@ const CartPage = () => {
 
   const handleQuantityChange = (productId: string, sizeId: any, colorId: any, materialId: any, text?: any) => {
     if (text < 1) return;
-    if (text > childProduct?.product.stock_quantity) return 0;
+    if (text > childProduct?.product?.stock_quantity) return 0;
 
     updateQuantity(productId, sizeId, colorId, materialId, text);
 
@@ -175,7 +175,7 @@ const CartPage = () => {
           ) : (
             <input
               min="1"
-              max={childProduct?.product.stock_quantity}
+              max={childProduct?.product?.stock_quantity}
               value={quantityInput[`${record.productId}_${record.sizeId}_${record.colorId}_${record.materialId}`] || text}
               readOnly
             />
@@ -194,7 +194,7 @@ const CartPage = () => {
       dataIndex: "product_price",
       key: "total",
       className: "custom-total",
-      render: (price: any, quantity: any) => <p>{formatCurrency(price * quantity.stock_quantity)}₫</p>,
+      render: (price: any, quantity: any) => <p>{formatCurrency(price * quantity?.stock_quantity)}₫</p>,
     },
     {
       title: "Chức năng",
