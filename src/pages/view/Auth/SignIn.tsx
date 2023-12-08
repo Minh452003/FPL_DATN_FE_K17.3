@@ -1,4 +1,3 @@
-import { BiLogoFacebookCircle } from 'react-icons/bi';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineGoogle, AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignInMutation } from '@/api/authApi';
@@ -16,10 +15,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost:8088/api/auth/google";
-    }
-    const handleFacebookLogin = () => {
-        window.location.href = "http://localhost:8088/api/auth/facebook";
+        window.location.href = import.meta.env.VITE_LOGIN_GOOGLE;
     }
     useEffect(() => {
         const currentURL = window.location.href;
@@ -142,7 +138,7 @@ const Login = () => {
                                         <hr className="border-t w-1/3" />
                                     </div>
                                 </div>
-                                <div className="mb-4 flex justify-between">
+                                <div className="mb-4 flex justify-between ml-4">
                                     <button
                                         className="flex-1 px-3 py-2 text-sm leading-tight text-white bg-red-500 border rounded shadow appearance-none focus:outline-none focus:shadow-outline flex items-center justify-center"
                                         onClick={handleGoogleLogin}
@@ -150,12 +146,6 @@ const Login = () => {
                                         <AiOutlineGoogle style={{ marginRight: '4px' }} />Google
                                     </button>
                                     <div className="mx-2"></div>
-                                    <button
-                                        className="flex-1 px-3 py-2 text-sm leading-tight text-white bg-blue-500 border rounded shadow appearance-none focus:outline-none focus:shadow-outline flex items-center justify-center"
-                                        onClick={handleFacebookLogin}
-                                    >
-                                        <BiLogoFacebookCircle style={{ marginRight: '4px' }} /> Facebook
-                                    </button>
                                 </div>
                                 <div className="text-center">
                                     <span>Bạn chưa có tài khoản? </span>

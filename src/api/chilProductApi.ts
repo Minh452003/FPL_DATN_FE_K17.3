@@ -21,13 +21,7 @@ const childProductApi = createApi({
     }),
     endpoints: (builder) => ({
         getChildProductPrice: builder.query({
-            query: (query) => {
-                if (query.productId && query.sizeId && query.colorId) {
-                    return `/get-child-product?productId=${query.productId}&sizeId=${query.sizeId}&colorId=${query.colorId}`;
-                } else {
-                    return '';
-                }
-            },
+            query: (query) => `/get-child-product?productId=${query.productId}&sizeId=${query.sizeId}&colorId=${query.colorId}`,
             providesTags: ['child-products']
         }),
         getChildProductById: builder.query<IChildProduct, number | string>({

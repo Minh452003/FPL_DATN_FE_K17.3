@@ -74,6 +74,7 @@ import CustomProductDetail from "./pages/view/Product_Detail/CustomProductDetail
 import Productadd from "./pages/admin/products/Productadd";
 import Listcomments from "./pages/admin/comment/Listcomments";
 import ContactPage from "./pages/view/contact/ContactPage";
+import FavoritePage from "./pages/view/ProductPage/FavoritePage";
 
 
 
@@ -114,6 +115,8 @@ export const router = createBrowserRouter([
                 ]
             },
             { path: 'products', element: <ProductPage /> },
+            { path: 'products/favorite', element: <FavoritePage /> },
+
             { path: 'news', element: <News /> },
             {
                 path: 'forgotpassword', children: [

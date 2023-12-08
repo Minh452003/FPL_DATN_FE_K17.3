@@ -238,7 +238,7 @@ const Model = ({ products }: any) => {
             </div>
             {childProduct && activeColor && activeSize ? (
               <p className="sp1">
-                Còn {childProduct.product.stock_quantity} sản phẩm
+                Còn {childProduct?.product?.stock_quantity} sản phẩm
               </p>
             ) : (
               ""
@@ -282,7 +282,7 @@ const Model = ({ products }: any) => {
                 <AiOutlineLoading3Quarters className="animate-spin m-auto" />
               ) : (
                 <Button
-                  disabled={childProduct?.product.stock_quantity <= 0}
+                  disabled={childProduct?.product?.stock_quantity <= 0}
                   className="btn6 btn-solid-primary6 btn-x hl mt-4 ml-12"
                   onClick={() => {
                     if (id && activeColor && activeSize) {

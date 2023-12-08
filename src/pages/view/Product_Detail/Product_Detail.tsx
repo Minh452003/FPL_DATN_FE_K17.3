@@ -1,4 +1,4 @@
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaHeart } from 'react-icons/fa';
 import './Product_detail.css';
 import './Responsive_Product_Detail.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -32,6 +32,8 @@ import { FaTrashCan } from 'react-icons/fa6';
 import Model from '@/components/Model';
 import { Pagination } from 'antd';
 import { toast } from 'react-toastify';
+import { CiHeart } from "react-icons/ci";
+import { useAddFavoriteMutation, useGetFavoriteQuery, useRemoveFavoriteMutation } from '@/api/favoriteProductApi';
 
 const PAGE_SIZE = 5;
 
@@ -47,9 +49,10 @@ const Product_Detail = () => {
     const { data: colors, isLoading: isLoadingColor } = useGetColorsQuery<any>();
     const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>();
     const { data: products, isLoading: isLoadingProduct }: any = useGetProductsQuery();
-    const { data: comment, isLoading: isLoadingComment }: any = useGetCommentByProductIdQuery(
-        idProduct || '',
-    );
+    const { data: favorite }: any = useGetFavoriteQuery({ userId: id, productId: idProduct });
+    const { data: comment, isLoading: isLoadingComment }: any = useGetCommentByProductIdQuery(idProduct || '');
+    const [addFavorite] = useAddFavoriteMutation();
+    const [removeProduct] = useRemoveFavoriteMutation();
     const [addCart, resultAdd] = useAddCartMutation();
     const [quantity, setQuantity] = useState(1);
     const [activeColor, setActiveColor] = useState(null);
@@ -229,6 +232,27 @@ const Product_Detail = () => {
             toast.error(error.data.message);
         }
     };
+    // 
+    const handleFavorite = async () => {
+        try {
+            const body = {
+                userId: id,
+                productId: idProduct
+            }
+            await addFavorite(body).unwrap();
+        } catch (error: any) {
+            toast.error(error.data.message);
+        }
+    }
+    const deleteFavorite = async (id: any) => {
+        try {
+            await removeProduct(id).unwrap();
+        } catch (error: any) {
+            toast.error(error.data.message);
+        }
+    }
+
+    // 
 
     const formatCurrency = (number: number) => {
         if (typeof number !== 'number') {
@@ -401,11 +425,26 @@ const Product_Detail = () => {
                                             Đã bán: {listOneData?.sold_quantity} chiếc
                                         </div>
                                     </div>
+                                    <div className="text-gray-300 px-2 h-[30px] text-xl flex items-center">
+                                        |
+                                    </div>
+                                    <div className="col-span-2 space-x-4 flex items-center">
+                                        {favorite?.favoriteProducts == null ?
+                                            <div className="text-[22px] cursor-pointer mt-1" onClick={() => handleFavorite()}>
+                                                <CiHeart />
+                                            </div>
+                                            :
+                                            <div className="text-[20px] cursor-pointer text-red-500 mt-1" onClick={() => deleteFavorite(favorite?.favoriteProducts?._id)}>
+                                                <FaHeart />
+                                            </div>
+                                        }
+
+                                    </div>
                                 </div>
                             </div>
                             <div className="space-y-3">
                                 <div className="mt-3">
-                                    {childProduct ? (
+                                    {childProduct && childProduct.product ? (
                                         <p className="text-red-700 text-2xl font-bold">
                                             {formatCurrency(childProduct?.product?.product_price)}
                                             <span>₫</span>
@@ -485,9 +524,9 @@ const Product_Detail = () => {
                                     )}
                                 </div>
                             </div>
-                            {childProduct ? (
+                            {childProduct && childProduct.product ? (
                                 <p className="sp1">
-                                    Còn {childProduct.product.stock_quantity} sản phẩm
+                                    Còn {childProduct?.product?.stock_quantity} sản phẩm
                                 </p>
                             ) : (
                                 ''

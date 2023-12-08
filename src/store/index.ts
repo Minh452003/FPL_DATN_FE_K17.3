@@ -34,6 +34,7 @@ import newsApi, { newsReducer } from "@/api/newsApi";
 import statisticalApi, { statisticalReducer } from "@/api/statisticalApi";
 import bannerApi, { banerReducer } from "@/api/bannerApi";
 import contactApi, { contactReducer } from "@/api/contactApi";
+import favoriteApi, { favoriteReducer } from "@/api/favoriteProductApi";
 
 
 
@@ -66,7 +67,8 @@ const rootReducer = combineReducers({
     news: newsReducer,
     statistical: statisticalReducer,
     banners: banerReducer,
-    contact: contactReducer
+    contact: contactReducer,
+    favorite: favoriteReducer
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const additionalMiddlewares: any = [
@@ -93,6 +95,7 @@ const additionalMiddlewares: any = [
     statisticalApi.middleware,
     bannerApi.middleware,
     contactApi.middleware,
+    favoriteApi.middleware
 ];
 
 export const store = configureStore({

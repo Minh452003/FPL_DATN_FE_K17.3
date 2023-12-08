@@ -3,10 +3,11 @@ import { getDecodedAccessToken } from "@/decoder";
 import { Link, Outlet } from "react-router-dom";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
-import { FaCartPlus, FaBell } from "react-icons/fa";
+import { FaCartPlus } from "react-icons/fa";
 import { BiSolidCoupon } from "react-icons/bi";
 import { Skeleton } from "antd";
 import { AiOutlineSync } from "react-icons/ai";
+import { CiHeart } from "react-icons/ci";
 
 
 const UserPage = () => {
@@ -80,10 +81,20 @@ const UserPage = () => {
                   </li>
                   <li>
                     <Link
+                      to="/products/favorite"
+                      className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      <p className="text-black float-left mt-1 mr-1">
+                        <CiHeart />
+                      </p>{" "}
+                      Sản phẩm yêu thích
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       to="/user/changepasswordnew"
                       className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                       <p className="text-black float-left mt-1 mr-1">
-                      <AiOutlineSync />
+                        <AiOutlineSync />
                       </p>{" "}
                       Đổi mật khẩu
                     </Link>
@@ -102,7 +113,7 @@ const UserPage = () => {
                 Đơn mua
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 to=""
                 className="no-underline block rounded-lg px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
@@ -112,7 +123,7 @@ const UserPage = () => {
                 </p>{" "}
                 Thông báo
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
                 to="/user/voucher"

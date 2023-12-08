@@ -189,9 +189,6 @@ const ProductPage = () => {
                 aria-hidden="false"
               >
                 <div className="col-item1 ">
-                  <div className="sale-label sale-top-right">
-                    <span>Hot</span>
-                  </div>
                   <div className="item-inner">
                     <div className="product-wrapper">
                       <div className="thumb-wrapper">
