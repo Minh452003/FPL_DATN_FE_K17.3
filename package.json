@@ -46,7 +46,8 @@
     "sweetalert2": "^11.7.10",
     "swiper": "^10.3.0",
     "tw-elements": "^1.0.0",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "vercel": "^32.6.1"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.16",
