@@ -109,7 +109,7 @@ div .btn1s {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-  
+
 }
 
 div .btn-solid-primary1s {
@@ -147,10 +147,27 @@ div .btn-cs {
     height: 40px;
     padding: 0 16px;
     max-width: 100px;
-      text-decoration: none;
+    text-decoration: none;
+}
+
+div .btn-4cs {
+    font-size: 18px;
+    height: 30px;
+    padding: 0 16px;
+    max-width: 80px;
+    text-decoration: none;
 }
 
 div .btn-solid-primary3s {
+    color: black;
+    position: relative;
+    font-weight: 800;
+    background: gainsboro;
+    opacity: 0.3;
+    border: 2px solid gainsboro;
+}
+
+div .btn-solid-primary4s {
     color: black;
     position: relative;
     font-weight: 800;
@@ -236,6 +253,7 @@ div .btn-solid-primary6s {
     border: 1px solid #fc8924;
     border-radius: 5px;
 }
+
 div .btn-solid-primary6s:hover {
     border: 1px solid #ff7600;
     background-color: #ff7600;

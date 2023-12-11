@@ -7,7 +7,7 @@ import { useParams, } from 'react-router-dom';
 import { getDecodedAccessToken } from '@/decoder';
 import { useGetCustomizedproductsByIdQuery } from '@/api/CustomizedProductAPI';
 import { useGetCategoryQuery } from '@/api/categoryApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetMaterialQuery } from '@/api/materialApi';
 import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetSizeQuery } from '@/api/sizeApi';
@@ -48,6 +48,13 @@ const CustomProductDetail = () => {
   const sizeLishOne = sizeLish?.find(
     (sizeLish: any) => sizeLish?._id === customProducts?.sizeId
   )?.size_name;
+  const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
+
+  useEffect(() => {
+    if (customProducts) {
+      setQuantity(customProducts?.stock_quantity)
+    }
+  }, [customProducts])
   const formatCurrency = (number: { toString: () => string; }) => {
     if (number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -68,7 +75,7 @@ const CustomProductDetail = () => {
           product_name: customProducts.product_name,
           product_price: customProducts?.product_price,
           image: customProducts.image[0]?.url,
-          stock_quantity: customProducts.stock_quantity,
+          stock_quantity: quantity,
           colorId: colorId,
           sizeId: sizeId,
           materialId: materialId,
@@ -99,6 +106,14 @@ const CustomProductDetail = () => {
     } catch (error: any) {
       toast.error(error?.data?.message);
     }
+  };
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1); // Cập nhật số lượng
+    }
+  };
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
   };
 
   return (
@@ -166,13 +181,34 @@ const CustomProductDetail = () => {
               </div>
               <div className="md:flex button">
                 <div className="flex items-center mt-2">
-                  <input
+                  {/* <input
                     className="btn4 btn-solid-primary4 w-[150px] h-[10px] btn-d mn"
                     aria-live="assertive"
                     aria-valuenow={1}
                     value={customProducts?.stock_quantity}
                     readOnly
+                  /> */}
+                  <button
+                    aria-label="Decrease"
+                    className="btn3s btn-solid-primary3s btn-cs"
+                    onClick={decreaseQuantity}
+                  >
+                    -
+                  </button>
+                  <input
+                    className="btn4s btn-solid-primary4 btn-ds mn1"
+                    aria-live="assertive"
+                    aria-valuenow={1}
+                    value={quantity}
+                    onChange={(e) => setQuantity(parseInt(e.target.value))}
                   />
+                  <button
+                    aria-label="Increase"
+                    className="btn5s btn-solid-primary5s btn-es"
+                    onClick={increaseQuantity}
+                  >
+                    +
+                  </button>
                 </div>
                 <div className=" pl-0 flex md:mt-0 items-center mt-2 ml-2">
                   {resultAdd.isLoading ? (

@@ -91,7 +91,7 @@ const CategoryTrash = () => {
             key: 'name',
         },
         {
-            title: 'Tiền đặt cọc (%)',
+            title: 'Giá tăng khi tự thiết kế (%)',
             dataIndex: 'stake',
             key: 'stake',
         },

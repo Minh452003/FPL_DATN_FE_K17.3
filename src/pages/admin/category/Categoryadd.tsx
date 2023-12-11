@@ -145,7 +145,7 @@ const Categoryadd = () => {
                             <Input />
                         </Form.Item>
                         <Form.Item<FieldType>
-                            label="Tiền đặt cọc (%)"
+                            label="Giá tăng khi tự thiết kế (%)"
                             name="price_increase_percent"
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input

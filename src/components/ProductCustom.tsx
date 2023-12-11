@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
 import { getDecodedAccessToken } from '@/decoder';
 import { useGetCategoryQuery } from '@/api/categoryApi';
@@ -36,6 +36,12 @@ const ProductCustom = ({ products }: any) => {
     const sizeLishOne = sizeLish?.find(
         (sizeLish: any) => sizeLish?._id === products?.sizeId,
     )?.size_name;
+    const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
+    useEffect(() => {
+        if (products) {
+            setQuantity(products?.stock_quantity)
+        }
+    }, [products])
 
     const [addCart, resultAdd] = useAddCartMutation();
 
@@ -51,7 +57,7 @@ const ProductCustom = ({ products }: any) => {
                     product_name: products.product_name,
                     product_price: products?.product_price,
                     image: products.image[0]?.url,
-                    stock_quantity: products.stock_quantity,
+                    stock_quantity: quantity,
                     colorId: colorId,
                     sizeId: sizeId,
                     materialId: materialId,
@@ -90,6 +96,14 @@ const ProductCustom = ({ products }: any) => {
         } catch (error: any) {
             toast.error(error.data.message);
         }
+    };
+    const decreaseQuantity = () => {
+        if (quantity > 1) {
+            setQuantity(quantity - 1); // Cập nhật số lượng
+        }
+    };
+    const increaseQuantity = () => {
+        setQuantity(quantity + 1);
     };
 
     const showModal = () => {
@@ -141,25 +155,46 @@ const ProductCustom = ({ products }: any) => {
                             </div>
                         </div>
                         <div style={{ display: 'flex', marginTop: '10px' }}>
-                            <input
+                            {/* <input
                                 className="btn4 btn-solid-primary4 w-[100px] h-[10px] btn-d mn"
                                 aria-live="assertive"
                                 aria-valuenow={1}
                                 value={products?.stock_quantity}
                                 readOnly
+                            /> */}
+                            <button
+                                aria-label="Decrease"
+                                className="btn3s btn-solid-primary5s btn-4cs"
+                                onClick={decreaseQuantity}
+                            >
+                                -
+                            </button>
+                            <input
+                                className="btn4 btn-solid-primary4 w-[100px] h-[10px] btn-d mn"
+                                aria-live="assertive"
+                                aria-valuenow={1}
+                                value={quantity}
+                                onChange={(e) => setQuantity(parseInt(e.target.value))}
                             />
-                            <div style={{ marginLeft: '10px' }}>
-                                {resultAdd.isLoading ? (
-                                    <AiOutlineLoading3Quarters className="animate-spin m-auto " />
-                                ) : (
-                                    <Button
-                                        className="ml-2 w-100px bg-blue-600 bg-red-600 border-0 text-white text-m font-bold py-1"
-                                        onClick={handleAddToCart}
-                                    >
-                                        Thêm ngay
-                                    </Button>
-                                )}
-                            </div>
+                            <button
+                                aria-label="Increase"
+                                className="btn5s btn-solid-primary5s btn-4cs"
+                                onClick={increaseQuantity}
+                            >
+                                +
+                            </button>
+                        </div>
+                        <div style={{ marginLeft: '33px', marginTop: '10px' }}>
+                            {resultAdd.isLoading ? (
+                                <AiOutlineLoading3Quarters className="animate-spin m-auto " />
+                            ) : (
+                                <Button
+                                    className="ml-2 w-100px bg-blue-600 bg-red-600 border-0 text-white text-m font-bold py-1"
+                                    onClick={handleAddToCart}
+                                >
+                                    Thêm ngay
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>

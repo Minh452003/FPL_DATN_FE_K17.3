@@ -138,14 +138,7 @@ const DashBoardPage = () => {
                 backgroundColor: 'rgba(54, 162, 235, 0.2)', // Màu nền của cột doanh thu (màu xanh lam)
                 borderColor: 'rgba(54, 162, 235, 1)', // Màu viền của cột doanh thu (màu xanh lam)
                 borderWidth: 1,
-            },
-            {
-                label: 'Lợi nhuận',
-                data: data?.map((item: any) => item.profit),
-                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Màu nền của cột lợi nhuận (màu đỏ)
-                borderColor: 'rgba(255, 99, 132, 1)', // Màu viền của cột lợi nhuận (màu đỏ)
-                borderWidth: 1,
-            },
+            }
         ],
     };
 
@@ -171,7 +164,7 @@ const DashBoardPage = () => {
             },
             title: {
                 display: true, // Hiển thị tiêu đề
-                text: 'Doanh thu và lợi nhuận',
+                text: 'Doanh thu đơn hàng theo tháng / năm',
             },
             tooltip: {
                 callbacks: {

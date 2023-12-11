@@ -406,7 +406,7 @@ const PayPage = () => {
     });
     const cartCouponId = carts && carts.data.couponId;
 
-    const matchingCoupon = validCoupons.find((coupon: any) => coupon._id === cartCouponId);
+    const matchingCoupon = coupons.find((coupon: any) => coupon._id === cartCouponId);
     // Lấy coupon_name từ matchingCoupon (nếu tìm thấy)
     const cartCouponName = matchingCoupon ? matchingCoupon.coupon_name : null;
     const cartCouponcontent = matchingCoupon ? matchingCoupon.coupon_content : null;
