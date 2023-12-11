@@ -66,6 +66,7 @@ const OrdersManager = () => {
                 address: order.address,
                 phone: order.phone,
                 total: order.total,
+                status: order.status.status_name,
                 createAt: format(new Date(order.createdAt), 'HH:mm a dd/MM/yyyy'),
                 createdAtTimestamp: createdAtTimestamp,
                 image: <img width={50} src={order.products[0]?.image} alt="" />,
@@ -130,6 +131,13 @@ const OrdersManager = () => {
             sorter: (a: any, b: any) => a.total - b.total,
             sortOrder: sortedInfo.columnKey === 'total' && sortedInfo.order,
             ellipsis: true,
+        },
+        {
+            title: 'Trạng thái',
+            dataIndex: 'status',
+            key: 'status',
+            width: 140,
+            render: (index: any) => <strong>{index}</strong>,
         },
         {
             title: 'Thời gian mua',

@@ -99,7 +99,7 @@ const Categorylist = () => {
             ellipsis: true,
         },
         {
-            title: 'Tiền đặt cọc (%)',
+            title: 'Giá tăng khi tự thiết kế(%)',
             width: 200,
             dataIndex: 'price_increase_percent',
             key: 'price_increase_percent',

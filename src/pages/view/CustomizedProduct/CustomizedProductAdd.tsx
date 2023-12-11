@@ -122,8 +122,6 @@ const CustomizedProductAdd = () => {
     }
   };
   const increaseQuantity = () => {
-    // Tăng số lượng lên 1 nếu chưa đạt tới giới hạn của stock_quantity
-
     setQuantity(quantity + 1);
   };
 
@@ -370,7 +368,7 @@ const CustomizedProductAdd = () => {
                   title={
                     id && activeColor && activeSize && activeMaterial
                       ? ""
-                      : "Bạn phải chọn màu, kích thước và nguyên vật liệu"
+                      : "Bạn phải đăng nhập, chọn màu, kích thước và nguyên vật liệu"
                   }
                 >
                   {resultAdd.isLoading ? (
