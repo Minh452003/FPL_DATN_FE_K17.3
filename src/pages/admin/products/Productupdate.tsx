@@ -220,7 +220,6 @@ const Productupdate = () => {
                                 { validator: validatePositiveNumber },
                                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
                             ]}
-                            hasFeedback
                             style={{ marginLeft: '20px' }}
                         >
                             <InputNumber style={{ width: '100%' }} />

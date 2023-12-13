@@ -198,7 +198,6 @@ const CouponsUpdate = () => {
               rules={[{ required: true, message: 'Số lượng phiếu giảm giá không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
 
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
@@ -213,8 +212,6 @@ const CouponsUpdate = () => {
               rules={[{ required: true, message: 'Số tiền chiết khấu không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
-
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
@@ -252,8 +249,6 @@ const CouponsUpdate = () => {
               rules={[{ required: true, message: 'Số tiền mua tối thiểu không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
-
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}

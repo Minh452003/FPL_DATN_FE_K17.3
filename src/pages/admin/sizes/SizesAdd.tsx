@@ -96,7 +96,6 @@ const SizesAdd = () => {
               rules={[{ required: true, message: 'Chiều cao kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
               style={{ marginLeft: '20px' }}
             >
               <InputNumber style={{ width: '100%' }} />
@@ -111,7 +110,6 @@ const SizesAdd = () => {
               rules={[{ required: true, message: 'Độ dài kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
               style={{ marginLeft: '20px' }}
             >
               <InputNumber style={{ width: '100%' }} />
@@ -125,7 +123,6 @@ const SizesAdd = () => {
               rules={[{ required: true, message: 'Cân nặng kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
               style={{ marginLeft: '20px' }}
             >
               <InputNumber style={{ width: '100%' }} />
@@ -139,7 +136,6 @@ const SizesAdd = () => {
               rules={[{ required: true, message: 'Chiều dài kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-              hasFeedback
               style={{ marginLeft: '20px' }}
             >
               <InputNumber style={{ width: '100%' }} />
