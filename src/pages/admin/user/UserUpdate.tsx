@@ -45,14 +45,21 @@ const UserUpdate = () => {
 
   const onFinish = async (values: any) => {
     try {
-      const data = await updateUser({_id:values._id,role:values.role}).unwrap();
+      const data = await updateUser({ _id: values._id, role: values.role }).unwrap();
       if (data) {
         toast.success(data.message);
       }
       navigate('/admin/users');
     }
     catch (error: any) {
-      toast.error(error.data.message)
+      if (Array.isArray(error.data.message)) {
+        const messages = error.data.message;
+        messages.forEach((message: any) => {
+          toast.error(message);
+        });
+      } else {
+        toast.error(error.data.message);
+      }
     }
   };
 

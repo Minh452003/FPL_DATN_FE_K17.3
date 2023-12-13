@@ -20,7 +20,14 @@ const ChangePassword = () => {
         }
       }
     } catch (error: any) {
-      toast.error(error.data.message);
+      if (Array.isArray(error.data.message)) {
+        const messages = error.data.message;
+        messages.forEach((message: any) => {
+          toast.error(message);
+        });
+      } else {
+        toast.error(error.data.message);
+      }
     }
   };
   return (

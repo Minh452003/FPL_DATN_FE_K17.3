@@ -24,14 +24,14 @@ const Userlist = () => {
             return {
                 key: user._id,
                 STT: index + 1,
-                name: user.first_name,
+                name: `${user.first_name} ${user.last_name}`,
                 email: user.email,
-                phone: user.phone ? user.phone : 'Chưa có số điện thoại',
-                address: user.address ? user.address : 'Chưa có địa chỉ',
+                phone: user.phone ? user.phone : 'Chưa thêm số',
+                address: user.address ? user.address : 'Chưa thêm địa chỉ',
                 image: user.avatar ? (
-                    <Image width={80} height={80} src={user.avatar.url} />
+                    <Image width={40} height={40} src={user.avatar.url} />
                 ) : (
-                    'Chưa có ảnh'
+                    <Image width={40} height={40} src={'https://static.thenounproject.com/png/363640-200.png'} />
                 ),
                 role: user.role,
             };
@@ -51,7 +51,7 @@ const Userlist = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            width: 120,
+            width: 170,
             render: (text: string) => <a>{text}</a>,
         },
         {
@@ -74,7 +74,7 @@ const Userlist = () => {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
-            width: 120,
+            width: 150,
             render: (phone: string) => <a>{phone}</a>,
         },
         {
@@ -95,11 +95,11 @@ const Userlist = () => {
             ],
             filterSearch: true,
             onFilter: (value: string | number | boolean, record: any) => record.role.startsWith(value),
-            
+
         },
         {
             title: 'Chức năng',
-            width: 170,
+            width: 110,
             render: ({ key: _id }: any) => {
                 return (
                     <div style={{ width: '150px' }}>

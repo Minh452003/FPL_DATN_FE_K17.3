@@ -32,24 +32,27 @@ const ResetPassword = () => {
 
 
     const onSubmit: SubmitHandler<IResetPassword> = async (data: IResetPassword) => {
-    try {
-        const response: any = await resetPassword({
-            userId,
-            newPassword: data.newPassword,
-            confirmPassword: data.confirmPassword,
-        }).unwrap();
-        console.log(response);
-        
-        if(response){
-            toast.success(response.message);
-            navigate("/signin");
+        try {
+            const response: any = await resetPassword({
+                userId,
+                newPassword: data.newPassword,
+                confirmPassword: data.confirmPassword,
+            }).unwrap();
+            if (response) {
+                toast.success(response.message);
+                navigate("/signin");
+            }
+        } catch (error: any) {
+            if (Array.isArray(error.data.message)) {
+                const messages = error.data.message;
+                messages.forEach((message: any) => {
+                    toast.error(message);
+                });
+            } else {
+                toast.error(error.data.message);
+            }
         }
-    } catch (error:any) {
-        console.log(error);
-        
-        toast.error(error.data?.message[0]);
-    }
-    
+
     };
 
 
@@ -141,7 +144,7 @@ const ResetPassword = () => {
                             </form>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <div className="bg-gray-300 p-4 rounded-b-lg"></div>

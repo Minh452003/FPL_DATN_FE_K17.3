@@ -48,7 +48,7 @@ const CustomProductDetail = () => {
   const sizeLishOne = sizeLish?.find(
     (sizeLish: any) => sizeLish?._id === customProducts?.sizeId
   )?.size_name;
-  const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
+  const [quantity, setQuantity] = useState<any>(1); // Sử dụng useState để quản lý số lượng
 
   useEffect(() => {
     if (customProducts) {
@@ -104,7 +104,16 @@ const CustomProductDetail = () => {
         }
       }
     } catch (error: any) {
-      toast.error(error?.data?.message);
+      if (Array.isArray(error.data.message)) {
+        // Xử lý trường hợp mảng
+        const messages = error.data.message;
+        messages.forEach((message: any) => {
+          toast.error(message);
+        });
+      } else {
+        // Xử lý trường hợp không phải mảng
+        toast.error(error.data.message);
+      }
     }
   };
   const decreaseQuantity = () => {
@@ -200,7 +209,14 @@ const CustomProductDetail = () => {
                     aria-live="assertive"
                     aria-valuenow={1}
                     value={quantity}
-                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      if (!isNaN(value)) {
+                        setQuantity(value);
+                      } else {
+                        setQuantity(null);
+                      }
+                    }}
                   />
                   <button
                     aria-label="Increase"

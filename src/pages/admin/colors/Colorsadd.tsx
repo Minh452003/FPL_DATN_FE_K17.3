@@ -21,7 +21,16 @@ const ColorsAdd = () => {
       }
       navigate('/admin/colors');
     } catch (error: any) {
-      toast.error(error.data.message);
+      if (Array.isArray(error.data.message)) {
+        // Xử lý trường hợp mảng
+        const messages = error.data.message;
+        messages.forEach((message: any) => {
+          toast.error(message);
+        });
+      } else {
+        // Xử lý trường hợp không phải mảng
+        toast.error(error.data.message);
+      }
     }
   };
   const onFinishFailed = (errorInfo: any) => {

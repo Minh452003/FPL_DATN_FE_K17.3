@@ -15,14 +15,19 @@ const ForgotPassword = () => {
   const onSubmit: SubmitHandler<IUser> = async data => {
     try {
       const response: any = await forgotPassword(data).unwrap();
-      // console.log(response.otpResponse.message);
       if (response) {
         toast.success(response.otpResponse.message)
         navigate(`/forgotpassword/verifyOTPForgotPassword/${response?.otpResponse.data.userId}`);
       }
     } catch (error: any) {
-      console.log(error);
-      toast.error(error.data.message)
+      if (Array.isArray(error.data.message)) {
+        const messages = error.data.message;
+        messages.forEach((message: any) => {
+          toast.error(message);
+        });
+      } else {
+        toast.error(error.data.message);
+      }
     }
   }
   const scrollToTop = () => {

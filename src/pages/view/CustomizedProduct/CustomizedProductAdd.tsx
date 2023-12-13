@@ -31,7 +31,7 @@ const CustomizedProductAdd = () => {
   const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>();
   const { data: materials, isLoading: isLoadingMaterial } =
     useGetMaterialQuery<any>();
-  const [quantity, setQuantity] = useState(1); // Sử dụng useState để quản lý số lượng
+  const [quantity, setQuantity] = useState<any>(1); // Sử dụng useState để quản lý số lượng
   const [activeColor, setActiveColor] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
   const [activeMaterial, setActiveMaterial] = useState(null);
@@ -91,8 +91,6 @@ const CustomizedProductAdd = () => {
         if (result.isConfirmed) {
           // Thực hiện thêm vào giỏ hàng
           const response: any = await addCustom(data).unwrap();
-          console.log(response);
-
           if (response) {
             toast.success(response.message);
             navigate("/customizedProducts");
@@ -103,7 +101,16 @@ const CustomizedProductAdd = () => {
         }
       }
     } catch (error: any) {
-      toast.error(error.data.message);
+      if (Array.isArray(error.data.message)) {
+        // Xử lý trường hợp mảng
+        const messages = error.data.message;
+        messages.forEach((message: any) => {
+          toast.error(message);
+        });
+      } else {
+        // Xử lý trường hợp không phải mảng
+        toast.error(error.data.message);
+      }
     }
   };
 
@@ -350,12 +357,18 @@ const CustomizedProductAdd = () => {
                   -
                 </button>
                 <input
-                  className="btn4s btn-solid-primary4s btn-ds mn1"
+                  className="btn4s btn-solid-primary4 btn-ds mn1"
                   aria-live="assertive"
                   aria-valuenow={1}
                   value={quantity}
-                  onChange={(e) => setQuantity(parseInt(e.target.value))}
-                />
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (!isNaN(value)) {
+                      setQuantity(value);
+                    } else {
+                      setQuantity(null);
+                    }
+                  }} />
                 <button
                   aria-label="Increase"
                   className="btn5s btn-solid-primary5s btn-es"

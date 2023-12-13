@@ -5,7 +5,7 @@ import { Button, Form, Input, InputNumber } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-interface FieldType  {
+interface FieldType {
   size_name?: string;
   size_height?: number;
   size_length?: number;
@@ -19,14 +19,21 @@ const SizesAdd = () => {
   const onFinish = async (values: any) => {
     try {
       const data = await addSize(values).unwrap();
-      if(data){
+      if (data) {
         toast.success(data.message);
       }
       navigate("/admin/sizes");
-    } catch (error:any) {
-      toast.error(error.data.message);
+    } catch (error: any) {
+      if (Array.isArray(error.data.message)) {
+        const messages = error.data.message;
+        messages.forEach((message: any) => {
+          toast.error(message);
+        });
+      } else {
+        toast.error(error.data.message);
+      }
     }
-  
+
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
