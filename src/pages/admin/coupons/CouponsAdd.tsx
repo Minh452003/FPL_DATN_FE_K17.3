@@ -37,7 +37,14 @@ const CouponsAdd = () => {
             }
             navigate('/admin/coupons');
         } catch (error: any) {
-            toast.error(error.message);
+            if (Array.isArray(error.data.message)) {
+                const messages = error.data.message;
+                messages.forEach((message: any) => {
+                    toast.error(message);
+                });
+            } else {
+                toast.error(error.data.message);
+            }
         }
     };
     const onFinishFailed = (errorInfo: any) => {

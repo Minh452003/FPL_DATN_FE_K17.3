@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { Button, Form, Select, Skeleton, Input } from 'antd';
+import { Button, Form, Select, Skeleton } from 'antd';
 import { useGetStatusQuery } from "@/api/statusApi";
 import { useEffect } from "react";
-import { useGetOrderByIdQuery, useUpdateOrderMutation } from "@/api/orderApi";
+import { useGetOrderByIdQuery, useUpdateOrderStatusMutation } from "@/api/orderApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
 import { useGetColorsQuery } from "@/api/colorApi";
 import { useGetSizeQuery } from "@/api/sizeApi";
@@ -17,7 +17,7 @@ const OrdersDetail = () => {
     const { data: Colors, isLoading: isLoadingColors } = useGetColorsQuery<any>();
     const { data: Sizes, isLoading: isLoadingSizes } = useGetSizeQuery<any>();
     const { data: Materials, isLoading: isLoadingMaterials } = useGetMaterialQuery<any>();
-    const [updateOrder] = useUpdateOrderMutation();
+    const [updateOrderStatus] = useUpdateOrderStatusMutation();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,11 +29,6 @@ const OrdersDetail = () => {
     const setFields = () => {
         form.setFieldsValue({
             _id: orderDetail?.order?._id,
-            userId: orderDetail?.order?.userId?._id,
-            products: orderDetail?.order?.products,
-            total: orderDetail?.order?.total,
-            address: orderDetail?.order?.address,
-            phone: orderDetail?.order?.phone,
             status: orderDetail?.order?.status?._id,
         });
     };
@@ -41,24 +36,19 @@ const OrdersDetail = () => {
 
     const onFinish = async (values: any) => {
         try {
-            const data:any = await updateOrder(values).unwrap();
-            console.log(data);
-            
-            if(data){
-                toast.success(data.message);
+            const data = await updateOrderStatus({ _id: orderDetail?.order?._id, status: values.status }).unwrap();
+            if (data) {
+                toast.success(data.messages);
             }
             navigate("/admin/orders");
-            
-
-        } catch (error:any) {
+        } catch (error: any) {
             toast.error(error.data.message);
         }
 
     };
     const formatCurrency = (number: number) => {
         if (typeof number !== 'number') {
-            // Xử lý khi number không phải là số
-            return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+            return '0';
         }
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
@@ -94,7 +84,9 @@ const OrdersDetail = () => {
                     {orderDetail?.order.shipping ? <div>
                         <p>Phí vận chuyển : <strong>{formatCurrency(orderDetail?.order.shipping)}₫</strong></p>
                     </div> : ""}
-
+                    <div>
+                        <p>Đã cọc : <strong>{formatCurrency(orderDetail?.order.deposit)}₫</strong></p>
+                    </div>
                     <div className="d-flex justify-content-between">
                         <p>Ngày đặt hàng : {orderDetail?.order.createdAt ? format(new Date(orderDetail.order.createdAt), "HH:mm a dd/MM/yyyy") : "Không có thời gian"}</p>
                     </div>
@@ -112,24 +104,6 @@ const OrdersDetail = () => {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-                        <Form.Item label="" name="_id" style={{ display: 'none' }}>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="" name="userId" style={{ display: 'none' }}>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="" name="products" style={{ display: 'none' }}>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="" name="total" style={{ display: 'none' }}>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="" name="address" style={{ display: 'none' }}>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="" name="phone" style={{ display: 'none' }}>
-                            <Input />
-                        </Form.Item>
                         <div style={{ display: "flex", marginTop: "30px" }}>
                             <Form.Item
                                 className="small text-primary fw-bold mb-0 float-left w-2/5"

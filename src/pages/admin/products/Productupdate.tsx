@@ -62,8 +62,6 @@ const Productupdate = () => {
 
     const onFinish = async (values: IProduct) => {
         values.description = productDescription;
-        console.log(productDescription);
-
         try {
             values.image = imageUrl;
             const data = await updateProduct(values).unwrap();
@@ -72,7 +70,14 @@ const Productupdate = () => {
             }
             navigate('/admin/products');
         } catch (error: any) {
-            toast.error(error.data.message);
+            if (Array.isArray(error.data.message)) {
+                const messages = error.data.message;
+                messages.forEach((message: any) => {
+                    toast.error(message);
+                });
+            } else {
+                toast.error(error.data.message);
+            }
         }
     };
 
@@ -235,7 +240,7 @@ const Productupdate = () => {
                                         key={img?.publicId}
                                         listType="picture-card"
                                         className="avatar-uploader"
-                                        showUploadList={false}      
+                                        showUploadList={false}
                                         beforeUpload={file => {
                                             // Kiểm tra kích thước của tệp
                                             const isLt2M = file.size / 1024 / 1024 < 2;
@@ -250,7 +255,7 @@ const Productupdate = () => {
                                             }
                                             // Trả về false để ngăn chặn việc tải lên nếu kích thước tệp lớn hơn 2MB hoặc không phải là ảnh
                                             return isLt2M && isImage;
-                                        }} 
+                                        }}
                                     >
                                         {img ? (
                                             <img

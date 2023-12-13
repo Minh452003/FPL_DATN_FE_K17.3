@@ -54,7 +54,7 @@ const Product_Detail = () => {
     const [addFavorite] = useAddFavoriteMutation();
     const [removeProduct] = useRemoveFavoriteMutation();
     const [addCart, resultAdd] = useAddCartMutation();
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState<any>(1);
     const [activeColor, setActiveColor] = useState(null);
     const [activeSize, setActiveSize] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -220,16 +220,23 @@ const Product_Detail = () => {
                     const response: any = await addCart({ data, userId }).unwrap();
                     if (response) {
                         toast.success(response.message);
-
                     }
-
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     // Hiển thị thông báo hủy thêm vào giỏ hàng
-                    toast.info("Huỷ Sản phẩm không được thêm vào giỏ hàng ! ");
+                    toast.info("Huỷ sản phẩm không được thêm vào giỏ hàng ! ");
                 }
             }
         } catch (error: any) {
-            toast.error(error.data.message);
+            if (Array.isArray(error.data.message)) {
+                // Xử lý trường hợp mảng
+                const messages = error.data.message;
+                messages.forEach((message: any) => {
+                    toast.error(message);
+                });
+            } else {
+                // Xử lý trường hợp không phải mảng
+                toast.error(error.data.message);
+            }
         }
     };
     // 
@@ -547,10 +554,10 @@ const Product_Detail = () => {
                                         value={quantity}
                                         onChange={(e) => {
                                             const value = parseInt(e.target.value);
-                                            if (isNaN(value)) {
-                                                setQuantity(1);
-                                            } else {
+                                            if (!isNaN(value)) {
                                                 setQuantity(value);
+                                            } else {
+                                                setQuantity(null);
                                             }
                                         }}
                                     />

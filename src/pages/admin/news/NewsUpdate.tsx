@@ -55,7 +55,14 @@ const NewsUpdate = () => {
             }
             navigate("/admin/news");
         } catch (error: any) {
-            toast.error(` ${error.data.message}`);
+            if (Array.isArray(error.data.message)) {
+                const messages = error.data.message;
+                messages.forEach((message: any) => {
+                    toast.error(message);
+                });
+            } else {
+                toast.error(error.data.message);
+            }
         }
     };
 
@@ -171,8 +178,8 @@ const NewsUpdate = () => {
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
                             style={{ marginLeft: '20px' }}
                             rules={[{ required: true, message: 'Mô tả không được để trống!' },
-                            { min: 10, message: "Nhập ít nhất 10 ký tự" },{whitespace:true,message:"không được nhập các khoảng trắng"}
-                            
+                            { min: 10, message: "Nhập ít nhất 10 ký tự" }, { whitespace: true, message: "không được nhập các khoảng trắng" }
+
                             ]}
                             hasFeedback
                         >

@@ -313,7 +313,16 @@ const PayPage = () => {
                         toast.info("Đơn hàng chưa được mua :)");
                     }
                 } catch (error: any) {
-                    toast.error(error?.data?.message);
+                    if (Array.isArray(error.data.message)) {
+                        // Xử lý trường hợp mảng
+                        const messages = error.data.message;
+                        messages.forEach((message: any) => {
+                            toast.error(message);
+                        });
+                    } else {
+                        // Xử lý trường hợp không phải mảng
+                        toast.error(error.data.message);
+                    }
                 }
             }
         } else if (pay && pay == 'momo') {
@@ -413,46 +422,46 @@ const PayPage = () => {
     const cartCouponexpirationdate = matchingCoupon ? matchingCoupon.expiration_date : null;
 
     const onSubmit: SubmitHandler<TypeInputs> = async (data: any) => {
-        const response: any = await applyCoupon({ userId: id, data: data });
-        if (response.error) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: response.error.data.message,
-                showConfirmButton: true,
-                timer: 1500,
-            });
-        } else {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Sử dụng phiếu giảm giá thành công!',
-                showConfirmButton: true,
-                timer: 1500,
-            });
+        try {
+            const response: any = await applyCoupon({ userId: id, data: data });
+            if (response) {
+                toast.success(response.data.message);
+            }
             setTotal(response.data.data.total);
+        } catch (error: any) {
+            if (Array.isArray(error.data.message)) {
+                // Xử lý trường hợp mảng
+                const messages = error.data.message;
+                messages.forEach((message: any) => {
+                    toast.error(message);
+                });
+            } else {
+                // Xử lý trường hợp không phải mảng
+                toast.error(error.data.message);
+            }
         }
+
     };
     const removeCoupons: SubmitHandler<any> = async () => {
-        const response: any = await removeCoupon({ userId: id, data: {} });
-        if (response.error) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: response.error.data.message,
-                showConfirmButton: true,
-                timer: 1500,
-            });
-        } else {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Huỷ phiếu giảm giá thành công!',
-                showConfirmButton: true,
-                timer: 1500,
-            });
+        try {
+            const response: any = await removeCoupon({ userId: id, data: {} });
+            if (response) {
+                toast.success(response.data.message);
+            }
+            setIsModalOpen(false);
+        } catch (error: any) {
+            if (Array.isArray(error.data.message)) {
+                // Xử lý trường hợp mảng
+                const messages = error.data.message;
+                messages.forEach((message: any) => {
+                    toast.error(message);
+                });
+            } else {
+                // Xử lý trường hợp không phải mảng
+                toast.error(error.data.message);
+            }
         }
-        setIsModalOpen(false);
+
     };
 
     if (!id) {
