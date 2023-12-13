@@ -193,7 +193,6 @@ const Categoryupdate = () => {
                                 { validator: validatePositiveNumber },
                                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
                             ]}
-                            hasFeedback
                         >
                             <InputNumber style={{ width: '100%' }} />
                         </Form.Item>

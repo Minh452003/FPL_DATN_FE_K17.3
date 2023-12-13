@@ -178,7 +178,6 @@ const CouponsAdd = () => {
                                 { validator: validatePositiveNumber },
                                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
                             ]}
-                            hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}
@@ -198,7 +197,6 @@ const CouponsAdd = () => {
                                 { max: 100, type: 'number', message: 'Không được vượt quá 100%' },
                                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
                             ]}
-                            hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}

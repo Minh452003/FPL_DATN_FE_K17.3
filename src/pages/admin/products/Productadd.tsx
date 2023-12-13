@@ -158,8 +158,6 @@ const Productadd = () => {
                             rules={[{ required: true, message: 'Trường giá không được để trống!' },
                             { validator: validatePositiveNumber },
                             { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
-                            hasFeedback
-
                             style={{ marginLeft: '20px' }}
                         >
                             <InputNumber style={{ width: '100%' }} />
