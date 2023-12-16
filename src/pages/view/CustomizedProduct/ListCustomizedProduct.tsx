@@ -39,17 +39,17 @@ const ListCustomizedProduct = () => {
         cancelButtonText: 'Huỷ',
       });
       if (result.isConfirmed) {
-          const data = await removeCustomizedProduct(id).unwrap();
-          if (data) {
-              toast.success(`${data.message}`);
-          }
+        const data = await removeCustomizedProduct(id).unwrap();
+        if (data) {
+          toast.success(`${data.message}`);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-          toast.info('Hủy xoá Sản phẩm');
+        toast.info('Hủy xoá Sản phẩm');
       }
-  } catch (error: any) {
+    } catch (error: any) {
       toast.error(error.data.message);
-  }
-  
+    }
+
   };
   const filteredProducts = CustomizedProduct.filter((product: any) => {
     if (selectedPriceFilter === "all") {
@@ -161,7 +161,7 @@ const ListCustomizedProduct = () => {
 
   return (
     <div className="px-6 lg:px-0 ml-28 ">
-      <div className="flex items-center my-4 px-3">
+      <div className="flex items-center px-3 pt-4 pb-4">
         <div className="float-left font-bold">Trang Chủ</div>
         <FaArrowRight className="ml-2" />
         <div className="pl-2">Sản phẩm tự thiết kế</div>
@@ -175,10 +175,10 @@ const ListCustomizedProduct = () => {
         //...
         >
           <option value="all">Tất cả giá</option>
-          <option value="100000-1000000">100.000đ - 1.000.000đ</option>
-          <option value="1000000-5000000">1.000.0000đ - 5.000.000đ</option>
-          <option value="5000000-10000000">5.000.000đ - 10.000.000đ</option>
-          <option value="10000000+">10.000.000đ </option>
+          <option value="100000-1000000">100.000 - 1.000.000₫</option>
+          <option value="1000000-5000000">1.000.0000 - 5.000.000₫</option>
+          <option value="5000000-10000000">5.000.000 - 10.000.000₫</option>
+          <option value="10000000+">10.000.000₫+</option>
         </select>
         <div className="new_title lt clear_pd " style={{ width: "1255px" }}>
           <h4>

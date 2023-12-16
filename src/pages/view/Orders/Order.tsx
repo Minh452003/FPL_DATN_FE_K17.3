@@ -79,22 +79,22 @@ const Order = () => {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Vâng, tôi chắc chắn!',
                 cancelButtonText: 'Huỷ',
-              });
-              if (result.isConfirmed) {
+            });
+            if (result.isConfirmed) {
                 const data: any = await removeOrder(id).unwrap();
                 if (data) {
-                  toast.success(data.message);
+                    toast.success(data.message);
                 }
-              } else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
                 toast.info('Hủy xoá Đơn hàng ');
-              }
-        } catch (error:any) {
+            }
+        } catch (error: any) {
             toast.error(error.data.message);
         }
-       
+
     };
     // -------------------------------------------
-    const updateOrder = async (id: any) => {
+    const updateOrder = async (orderId: any) => {
         try {
             const result = await Swal.fire({
                 title: 'Bạn chắc chứ?',
@@ -107,7 +107,7 @@ const Order = () => {
                 cancelButtonText: 'Huỷ',
             });
             if (result.isConfirmed) {
-                const data = await updateOrderStatus({ _id: id, status: '6565969f3a59bec4e5baea03' }).unwrap();
+                const data = await updateOrderStatus({ _id: orderId, status: '6565969f3a59bec4e5baea03', userId: id }).unwrap();
                 if (data) {
                     toast.success(`${data.message}`)
                 }

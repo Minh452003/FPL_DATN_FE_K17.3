@@ -37,9 +37,6 @@ const Productlist = () => {
     const { data: brands } = useGetBrandQuery<any>();
     const { data: materials } = useGetMaterialQuery<any>();
     const [selectedPriceFilter, setSelectedPriceFilter] = useState('all');
-    const [selectedCategory, setSelectedCategory] = useState('all');
-    const [selectedBrand, setSelectedBrand] = useState('all');
-    const [selectedMaterial, setSelectedMaterial] = useState('all');
     const [removeProduct, { isLoading: isRemoveLoading }] = useRemoveProductMutation();
     const products = isLoadingProducts ? [] : data?.product.docs;
     const category = categories?.category?.docs;
@@ -52,16 +49,9 @@ const Productlist = () => {
         if (false) {
             console.log(pagination);
             console.log(filters);
-            setSelectedMaterial('');
         }
     };
     const filteredProducts = products.filter((product: IProduct) => {
-        const categoryMatches =
-            selectedCategory === 'all' || product.categoryId === selectedCategory;
-        const brandMatches = selectedBrand === 'all' || product.brandId === selectedBrand;
-        const materialMatches =
-            selectedMaterial === 'all' || product.materialId === selectedMaterial;
-
         const priceFilterMatches =
             selectedPriceFilter === 'all' ||
             (selectedPriceFilter === '100000-1000000' &&
@@ -94,9 +84,6 @@ const Productlist = () => {
             lowerCaseMaterialName?.toLowerCase().includes(lowerCaseSearchText);
 
         return (
-            categoryMatches &&
-            brandMatches &&
-            materialMatches &&
             priceFilterMatches &&
             searchMatches
         );
@@ -142,7 +129,7 @@ const Productlist = () => {
                     toast.success(`${data.message}`);
                 }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                toast.info('Đã hủy xóa Sản phẩm ');
+                toast.info('Đã hủy xóa sản phẩm ');
             }
         } catch (error: any) {
             toast.error(error.message);
@@ -161,7 +148,7 @@ const Productlist = () => {
             width: 90, // Điều chỉnh chiều rộng của cột "STT"
         },
         {
-            title: 'Name',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
             render: (text: string) => <a>{text}</a>,
@@ -252,7 +239,7 @@ const Productlist = () => {
         },
         {
             title: 'Chức năng',
-            width: 200, // Điều chỉnh chiều rộng của cột "chức năng"
+            width: 160, // Điều chỉnh chiều rộng của cột "chức năng"
             render: ({ key: _id }: { key: any }) => (
                 <div style={{ width: '150px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteProduct(_id)}>
@@ -281,7 +268,7 @@ const Productlist = () => {
         <div className="table-container">
             <h3 className="font-semibold">Danh sách sản phẩm </h3>
             <div className="mt-2 p-2 flex ">
-                <select
+                {/* <select
                     id="small"
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
@@ -308,7 +295,7 @@ const Productlist = () => {
                             {brand.brand_name}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <select
                     id="small"
                     value={selectedPriceFilter}
@@ -317,10 +304,10 @@ const Productlist = () => {
                 //...
                 >
                     <option value="all">Tất cả giá</option>
-                    <option value="100000-1000000">100.000-1.000.000</option>
-                    <option value="1000000-5000000">1.000.0000-5.000.000</option>
-                    <option value="5000000-10000000">5.000.000-10.000.000</option>
-                    <option value="10000000+">10.000.000+</option>
+                    <option value="100000-1000000">100.000 - 1.000.000₫</option>
+                    <option value="1000000-5000000">1.000.0000 - 5.000.000₫</option>
+                    <option value="5000000-10000000">5.000.000 - 10.000.000₫</option>
+                    <option value="10000000+">10.000.000₫+</option>
                 </select>
             </div>
             <div className="flex overflow-x-auto drop-shadow-xl rounded-lg items-center">

@@ -1639,10 +1639,18 @@ p {
 
 .swiper-button-prev {
     margin-top: 24px;
-    margin-left: -10px;
+    margin-left: -5px;
 }
 
 .swiper-button-next {
     margin-top: 24px;
-    margin-left: -10px;
+    margin-right: 5px;
+}
+
+.category .swiper-button-prev {
+    margin-left: 5px;
+}
+
+.category .swiper-button-next {
+    margin-right: 5px;
 }

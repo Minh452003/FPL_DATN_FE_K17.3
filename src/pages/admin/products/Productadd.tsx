@@ -201,7 +201,7 @@ const Productadd = () => {
                         >
                             <Select >
                                 {categories && categories?.category.docs?.map((category: any) => {
-                                    return <Select.Option key={category?._id} value={category._id}>{category.category_name}</Select.Option>
+                                    return <Select.Option key={category?._id} value={category._id}>{category?.category_name}</Select.Option>
                                 })}
                             </Select>
                         </Form.Item>
@@ -216,14 +216,14 @@ const Productadd = () => {
                         >
                             <Select >
                                 {brands && brands?.brand?.map((brand: any) => {
-                                    return <Select.Option key={brand?._id} value={brand._id}>{brand.brand_name}</Select.Option>
+                                    return <Select.Option key={brand?._id} value={brand._id}>{brand?.brand_name}</Select.Option>
                                 })}
                             </Select>
                         </Form.Item>
                         <Form.Item
                             label="Vật liệu"
                             name="materialId"
-                            rules={[{ required: true, message: 'Chất liệu không được để trống!' }]}
+                            rules={[{ required: true, message: 'Vật liệu không được để trống!' }]}
                             hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
@@ -231,7 +231,7 @@ const Productadd = () => {
                         >
                             <Select >
                                 {materials && materials?.material?.map((mate: any) => {
-                                    return <Select.Option key={mate?._id} value={mate._id}>{mate.material_name}</Select.Option>
+                                    return <Select.Option key={mate?._id} value={mate._id}>{mate?.material_name}</Select.Option>
                                 })}
                             </Select>
                         </Form.Item>
@@ -241,7 +241,6 @@ const Productadd = () => {
                             name="description"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Mô tả không được để trống!' }]}
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >

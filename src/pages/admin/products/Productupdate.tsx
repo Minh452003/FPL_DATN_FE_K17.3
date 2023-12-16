@@ -167,7 +167,7 @@ const Productupdate = () => {
             <div className="row">
                 <div className="card-body">
                     <h5 className="card-title fw-semibold mb-4 pl-5  text-3xl">
-                        Cập nhật Sản Phẩm
+                        Cập Nhật Sản Phẩm
                     </h5>
                     <Form
                         form={form}
@@ -282,7 +282,7 @@ const Productupdate = () => {
                                     categories?.category.docs?.map((category: ICategory) => {
                                         return (
                                             <Select.Option key={category?._id} value={category._id}>
-                                                {category.category_name}
+                                                {category?.category_name}
                                             </Select.Option>
                                         );
                                     })}
@@ -304,7 +304,7 @@ const Productupdate = () => {
                                     brands?.brand?.map((brand: IBrand) => {
                                         return (
                                             <Select.Option key={brand?._id} value={brand._id}>
-                                                {brand.brand_name}
+                                                {brand?.brand_name}
                                             </Select.Option>
                                         );
                                     })}
@@ -324,7 +324,7 @@ const Productupdate = () => {
                                     materials?.material?.map((mate: IMaterials) => {
                                         return (
                                             <Select.Option key={mate?._id} value={mate._id}>
-                                                {mate.material_name}
+                                                {mate?.material_name}
                                             </Select.Option>
                                         );
                                     })}
@@ -336,7 +336,6 @@ const Productupdate = () => {
                             name="description"
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
-                            rules={[{ required: true, message: 'Mô tả không được để trống!' }]}
                             hasFeedback
                             style={{ marginLeft: '20px' }}
                         >

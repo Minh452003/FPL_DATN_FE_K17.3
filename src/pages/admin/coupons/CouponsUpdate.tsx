@@ -165,7 +165,7 @@ const CouponsUpdate = () => {
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: '20px' }}
             >
-              <Input />
+              <Input disabled />
             </Form.Item>
 
             <Form.Item<FieldType>
@@ -207,7 +207,7 @@ const CouponsUpdate = () => {
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Số tiền chiết khấu"
+              label="Phần trăm giảm giá (%)"
               name="discount_amount"
               rules={[{ required: true, message: 'Số tiền chiết khấu không được để trống!' },
               { validator: validatePositiveNumber },

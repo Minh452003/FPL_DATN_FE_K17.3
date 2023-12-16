@@ -164,13 +164,6 @@ const ProductCustom = ({ products }: any) => {
                             </div>
                         </div>
                         <div style={{ display: 'flex', marginTop: '10px' }}>
-                            {/* <input
-                                className="btn4 btn-solid-primary4 w-[100px] h-[10px] btn-d mn"
-                                aria-live="assertive"
-                                aria-valuenow={1}
-                                value={products?.stock_quantity}
-                                readOnly
-                            /> */}
                             <button
                                 aria-label="Decrease"
                                 className="btn3s btn-solid-primary5s btn-4cs"

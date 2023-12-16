@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import Model from './Model';
 
 const ProductList = () => {
-  const { data: categories }: any = useGetCategoryQuery();
+  const { data: categories, isLoading: isLoadingCate }: any = useGetCategoryQuery();
   const { data: products, error, isLoading: isLoadingFetching }: any = useGetProductsQuery();
   const [slidesPerView, setSlidesPerView] = useState(1);
 
@@ -33,6 +33,9 @@ const ProductList = () => {
   }, []);
 
   const formatCurrency = (number: number) => {
+    if (typeof number !== 'number') {
+      return '0';
+    }
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
@@ -43,6 +46,7 @@ const ProductList = () => {
     });
   };
 
+  if (isLoadingCate) return <Skeleton />;
   if (isLoadingFetching) return <Skeleton />;
   if (error) {
     if ("data" in error && "status" in error) {
@@ -95,7 +99,7 @@ const ProductList = () => {
                   <div className="slider-items-products bg-none">
                     <div className="new_title  lt clear_pd" style={{ background: "none" }}>
                       <h4>
-                        <Link to={`/category/${category._id}`} title={category.category_name}>
+                        <Link to={`/category/${category._id}`} title={category?.category_name}>
                           {category.category_name}
                         </Link>
                       </h4>
@@ -104,7 +108,7 @@ const ProductList = () => {
                       <div className="sock_slide slider-items slick_margin slick-initialized slick-slider">
                         <Swiper
                           slidesPerView={slidesPerView}
-                          navigation={false}
+                          navigation={true}
                           spaceBetween={40}
                           modules={[Navigation]}
                         >
@@ -118,7 +122,7 @@ const ProductList = () => {
                                 transform: "translate3d(0px, 0px, 0px)",
                               }}
                             >
-                              {categoryProducts.map((product: any, index: number) => (
+                              {categoryProducts?.map((product: any, index: number) => (
                                 <SwiperSlide key={product._id}>
                                   <div
                                     className="item slick-slide slick-current slick-active"
@@ -136,13 +140,13 @@ const ProductList = () => {
                                             <Link
                                               to={`/products/${product._id}`}
                                               className="thumb flip"
-                                              title={product.product_name}
+                                              title={product?.product_name}
                                               tabIndex={0}
                                             >
                                               <img
                                                 className="lazyload loaded"
-                                                src={product.image[0]?.url}
-                                                alt={product.product_name}
+                                                src={product?.image[0]?.url}
+                                                alt={product?.product_name}
                                               />
                                             </Link>
                                           </div>
@@ -153,10 +157,10 @@ const ProductList = () => {
                                               {" "}
                                               <Link
                                                 to={`/products/${product._id}`}
-                                                title={product.product_name}
+                                                title={product?.product_name}
                                                 tabIndex={0}
                                               >
-                                                {product.product_name}
+                                                {product?.product_name}
                                               </Link>{" "}
                                             </h3>
                                             <div className="item-content">
@@ -165,7 +169,7 @@ const ProductList = () => {
                                                   <span className="regular-price">
                                                     {" "}
                                                     <span className="price">
-                                                      {formatCurrency(product.product_price)}₫
+                                                      {formatCurrency(product?.product_price)}₫
                                                     </span>{" "}
                                                   </span>
                                                 </div>

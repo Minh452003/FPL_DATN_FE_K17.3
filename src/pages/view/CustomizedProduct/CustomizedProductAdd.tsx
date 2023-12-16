@@ -232,7 +232,7 @@ const CustomizedProductAdd = () => {
                 <p>Màu sắc</p>
                 <div className="flex flex-wrap">
                   {colors ? (
-                    colors.color
+                    colors?.color
                       .slice(0, showAllColors ? colors.color.length : 3)
                       .map((color: any) => {
                         const isActive = color._id === activeColor;
@@ -245,7 +245,7 @@ const CustomizedProductAdd = () => {
                                 }`}
                               onClick={() => handleClickColor(color._id)}
                             >
-                              {color.colors_name}
+                              {color?.colors_name}
                             </button>
                           </div>
                         );
@@ -254,7 +254,7 @@ const CustomizedProductAdd = () => {
                     <p className="sp2s">Không có màu</p>
                   )}
                 </div>
-                {colors && colors.color.length > 3 && (
+                {colors && colors?.color?.length > 3 && (
                   <button
                     onClick={handleToggleColors}
                     className={`btn-show-more flex items-center ${showAllColors ? "collapses" : "expand"}`}
@@ -270,8 +270,8 @@ const CustomizedProductAdd = () => {
                 <p>Kích thước</p>
                 <div className="flex flex-wrap">
                   {sizes ? (
-                    sizes.size
-                      .slice(0, showAllSizes ? sizes.size.length : 3)
+                    sizes?.size
+                      .slice(0, showAllSizes ? sizes?.size?.length : 3)
                       .map((size: any) => {
                         const isActive = size._id === activeSize;
                         return (
@@ -283,7 +283,7 @@ const CustomizedProductAdd = () => {
                                 }`}
                               onClick={() => handleClickSize(size._id)}
                             >
-                              {size.size_name}
+                              {size?.size_name}
                             </button>
                           </div>
                         );
@@ -291,7 +291,7 @@ const CustomizedProductAdd = () => {
                   ) : (
                     <p className="sp2s">Không có kích thước</p>
                   )}
-                  {sizes && sizes.size.length > 3 && (
+                  {sizes && sizes?.size?.length > 3 && (
                     <button
                       onClick={() => setShowAllSizes(!showAllSizes)}
                       className={`btn-show-more flex items-center ${showAllColors ? "collapses" : "expand"}`}
@@ -311,10 +311,10 @@ const CustomizedProductAdd = () => {
                 <p>Nguyên vật liệu</p>
                 <div className="flex flex-wrap">
                   {materials ? (
-                    materials.material
+                    materials?.material
                       .slice(
                         0,
-                        showAllMaterials ? materials.material.length : 3
+                        showAllMaterials ? materials?.material?.length : 3
                       )
                       .map((material: any) => {
                         const isActive = material._id === activeMaterial;
@@ -327,7 +327,7 @@ const CustomizedProductAdd = () => {
                                 }`}
                               onClick={() => handleClickMaterial(material._id)}
                             >
-                              {material.material_name}
+                              {material?.material_name}
                             </button>
                           </div>
                         );

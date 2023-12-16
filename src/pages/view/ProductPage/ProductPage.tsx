@@ -124,9 +124,9 @@ const ProductPage = () => {
         </div>
         <div className="py-3">Sản Phẩm</div>
       </div>
-      <div className=" py-3 text-xl font-bold">
+      {/* <div className=" py-3 text-xl font-bold">
         Giúp bạn tìm sản phẩm nhanh hơn
-      </div>
+      </div> */}
       <div className="mt-2 py-3 md:flex ">
         <select
           id="small"
@@ -164,10 +164,10 @@ const ProductPage = () => {
         //...
         >
           <option value="all">Tất cả giá</option>
-          <option value="100000-1000000">100.000-1.000.000</option>
-          <option value="1000000-5000000">1.000.0000-5.000.000</option>
-          <option value="5000000-10000000">5.000.000-10.000.000</option>
-          <option value="10000000+">10.000.000+</option>
+          <option value="100000-1000000">100.000 - 1.000.000₫</option>
+          <option value="1000000-5000000">1.000.0000 - 5.000.000₫</option>
+          <option value="5000000-10000000">5.000.000 - 10.000.000₫</option>
+          <option value="10000000+">10.000.000₫+</option>
         </select>
       </div>
       <div>

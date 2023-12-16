@@ -46,10 +46,10 @@ const Categories = () => {
     return (
         <section className="cate-pro">
             <div className="container">
-                <div className="row">
+                <div className="row category">
                     <Swiper
                         slidesPerView={slidesPerView}
-                        navigation={false}
+                        navigation={true}
                         spaceBetween={53}
                         modules={[Navigation]}
                     >

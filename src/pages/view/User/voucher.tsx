@@ -32,7 +32,7 @@ const Voucher = () => {
     } else if (type === "endingSoon") {
       const endingSoonCoupons = couponLish.filter(
         (couponItem: any) =>
-          new Date(couponItem.expiration_date).getTime() - Date.now() <= 1 * 24 * 60 * 60 * 1000 // Lọc các voucher còn 1 ngày hoặc ít hơn
+          new Date(couponItem.expiration_date).getTime() - Date.now() <= 2 * 24 * 60 * 60 * 1000 // Lọc các voucher còn 1 ngày hoặc ít hơn
       );
       setFilteredCoupons(endingSoonCoupons);
     }
