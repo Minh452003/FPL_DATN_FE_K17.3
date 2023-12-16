@@ -128,7 +128,7 @@ const Model = ({ products }: any) => {
           setIsModalOpen(false);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           // Hiển thị thông báo hủy thêm vào giỏ hàng
-          toast.info("Huỷ Sản phẩm không được thêm vào giỏ hàng ");
+          toast.info("Sản phẩm không được thêm vào giỏ hàng ");
         }
       }
     } catch (error: any) {
@@ -157,8 +157,7 @@ const Model = ({ products }: any) => {
   };
   const formatCurrency = (number: number) => {
     if (typeof number !== 'number') {
-      // Xử lý khi number không phải là số
-      return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+      return '0';
     }
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -212,7 +211,7 @@ const Model = ({ products }: any) => {
                       aria-disabled="false"
                       onClick={() => handleClickColor(color.colorId)}
                     >
-                      {colorname.colors_name}
+                      {colorname?.colors_name}
                     </button>
                   );
                 })
@@ -237,7 +236,7 @@ const Model = ({ products }: any) => {
                       aria-disabled="false"
                       onClick={() => handleClickSize(size.sizeId)}
                     >
-                      {sizesname.size_name}
+                      {sizesname?.size_name}
                     </button>
                   );
                 })

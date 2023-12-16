@@ -56,8 +56,7 @@ const CouponsList = () => {
     );
     const formatCurrency = (number: number) => {
         if (typeof number !== 'number') {
-            // Xử lý khi number không phải là số
-            return '0'; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
+            return '0';
         }
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
@@ -126,7 +125,7 @@ const CouponsList = () => {
             ellipsis: true,
         },
         {
-            title: 'Chiết khấu',
+            title: 'Phần trăm giảm giá (%)',
             width: 120,
             dataIndex: 'discount_amount',
             key: 'discount_amount',

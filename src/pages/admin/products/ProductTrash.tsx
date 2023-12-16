@@ -66,7 +66,7 @@ const ProductTrash = () => {
                     toast.success(`${data.message}`);
                 }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                toast.info('Hủy xoá Sản phẩm');
+                toast.info('Hủy xoá sản phẩm');
             }
         } catch (error: any) {
             toast.error(error.message);
@@ -92,7 +92,7 @@ const ProductTrash = () => {
                     toast.success(`${data.message}`);
                 }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                toast.info('Hủy Khôi Phục sản phẩm');
+                toast.info('Hủy khôi phục sản phẩm');
             }
         } catch (error: any) {
             toast.error(error.message);
@@ -107,7 +107,7 @@ const ProductTrash = () => {
             render: (index: string) => <a>{index}</a>,
         },
         {
-            title: 'Name',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
             render: (text: string) => <a>{text}</a>,
@@ -127,6 +127,7 @@ const ProductTrash = () => {
             title: 'Đã bán',
             dataIndex: 'quantity',
             key: 'quantity',
+            width: 100,
             render: (text: number) => <a>{text}</a>,
         },
         {
@@ -143,6 +144,7 @@ const ProductTrash = () => {
             title: 'Chất liệu',
             dataIndex: 'materials',
             key: 'materials',
+            width: 120,
             render: (record: string) => {
                 const materialname = material?.find((materials: IMaterials) => materials._id === record);
                 return materialname?.material_name;
@@ -161,7 +163,7 @@ const ProductTrash = () => {
         {
             title: 'Chức năng',
             render: ({ key: _id }: any) => (
-                <div style={{ width: '150px' }}>
+                <div style={{ width: '100px' }}>
                     <Button className='mr-1 text-red-500' onClick={() => deleteProduct(_id)}>
                         {isRemoveLoading ? (
                             <AiOutlineLoading3Quarters className="animate-spin" />

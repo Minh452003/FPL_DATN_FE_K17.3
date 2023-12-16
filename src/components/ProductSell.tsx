@@ -13,7 +13,6 @@ const ProductSell = () => {
     const { data: products, error, isLoading: isLoadingFetching }: any = useGetProductSellQuery();
 
     useEffect(() => {
-        // Xác định kích thước màn hình và cài đặt slidesPerView dựa trên kích thước
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setSlidesPerView(4); // Đối với laptop và màn hình lớn hơn
@@ -32,8 +31,11 @@ const ProductSell = () => {
     }, []);
 
     const formatCurrency = (number: number) => {
+        if (typeof number !== 'number') {
+            return '0';
+        }
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
+    };
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -70,7 +72,7 @@ const ProductSell = () => {
 
                         <Swiper
                             slidesPerView={slidesPerView}
-                            navigation={false}
+                            navigation={true}
                             spaceBetween={40}
                             modules={[Navigation]}
                         >
@@ -136,7 +138,7 @@ const ProductSell = () => {
                                                                                 <span className="regular-price">
                                                                                     {" "}
                                                                                     <span className="price">
-                                                                                        {formatCurrency(product.product_price)}₫
+                                                                                        {formatCurrency(product?.product_price)}₫
                                                                                     </span>{" "}
                                                                                 </span>
                                                                             </div>

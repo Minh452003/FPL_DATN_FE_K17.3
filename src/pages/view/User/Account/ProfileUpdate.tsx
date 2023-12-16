@@ -216,28 +216,28 @@ const ProfileUpdate = () => {
               <Input />
             </Form.Item>
             <Form.Item<FieldType>
-              label="First Name"
+              label="Họ"
               name="first_name"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: "20px" }}
               rules={[
-                { required: true, message: "Please input your first name!" },
-                { whitespace: true, message: "Cannot be only whitespace!" },
+                { required: true, message: "Vui lòng nhập họ!" },
+                { whitespace: true, message: "Không thể nhập khoảng trắng!" },
               ]}
             >
               <Input />
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Last Name"
+              label="Tên"
               name="last_name"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: "20px" }}
               rules={[
-                { required: true, message: "Please input your last name!" },
-                { whitespace: true, message: "Cannot be only whitespace!" }
+                { required: true, message: "Vui lòng nhập tên!" },
+                { whitespace: true, message: "Không thể nhập khoảng trắng!" }
               ]}
             >
               <Input />
@@ -248,12 +248,12 @@ const ProfileUpdate = () => {
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{ marginLeft: "20px" }}
-              rules={[{ required: true, message: "Please input your Email!" }]}
+              rules={[{ required: true, message: "Vui lòng nhập email!" }]}
             >
               <Input disabled />
             </Form.Item>
             <Form.Item
-              label="Phone"
+              label="Số điện thoại"
               name="phone"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
@@ -272,11 +272,9 @@ const ProfileUpdate = () => {
             >
               <Input />
             </Form.Item>
-
             <Form.Item
               name={["address", "street"]}
               style={{ marginBottom: 20, marginLeft: "20px" }}
-
               rules={[
                 { required: true, message: "Thành phố không được để trống" },
               ]}
@@ -356,7 +354,7 @@ const ProfileUpdate = () => {
               style={{ marginLeft: "20px" }}
               id="avatar"
               name="avatar"
-              label="Ảnh"
+              label="Ảnh đại diện"
               rules={[
                 { required: true, message: "Trường ảnh không được để trống" },
               ]}
@@ -391,7 +389,7 @@ const ProfileUpdate = () => {
                     <img
                       src={user.avatar.url}
                       alt="Ảnh danh mục hiện tại"
-                      style={{ maxWidth: "100px" }}
+                      style={{ maxWidth: "100px", maxHeight: '100px' }}
                     />
                   </div>
                 )}

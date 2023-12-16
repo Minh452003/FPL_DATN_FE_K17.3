@@ -44,19 +44,19 @@ const ContactList = () => {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Vâng, tôi chắc chắn!',
                 cancelButtonText: 'Huỷ',
-              });
-              if(result.isConfirmed){
-                const data :any = await  removeContact(id).unwrap();
-                if(data){
-                  toast.success(`${data.message}`)
+            });
+            if (result.isConfirmed) {
+                const data: any = await removeContact(id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`)
                 }
-              }else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
                 toast.info('Hủy xóa liên hệ  ');
-              }
-        } catch (error:any) {
+            }
+        } catch (error: any) {
             toast.error(error.data.message);
         }
-      
+
     };
 
     const columns = [
@@ -89,7 +89,7 @@ const ContactList = () => {
             key: 'contact_phone',
         },
         {
-            title: 'Mô tả',
+            title: 'Góp ý',
             width: 200,
             dataIndex: 'contact_description',
             key: 'contact_description',
@@ -114,12 +114,12 @@ const ContactList = () => {
     ];
     const filteredData = datacontact?.filter((item: any) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();
-    
+
         const lowerCaseContactEmail = item.contact_email.toLowerCase().trim();
         const lowerCaseContactName = item.contact_name.toLowerCase().trim();
         const lowerCaseContactPhone = item.contact_phone.toLowerCase().trim();
         const lowerCaseContactDescription = item.contact_description.toLowerCase().trim();
-    
+
         return (
             lowerCaseContactEmail.includes(lowerCaseSearchText) ||
             lowerCaseContactName.includes(lowerCaseSearchText) ||

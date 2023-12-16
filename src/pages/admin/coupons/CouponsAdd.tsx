@@ -104,38 +104,6 @@ const CouponsAdd = () => {
                         >
                             <Input />
                         </Form.Item>
-
-                        <Form.Item<FieldType>
-                            label="Mã phiếu giảm giá"
-                            name="coupon_code"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Mã phiếu giảm giá không được để trống!',
-                                },
-                                {
-                                    validator: (_, value) => {
-                                        if (!value) {
-                                            return Promise.resolve();
-                                        }
-                                        if (/ {2,}/.test(value)) {
-                                            return Promise.reject(
-                                                'Không được nhập liên tiếp các khoảng trắng!',
-                                            );
-                                        }
-                                        return Promise.resolve();
-                                    },
-                                },
-                                { min: 2, message: 'Nhập ít nhất 2 ký tự' },
-                            ]}
-                            hasFeedback
-                            labelCol={{ span: 24 }}
-                            wrapperCol={{ span: 24 }}
-                            style={{ marginLeft: '20px' }}
-                        >
-                            <Input />
-                        </Form.Item>
-
                         <Form.Item<FieldType>
                             label="Nội dung phiếu giảm giá"
                             name="coupon_content"
@@ -186,7 +154,7 @@ const CouponsAdd = () => {
                         </Form.Item>
 
                         <Form.Item<FieldType>
-                            label="Số tiền chiết khấu"
+                            label="Phần trăm giảm giá (%)"
                             name="discount_amount"
                             rules={[
                                 {
@@ -238,7 +206,6 @@ const CouponsAdd = () => {
                                 { validator: validatePositiveNumber },
                                 { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
                             ]}
-                            hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}
                             style={{ marginLeft: '20px' }}

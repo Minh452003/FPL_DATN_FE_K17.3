@@ -33,7 +33,7 @@ const Userlist = () => {
                 ) : (
                     <Image width={40} height={40} src={'https://static.thenounproject.com/png/363640-200.png'} />
                 ),
-                role: user.role,
+                role: <p>{user.role === 'member' ? 'Khách hàng' : user.role === 'admin' ? 'Quản trị' : ''}</p>,
             };
         });
     const columns = [
@@ -48,7 +48,7 @@ const Userlist = () => {
             width: 90,
         },
         {
-            title: 'Name',
+            title: 'Họ và tên',
             dataIndex: 'name',
             key: 'name',
             width: 170,
@@ -88,21 +88,20 @@ const Userlist = () => {
             title: 'Chức vụ',
             dataIndex: 'role',
             key: 'role',
-            width: 100,
+            width: 120,
             filters: [
-                { text: 'Admin', value: 'admin' },
-                { text: 'Member', value: 'member' },
+                { text: 'Quản trị', value: 'admin' },
+                { text: 'Khách hàng', value: 'member' },
             ],
             filterSearch: true,
             onFilter: (value: string | number | boolean, record: any) => record.role.startsWith(value),
-
         },
         {
             title: 'Chức năng',
             width: 110,
             render: ({ key: _id }: any) => {
                 return (
-                    <div style={{ width: '150px' }}>
+                    <div style={{ width: '110px' }}>
                         <Button className="mr-1 text-blue-500">
                             <Link to={`/admin/users/edit/${_id}`}>
                                 <FaWrench />

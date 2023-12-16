@@ -128,10 +128,10 @@ const ListproductChill = () => {
       render: (price: any) => <p className="text-red-700">{formatCurrency(price)}₫</p>
     },
     {
-      title: 'Số lượng',
+      title: 'Số hàng tồn',
       dataIndex: 'quantity',
       key: 'quantity',
-      width: 120,
+      width: 170,
       render: (text: any) => <a>{text}</a>,
     },
     {

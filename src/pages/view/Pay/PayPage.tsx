@@ -329,7 +329,7 @@ const PayPage = () => {
             try {
                 Swal.fire({
                     title: 'Bạn chắc chứ?',
-                    text: 'Đơn hàng này sẽ được đặt!',
+                    text: 'Khi thanh toán bằng momo sẽ không huỷ được!',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -365,7 +365,7 @@ const PayPage = () => {
             try {
                 Swal.fire({
                     title: 'Bạn chắc chứ?',
-                    text: 'Đơn hàng này sẽ được đặt!',
+                    text: 'Khi thanh toán bằng paypal sẽ không huỷ được!',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',

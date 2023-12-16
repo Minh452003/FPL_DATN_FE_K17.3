@@ -5,14 +5,15 @@ import { Navigation } from 'swiper/modules';
 import { Autoplay } from 'swiper/modules';
 import { HiArrowSmLeft, HiArrowSmRight } from 'react-icons/hi';
 import { useGetBannerQuery } from '@/api/bannerApi';
+import { Skeleton } from 'antd';
 
 const Homeslides = () => {
-  const { data } = useGetBannerQuery<any>();
+  const { data, isLoading: isLoadingBanner } = useGetBannerQuery<any>();
   const listBanner = data?.banner.docs;
 
+  if (isLoadingBanner) return <Skeleton />;
   return (
     <div>
-
       <Swiper
         className='relative group'
         spaceBetween={50}
@@ -28,10 +29,10 @@ const Homeslides = () => {
         }}
         loop={true} // Enable loop
       >
-        {listBanner && listBanner.map((items: any, index: number) => (
+        {listBanner && listBanner?.map((items: any, index: number) => (
           <SwiperSlide key={index}>
             <div className="image">
-              <img src={items.image.url} alt=""
+              <img src={items?.image?.url} alt=""
                 className='w-[100%]' />
             </div>
           </SwiperSlide>

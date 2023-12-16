@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 const Footer = () => {
   return (
@@ -7,46 +8,76 @@ const Footer = () => {
           <div >
             <ul className=" space-y-2 text-sm pl-0">
               <h2 className="text-white font-bold text-base">Chính sách đổi trả</h2>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Chính sách đổi trả</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Chính sách vẫn chuyển</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Chính sách bảo hành </a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Chính sách trả góp </a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Chính sách Mua hàng</a></li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Chính sách đổi trả</Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Chính sách vẫn chuyển</Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Chính sách bảo hành </Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Chính sách trả góp </Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Chính sách Mua hàng</Link>
+              </li>
             </ul>
           </div>
           <div >
             <ul className="text-white space-y-2 pl-0 text-sm ">
               <h2 className="text-white font-bold text-base">Kênh bán hàng</h2>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Zalo</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Shoppe</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Lazada </a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Tiki</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Tiktok</a></li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Zalo</Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Shoppe</Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Lazada </Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Tiki</Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Tiktok</Link>
+              </li>
             </ul>
           </div>
           <div>
             <ul className="text-white space-y-2 pl-0 text-sm">
               <h2 className="text-white font-bold text-base">Về chúng tôi</h2>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Trang chủ</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Sản Phẩm</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Tin tức </a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Giới Thiệu</a></li>
-              <li><a className=" text-slate-50 hover:text-[#ff7600] no-underline" href="">Liên hệ </a></li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Trang chủ</Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Sản Phẩm</Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Tin tức </Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Giới Thiệu</Link>
+              </li>
+              <li>
+                <Link to={''} className=" text-slate-50 hover:text-[#ff7600] no-underline" >Liên hệ </Link>
+              </li>
             </ul>
           </div>
           <div className="space-y-3 pl-0" >
             <h2 className="text-white font-bold text-base">Liên hệ </h2>
             <div className="flex">
               <div><img src="	https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/on-maps.png?1693834920118" alt="" /></div>
-              <a href="" className="text-white ml-2 text-sm">Ladeco Building, 266 Doi Can Street, Ba Dinh District, Hanoi.</a>
+              <Link to={''} className="text-white ml-2 text-sm">Ladeco Building, 266 Doi Can Street, Ba Dinh District, Hanoi.</Link>
             </div>
             <div className="flex">
               <div><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/old-phone.png?1693834920118" alt="" /></div>
-              <a href="" className="text-white ml-2 text-sm">1900 6750</a>
+              <Link to={''} className="text-white ml-2 text-sm">1900 6750</Link>
             </div>
             <div className="flex ">
               <div><img src="https://bizweb.dktcdn.net/100/368/970/themes/740033/assets/email-envelope.png?1693834920118" alt="" /></div>
-              <a href="" className="text-white ml-2 text-sm">casanoithat@gmail.com</a>
+              <Link to={''} className="text-white ml-2 text-sm">casanoithat@gmail.com</Link>
             </div>
 
           </div>

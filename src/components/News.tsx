@@ -2,15 +2,18 @@ import { useGetNewsQuery } from "@/api/newsApi";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import './New.css';
+import { Skeleton } from "antd";
 
 const NewsComponent = () => {
-  const { data }: any = useGetNewsQuery();
-  const initialVisibleItems = 6;
+  const { data, isLoading: isLoadingFetching }: any = useGetNewsQuery();
+  const initialVisibleItems = 3;
   const [visibleItems, setVisibleItems] = useState(initialVisibleItems);
 
   const handleToggle = () => {
-    setVisibleItems((prev) => (prev < data?.news?.docs.length ? data?.news?.docs.length : initialVisibleItems));
+    setVisibleItems((prev) => (prev === initialVisibleItems ? Math.min(6, data?.news?.docs.length) : initialVisibleItems));
   };
+
+  if (isLoadingFetching) return <Skeleton />;
 
   return (
     <div className="main-col5">
@@ -22,7 +25,7 @@ const NewsComponent = () => {
           >
             <h1>
               <a href="tin-tuc" title="Kiến thức Phong Thủy">
-                <span>Kiến thức Phong Thủy</span>
+                <span>Tin Tức Mới Nhất</span>
               </a>
             </h1>
           </div>

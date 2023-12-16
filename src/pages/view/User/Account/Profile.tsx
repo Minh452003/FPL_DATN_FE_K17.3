@@ -95,11 +95,9 @@ const Profile = () => {
                   </div>
                 </td>
               </tr>
-
             </table>
-            <button className=" bg-green-500 rounded py-2 px-4 ml-4 mt-4">
-              <Link to={"/user/profile/edit"} style={{ textDecoration: "none", color: "white" }}>Cập Nhật Hồ Sơ</Link>
-            </button>
+            <br />
+            <Link className="bg-green-500 rounded py-2 px-4 ml-4 mt-4" to={"/user/profile/edit"} style={{ textDecoration: "none", color: "white" }}>Cập Nhật Hồ Sơ</Link>
           </form>
         </div>
       </div>

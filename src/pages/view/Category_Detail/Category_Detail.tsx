@@ -47,7 +47,7 @@ const Category_Detail = () => {
       setCurrentPage(1);
     }
   }, [id]);
-  
+
   const formatCurrency = (number: number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -110,7 +110,7 @@ const Category_Detail = () => {
     }
   }
   console.log(filteredProducts);
-  
+
 
   return (
     <div>
@@ -174,10 +174,10 @@ const Category_Detail = () => {
             //...
             >
               <option value="all">Tất cả giá</option>
-              <option value="100000-1000000">100.000-1.000.000</option>
-              <option value="1000000-5000000">1.000.0000-5.000.000</option>
-              <option value="5000000-10000000">5.000.000-10.000.000</option>
-              <option value="10000000+">10.000.000+</option>
+              <option value="100000-1000000">100.000 - 1.000.000₫</option>
+              <option value="1000000-5000000">1.000.0000 - 5.000.000₫</option>
+              <option value="5000000-10000000">5.000.000 - 10.000.000₫</option>
+              <option value="10000000+">10.000.000₫+</option>
             </select>
           </div>
           <div>

@@ -494,7 +494,7 @@ const Product_Detail = () => {
                                                         }`}
                                                     onClick={() => handleClickColor(color.colorId)}
                                                 >
-                                                    {colorname.colors_name}
+                                                    {colorname?.colors_name}
                                                 </button>
                                             );
                                         })
@@ -522,7 +522,7 @@ const Product_Detail = () => {
                                                     onClick={() => handleClickSize(size.sizeId)}
                                                     type="submit"
                                                 >
-                                                    {sizesname.size_name}
+                                                    {sizesname?.size_name}
                                                 </button>
                                             );
                                         })
@@ -734,7 +734,7 @@ const Product_Detail = () => {
                                     <hr className="" />
                                     <div className=" md:py-3 md:px-5">
                                         {filteredComments && filteredComments?.length > 0 ? (
-                                            filteredComments.map((comment: any) => (
+                                            filteredComments?.map((comment: any) => (
                                                 <article
                                                     key={comment._id}
                                                     className="p-6 text-base rounded-lg "
@@ -800,7 +800,7 @@ const Product_Detail = () => {
                                                         <div className="star-rating">
                                                             {comment.rating &&
                                                                 Array.from(
-                                                                    { length: comment.rating },
+                                                                    { length: comment?.rating },
                                                                     (_, index) => (
                                                                         <AiFillStar
                                                                             key={index}
@@ -921,8 +921,8 @@ const Product_Detail = () => {
                                                                                                 className="lazyloads loadeds"
                                                                                                 src={
                                                                                                     similar
-                                                                                                        .image[0]
-                                                                                                        .url
+                                                                                                        ?.image[0]
+                                                                                                        ?.url
                                                                                                 }
                                                                                             />
                                                                                         </Link>
@@ -941,7 +941,7 @@ const Product_Detail = () => {
                                                                                                 }
                                                                                             >
                                                                                                 {
-                                                                                                    similar.product_name
+                                                                                                    similar?.product_name
                                                                                                 }{' '}
                                                                                             </Link>{' '}
                                                                                         </h3>

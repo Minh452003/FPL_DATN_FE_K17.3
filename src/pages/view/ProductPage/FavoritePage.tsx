@@ -31,7 +31,7 @@ const FavoritePage = () => {
         try {
             const result = await Swal.fire({
                 title: 'Bạn chắc chứ?',
-                text: 'Khi có thể vào thùng rác để khôi phục lại!',
+                text: 'Sản phẩm sẽ được xoá bỏ yêu thích!',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -45,7 +45,7 @@ const FavoritePage = () => {
                     toast.success(`${data.message}`);
                 }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                toast.info('Hủy xoá Sản phẩm');
+                toast.info('Hủy xoá sản phẩm yêu thích');
             }
         } catch (error: any) {
             toast.error(error.data.message);
