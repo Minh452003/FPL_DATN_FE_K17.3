@@ -13,8 +13,13 @@ const Bannerlist = () => {
   const banners = data?.banner?.docs;
   const [removeBanner, { isLoading: isRemoveLoading }] = useRemoveBannerMutation()
   const [sortedInfo, setSortedInfo] = useState({} as any);
-  const handleChange = (sorter: any) => {
+  const handleChange = (pagination: any, filters: any, sorter: any) => {
     setSortedInfo(sorter);
+    // eslint-disable-next-line no-constant-condition
+    if (false) {
+      console.log(pagination);
+      console.log(filters);
+    }
   };
 
   const bannerlist = banners?.map((banner: any, index: number) => {

@@ -3,8 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { HiSearch } from "react-icons/hi";
 import { Link } from 'react-router-dom';
 import "./Search.css";
-import { Skeleton } from "antd";
-
 const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const searchContainerRef: any = useRef(null);
@@ -20,7 +18,7 @@ const Search = () => {
       behavior: "smooth", // Cuộn mượt
     });
   };
-  const { data: searchProducts, isLoading: isLoadingFetching }: any = useSearchProductsQuery(searchKeyword);
+  const { data: searchProducts }: any = useSearchProductsQuery(searchKeyword);
 
   const formatCurrency = (number: number) => {
     if (typeof number !== 'number') {
@@ -45,8 +43,6 @@ const Search = () => {
       window.removeEventListener("scroll", handleResetSearch);
     };
   }, []);
-
-  if (isLoadingFetching) return <Skeleton />;
 
   return (
     <div ref={searchContainerRef}>

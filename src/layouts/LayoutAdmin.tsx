@@ -275,8 +275,7 @@ const LayoutAdmin = () => {
           </div>
 
 
-          <input type="checkbox" id="switch-mode" hidden />
-          <label htmlFor="switch-mode" className="switch-mode"></label>
+          {/* <input type="checkbox" id="switch-mode" hidden /> */}
           {/* <Link to="#" className="notification">
             <AiFillMessage />
             <span className="num">8</span>

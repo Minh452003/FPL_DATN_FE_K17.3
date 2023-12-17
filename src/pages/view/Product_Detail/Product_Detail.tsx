@@ -372,7 +372,8 @@ const Product_Detail = () => {
                                     >
                                         <img
                                             src={img?.url}
-                                            className="object-cover object-cover md:w-[250] md:h-[180]"
+                                            className=" object-cover md:w-[250] md:h-[180] "
+                                            style={{width: 600, height: 500}}
                                         />
                                     </div>
                                 ))}
