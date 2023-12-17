@@ -8,7 +8,7 @@ import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
 import { useGetSizeQuery } from '@/api/sizeApi';
 import { Table, Button, Input } from 'antd';
-import { FaTrashCan, FaCirclePlus, FaTrash } from 'react-icons/fa6';
+import { FaTrashCan, FaTrash } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Swal from 'sweetalert2';
@@ -109,7 +109,7 @@ const CustomProductslist = () => {
             key: 'user',
             render: (record: any) => {
                 const username = user?.find((cate: any) => cate._id === record);
-                return username?.first_name;
+                return `${username?.first_name} ${username?.last_name}`;
             },
         },
         {
@@ -227,13 +227,8 @@ const CustomProductslist = () => {
 
     return (
         <div className="container">
-            <h3 className="font-semibold">Danh sách sản phẩm Thiết kế</h3>
+            <h3 className="font-semibold">Danh sách sản phẩm người dùng thiết kế</h3>
             <div className="flex p-1">
-                <Button className="text-3xl text-blue-500">
-                    <Link to={'add'}>
-                        <FaCirclePlus style={{ fontSize: '24', display: 'block' }} />
-                    </Link>
-                </Button>
                 <Input
                     className="ml-4"
                     prefix={<IoSearchSharp style={{ opacity: 0.5 }} />}

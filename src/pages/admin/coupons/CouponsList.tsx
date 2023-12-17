@@ -64,7 +64,7 @@ const CouponsList = () => {
         try {
             const result = await Swal.fire({
                 title: 'Bạn chắc chứ?',
-                text: 'Danh mục sẽ bị xoá và không thể khôi phục!',
+                text: 'Phiếu giảm giá sẽ bị xoá và không thể khôi phục!',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

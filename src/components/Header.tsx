@@ -6,15 +6,14 @@ import { useGetUserByIdQuery } from "@/api/authApi";
 import { FiUsers } from "react-icons/fi";
 import { useGetCartsQuery } from "@/api/cartApi";
 import "./Header.css";
-import { Skeleton } from "antd";
 
 const Header = () => {
   const [isMenuHidden, setIsMenuHidden] = useState(false);
   const decodedToken: any = getDecodedAccessToken();
   const iduser = decodedToken ? decodedToken.id : null;
-  const { data: user, refetch, isLoading: isLoadingUser } = useGetUserByIdQuery(iduser);
+  const { data: user, refetch } = useGetUserByIdQuery(iduser);
   const navigate = useNavigate();
-  const { data: carts, isLoading: isLoadingFetching } = useGetCartsQuery(iduser);
+  const { data: carts } = useGetCartsQuery(iduser);
   const [cartItemCount, setCartItemCount] = useState(0);
   useEffect(() => {
     // Nếu dữ liệu giỏ hàng tồn tại, cập nhật số lượng sản phẩm
@@ -33,9 +32,6 @@ const Header = () => {
     })
     refetch()
   };
-
-  if (isLoadingFetching) return <Skeleton />;
-  if (isLoadingUser) return <Skeleton />;
 
   return (
     <div>
@@ -135,7 +131,7 @@ const Header = () => {
                         />
                       </div>
                       <ul
-                        className={`hidden group-hover:block absolute  absolute z-50 w-[180px] bg-white right-[-50px] top-[10px] mt-[30px] `}
+                        className={`hidden group-hover:block absolute  z-50 w-[180px] bg-white right-[-50px] top-[10px] mt-[30px] `}
                       >
                         {user.role === "admin" ? (
                           <li>

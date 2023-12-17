@@ -133,7 +133,7 @@ const PayPage = () => {
             setFields();
             setTotal(carts?.data?.total);
         }
-    }, [user, total]);
+    }, [user, total, carts?.data?.total]);
 
     const handleCityChange = async (value: any, option: any) => {
         if (false) {
@@ -277,7 +277,6 @@ const PayPage = () => {
                 }
             } else {
                 try {
-                    cartDataWithoutId.total = carts.data.total + ship.total;
                     const result = await Swal.fire({
                         title: "Bạn chắc chứ?",
                         text: "Đơn hàng này sẽ được đặt!",
@@ -447,6 +446,7 @@ const PayPage = () => {
             const response: any = await removeCoupon({ userId: id, data: {} });
             if (response) {
                 toast.success(response.data.message);
+                setTotal(response.data.total);
             }
             setIsModalOpen(false);
         } catch (error: any) {
@@ -875,12 +875,12 @@ const PayPage = () => {
                                 <div className="container w-auto h-24" key={product._id}>
                                     <img
                                         className="w-16 h-16 ml-2 mr-2 rounded float-left"
-                                        src={product.image}
+                                        src={product?.image}
                                         width={50}
                                     />
                                     <div className="container-2">
                                         <div className="text-xs float-left w-52 font-semibold">
-                                            {product.product_name}
+                                            {product?.product_name}
                                         </div>
                                         <div
                                             className="text-sm float-left  font-semibold"
@@ -889,25 +889,25 @@ const PayPage = () => {
                                                 color: '#f30c28',
                                             }}
                                         >
-                                            {formatCurrency(product.product_price)}₫
+                                            {formatCurrency(product?.product_price)}₫
                                         </div>
                                         <p className="float-right text-xs ml-10 mr-1">
-                                            x{product.stock_quantity}
+                                            x{product?.stock_quantity}
                                         </p>
                                     </div>
                                     <div className="col-span-2 flex ef">
                                         <div className="text-xs">
-                                            Màu sắc: {colorname.colors_name}
+                                            Màu sắc: {colorname?.colors_name}
                                         </div>
                                     </div>
                                     <div className="col-span-2 flex ef">
                                         <div className="text-xs">
-                                            Kích cỡ: {sizesname.size_name}{' '}
+                                            Kích cỡ: {sizesname?.size_name}{' '}
                                         </div>
                                     </div>
                                     <div className="col-span-2 flex ef">
                                         <div className="text-xs">
-                                            Chất liệu: {materialsname.material_name}{' '}
+                                            Chất liệu: {materialsname?.material_name}{' '}
                                         </div>
                                     </div>
                                 </div>

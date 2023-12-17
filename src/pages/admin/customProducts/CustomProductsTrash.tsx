@@ -28,7 +28,7 @@ const CustomProductsTrash = () => {
     try {
       const result = await Swal.fire({
         title: 'Bạn chắc chứ?',
-        text: 'Khi xóa Không thể khôi phục lại ',
+        text: 'Sản phẩm sẽ được xoá vĩnh viễn',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -54,7 +54,7 @@ const CustomProductsTrash = () => {
     try {
       const result = await Swal.fire({
         title: 'Bạn chắc chứ?',
-        text: 'Khi xóa Không thể khôi phục lại ',
+        text: 'Bạn có chắc muốn khôi phục sản phẩm này chứ?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -69,7 +69,7 @@ const CustomProductsTrash = () => {
           toast.success(`${data.message}`);
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        toast.info('Đã hủy khôi phục Sản phẩm ');
+        toast.info('Sản phẩm chưa được khôi phục');
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -120,7 +120,7 @@ const CustomProductsTrash = () => {
       key: 'user',
       render: (record: any) => {
         const username = user?.find((cate: any) => cate._id === record);
-        return username?.first_name;
+        return `${username?.first_name} ${username?.last_name}`;
       }
     },
     {
