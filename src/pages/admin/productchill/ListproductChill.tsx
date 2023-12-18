@@ -161,7 +161,7 @@ const ListproductChill = () => {
           <h3 className="product-name">{productData?.product?.product_name}</h3>
           <p className="product-price">{formatCurrency(productData?.product?.product_price)}đ</p>
           <p className="product-category">Danh mục: {categoryLishOne}</p>
-          <p className="product-material">Chất liệu: {materialLishOne}</p>
+          <p className="product-material">Vật liệu: {materialLishOne}</p>
         </div>
         <div className="product-image">
           <img src={productData?.product?.image[0]?.url} alt="Product" />

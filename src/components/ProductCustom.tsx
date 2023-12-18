@@ -159,7 +159,7 @@ const ProductCustom = ({ products }: any) => {
                                 <div>{sizeLishOne}</div>
                             </div>
                             <div className="flex space-x-4">
-                                <div className="font-bold">Chất liệu:</div>
+                                <div className="font-bold">Vật liệu:</div>
                                 <div>{materialLishOne}</div>
                             </div>
                         </div>

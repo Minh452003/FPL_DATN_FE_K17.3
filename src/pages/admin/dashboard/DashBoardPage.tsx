@@ -311,7 +311,7 @@ const DashBoardPage = () => {
             },
         },
         {
-            title: "Chất liệu",
+            title: "Vật liệu",
             dataIndex: "materials",
             key: "materials",
             width: 120,

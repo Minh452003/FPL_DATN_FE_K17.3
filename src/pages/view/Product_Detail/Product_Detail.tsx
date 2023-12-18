@@ -480,7 +480,7 @@ const Product_Detail = () => {
                                     <div className="">{categoryLishOne}</div>
                                 </div>
                                 <div className="col-span-2 flex  space-x-4 ">
-                                    <div className=" font-bold text-[16px]">Chất liệu:</div>
+                                    <div className=" font-bold text-[16px]">Vật liệu:</div>
                                     <div className="">{materialLishOne}</div>
                                 </div>
                             </div>
