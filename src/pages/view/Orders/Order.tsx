@@ -29,6 +29,8 @@ const Order = () => {
         refetch,
     } = useGetOrderByUserIdQuery<any>(id);
     const orders = data?.order;
+    console.log(orders);
+
     const { data: status, isLoading: isLoadingStatus }: any = useGetStatusQuery();
     const Status = isLoadingStatus ? [] : status?.status;
     // -------Phân trang--------
@@ -44,6 +46,7 @@ const Order = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const displayedOrders = filteredOrders.slice(startIndex, endIndex);
+
     // -------------------------------------------
     const handleFilterOrders = (status: string) => {
         setCurrentStatus(status);
@@ -194,7 +197,7 @@ const Order = () => {
                             </a>
                         </li>
                         {status &&
-                            Status.map((statusItem: any) => (
+                            Status?.map((statusItem: any) => (
                                 <li key={statusItem._id}>
                                     <a
                                         href=""
@@ -219,16 +222,18 @@ const Order = () => {
                                 key={order._id}
                             >
                                 <div className="flex justify-start md:top-0 py-2 pt-2 justify-center items-center mx-5">
-                                    {order && order.hasReviewed === true ? (
+                                    {order &&
+                                        order?.products?.every((product: any) => product.hasReviewed === true) === true ? (
                                         <div className="absolute bg-red-500 text-white p-2 rounded-sm text-sm">
                                             Đã đánh giá
                                         </div>
                                     ) : (
                                         ''
-                                    )}
+                                    )
+                                    }
                                     <img
                                         width="130"
-                                        src={order.products[0].image}
+                                        src={order?.products[0]?.image}
                                         alt="external-free-sales-flaticons-lineal-color-flat-icons"
                                     />
                                 </div>
@@ -286,13 +291,12 @@ const Order = () => {
                                         ) : (
                                             ''
                                         )}
-                                        {order &&
-                                            order.hasReviewed === false &&
-                                            order.status._id == '656596893a59bec4e5baea02' ? (
+                                        {order && order.status._id == '656596893a59bec4e5baea02' && order?.products?.every((product: any) => product.hasReviewed) === false ? (
                                             <Comment order={order} />
                                         ) : (
-                                            ''
-                                        )}
+                                            <></>
+                                        )
+                                        }
                                     </div>
                                 </div>
                             </div>

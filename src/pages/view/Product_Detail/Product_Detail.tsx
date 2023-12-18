@@ -322,8 +322,14 @@ const Product_Detail = () => {
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
+        const months = Math.floor(days / 30);
+        const years = Math.floor(months / 12); // Số năm
 
-        if (days > 0) {
+        if (years > 0) {
+            return `${years} năm trước`;
+        } else if (months > 0) {
+            return `${months} tháng trước`;
+        } else if (days > 0) {
             return `${days} ngày trước`;
         } else if (hours > 0) {
             return `${hours} giờ trước`;
@@ -333,6 +339,7 @@ const Product_Detail = () => {
             return 'Vừa xong';
         }
     };
+
     if (isLoadingFetching) return <Skeleton />;
     // if (isLoadingChild) return <Skeleton />;
     if (isLoadingColor) return <Skeleton />;
@@ -373,7 +380,7 @@ const Product_Detail = () => {
                                         <img
                                             src={img?.url}
                                             className=" object-cover md:w-[250] md:h-[180] "
-                                            style={{width: 600, height: 500}}
+                                            style={{ width: 600, height: 500 }}
                                         />
                                     </div>
                                 ))}
