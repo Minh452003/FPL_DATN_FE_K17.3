@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form, Upload, Modal, message } from 'antd';
+import { Button, Form, Upload, Modal, message, Select } from 'antd';
 import { Link, useNavigate } from "react-router-dom";
 import "../pages/view/Orders/order.css"
 import { FaUpload } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { useAddCommentMutation } from "@/api/commentApi";
 import { getDecodedAccessToken } from "@/decoder";
 import { useAddImageMutation, useDeleteImageMutation } from "@/api/uploadApi";
 import { RcFile, UploadProps } from "antd/es/upload";
+import { toast } from "react-toastify";
 
 
 const Comment = ({ order }: any) => {
@@ -19,37 +20,59 @@ const Comment = ({ order }: any) => {
     const [deleteImage, resultDelete] = useDeleteImageMutation();
     const [fileList, setFileList] = useState<RcFile[]>([]);
     const [imageUrl, setImageUrl] = useState<any>([]);
+    const [selectedProduct, setSelectedProduct] = useState<any>({});
     const navigate = useNavigate();
-    // Lưu trữ productId đã xuất hiện
-    const uniqueProductIds = new Set<string>();
-    const uniqueProducts = order?.products.filter((product: any) => {
-        if (!uniqueProductIds.has(product.productId)) {
-            uniqueProductIds.add(product.productId);
-            return true;
+
+    const handleProductChange = (value: string, productId: string, sizeId: string, colorId: string, materialId: string) => {
+        if (false) {
+            console.log(value);
         }
-        return false;
-    });
-    const onFinish = (values: any) => {
-        values.image = imageUrl;
-        uniqueProducts?.map((product: any) => {
-            addComment({
-                productId: product.productId,
+        setSelectedProduct({
+            productId,
+            sizeId,
+            colorId,
+            materialId,
+        });
+    };
+
+    const onFinish = async (values: any) => {
+        try {
+            values.image = imageUrl;
+            const comment: any = await addComment({
+                productId: selectedProduct.productId,
+                sizeId: selectedProduct.sizeId,
+                colorId: selectedProduct.colorId,
+                materialId: selectedProduct.materialId,
                 description: values.description,
                 userId: id,
                 rating: parseInt(values.rating),
                 image: values.image,
                 orderId: order._id
-            }).then(() => {
-                navigate('/user/orders?commentAdded=true')
-            })
-        })
+            }).unwrap();
+            if (comment) {
+                toast.success(comment.message);
+                navigate('/user/orders?commentAdded=true');
+                setIsModalOpen(false);
+            }
+        } catch (error: any) {
+            if (Array.isArray(error.data.message)) {
+                const messages = error.data.message;
+                messages.forEach((message: any) => {
+                    toast.error(message);
+                });
+            } else {
+                toast.error(error.data.message);
+            }
+        }
     };
 
     const props: UploadProps = {
         name: 'image',
         fileList: fileList, // Sử dụng state fileList
         customRequest: async ({ file }: any) => {
-            console.log(file);
+            if (false) {
+                console.log(file);
+            }
         },
         onChange(info: any) {
             if (info.file) {
@@ -129,6 +152,34 @@ const Comment = ({ order }: any) => {
                             onFinishFailed={onFinishFailed}
                             autoComplete="off"
                         >
+                            <Form.Item
+                                label="Chọn sản phẩm đánh giá"
+                                name="productId"
+                                rules={[{ required: true, message: 'Sản phẩm không được để trống!' }]}
+                                hasFeedback
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
+                            >
+                                <Select onChange={(value: any, option: any) => handleProductChange(value, option?.productId, option?.sizeId, option?.colorId, option?.materialId)}>
+                                    {order && order?.products?.map((product: any) => {
+                                        if (!product.hasReviewed) {
+                                            return (
+                                                <Select.Option
+                                                    key={product?._id}
+                                                    value={product._id}
+                                                    productId={product.productId}
+                                                    sizeId={product.sizeId}
+                                                    colorId={product.colorId}
+                                                    materialId={product.materialId}
+                                                >
+                                                    {product?.product_name}
+                                                </Select.Option>
+                                            );
+                                        }
+                                        return null; // Bỏ qua sản phẩm đã được đánh giá
+                                    })}
+                                </Select>
+                            </Form.Item>
                             <Form.Item<any>
                                 name="rating"
                                 labelCol={{ span: 24 }}

@@ -53,10 +53,12 @@
     div .mn1 {
         width: 82px;
     }
+
     .mb-5s {
         margin-bottom: 3rem !important;
         margin-left: -131px;
     }
+
     .mb-6s {
         margin-bottom: 1.5rem;
         width: 500px;
@@ -94,14 +96,16 @@
     .price1 {
         margin-top: -12px;
         font-size: 11px;
-       
+
     }
+
     .mb-6s {
         margin-bottom: 1.5rem;
         width: 132px;
         margin-left: 1px;
         height: 93px;
     }
+
     .flex {
         clear: both;
     }
@@ -192,7 +196,7 @@
     }
 
     button.btn-cs {
-        margin-left: -152px;
+        margin-left: -10px;
         width: 27%;
         height: 34px;
     }
@@ -212,5 +216,5 @@
         height: 34px;
         font-size: 10px;
     }
-    
+
 }

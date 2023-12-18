@@ -61,8 +61,8 @@ const ProductCustom = ({ products }: any) => {
                     colorId: colorId,
                     sizeId: sizeId,
                     materialId: materialId,
+                    formation: 'des'
                 };
-
                 const result = await Swal.fire({
                     title: 'Bạn chắc chứ?',
                     text: 'Sản phẩm sẽ được thêm vào giỏ hàng!',
