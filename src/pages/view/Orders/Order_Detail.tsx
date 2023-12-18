@@ -73,7 +73,7 @@ const OrderDetail = () => {
                   <div className="font-sans" style={{ fontSize: '14px' }}>Giá: <a href='' style={{ textDecoration: "none", color: "red", fontWeight: 'bold', fontSize: '12px' }}>{formatCurrency(product?.product_price)}₫</a> , số lượng: <a href='' style={{ textDecoration: "none", color: "black", fontSize: '12px' }}>{product?.stock_quantity}</a> </div>
                   <div className="font-sans" style={{ fontSize: '14px' }}>Màu sắc: <a href="" style={{ textDecoration: "none", color: "black" }}>{colorname?.colors_name}</a> </div>
                   <div className="font-sans" style={{ fontSize: '14px' }}>Size: <a href="" style={{ textDecoration: "none", color: "black", }}>{sizename?.size_name}</a> </div>
-                  <div className="font-sans" style={{ fontSize: '14px' }}>Chất liệu: <a href="" style={{ textDecoration: "none", color: "black", }}>{materialname?.material_name}</a> </div>
+                  <div className="font-sans" style={{ fontSize: '14px' }}>Vật liệu: <a href="" style={{ textDecoration: "none", color: "black", }}>{materialname?.material_name}</a> </div>
                 </div>
               </div>
             )

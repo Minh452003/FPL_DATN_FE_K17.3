@@ -164,7 +164,7 @@ const CustomProductslist = () => {
                 record.category.startsWith(value),
         },
         {
-            title: 'Chất liệu',
+            title: 'Vật liệu',
             width: 100,
             dataIndex: 'materials',
             key: 'materials',

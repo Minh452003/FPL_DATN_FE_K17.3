@@ -311,9 +311,9 @@ const Productupdate = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item<FieldType>
-                            label="Chất liệu"
+                            label="Vật liệu"
                             name="materialId"
-                            rules={[{ required: true, message: 'Chất liệu không được để trống!' }]}
+                            rules={[{ required: true, message: 'Vật liệu không được để trống!' }]}
                             hasFeedback
                             labelCol={{ span: 24 }}
                             wrapperCol={{ span: 24 }}

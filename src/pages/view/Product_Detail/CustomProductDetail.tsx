@@ -222,7 +222,7 @@ const CustomProductDetail = () => {
                   <div>{sizeLishOne}</div>
                 </div>
                 <div className="col-span-2 flex  space-x-4 ">
-                  <div className=" font-bold text-[16px]">Chất liệu:</div>
+                  <div className=" font-bold text-[16px]">Vật liệu:</div>
                   <div >{materialLishOne}</div>
                 </div>
               </div>
