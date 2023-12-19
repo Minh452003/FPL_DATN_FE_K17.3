@@ -1,7 +1,7 @@
 
 
 import { useAddSizeMutation } from '@/api/sizeApi';
-import { Button, Form, Input, InputNumber } from 'antd';
+import { Button, Form, Input, InputNumber, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -10,7 +10,8 @@ interface FieldType {
   size_height?: number;
   size_length?: number;
   size_weight?: number;
-  size_width?: number
+  size_width?: number;
+  size_price?: number;
 }
 const SizesAdd = () => {
   const [addSize, resultAdd] = useAddSizeMutation();
@@ -85,11 +86,21 @@ const SizesAdd = () => {
             >
               <Input />
             </Form.Item>
-
-
+            <Form.Item<FieldType>
+              label="Giá kích cỡ"
+              name="size_price"
+              labelCol={{ span: 24 }} // Đặt chiều rộng của label
+              wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
+              rules={[{ required: true, message: "Giá kích cỡ không được để trống!" },
+              { validator: validatePositiveNumber },
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              style={{ marginLeft: "20px" }}
+            >
+              <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
 
             <Form.Item<FieldType>
-              label="Chiều cao kích cỡ"
+              label="Chiều cao kích cỡ (cm)"
               name="size_height"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
@@ -103,7 +114,7 @@ const SizesAdd = () => {
 
 
             <Form.Item<FieldType>
-              label="Độ dài kích cỡ"
+              label="Độ dài kích cỡ (cm)"
               name="size_length"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
@@ -116,7 +127,7 @@ const SizesAdd = () => {
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Cân nặng kích cỡ"
+              label="Cân nặng kích cỡ (gram)"
               name="size_weight"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
@@ -129,7 +140,7 @@ const SizesAdd = () => {
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Chiều dài kích cỡ"
+              label="Chiều dài kích cỡ (cm)"
               name="size_width"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
@@ -140,7 +151,17 @@ const SizesAdd = () => {
             >
               <InputNumber style={{ width: '100%' }} />
             </Form.Item>
-
+            <Form.Item
+              label="Tự thiết kế thì chọn"
+              name="size_info"
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Select >
+                <Select.Option value={'design'}>Kích cỡ tự thiết kế</Select.Option>
+              </Select>
+            </Form.Item>
             <Form.Item wrapperCol={{ span: 16 }}>
 
               <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">

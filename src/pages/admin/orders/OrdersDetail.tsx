@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { Button, Form, Select, Skeleton } from 'antd';
+import { Button, Form, Modal, Pagination, Select, Skeleton } from 'antd';
 import { useGetStatusQuery } from "@/api/statusApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGetOrderByIdQuery, useUpdateOrderStatusMutation } from "@/api/orderApi";
 import { useGetMaterialQuery } from "@/api/materialApi";
 import { useGetColorsQuery } from "@/api/colorApi";
@@ -9,17 +9,31 @@ import { useGetSizeQuery } from "@/api/sizeApi";
 import "./OrdersDetail.css";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
+import { useCreateHistoryMutation, useGetByOrderHistoryQuery } from "@/api/historyApi";
+import { getDecodedAccessToken } from "@/decoder";
+import { FaArrowRight } from "react-icons/fa";
 
 const OrdersDetail = () => {
     const { id }: any = useParams()
+    const decodedToken: any = getDecodedAccessToken();
+    const userId = decodedToken ? decodedToken.id : null;
     const { data: orderDetail } = useGetOrderByIdQuery<any>(id);
     const { data: status } = useGetStatusQuery<any>()
     const { data: Colors, isLoading: isLoadingColors } = useGetColorsQuery<any>();
     const { data: Sizes, isLoading: isLoadingSizes } = useGetSizeQuery<any>();
     const { data: Materials, isLoading: isLoadingMaterials } = useGetMaterialQuery<any>();
     const [updateOrderStatus] = useUpdateOrderStatusMutation();
+    const [createHistory] = useCreateHistoryMutation();
+    const { data: historyOrder } = useGetByOrderHistoryQuery<any>(id);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     useEffect(() => {
         if (orderDetail) {
             setFields();
@@ -39,6 +53,12 @@ const OrdersDetail = () => {
             const data = await updateOrderStatus({ _id: orderDetail?.order?._id, status: values.status }).unwrap();
             if (data) {
                 toast.success(data.messages);
+                await createHistory({
+                    userId: userId,
+                    orderId: id,
+                    old_status: orderDetail?.order?.status?._id,
+                    new_status: values.status
+                }).unwrap();
             }
             navigate("/admin/orders");
         } catch (error: any) {
@@ -56,6 +76,16 @@ const OrdersDetail = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
+
+    //  Phân trang........................
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+    const handleChangePage = (page: number) => {
+        setCurrentPage(page);
+    };
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
     if (isLoadingColors) return <Skeleton />;
     if (isLoadingSizes) return <Skeleton />;
     if (isLoadingMaterials) return <Skeleton />;
@@ -94,6 +124,46 @@ const OrdersDetail = () => {
                         style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px', marginLeft: "-10px" }}>
                         <h6 className="h2 mb-0 ms-2" >Tổng tiền: <span className="h2 mb-0 ms-2">{formatCurrency(orderDetail?.order.total)}₫</span></h6>
                     </div>
+                    <Modal
+                        open={isModalOpen}
+                        onCancel={handleCancel}
+                        footer={null} // Remove the footer entirely
+                        width={750}
+                    >
+                        <div style={{ fontFamily: 'Arial, sans-serif' }}>
+                            <h3 style={{ textAlign: 'center', marginBottom: '15px' }}>Lịch sử đơn hàng:</h3>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                {historyOrder ? historyOrder?.histories?.slice(startIndex, endIndex)?.map((status: any, index: number) => (
+                                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
+                                        <p style={{ fontWeight: 'bold', marginRight: '10px' }}>
+                                            {`${status?.userId.first_name} ${status?.userId.last_name}`}
+                                        </p>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <p style={{ fontSize: '14px', color: '#666', display: 'flex', alignItems: 'center' }}>
+                                                <span>cập nhật từ</span>&nbsp;
+                                                <span style={{ color: '#FF5733' }}>{status?.old_status}</span>
+                                            </p>
+                                            <p style={{ fontSize: '14px', color: '#666', display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
+                                                <FaArrowRight style={{ marginRight: '5px' }} />
+                                                <span style={{ color: '#36A2EB' }}>{status?.new_status}</span>
+                                            </p>
+                                        </div>
+                                        <p style={{ fontSize: '12px', color: '#888', marginLeft: '10px' }}>
+                                            {`Ngày cập nhật: ${new Date(status?.createdAt).toLocaleString()}`}
+                                        </p>
+                                    </div>
+                                )) : "Đơn hàng chưa được cập nhật trạng thái!"}
+
+                            </div>
+                            <Pagination
+                                current={currentPage}
+                                total={historyOrder?.histories?.length || 0}
+                                pageSize={itemsPerPage}
+                                onChange={handleChangePage}
+                            />
+
+                        </div>
+                    </Modal>
                     <Form
                         form={form}
                         layout="vertical"
@@ -123,10 +193,12 @@ const OrdersDetail = () => {
                         </div>
                         <div>
                             <Form.Item >
+                                <Button onClick={showModal} style={{ background: "#008000", color: "#fff", marginTop: "20px", width: "140px", height: "40px" }}>Lịch sử đơn hàng</Button>
                                 <Button htmlType="submit" style={{ background: "#000080", color: "#fff", marginTop: "20px", width: "180px", height: "40px" }}>Cập nhật trạng thái</Button>
                             </Form.Item>
                         </div>
                     </Form>
+
                 </div>
             </div>
             <div className="basis-1/2 or">

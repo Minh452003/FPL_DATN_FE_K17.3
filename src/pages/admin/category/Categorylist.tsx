@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 interface Category {
     _id?: string;
     category_name: string;
-    price_increase_percent: number;
     category_image: {
         url: string;
     };
@@ -36,14 +35,12 @@ const Categorylist = () => {
             key: category._id,
             STT: index + 1,
             category_name: category.category_name,
-            price_increase_percent: category.price_increase_percent,
             category_image: <img width={50} src={category.category_image?.url} alt="" />,
         };
     });
     const filteredData = data1?.filter((category: Category) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();
         const lowerCaseCategoryName = category.category_name.toLowerCase().trim();
-
         return lowerCaseCategoryName.includes(lowerCaseSearchText);
     });
 
@@ -99,18 +96,8 @@ const Categorylist = () => {
             ellipsis: true,
         },
         {
-            title: 'Giá tăng khi tự thiết kế(%)',
-            width: 200,
-            dataIndex: 'price_increase_percent',
-            key: 'price_increase_percent',
-            render: (index: string) => <a>{index}%</a>,
-            sorter: (a: any, b: any) => a.price_increase_percent - b.price_increase_percent, // Sắp xếp theo giá
-            sortOrder: sortedInfo.columnKey === 'price_increase_percent' && sortedInfo.order,
-            ellipsis: true,
-        },
-        {
             title: 'Chức năng',
-            width: 170,
+            width: 150,
             render: ({ key: _id }: { key: string }) => (
                 <div style={{ width: '150px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteProduct(_id)}>

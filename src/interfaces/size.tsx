@@ -1,4 +1,4 @@
-export interface ISize{
+export interface ISize {
     _id?: string
     id?: string
     size_name?: string
@@ -6,4 +6,5 @@ export interface ISize{
     size_length?: number
     size_weight?: number
     size_width?: number
+    size_price?: number
 }

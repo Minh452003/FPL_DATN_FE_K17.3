@@ -151,22 +151,22 @@ const PayPage = () => {
             console.log(value);
         }
         const id = Number(option.key);
-      
+
         const response = await addDistrict({ province_id: id });
         if ('data' in response) {
             form.setFieldsValue({
-              address: {
-                district: undefined,
-                ward: undefined,
-                ship: undefined,
-              },
+                address: {
+                    district: undefined,
+                    ward: undefined,
+                    ship: undefined,
+                },
             });
             setShip({})
             setDistrict(response.data.data);
             // Gọi hàm tính toán kích thước tổng cộng (nếu cần)
             sizeTotal();
-          }
-      };
+        }
+    };
     const handleDistrictChange = async (value: any, option: any) => {
         if (false) {
             console.log(value);
@@ -175,15 +175,15 @@ const PayPage = () => {
         const response = await addWard({ district_id: id })
         if ('data' in response) {
             form.setFieldsValue({
-              address: {
-                ward: undefined,
-                ship: undefined,
-              },
+                address: {
+                    ward: undefined,
+                    ship: undefined,
+                },
             });
             setShip({})
             setWard(response.data.data);
             sizeTotal();
-          }
+        }
 
     };
     const handleAvailableChange = async (value: any, option: any) => {
@@ -807,7 +807,7 @@ const PayPage = () => {
                     </div>
 
                     <div
-                        className={`border-solid border-2 rounded w-80 h-11 pl-2 pt-2 pb-5 ${pay === 'paypal' ? 'active' : ''
+                        className={`border-solid border-2 mb-4 rounded w-80 h-11 pl-2 pt-2 pb-5 ${pay === 'paypal' ? 'active' : ''
                             }`}
                         onClick={() => setPay('paypal')}
                     >
@@ -957,7 +957,7 @@ const PayPage = () => {
                                         className="px-2 flex "
                                         onSubmit={handleSubmit(removeCoupons)}
                                     >
-                                        <div className=" flex shadow-lg rounded-lg items-center">
+                                        <div className="w-[400px] flex shadow-lg rounded-lg items-center">
                                             <img
                                                 className=" w-[70px] h-[70px] mt-3 rounded-md ml-2 mb-3"
                                                 src="https://cf.shopee.vn/file/vn-11134004-7r98o-llyheem4gvz306"
@@ -985,7 +985,7 @@ const PayPage = () => {
                                                 <AiOutlineLoading3Quarters className="animate-spin m-auto" />
                                             ) : (
                                                 <button
-                                                    className="rounded-md mr-4 w-32 h-10"
+                                                    className="rounded-md mr-4 w-32 h-10 ml-12"
                                                     style={{
                                                         background: '#31AC57',
                                                         color: 'white',

@@ -1,7 +1,7 @@
 import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/api/categoryApi';
 import { useDeleteImageMutation, useUpdateImageMutation } from '@/api/uploadApi';
 import { ICategory } from '@/interfaces/category';
-import { Button, Form, Input, InputNumber, Skeleton, Upload, message } from 'antd';
+import { Button, Form, Input, Skeleton, Upload, message } from 'antd';
 import { RcFile, UploadProps } from 'antd/es/upload';
 import { useEffect, useState } from 'react';
 import { FaUpload } from 'react-icons/fa6';
@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 
 type FieldType = {
     category_name?: string;
-    price_increase_percent?: number;
     category_image?: object;
 };
 
@@ -36,7 +35,6 @@ const Categoryupdate = () => {
         form.setFieldsValue({
             _id: categories.category?._id,
             category_name: categories.category?.category_name,
-            price_increase_percent: categories.category?.price_increase_percent,
             category_image: categories.category?.category_image
                 ? categories.category.category_image
                 : {}, // Nếu có ảnh, thêm vào mảng để hiển thị
@@ -129,12 +127,6 @@ const Categoryupdate = () => {
     if (isError || !categories || !categories.category) {
         return <div>Error: Unable to fetch category data.</div>;
     }
-    const validatePositiveNumber = (_: any, value: any) => {
-        if (parseFloat(value) < 0) {
-            return Promise.reject('Giá trị phải là số dương');
-        }
-        return Promise.resolve();
-    };
     return (
         <div className="container-fluid">
             <div className="row">
@@ -181,22 +173,6 @@ const Categoryupdate = () => {
                         >
                             <Input />
                         </Form.Item>
-
-                        <Form.Item<FieldType>
-                            label="Giá tăng khi tự thiết kế (%)"
-                            name="price_increase_percent"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            style={{ marginLeft: '20px' }}
-                            rules={[
-                                { required: true, message: 'Tiền đặt cọc không được để trống!' },
-                                { validator: validatePositiveNumber },
-                                { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
-                            ]}
-                        >
-                            <InputNumber style={{ width: '100%' }} />
-                        </Form.Item>
-
                         <Form.Item
                             labelCol={{ span: 24 }} // Đặt chiều rộng của label
                             wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
