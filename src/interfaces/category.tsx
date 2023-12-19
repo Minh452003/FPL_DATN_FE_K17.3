@@ -5,5 +5,4 @@ export interface ICategory {
   id: string | number
   category_name?: string
   category_image?: IImage
-  price_increase_percent?: number
 }

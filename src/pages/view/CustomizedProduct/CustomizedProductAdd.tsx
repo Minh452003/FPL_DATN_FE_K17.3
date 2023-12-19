@@ -7,7 +7,7 @@ import { useGetMaterialQuery } from "@/api/materialApi";
 import { Button, Skeleton, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useGetColorsQuery } from "@/api/colorApi";
-import { useGetSizeQuery } from "@/api/sizeApi";
+import { useGetSizeByDesignQuery } from "@/api/sizeApi";
 import { Tab, initTE } from "tw-elements";
 import { getDecodedAccessToken } from "@/decoder";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -28,13 +28,17 @@ const CustomizedProductAdd = () => {
     error,
   }: any = useGetProductByIdQuery(idProduct || "");
   const { data: colors, isLoading: isLoadingColor } = useGetColorsQuery<any>();
-  const { data: sizes, isLoading: isLoadingSize } = useGetSizeQuery<any>();
+  const { data: sizes, isLoading: isLoadingSize } = useGetSizeByDesignQuery<any>();
   const { data: materials, isLoading: isLoadingMaterial } =
     useGetMaterialQuery<any>();
   const [quantity, setQuantity] = useState<any>(1); // Sử dụng useState để quản lý số lượng
   const [activeColor, setActiveColor] = useState(null);
+  const [colorPrice, setColorPrice] = useState(0);
+  const [sizePrice, setSizePrice] = useState(0);
+  const [materialPrice, setMaterialPrice] = useState(0);
   const [activeSize, setActiveSize] = useState(null);
   const [activeMaterial, setActiveMaterial] = useState(null);
+
   const [selectedIndex, setSelectedIndex] = useState(0);
   const listOneData = data?.product;
   const navigate = useNavigate();
@@ -47,8 +51,7 @@ const CustomizedProductAdd = () => {
   const categoryLish = catgory?.category.docs;
   const categoryLishOne = categoryLish?.find(
     (categoryLish: any) => categoryLish?._id === listOneData?.categoryId
-  )?.price_increase_percent;
-  const priceCustom = Math.floor(listOneData?.product_price / (1 * categoryLishOne))
+  )?.category_name;
   useEffect(() => {
     initTE({ Tab });
   }, [selectedIndex]);
@@ -70,7 +73,7 @@ const CustomizedProductAdd = () => {
           productId: idProduct,
           categoryId: listOneData.categoryId,
           product_name: listOneData.product_name,
-          product_price: Number(listOneData.product_price),
+          product_price: Number(listOneData?.product_price + colorPrice + sizePrice + materialPrice),
           image: listOneData.image,
           stock_quantity: quantity,
           colorId: activeColor,
@@ -132,14 +135,17 @@ const CustomizedProductAdd = () => {
     setQuantity(quantity + 1);
   };
 
-  const handleClickSize = (sizeId: any) => {
+  const handleClickSize = ({ sizeId, price }: any) => {
     setActiveSize(sizeId);
+    setSizePrice(price);
   };
-  const handleClickColor = (colorId: any) => {
+  const handleClickColor = ({ colorId, price }: any) => {
     setActiveColor(colorId);
+    setColorPrice(price);
   };
-  const handleClickMaterial = (materialId: any) => {
+  const handleClickMaterial = ({ materialId, price }: any) => {
     setActiveMaterial(materialId);
+    setMaterialPrice(price)
   };
 
   if (isLoadingColor) return <Skeleton />;
@@ -224,7 +230,8 @@ const CustomizedProductAdd = () => {
               <div className=" flex items-center justify-between ">
                 <h3 className="font-bold iklm">{listOneData?.product_name}</h3>
               </div>
-              <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price + priceCustom)}₫</p>
+              {activeColor && activeSize && activeMaterial ? <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price + colorPrice + sizePrice + materialPrice)}₫</p> : <p className=" text-red-700 font-bold text-2xl py-3"> {formatCurrency(listOneData?.product_price)}₫</p>}
+
               <div
                 className="text-l font-bold py-2"
                 style={{ height: showAllColors ? "auto" : "" }}
@@ -243,7 +250,7 @@ const CustomizedProductAdd = () => {
                               aria-disabled="false"
                               className={` ${isActive ? "active1" : ""} text-[12px] py-1  min-w-32 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
-                              onClick={() => handleClickColor(color._id)}
+                              onClick={() => handleClickColor({ colorId: color._id, price: color.color_price })}
                             >
                               {color?.colors_name}
                             </button>
@@ -281,7 +288,7 @@ const CustomizedProductAdd = () => {
                               aria-disabled="false"
                               className={` ${isActive ? "active1" : ""}  text-[12px] py-1 border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
-                              onClick={() => handleClickSize(size._id)}
+                              onClick={() => handleClickSize({ sizeId: size._id, price: size.size_price })}
                             >
                               {size?.size_name}
                             </button>
@@ -325,7 +332,7 @@ const CustomizedProductAdd = () => {
                               aria-disabled="false"
                               className={` ${isActive ? "active1" : ""} text-[12px] py-1  border border-gray-500 rounded-md px-3 ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"
                                 }`}
-                              onClick={() => handleClickMaterial(material._id)}
+                              onClick={() => handleClickMaterial({ materialId: material._id, price: material.material_price })}
                             >
                               {material?.material_name}
                             </button>

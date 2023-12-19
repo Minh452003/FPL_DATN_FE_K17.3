@@ -24,7 +24,7 @@ const Sizeslist: React.FC<ISize> = () => {
     };
     const dataSource = size?.map(
         (
-            { _id, size_name, size_height, size_length, size_weight, size_width }: ISize,
+            { _id, size_name, size_height, size_length, size_weight, size_width, size_price }: ISize,
             index: number,
         ) => {
             return {
@@ -35,6 +35,7 @@ const Sizeslist: React.FC<ISize> = () => {
                 size_length,
                 size_weight,
                 size_width,
+                size_price
             };
         },
     );
@@ -117,11 +118,21 @@ const Sizeslist: React.FC<ISize> = () => {
             ellipsis: true,
         },
         {
+            title: 'Giá kích cỡ',
+            width: 120,
+            dataIndex: 'size_price',
+            key: 'size_price',
+            render: (index: any) => <a>{formatCurrency(index)}đ</a>,
+            sorter: (a: any, b: any) => a.size_width - b.size_width,
+            sortOrder: sortedInfo.columnKey === 'size_price' && sortedInfo.order,
+            ellipsis: true,
+        },
+        {
             title: 'Chức năng',
-            width: 170,
+            width: 120,
             render: ({ key: _id }: any) => {
                 return (
-                    <div style={{ width: '150px' }}>
+                    <div style={{ width: '120px' }}>
                         <Button className="mr-1 text-red-500" onClick={() => deleteSize(_id)}>
                             {isRemoveLoading ? (
                                 <AiOutlineLoading3Quarters className="animate-spin" />
@@ -139,6 +150,14 @@ const Sizeslist: React.FC<ISize> = () => {
             },
         },
     ];
+
+    const formatCurrency = (number: number) => {
+        if (typeof number !== 'number') {
+            return '0';
+        }
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
     const filteredData = dataSource?.filter((item: any) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();
         const numericSearchText = parseFloat(lowerCaseSearchText);

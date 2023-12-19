@@ -1,7 +1,7 @@
 
 
 import { useGetColorByIdQuery, useUpdateColorMutation } from '@/api/colorApi';
-import { Button, Form, Input, Skeleton } from 'antd';
+import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 interface Color {
   _id?: string;
   colors_name?: string;
+  color_price?: number
 }
 const ColorsUpdate = () => {
   const { idColor }: any = useParams();
@@ -28,6 +29,7 @@ const ColorsUpdate = () => {
     form.setFieldsValue({
       _id: colors.color?._id,
       colors_name: colors.color?.colors_name,
+      color_price: colors.color?.color_price,
     });
   };
 
@@ -51,6 +53,13 @@ const ColorsUpdate = () => {
     }
 
   };
+  const validatePositiveNumber = (_: any, value: any) => {
+    if (parseFloat(value) < 0) {
+      return Promise.reject("Giá trị phải là số dương");
+    }
+    return Promise.resolve();
+  }
+
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
@@ -100,7 +109,19 @@ const ColorsUpdate = () => {
             >
               <Input />
             </Form.Item>
+            <Form.Item<Color>
+              label="Giá Sản Phẩm"
+              name="color_price"
+              labelCol={{ span: 24 }} // Đặt chiều rộng của label
+              wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
+              rules={[{ required: true, message: "Giá màu không được để trống!" },
+              { validator: validatePositiveNumber },
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
 
+              style={{ marginLeft: "20px" }}
+            >
+              <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
             <Form.Item wrapperCol={{ span: 16 }}>
               <Button className=" h-10 bg-red-500 text-xs text-white ml-5" htmlType="submit">
                 {resultAdd.isLoading ? <div className="spinner-border" role="status">

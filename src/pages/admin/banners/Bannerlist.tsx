@@ -74,9 +74,9 @@ const Bannerlist = () => {
 
     {
       title: 'Chức năng',
-      width: 170,
+      width: 140,
       render: ({ key: _id }: { key: string }) => (
-        <div style={{ width: '150px' }}>
+        <div style={{ width: '140px' }}>
           <Button className='mr-1 text-red-500' onClick={() => deleteBanner(_id)}>
             {isRemoveLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />

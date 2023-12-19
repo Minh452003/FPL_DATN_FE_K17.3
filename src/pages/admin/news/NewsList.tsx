@@ -34,30 +34,30 @@ const Newslist = () => {
                 new_image: <img width={50} src={news.new_image?.url} alt="" />,
             };
         });
-    const deleteNew = async  (_id: string) => {
+    const deleteNew = async (_id: string) => {
         try {
             const result = await Swal.fire({
-              title: 'Bạn chắc chứ?',
-              text: 'Tin tức sẽ bị xoá và không thể khôi phục!',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Vâng, tôi chắc chắn!',
-              cancelButtonText: 'Huỷ',
+                title: 'Bạn chắc chứ?',
+                text: 'Tin tức sẽ bị xoá và không thể khôi phục!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Huỷ',
             });
             if (result.isConfirmed) {
-              const data: any = await removeNews(_id).unwrap();
-              if (data) {
-                toast.success(`${data.message}`);
-              }
+                const data: any = await removeNews(_id).unwrap();
+                if (data) {
+                    toast.success(`${data.message}`);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-              toast.info('Hủy xoá Tin tức');
+                toast.info('Hủy xoá Tin tức');
             }
-          } catch (error:any) {
+        } catch (error: any) {
             toast.error(error.message);
-          }
-     
+        }
+
     };
     const columns = [
         {
@@ -96,9 +96,9 @@ const Newslist = () => {
         },
         {
             title: 'Chức năng',
-            width: 170,
+            width: 130,
             render: ({ key: _id }: { key: string }) => (
-                <div style={{ width: '150px' }}>
+                <div style={{ width: '130px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteNew(_id)}>
                         {isRemoveLoading ? (
                             <AiOutlineLoading3Quarters className="animate-spin" />

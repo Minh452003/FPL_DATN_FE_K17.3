@@ -1,6 +1,6 @@
 import { useGetAllDeleteQuery, useRemoveForceCustomProductMutation, useRestoreCustomProductMutation } from "@/api/CustomizedProductAPI"
 import { useGetUsersQuery } from '@/api/authApi';
-import { useGetCategoryQuery } from '@/api/categoryApi';
+// import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
 import { useGetSizeQuery } from '@/api/sizeApi';
@@ -18,7 +18,7 @@ const CustomProductsTrash = () => {
   const { data: colors } = useGetColorsQuery<any>()
   const { data: materials } = useGetMaterialQuery<any>()
   const { data: users } = useGetUsersQuery<any>()
-  const { data: categories } = useGetCategoryQuery<any>()
+  // const { data: categories } = useGetCategoryQuery<any>()
   const { data: size } = useGetSizeQuery<any>()
   const [removeCustomProduct, resultAdd] = useRemoveForceCustomProductMutation();
   const [restoreCustomProduct, resultCustom] = useRestoreCustomProductMutation()
@@ -80,7 +80,7 @@ const CustomProductsTrash = () => {
   const color = colors?.color
   const material = materials?.material
   const user = users?.data
-  const categorie = categories?.category?.docs
+  // const categorie = categories?.category?.docs
   const sizes = size?.size
 
 
@@ -113,6 +113,7 @@ const CustomProductsTrash = () => {
       dataIndex: 'STT',
       key: 'STT',
       render: (index: any) => <a>{index}</a>,
+      width: 75,
     },
     {
       title: 'Tên khách hàng ',
@@ -121,44 +122,41 @@ const CustomProductsTrash = () => {
       render: (record: any) => {
         const username = user?.find((cate: any) => cate._id === record);
         return `${username?.first_name} ${username?.last_name}`;
-      }
+      },
+      width: 120,
     },
     {
       title: 'Tên sản phẩm ',
       dataIndex: 'name',
       key: 'name',
+      width: 150,
       render: (text: any) => <a>{text}</a>,
     },
     {
       title: 'Ảnh',
       dataIndex: 'image',
       key: 'image',
+      width: 100,
     },
     {
       title: 'Giá',
+      width: 100,
       dataIndex: 'price',
       key: 'price',
       render: (text: any) => <p className='text-red-700'>{formatCurrency(text)}₫</p>
     },
     {
-      title: 'Số lượng mua',
+      title: 'Muốn mua',
       dataIndex: 'quantity',
       key: 'quantity',
+      width: 100,
       render: (text: any) => <a>{text}</a>,
-    },
-    {
-      title: 'Danh Mục',
-      dataIndex: 'category',
-      key: 'category',
-      render: (record: any) => {
-        const catename = categorie?.find((cate: any) => cate._id === record);
-        return catename?.category_name;
-      }
     },
     {
       title: 'Vật liệu',
       dataIndex: 'materials',
       key: 'materials',
+      width: 100,
       render: (record: any) => {
         const materialsname = material?.find((cate: any) => cate._id === record);
         return materialsname?.material_name;
@@ -168,15 +166,17 @@ const CustomProductsTrash = () => {
       title: 'Kích cỡ ',
       dataIndex: 'sizes',
       key: 'sizes',
+      width: 110,
       render: (record: any) => {
         const sizesrname = sizes?.find((cate: any) => cate._id === record);
         return sizesrname?.size_name;
       }
     },
     {
-      title: 'Màu ',
+      title: 'Màu sắc',
       dataIndex: 'color',
       key: 'color',
+      width: 100,
       render: (record: any) => {
         const colorname = color?.find((cate: any) => cate._id === record);
         return colorname?.colors_name;
@@ -184,6 +184,7 @@ const CustomProductsTrash = () => {
     },
     {
       title: 'Chức năng',
+      width: 120,
       render: ({ key: _id }: { key: number | string }) => (
         <div style={{ width: '120px' }}>
           <Button className='mr-1 text-red-500' onClick={() => deleteCustomproduct(_id)}>

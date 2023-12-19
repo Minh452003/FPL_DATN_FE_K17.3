@@ -74,7 +74,6 @@ const CategoryTrash = () => {
         return {
             key: category._id,
             name: category.category_name,
-            stake: category.price_increase_percent,
             image: <img width={50} src={category.category_image?.url} alt="" />,
         };
     });
@@ -89,11 +88,6 @@ const CategoryTrash = () => {
             title: 'Danh Mục',
             dataIndex: 'name',
             key: 'name',
-        },
-        {
-            title: 'Giá tăng khi tự thiết kế (%)',
-            dataIndex: 'stake',
-            key: 'stake',
         },
         {
             title: 'Chức năng',

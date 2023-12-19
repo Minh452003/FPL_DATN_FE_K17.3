@@ -1,7 +1,7 @@
 import { useAddCategoryMutation } from '@/api/categoryApi';
 import { useAddImageMutation, useDeleteImageMutation } from '@/api/uploadApi';
 import { ICategory } from '@/interfaces/category';
-import { Button, Form, Input, InputNumber, Upload, UploadProps, message } from 'antd';
+import { Button, Form, Input, Upload, UploadProps, message } from 'antd';
 import { RcFile } from 'antd/es/upload';
 import { useState } from 'react';
 import { FaUpload } from 'react-icons/fa6';
@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 
 type FieldType = {
     category_name?: string;
-    price_increase_percent?: number;
     category_image?: object;
 };
 const Categoryadd = () => {
@@ -23,8 +22,6 @@ const Categoryadd = () => {
     const navigate = useNavigate();
 
     const onFinish = async (values: ICategory) => {
-        console.log(values);
-
         try {
             if (Object.keys(imageUrl).length > 0) {
                 values.category_image = imageUrl;
@@ -104,12 +101,6 @@ const Categoryadd = () => {
             }
         },
     };
-    const validatePositiveNumber = (_: any, value: any) => {
-        if (parseFloat(value) < 0) {
-            return Promise.reject('Giá trị phải là số dương');
-        }
-        return Promise.resolve();
-    };
     return (
         <div className="container-fluid">
             <div className="row">
@@ -152,21 +143,6 @@ const Categoryadd = () => {
                             style={{ marginLeft: '20px' }}
                         >
                             <Input />
-                        </Form.Item>
-                        <Form.Item<FieldType>
-                            label="Giá tăng khi tự thiết kế (%)"
-                            name="price_increase_percent"
-                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
-                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
-                            rules={[
-                                { required: true, message: 'Tiền đặt cọc bắt buộc nhập!' },
-                                { validator: validatePositiveNumber },
-                                { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' },
-                                { max: 100, type: 'number', message: 'Không được vượt quá 100%' }
-                            ]}
-                            style={{ marginLeft: '20px' }}
-                        >
-                            <InputNumber style={{ width: '100%' }} />
                         </Form.Item>
                         <Form.Item
                             labelCol={{ span: 24 }}

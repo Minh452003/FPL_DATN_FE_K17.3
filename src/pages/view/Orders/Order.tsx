@@ -1,6 +1,6 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { useGetOrderByUserIdQuery, useRemoveOrderMutation, useUpdateOrderStatusMutation } from '@/api/orderApi';
+import { useGetOrderByUserIdQuery, useUpdateOrderStatusMutation } from '@/api/orderApi';
 import { getDecodedAccessToken } from '@/decoder';
 import { format } from 'date-fns';
 import { Link, useLocation } from 'react-router-dom';
@@ -16,7 +16,7 @@ const Order = () => {
     const [currentStatus, setCurrentStatus] = useState('all'); // Mặc định hiển thị tất cả
     const [filteredOrders, setFilteredOrders] = useState([]);
     const decodedToken: any = getDecodedAccessToken();
-    const [removeOrder] = useRemoveOrderMutation();
+    // const [removeOrder] = useRemoveOrderMutation();
     const [updateOrderStatus] = useUpdateOrderStatusMutation();
     const id = decodedToken ? decodedToken.id : null;
     const location = useLocation();
@@ -71,31 +71,31 @@ const Order = () => {
         }
     }, [isLoadingFetching, currentStatus, orders, commentAdded]);
     // -------------------------------------------
-    const deleteOrder = async (id: any) => {
-        try {
-            const result = await Swal.fire({
-                title: 'Bạn chắc chứ?',
-                text: 'Banner sẽ bị xoá và không thể khôi phục!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Vâng, tôi chắc chắn!',
-                cancelButtonText: 'Huỷ',
-            });
-            if (result.isConfirmed) {
-                const data: any = await removeOrder(id).unwrap();
-                if (data) {
-                    toast.success(data.message);
-                }
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                toast.info('Hủy xoá Đơn hàng ');
-            }
-        } catch (error: any) {
-            toast.error(error.data.message);
-        }
+    // const deleteOrder = async (id: any) => {
+    //     try {
+    //         const result = await Swal.fire({
+    //             title: 'Bạn chắc chứ?',
+    //             text: 'Banner sẽ bị xoá và không thể khôi phục!',
+    //             icon: 'warning',
+    //             showCancelButton: true,
+    //             confirmButtonColor: '#3085d6',
+    //             cancelButtonColor: '#d33',
+    //             confirmButtonText: 'Vâng, tôi chắc chắn!',
+    //             cancelButtonText: 'Huỷ',
+    //         });
+    //         if (result.isConfirmed) {
+    //             const data: any = await removeOrder(id).unwrap();
+    //             if (data) {
+    //                 toast.success(data.message);
+    //             }
+    //         } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //             toast.info('Hủy xoá Đơn hàng ');
+    //         }
+    //     } catch (error: any) {
+    //         toast.error(error.data.message);
+    //     }
 
-    };
+    // };
     // -------------------------------------------
     const updateOrder = async (orderId: any) => {
         try {
@@ -281,7 +281,7 @@ const Order = () => {
                                         ) : (
                                             ''
                                         )}
-                                        {order && order.status._id == '6565969f3a59bec4e5baea03' ? (
+                                        {/* {order && order.status._id == '6565969f3a59bec4e5baea03' ? (
                                             <button
                                                 className="text-white bg-amber-500 border-solid rounded border-1 py-1 px-3 text-white"
                                                 onClick={() => deleteOrder(order._id)}
@@ -290,7 +290,7 @@ const Order = () => {
                                             </button>
                                         ) : (
                                             ''
-                                        )}
+                                        )} */}
                                         {order && order.status._id == '656596893a59bec4e5baea02' && order?.products?.every((product: any) => product.hasReviewed) === false ? (
                                             <Comment order={order} />
                                         ) : (
