@@ -512,7 +512,7 @@ const Product_Detail = () => {
                                 </div>
                             </div>
                             <div className="text-[16px] font-bold">
-                                <p>Kích thước</p>
+                                <p>Kích cỡ</p>
                                 <div className="flex space-x-2">
                                     {childProducts ? (
                                         filteredSizes.map((size: any) => {
@@ -535,7 +535,7 @@ const Product_Detail = () => {
                                             );
                                         })
                                     ) : (
-                                        <p className="sp2">Không có kích thước</p>
+                                        <p className="sp2">Không có kích cỡ</p>
                                     )}
                                 </div>
                             </div>
@@ -622,7 +622,7 @@ const Product_Detail = () => {
                                         className="w-5"
                                         src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/6c502a2641457578b0d5f5153b53dd5d.png"
                                     />
-                                    <div className="mnQqkL">7 ngày miễn phí trả hàng</div>
+                                    <div className="mnQqkL">Sản phẩm chất lượng</div>
                                 </div>
                                 <div className=" flex items-center ">
                                     <img

@@ -57,7 +57,7 @@ const CustomProductDetail = () => {
   const commentProductDetail = isLoadingComment ? [] : comment?.comments;
   const [page, setPage] = useState(1);
 
-  const filteredComments = commentProductDetail.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const filteredComments = commentProductDetail?.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   useEffect(() => {
     if (customProducts) {

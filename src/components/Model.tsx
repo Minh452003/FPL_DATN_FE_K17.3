@@ -220,7 +220,7 @@ const Model = ({ products }: any) => {
               )}
             </div>
             <div className="mt-3">
-              <h3 className="text-[13px]">Kích Thước</h3>
+              <h3 className="text-[13px]">Kích Cỡ</h3>
               {childProducts ? (
                 filteredSizes.map((size: any) => {
                   const sizesname = sizes?.size?.find(
@@ -241,7 +241,7 @@ const Model = ({ products }: any) => {
                   );
                 })
               ) : (
-                <p className="sp2">Không có kích thước</p>
+                <p className="sp2">Không có kích cỡ</p>
               )}
             </div>
             {childProduct && activeColor && activeSize ? (

@@ -3,7 +3,6 @@ import {
     useRemoveCustomProductMutation,
 } from '@/api/CustomizedProductAPI';
 import { useGetUsersQuery } from '@/api/authApi';
-import { useGetCategoryQuery } from '@/api/categoryApi';
 import { useGetColorsQuery } from '@/api/colorApi';
 import { useGetMaterialQuery } from '@/api/materialApi';
 import { useGetSizeQuery } from '@/api/sizeApi';
@@ -15,7 +14,6 @@ import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { IoSearchSharp } from 'react-icons/io5';
 import { toast } from 'react-toastify';
-import { ICategory } from '@/interfaces/category';
 const CustomProductslist = () => {
     const { data: listcustomProducts, isloading: isLoadingCustomProducts } =
         useGetCustomProductsQuery<any>();
@@ -23,7 +21,7 @@ const CustomProductslist = () => {
     const { data: colors } = useGetColorsQuery<any>();
     const { data: materials } = useGetMaterialQuery<any>();
     const { data: users } = useGetUsersQuery<any>();
-    const { data: categories } = useGetCategoryQuery<any>();
+    // const { data: categories } = useGetCategoryQuery<any>();
     const { data: size } = useGetSizeQuery<any>();
     const [removeProduct, { isLoading: isRemoveLoading }] = useRemoveCustomProductMutation();
     const [sortedInfo, setSortedInfo] = useState({} as any);
@@ -31,7 +29,7 @@ const CustomProductslist = () => {
     const color = colors?.color;
     const material = materials?.material;
     const user = users?.data;
-    const categorie = categories?.category?.docs;
+    // const categorie = categories?.category?.docs;
     const sizes = size?.size;
     const handleChange = (pagination: any, filters: any, sorter: any) => {
         setSortedInfo(sorter);
@@ -100,7 +98,7 @@ const CustomProductslist = () => {
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
-            width: 90,
+            width: 75,
         },
         {
             title: 'Tên khách hàng ',
@@ -136,32 +134,14 @@ const CustomProductslist = () => {
             ellipsis: true,
         },
         {
-            title: 'Đã bán',
+            title: 'Muốn mua',
             dataIndex: 'quantity',
             key: 'quantity',
-            width: 110,
+            width: 100,
             render: (text: any) => <a>{text}</a>,
             sorter: (a: any, b: any) => a.price - b.price, // Sắp xếp theo giá
             sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
             ellipsis: true,
-        },
-        {
-            title: 'Danh Mục',
-            width: 120,
-            dataIndex: 'category',
-            key: 'category',
-            render: (record: any) => {
-                const catename = categorie?.find((cate: any) => cate._id === record);
-                return catename?.category_name;
-            },
-            filters:
-                categorie?.map((cate: ICategory) => ({
-                    text: cate.category_name,
-                    value: cate._id,
-                })) || [],
-            filterSearch: true,
-            onFilter: (value: string | number | boolean, record: any) =>
-                record.category.startsWith(value),
         },
         {
             title: 'Vật liệu',
@@ -184,7 +164,7 @@ const CustomProductslist = () => {
             },
         },
         {
-            title: 'Màu ',
+            title: 'Màu sắc',
             width: 100,
             dataIndex: 'color',
             key: 'color',
@@ -197,7 +177,7 @@ const CustomProductslist = () => {
             title: 'Chức năng',
             width: 80,
             render: ({ key: _id }: any) => (
-                <div style={{ width: '250px' }}>
+                <div style={{ width: '80px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteProduct(_id)}>
                         {isRemoveLoading ? (
                             <AiOutlineLoading3Quarters className="animate-spin" />

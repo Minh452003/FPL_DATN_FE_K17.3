@@ -14,6 +14,10 @@ const sizeApi = createApi({
             query: () => `/size`,
             providesTags: ['Size']
         }),
+        getSizeByDesign: builder.query<ISize[], void>({
+            query: () => `/size-custom`,
+            providesTags: ['Size']
+        }),
         getSizeById: builder.query<ISize, number | string>({
             query: (id) => `/size/${id}`,
             providesTags: ['Size']
@@ -46,6 +50,7 @@ const sizeApi = createApi({
 
 export const {
     useGetSizeQuery,
+    useGetSizeByDesignQuery,
     useGetSizeByIdQuery,
     useAddSizeMutation,
     useRemoveSizeMutation,

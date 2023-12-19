@@ -14,6 +14,7 @@ interface TableData {
     key: string;
     STT: number;
     name: string;
+    price: number
 }
 
 const Colorslist: React.FC<IColor> = () => {
@@ -31,11 +32,12 @@ const Colorslist: React.FC<IColor> = () => {
         }
     };
     const color = isLoading ? [] : data?.color;
-    const dataSource: TableData[] | undefined = color?.map(({ _id, colors_name }: IColor, index: number) => {
+    const dataSource: TableData[] | undefined = color?.map(({ _id, colors_name, color_price }: IColor, index: number) => {
         return {
             key: _id,
             STT: index + 1,
             name: colors_name,
+            price: color_price
         };
     });
 
@@ -82,11 +84,21 @@ const Colorslist: React.FC<IColor> = () => {
             width: 150,
         },
         {
+            title: 'Giá màu',
+            dataIndex: 'price',
+            key: 'price',
+            render: (index: number) => <a>{formatCurrency(index)}đ</a>,
+            sorter: (a: TableData, b: TableData) => a.STT - b.STT, // Sắp xếp theo STT
+            sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
+            ellipsis: true,
+            width: 150,
+        },
+        {
             title: 'Chức năng',
-            width: 170,
+            width: 100,
             render: ({ key: _id }: TableData) => {
                 return (
-                    <div style={{ width: '150px' }}>
+                    <div style={{ width: '100px' }}>
                         <Button className="mr-1 text-red-500" onClick={() => deleteColor(_id)}>
                             {isRemoveLoading ? (
                                 <AiOutlineLoading3Quarters className="animate-spin" />
@@ -104,6 +116,12 @@ const Colorslist: React.FC<IColor> = () => {
             },
         },
     ];
+    const formatCurrency = (number: number) => {
+        if (typeof number !== 'number') {
+            return '0';
+        }
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
     // Xử lý filter..............
     const filteredData = dataSource?.filter((item: any) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();

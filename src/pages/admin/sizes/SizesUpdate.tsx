@@ -1,6 +1,6 @@
 import { useGetSizeByIdQuery, useUpdateSizeMutation } from '@/api/sizeApi';
 import { ISize } from '@/interfaces/size';
-import { Button, Form, Input, InputNumber, Skeleton } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Skeleton } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -34,7 +34,8 @@ const SizesUpdate = () => {
       size_height: sizes.size?.size_height,
       size_length: sizes.size?.size_length,
       size_weight: sizes.size?.size_weight,
-      size_width: sizes.size?.size_width
+      size_width: sizes.size?.size_width,
+      size_price: sizes.size?.size_price,
     });
   };
   const onFinish = async (values: any) => {
@@ -115,10 +116,31 @@ const SizesUpdate = () => {
             >
               <Input />
             </Form.Item>
-
-
             <Form.Item<FieldType>
-              label="Chiều cao kích cỡ"
+              label="Giá kích cỡ"
+              name="size_price"
+              labelCol={{ span: 24 }} // Đặt chiều rộng của label
+              wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
+              rules={[{ required: true, message: "Giá kích cỡ không được để trống!" },
+              { validator: validatePositiveNumber },
+              { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+              style={{ marginLeft: "20px" }}
+            >
+              <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              label="Tự thiết kế thì chọn"
+              name="size_info"
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+              style={{ marginLeft: '20px' }}
+            >
+              <Select >
+                <Select.Option value={'design'}>Kích cỡ tự thiết kế</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item<FieldType>
+              label="Chiều cao kích cỡ (cm)"
               name="size_height"
               rules={[{ required: true, message: 'Chiều cao kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
@@ -144,7 +166,7 @@ const SizesUpdate = () => {
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Cân nặng kích cỡ"
+              label="Cân nặng kích cỡ (gram)"
               name="size_weight"
               rules={[{ required: true, message: 'Cân nặng kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
@@ -157,7 +179,7 @@ const SizesUpdate = () => {
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Chiều dài kích cỡ"
+              label="Chiều dài kích cỡ (cm)"
               name="size_width"
               rules={[{ required: true, message: 'Chiều dài kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },

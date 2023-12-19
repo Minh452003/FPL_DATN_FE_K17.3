@@ -26,12 +26,12 @@ const BrandsList = () => {
     const dataSource = isLoading
         ? []
         : brand?.map(({ _id, brand_name }: IBrand, index: number) => {
-              return {
-                  key: _id,
-                  STT: index + 1,
-                  name: brand_name,
-              };
-          });
+            return {
+                key: _id,
+                STT: index + 1,
+                name: brand_name,
+            };
+        });
     const deleteBrand = async (id: any) => {
         try {
             const result = await Swal.fire({
@@ -75,7 +75,7 @@ const BrandsList = () => {
         },
         {
             title: 'Chức năng',
-            width: 170,
+            width: 150,
             render: ({ key: _id }: any) => {
                 return (
                     <div style={{ width: '150px' }}>

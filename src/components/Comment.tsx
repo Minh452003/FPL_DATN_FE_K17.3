@@ -9,12 +9,16 @@ import { getDecodedAccessToken } from "@/decoder";
 import { useAddImageMutation, useDeleteImageMutation } from "@/api/uploadApi";
 import { RcFile, UploadProps } from "antd/es/upload";
 import { toast } from "react-toastify";
+import { useGetColorsQuery } from "@/api/colorApi";
+import { useGetSizeQuery } from "@/api/sizeApi";
 
 
 const Comment = ({ order }: any) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const decodedToken: any = getDecodedAccessToken();
     const id = decodedToken ? decodedToken.id : null;
+    const { data: colors } = useGetColorsQuery<any>();
+    const { data: sizes } = useGetSizeQuery<any>();
     const [addComment, resultAdd] = useAddCommentMutation<any>();
     const [addImage, resultImage] = useAddImageMutation();
     const [deleteImage, resultDelete] = useDeleteImageMutation();
@@ -22,7 +26,8 @@ const Comment = ({ order }: any) => {
     const [imageUrl, setImageUrl] = useState<any>([]);
     const [selectedProduct, setSelectedProduct] = useState<any>({});
     const navigate = useNavigate();
-
+    const color = colors?.color;
+    const size = sizes?.size
     const handleProductChange = (value: string, productId: string, sizeId: string, colorId: string, materialId: string) => {
         if (false) {
             console.log(value);
@@ -163,6 +168,8 @@ const Comment = ({ order }: any) => {
                                 <Select onChange={(value: any, option: any) => handleProductChange(value, option?.productId, option?.sizeId, option?.colorId, option?.materialId)}>
                                     {order && order?.products?.map((product: any) => {
                                         if (!product.hasReviewed) {
+                                            const sizesname = size?.find((s: any) => s._id == product?.sizeId);
+                                            const colorname = color?.find((colors: any) => colors._id == product?.colorId);
                                             return (
                                                 <Select.Option
                                                     key={product?._id}
@@ -172,7 +179,7 @@ const Comment = ({ order }: any) => {
                                                     colorId={product.colorId}
                                                     materialId={product.materialId}
                                                 >
-                                                    {product?.product_name}
+                                                    {product?.product_name} - {colorname?.colors_name} - {sizesname?.size_name}
                                                 </Select.Option>
                                             );
                                         }

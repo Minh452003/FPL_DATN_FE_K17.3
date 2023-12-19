@@ -25,11 +25,12 @@ const MaterialList = () => {
     };
     const dataSource = isLoading
         ? []
-        : material?.map(({ _id, material_name }: IMaterials, index: number) => {
+        : material?.map(({ _id, material_name, material_price }: IMaterials, index: number) => {
             return {
                 key: _id,
                 STT: index + 1,
                 name: material_name,
+                price: material_price
             };
         });
 
@@ -73,11 +74,23 @@ const MaterialList = () => {
             title: 'Tên vật liệu',
             dataIndex: 'name',
             key: 'name',
+            width: 150,
+        },
+        {
+            title: 'Giá vật liệu',
+            dataIndex: 'price',
+            key: 'price',
+            render: (index: any) => <a>{formatCurrency(index)}đ</a>,
+            sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
+            sortSize: sortedInfo.columnKey === 'price' && sortedInfo.size,
+            ellipsis: true,
+            width: 150,
         },
         {
             title: 'Chức năng',
+            width: 140,
             render: ({ key: _id }: { key: number | string }) => (
-                <div style={{ width: '150px' }}>
+                <div style={{ width: '140px' }}>
                     <Button className="mr-1 text-red-500" onClick={() => deleteMaterial(_id)}>
                         {isRemoveLoading ? (
                             <AiOutlineLoading3Quarters className="animate-spin" />
@@ -94,6 +107,14 @@ const MaterialList = () => {
             ),
         },
     ];
+
+    const formatCurrency = (number: number) => {
+        if (typeof number !== 'number') {
+            return '0';
+        }
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
     if (isLoading) return <Skeleton />;
     const filteredData = dataSource?.filter((item: any) => {
         const lowerCaseSearchText = searchText.toLowerCase().trim();

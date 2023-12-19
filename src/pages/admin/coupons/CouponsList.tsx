@@ -95,29 +95,29 @@ const CouponsList = () => {
             sorter: (a: any, b: any) => a.STT - b.STT, // Sắp xếp theo STT
             sortOrder: sortedInfo.columnKey === 'STT' && sortedInfo.order,
             ellipsis: true,
-            width: 80,
+            width: 70,
         },
         {
             title: 'Phiếu giảm giá',
             dataIndex: 'coupon_name',
             key: 'coupon_name',
-            width: 150,
+            width: 120,
         },
         {
             title: 'Mã giảm giá',
             dataIndex: 'coupon_code',
             key: 'coupon_code',
-            width: 120,
+            width: 110,
         },
         {
             title: 'Nội dung',
             dataIndex: 'coupon_content',
             key: 'coupon_content',
-            width: 200,
+            width: 170,
         },
         {
             title: 'Số lượng',
-            width: 120,
+            width: 95,
             dataIndex: 'coupon_quantity',
             key: 'coupon_quantity',
             sorter: (a: any, b: any) => a.coupon_quantity - b.coupon_quantity, // Sắp xếp theo coupon_quantity
@@ -126,7 +126,7 @@ const CouponsList = () => {
         },
         {
             title: 'Phần trăm giảm giá (%)',
-            width: 120,
+            width: 100,
             dataIndex: 'discount_amount',
             key: 'discount_amount',
             render: (index: string | number) => <a>{index}%</a>,
@@ -144,7 +144,7 @@ const CouponsList = () => {
         },
         {
             title: 'Số tiền mua tối thiểu',
-            width: 150,
+            width: 130,
             dataIndex: 'min_purchase_amount',
             key: 'min_purchase_amount',
             render: (index: number) => <a>{formatCurrency(index)}đ</a>,
@@ -154,10 +154,10 @@ const CouponsList = () => {
         },
         {
             title: 'Chức năng',
-            width: 130,
+            width: 110,
             render: ({ key: _id }: { key: string }) => {
                 return (
-                    <div style={{ width: '200px' }}>
+                    <div style={{ width: '110px' }}>
                         <Button className="mr-1 text-red-500" onClick={() => deleteCoupon(_id)}>
                             {isRemoveLoading ? (
                                 <AiOutlineLoading3Quarters className="animate-spin" />

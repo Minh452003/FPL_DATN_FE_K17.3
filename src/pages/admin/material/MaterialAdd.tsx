@@ -1,12 +1,12 @@
 import { useAddMaterialMutation } from '@/api/materialApi';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, InputNumber } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 
 type FieldType = {
     material_name?: string;
-
+    material_price?: number;
 };
 const MaterialAdd = () => {
     const [addMaterials, resultAdd] = useAddMaterialMutation();
@@ -34,12 +34,12 @@ const MaterialAdd = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-    // const validatePositiveNumber = (_: any, value: any) => {
-    //     if(parseFloat(value) < 0) {
-    //       return Promise.reject("Giá trị phải là số dương");
-    //     }
-    //     return Promise.resolve();
-    //   }
+    const validatePositiveNumber = (_: any, value: any) => {
+        if (parseFloat(value) < 0) {
+            return Promise.reject("Giá trị phải là số dương");
+        }
+        return Promise.resolve();
+    }
     return (
         <div className="container-fluid">
             <div className="row">
@@ -81,7 +81,18 @@ const MaterialAdd = () => {
                         >
                             <Input />
                         </Form.Item>
-
+                        <Form.Item<FieldType>
+                            label="Giá vật liệu"
+                            name="material_price"
+                            labelCol={{ span: 24 }} // Đặt chiều rộng của label
+                            wrapperCol={{ span: 24 }} // Đặt chiều rộng của ô input
+                            rules={[{ required: true, message: "Giá vật liệu không được để trống!" },
+                            { validator: validatePositiveNumber },
+                            { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
+                            style={{ marginLeft: "20px" }}
+                        >
+                            <InputNumber style={{ width: '100%' }} />
+                        </Form.Item>
 
 
                         <Form.Item wrapperCol={{ span: 16 }}>
