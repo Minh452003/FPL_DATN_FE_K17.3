@@ -91,7 +91,7 @@ const Sizeslist: React.FC<ISize> = () => {
             ellipsis: true,
         },
         {
-            title: 'Độ dài',
+            title: 'Chiều dài',
             width: 120,
             dataIndex: 'size_length',
             key: 'size_length',
@@ -109,7 +109,7 @@ const Sizeslist: React.FC<ISize> = () => {
             ellipsis: true,
         },
         {
-            title: 'Chiều dài',
+            title: 'Chiều rộng',
             width: 120,
             dataIndex: 'size_width',
             key: 'size_width',

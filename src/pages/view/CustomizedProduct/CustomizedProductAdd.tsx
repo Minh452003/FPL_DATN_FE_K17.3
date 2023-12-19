@@ -274,7 +274,9 @@ const CustomizedProductAdd = () => {
               </div>
 
               <div className="text-l font-bold py-2">
-                <p>Kích thước</p>
+              <div class="product-size">
+                  <p>Kích thước <span class="note">(được đo theo chiều Dài x Rộng x Cao - cm)</span></p>
+                </div>
                 <div className="flex flex-wrap">
                   {sizes ? (
                     sizes?.size
