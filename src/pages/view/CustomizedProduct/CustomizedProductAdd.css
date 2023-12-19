@@ -35,6 +35,22 @@
 .collapses:not(.show) {
     display: block;
 }
+.product-size {
+    font-size: 16px;
+    /* Kích thước chữ chính */
+    margin-top: 20px;
+}
+
+.product-size p {
+    margin-bottom: 8px;
+}
+
+.note {
+    font-size: 12px;
+    /* Kích thước chữ lưu ý nhỏ hơn */
+    color: #888;
+    /* Màu chữ */
+}
 
 .collapses {
     margin-top: 10px;

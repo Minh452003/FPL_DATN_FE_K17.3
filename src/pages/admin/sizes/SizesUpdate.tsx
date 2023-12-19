@@ -153,9 +153,9 @@ const SizesUpdate = () => {
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Độ dài kích cỡ"
+              label="Chiều dài kích cỡ"
               name="size_length"
-              rules={[{ required: true, message: 'Độ dài kích cỡ không được để trống!' },
+              rules={[{ required: true, message: 'Chiều dài dài kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               labelCol={{ span: 24 }}
@@ -179,9 +179,9 @@ const SizesUpdate = () => {
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Chiều dài kích cỡ (cm)"
+              label="Chiều rộng kích cỡ (cm)"
               name="size_width"
-              rules={[{ required: true, message: 'Chiều dài kích cỡ không được để trống!' },
+              rules={[{ required: true, message: 'Chiều rộng kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               labelCol={{ span: 24 }}

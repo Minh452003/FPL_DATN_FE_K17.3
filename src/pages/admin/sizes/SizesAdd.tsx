@@ -114,7 +114,7 @@ const SizesAdd = () => {
 
 
             <Form.Item<FieldType>
-              label="Độ dài kích cỡ (cm)"
+              label="Chiều dài kích cỡ (cm)"
               name="size_length"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
@@ -140,11 +140,11 @@ const SizesAdd = () => {
             </Form.Item>
 
             <Form.Item<FieldType>
-              label="Chiều dài kích cỡ (cm)"
+              label="Chiều rộng kích cỡ (cm)"
               name="size_width"
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
-              rules={[{ required: true, message: 'Chiều dài kích cỡ không được để trống!' },
+              rules={[{ required: true, message: 'Chiều rộng kích cỡ không được để trống!' },
               { validator: validatePositiveNumber },
               { pattern: /^[0-9]+$/, message: 'Không được nhập chữ' }]}
               style={{ marginLeft: '20px' }}
