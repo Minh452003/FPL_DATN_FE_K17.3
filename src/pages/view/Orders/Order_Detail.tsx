@@ -67,13 +67,13 @@ const OrderDetail = () => {
                   <img className="ml-2 mr-2 rounded float-left" style={{ width: 150, height: 120 }} src={product?.image} alt="" />
                   <div className="font-sans">
                     <strong >
-                      <Link style={{ color: "black" }} to={`/products/${product?.productId}`}>{product?.product_name}</Link>
+                      {product.formation == 'nor' ? <Link style={{ color: "black" }} to={`/products/${product?.productId}`}>{product?.product_name}</Link> : <Link style={{ color: "black" }} to={`/customized-products/${product?.productId}`}>{product?.product_name}</Link>}
                     </strong>
                   </div>
                   <div className="font-sans" style={{ fontSize: '14px' }}>Giá: <a href='' style={{ textDecoration: "none", color: "red", fontWeight: 'bold', fontSize: '12px' }}>{formatCurrency(product?.product_price)}₫</a> , số lượng: <a href='' style={{ textDecoration: "none", color: "black", fontSize: '12px' }}>{product?.stock_quantity}</a> </div>
                   <div className="font-sans" style={{ fontSize: '14px' }}>Màu sắc: <a href="" style={{ textDecoration: "none", color: "black" }}>{colorname?.colors_name}</a> </div>
                   <div className="font-sans" style={{ fontSize: '14px' }}>Size: <a href="" style={{ textDecoration: "none", color: "black", }}>{sizename?.size_name}</a> </div>
-                  <div className="font-sans" style={{ fontSize: '14px' }}>Chất liệu: <a href="" style={{ textDecoration: "none", color: "black", }}>{materialname?.material_name}</a> </div>
+                  <div className="font-sans" style={{ fontSize: '14px' }}>Vật liệu: <a href="" style={{ textDecoration: "none", color: "black", }}>{materialname?.material_name}</a> </div>
                 </div>
               </div>
             )

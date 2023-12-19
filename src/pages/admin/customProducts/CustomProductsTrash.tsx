@@ -156,7 +156,7 @@ const CustomProductsTrash = () => {
       }
     },
     {
-      title: 'Chất liệu',
+      title: 'Vật liệu',
       dataIndex: 'materials',
       key: 'materials',
       render: (record: any) => {

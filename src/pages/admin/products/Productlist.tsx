@@ -202,7 +202,7 @@ const Productlist = () => {
                 record.category.startsWith(value),
         },
         {
-            title: 'Chất liệu',
+            title: 'Vật liệu',
             dataIndex: 'materials',
             key: 'materials',
             width: 100,

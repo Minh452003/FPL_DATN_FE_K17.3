@@ -151,7 +151,7 @@ const OrdersDetail = () => {
                                                     <div className="order-products">Số lượng: {order?.stock_quantity}</div>
                                                     <div className="order-products">Màu: {colorname?.colors_name}</div>
                                                     <div className="order-products">Kích cỡ: {sizesname?.size_name}</div>
-                                                    <div className="order-products">Chất liệu: {materialsname?.material_name}</div>
+                                                    <div className="order-products">Vật liệu: {materialsname?.material_name}</div>
                                                 </div>
                                             </div>
 

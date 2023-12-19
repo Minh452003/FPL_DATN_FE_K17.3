@@ -135,24 +135,56 @@ const PayPage = () => {
         }
     }, [user, total, carts?.data?.total]);
 
+    // const handleCityChange = async (value: any, option: any) => {
+    //     if (false) {
+    //         console.log(value);
+    //     }
+    //     const id = Number(option.key); // Lấy id từ option.key
+    //     addDistrict({ province_id: id }).then((response: any) => {
+    //         setDistrict(response.data.data);
+    //         sizeTotal();
+    //     });
+    // };
     const handleCityChange = async (value: any, option: any) => {
+        // Lấy id từ option.key
         if (false) {
             console.log(value);
         }
-        const id = Number(option.key); // Lấy id từ option.key
-        addDistrict({ province_id: id }).then((response: any) => {
+        const id = Number(option.key);
+      
+        const response = await addDistrict({ province_id: id });
+        if ('data' in response) {
+            form.setFieldsValue({
+              address: {
+                district: undefined,
+                ward: undefined,
+                ship: undefined,
+              },
+            });
+            setShip({})
             setDistrict(response.data.data);
+            // Gọi hàm tính toán kích thước tổng cộng (nếu cần)
             sizeTotal();
-        });
-    };
+          }
+      };
     const handleDistrictChange = async (value: any, option: any) => {
         if (false) {
             console.log(value);
         }
         const id = Number(option.key); // Lấy id từ option.key
-        addWard({ district_id: id }).then((response: any) => {
+        const response = await addWard({ district_id: id })
+        if ('data' in response) {
+            form.setFieldsValue({
+              address: {
+                ward: undefined,
+                ship: undefined,
+              },
+            });
+            setShip({})
             setWard(response.data.data);
-        });
+            sizeTotal();
+          }
+
     };
     const handleAvailableChange = async (value: any, option: any) => {
         if (false) {
@@ -907,7 +939,7 @@ const PayPage = () => {
                                     </div>
                                     <div className="col-span-2 flex ef">
                                         <div className="text-xs">
-                                            Chất liệu: {materialsname?.material_name}{' '}
+                                            Vật liệu: {materialsname?.material_name}{' '}
                                         </div>
                                     </div>
                                 </div>

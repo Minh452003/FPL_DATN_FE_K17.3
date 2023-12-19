@@ -79,18 +79,37 @@ const ProfileUpdate = () => {
       console.log(value);
     }
     const id = Number(option.key); // Lấy id từ option.key
-    addDistrict({ province_id: id }).then((response: any) => {
+    const response = await addDistrict({ province_id: id })
+    if ('data' in response) {
+      form.setFieldsValue({
+        address: {
+          district: undefined,
+          ward: undefined,
+        },
+      });
       setDistrict(response.data.data);
-    });
+    }
+    // .then((response: any) => {
+    //   setDistrict(response.data.data);
+    // });
   };
   const handleDistrictChange = async (value: any, option: any) => {
     if (false) {
       console.log(value);
     }
     const id = Number(option.key); // Lấy id từ option.key
-    addWard({ district_id: id }).then((response: any) => {
+    const response = await addWard({ district_id: id })
+    if ('data' in response) {
+      form.setFieldsValue({
+        address: {
+          ward: undefined,
+        },
+      });
       setWard(response.data.data);
-    });
+    }
+    // .then((response: any) => {
+    //   setWard(response.data.data);
+    // });
   };
   const handleAvailableChange = async (value: any, option: any) => {
     if (false) {
